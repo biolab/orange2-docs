@@ -1,0 +1,1275 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Developer utilities (utils) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Developer utilities (<tt class="docutils literal"><span class="pre">utils</span></tt>)</a><ul>
+<li><a class="reference internal" href="#reporting-progress">Reporting progress</a></li>
+<li><a class="reference internal" href="#deprecation-utility-functions">Deprecation utility functions</a></li>
+<li><a class="reference internal" href="#module-Orange.utils.environ">Submodules</a><ul>
+<li><a class="reference internal" href="#orange-environment-configuration-environ">Orange environment configuration (<tt class="docutils literal"><span class="pre">environ</span></tt>)</a><ul>
+<li><a class="reference internal" href="#how-it-works">How it works</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#counters-counters">Counters (<tt class="docutils literal"><span class="pre">counters</span></tt>)</a></li>
+<li><a class="reference internal" href="#render-render">Render (<tt class="docutils literal"><span class="pre">render</span></tt>)</a></li>
+<li><a class="reference internal" href="#selection-selection">Selection (<tt class="docutils literal"><span class="pre">selection</span></tt>)</a><ul>
+<li><a class="reference internal" href="#id1">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#server-files-serverfiles">Server files (<tt class="docutils literal"><span class="pre">serverfiles</span></tt>)</a><ul>
+<li><a class="reference internal" href="#local-file-management">Local file management</a></li>
+<li><a class="reference internal" href="#remote-file-management">Remote file management</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="module-Orange.utils">
+<span id="developer-utilities-utils"></span><h1>Developer utilities (<tt class="docutils literal"><span class="pre">utils</span></tt>)<a class="headerlink" href="#module-Orange.utils" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Orange.utils contains developer utilities.</p>
+<div class="section" id="reporting-progress">
+<h2>Reporting progress<a class="headerlink" href="#reporting-progress" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Orange.utils.ConsoleProgressBar">
+<em class="property">class </em><tt class="descclassname">Orange.utils.</tt><tt class="descname">ConsoleProgressBar</tt><big>(</big><em>title=</em>, <em>charwidth=40</em>, <em>step=1</em>, <em>output=None</em><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to for printing progress bar reports in the console.</p>
+<p>Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">time</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">progress</span> <span class="o">=</span> <span class="n">ConsoleProgressBar</span><span class="p">(</span><span class="s">&quot;Example&quot;</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="n">progress</span><span class="o">.</span><span class="n">advance</span><span class="p">()</span>
+<span class="gp">... </span>   <span class="c"># Or progress.set_state(i)</span>
+<span class="gp">... </span>   <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="go">Example ===================================&gt;100%</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="Orange.utils.ConsoleProgressBar.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>newstate=None</em><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the <tt class="docutils literal"><span class="pre">newstate</span></tt> as the current state of the progress bar.
+<tt class="docutils literal"><span class="pre">newstate</span></tt> must be in the interval [0, 100].</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">set_state</span></tt> is the prefered way to set a new steate.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>newstate</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The new state of the progress bar.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.ConsoleProgressBar.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>title=</em>, <em>charwidth=40</em>, <em>step=1</em>, <em>output=None</em><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the progress bar.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The title for the progress bar.</li>
+<li><strong>charwidth</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; <p>The maximum progress bar width in characters.</p>
+<span class="target" id="index-1"></span></li>
+<li><strong>step</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; A default step used if <tt class="docutils literal"><span class="pre">advance</span></tt> is called without
+any  arguments</li>
+<li><strong>output</strong> (<em>An file like object to print the progress report to.</em>) &#8211; The output file. If None (default) then <tt class="docutils literal"><span class="pre">sys.stderr</span></tt>
+is used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.ConsoleProgressBar.advance">
+<tt class="descname">advance</tt><big>(</big><em>step=None</em><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar.advance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance the current state by <tt class="docutils literal"><span class="pre">step</span></tt>. If <tt class="docutils literal"><span class="pre">step</span></tt> is None use
+the default step as set at class initialization.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.ConsoleProgressBar.clear">
+<tt class="descname">clear</tt><big>(</big><em>i=-1</em><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the current progress line indicator string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.ConsoleProgressBar.finish">
+<tt class="descname">finish</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar.finish" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finish the progress bar (i.e. set the state to 100 and
+print the final newline to the <tt class="docutils literal"><span class="pre">output</span></tt> file).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.ConsoleProgressBar.getstring">
+<tt class="descname">getstring</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar.getstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the progress indicator string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.ConsoleProgressBar.printline">
+<tt class="descname">printline</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar.printline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the <tt class="docutils literal"><span class="pre">string</span></tt> to the output file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.ConsoleProgressBar.set_state">
+<tt class="descname">set_state</tt><big>(</big><em>newstate</em><big>)</big><a class="headerlink" href="#Orange.utils.ConsoleProgressBar.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the <tt class="docutils literal"><span class="pre">newstate</span></tt> as the current state of the progress bar.
+<tt class="docutils literal"><span class="pre">newstate</span></tt> must be in the interval [0, 100].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>newstate</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The new state of the progress bar.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="deprecation-utility-functions">
+<h2>Deprecation utility functions<a class="headerlink" href="#deprecation-utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="Orange.utils.deprecation_warning">
+<tt class="descclassname">Orange.utils.</tt><tt class="descname">deprecation_warning</tt><big>(</big><em>old</em>, <em>new</em>, <em>stacklevel=-2</em><big>)</big><a class="headerlink" href="#Orange.utils.deprecation_warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raise a deprecation warning of an obsolete attribute access.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>old</strong> &#8211; Old attribute name (used in warning message).</li>
+<li><strong>new</strong> &#8211; New attribute name (used in warning message).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.deprecated_members">
+<tt class="descclassname">Orange.utils.</tt><tt class="descname">deprecated_members</tt><big>(</big><em>name_map</em>, <em>wrap_methods=all</em>, <em>in_place=True</em><big>)</big><a class="headerlink" href="#Orange.utils.deprecated_members" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorate a class with properties for accessing attributes, and methods
+with deprecated names. In addition methods from the <cite>wrap_methods</cite> list
+will be wrapped to receive mapped keyword arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name_map</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; A dictionary mapping old into new names.</li>
+<li><strong>wrap_methods</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of method names to wrap. Wrapped methods will
+be called with mapped keyword arguments (by default all methods will
+be wrapped).</li>
+<li><strong>in_place</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True the class will be modified in place, otherwise
+it will be subclassed (default True).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">foo_bar</span><span class="o">=</span><span class="s">&quot;bar&quot;</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">set_foo_bar</span><span class="p">(</span><span class="n">foo_bar</span><span class="p">)</span>
+<span class="gp">... </span>    
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">set_foo_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">foo_bar</span><span class="o">=</span><span class="s">&quot;bar&quot;</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">foo_bar</span> <span class="o">=</span> <span class="n">foo_bar</span>
+<span class="gp">...</span>
+<span class="gp">... </span><span class="n">A</span> <span class="o">=</span> <span class="n">deprecated_members</span><span class="p">(</span>
+<span class="gp">... </span><span class="p">{</span><span class="s">&quot;fooBar&quot;</span><span class="p">:</span> <span class="s">&quot;foo_bar&quot;</span><span class="p">,</span> 
+<span class="gp">... </span> <span class="s">&quot;setFooBar&quot;</span><span class="p">:</span><span class="s">&quot;set_foo_bar&quot;</span><span class="p">},</span>
+<span class="gp">... </span><span class="n">wrap_methods</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;set_foo_bar&quot;</span><span class="p">,</span> <span class="s">&quot;__init__&quot;</span><span class="p">])(</span><span class="n">A</span><span class="p">)</span>
+<span class="gp">... </span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">(</span><span class="n">fooBar</span><span class="o">=</span><span class="s">&quot;foo&quot;</span><span class="p">)</span>
+<span class="go">__main__:1: DeprecationWarning: &#39;fooBar&#39; is deprecated. Use &#39;foo_bar&#39; instead!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">fooBar</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">foo_bar</span>
+<span class="go">foo foo</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">setFooBar</span><span class="p">(</span><span class="s">&quot;FooBar!&quot;</span><span class="p">)</span>
+<span class="go">__main__:1: DeprecationWarning: &#39;setFooBar&#39; is deprecated. Use &#39;set_foo_bar&#39; instead!</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This decorator does nothing if         <tt class="xref py py-obj docutils literal"><span class="pre">Orange.utils.environ.orange_no_deprecated_members</span></tt> environment         variable is set to <cite>True</cite>.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.deprecated_keywords">
+<tt class="descclassname">Orange.utils.</tt><tt class="descname">deprecated_keywords</tt><big>(</big><em>name_map</em><big>)</big><a class="headerlink" href="#Orange.utils.deprecated_keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deprecates the keyword arguments of the function.</p>
+<p>Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nd">@deprecated_keywords</span><span class="p">({</span><span class="s">&quot;myArg&quot;</span><span class="p">:</span> <span class="s">&quot;my_arg&quot;</span><span class="p">})</span>
+<span class="gp">... </span><span class="k">def</span> <span class="nf">my_func</span><span class="p">(</span><span class="n">my_arg</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">my_arg</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">my_func</span><span class="p">(</span><span class="n">myArg</span><span class="o">=</span><span class="s">&quot;Arg&quot;</span><span class="p">)</span>
+<span class="go">__main__:1: DeprecationWarning: &#39;myArg&#39; is deprecated. Use &#39;my_arg&#39; instead!</span>
+<span class="go">Arg</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This decorator does nothing if         <tt class="xref py py-obj docutils literal"><span class="pre">Orange.utils.environ.orange_no_deprecated_members</span></tt> environment         variable is set to <cite>True</cite>.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.deprecated_attribute">
+<tt class="descclassname">Orange.utils.</tt><tt class="descname">deprecated_attribute</tt><big>(</big><em>old_name</em>, <em>new_name</em><big>)</big><a class="headerlink" href="#Orange.utils.deprecated_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a property object that accesses an attribute named <cite>new_name</cite>
+and raises a deprecation warning when doing so.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+</pre></div>
+</div>
+<p>Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="gp">... </span>        <span class="bp">self</span><span class="o">.</span><span class="n">my_attr</span> <span class="o">=</span> <span class="s">&quot;123&quot;</span>
+<span class="gp">... </span>    <span class="n">myAttr</span> <span class="o">=</span> <span class="n">deprecated_attribute</span><span class="p">(</span><span class="s">&quot;myAttr&quot;</span><span class="p">,</span> <span class="s">&quot;my_attr&quot;</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">myAttr</span>
+<span class="go">...:1: DeprecationWarning: &#39;myAttr&#39; is deprecated. Use &#39;my_attr&#39; instead!</span>
+<span class="go">123</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This decorator does nothing and returns None if         <tt class="xref py py-obj docutils literal"><span class="pre">Orange.utils.environ.orange_no_deprecated_members</span></tt> environment         variable is set to <cite>True</cite>.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.deprecated_function_name">
+<tt class="descclassname">Orange.utils.</tt><tt class="descname">deprecated_function_name</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#Orange.utils.deprecated_function_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a wrapped function that raises an deprecation warning when
+called. This should be used for deprecation of module level function names.</p>
+<p>Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">func_a</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">print</span> <span class="s">&quot;This is func_a  (used to be named funcA) called with&quot;</span><span class="p">,</span> <span class="n">arg</span>
+<span class="gp">...</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">funcA</span> <span class="o">=</span> <span class="n">deprecated_function_name</span><span class="p">(</span><span class="n">func_a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">funcA</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This decorator does nothing and if         <tt class="xref py py-obj docutils literal"><span class="pre">Orange.utils.environ.orange_no_deprecated_members</span></tt> environment         variable is set to <cite>True</cite>.</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-Orange.utils.environ">
+<span id="submodules"></span><h2>Submodules<a class="headerlink" href="#module-Orange.utils.environ" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="orange-environment-configuration-environ">
+<h3>Orange environment configuration (<tt class="docutils literal"><span class="pre">environ</span></tt>)<a class="headerlink" href="#orange-environment-configuration-environ" title="Permalink to this headline">¶</a></h3>
+<p>This module contains some basic customization options for Orange
+(for now mostly changing directories where orange settings are saved).</p>
+<div class="section" id="how-it-works">
+<h4>How it works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h4>
+<p>When this module is imported it will first load and parse a global 
+configuration <cite>orangerc.cfg</cite> (located in the root directory of the orange
+installation). Further, it will look for and try to load a user specific
+configuration file located in $(HOME)/.orangerc.cfg or 
+<cite>application_dir</cite>/orangerc.cfg where <cite>application_dir</cite> is a variable defined
+in the global configuration file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">in the configuration files all OS defined environment variables
+(e.g $HOME, $USER, ...) are available.</p>
+</div>
+<p>After all the parsing has taken place the select variables defined in the
+configuration will be made available as top level module variables.</p>
+</div>
+<div class="section" id="example">
+<h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<p>To change the location where settings are saved for Orange Canvas
+on Windows edit the global <cite>orangerc.cfg</cite> file and in the
+<cite>[directories win32]</cite> section change the <cite>application_dir</cite> variable:</p>
+<blockquote>
+<div><p>[directories win32]</p>
+<p>application_dir = D:/SharedAppData/orange/</p>
+</div></blockquote>
+<p>In this way we can hard code the path instead of using the system default
+(defined in the the %APPDATA variable)</p>
+</div>
+<div class="section" id="variables">
+<h4>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h4>
+<p>The following variables are exposed as top level module members</p>
+<dl class="docutils">
+<dt><cite>install_dir</cite>: </dt>
+<dd>Directory where Orange is installed.</dd>
+<dt><cite>canvas_install_dir</cite>:</dt>
+<dd>Directory where Orange Canvas is installed.</dd>
+<dt><cite>widget_install_dir</cite>:</dt>
+<dd>Directory where Orange Widgets are installed.</dd>
+<dt><cite>icons_install_dir</cite>:</dt>
+<dd>Directory where icons for widgets are installed.</dd>
+<dt><cite>doc_install_dir</cite>:</dt>
+<dd>Directory with Orange documentation.</dd>
+<dt><cite>dataset_install_dir</cite>:</dt>
+<dd>Directory with example data sets.</dd>
+<dt><cite>add_ons_dir</cite>:</dt>
+<dd>Directory where system-wide add-ons are installed</dd>
+<dt><cite>add_ons_dir_user</cite>:</dt>
+<dd>Directory where user add-ons are installed</dd>
+<dt><cite>application_dir</cite>:</dt>
+<dd>Directory where applications can save their data.</dd>
+<dt><cite>output_dir</cite>:</dt>
+<dd>Directory where Orange saves settings/data.</dd>
+<dt><cite>default_reports_dir</cite>:</dt>
+<dd>Directory where Orange Canvas saves the reports.</dd>
+<dt><cite>orange_settings_dir</cite>:</dt>
+<dd>Directory where Orange settings are saved.</dd>
+<dt><cite>canvas_settings_dir</cite>:</dt>
+<dd>Directory where Orange Canvas settings are saved.</dd>
+<dt><cite>widget_settings_dir</cite>:</dt>
+<dd>Directory where Orange Widgets settings are saved.</dd>
+<dt><cite>buffer_dir</cite>:</dt>
+<dd>Directory where <a class="reference internal" href="#module-Orange.utils.serverfiles" title="Orange.utils.serverfiles"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.utils.serverfiles</span></tt></a> downloads are stored.</dd>
+<dt><cite>orange_no_deprecated_members</cite>:</dt>
+<dd>If True all deprecated members in Orange 2.5 will not be available.</dd>
+</dl>
+</div>
+</div>
+<span class="target" id="module-Orange.utils.counters"></span><div class="section" id="counters-counters">
+<h3>Counters (<tt class="docutils literal"><span class="pre">counters</span></tt>)<a class="headerlink" href="#counters-counters" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="index-2"></span><p id="index-3"><a class="reference internal" href="#module-Orange.utils.counters" title="Orange.utils.counters"><tt class="xref py py-class docutils literal"><span class="pre">Orange.utils.counters</span></tt></a> contains a bunch of classes that generate sequences of various kinds.</p>
+<dl class="class">
+<dt id="Orange.utils.counters.BooleanCounter">
+<em class="property">class </em><tt class="descclassname">Orange.utils.counters.</tt><tt class="descname">BooleanCounter</tt><big>(</big><em>bits</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.BooleanCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class which represents a boolean counter. The constructor is given the number of bits and during the
+iteration the counter returns a list of that length with 0 and 1&#8217;s in it.</p>
+<p>One way to use the counter is within a for-loop:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">BooleanCounter</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+<span class="gp">... </span>   <span class="k">print</span> <span class="n">r</span>
+<span class="go">[0, 0, 0]</span>
+<span class="go">[0, 0, 1]</span>
+<span class="go">[0, 1, 0]</span>
+<span class="go">[0, 1, 1]</span>
+<span class="go">[1, 0, 0]</span>
+<span class="go">[1, 0, 1]</span>
+<span class="go">[1, 1, 0]</span>
+<span class="go">[1, 1, 1]</span>
+</pre></div>
+</div>
+<p>You can also call it manually.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">r</span> <span class="o">=</span> <span class="n">BooleanCounter</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="go">[0, 0, 0]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="go">[0, 0, 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+<span class="go">[0, 1, 0]</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="Orange.utils.counters.BooleanCounter.state">
+<tt class="descname">state</tt><a class="headerlink" href="#Orange.utils.counters.BooleanCounter.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current counter state (the last result of a call to next) is also stored as attribute attribute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.BooleanCounter.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>bits</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.BooleanCounter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>bits</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of bits.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.BooleanCounter.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.counters.BooleanCounter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next state of the counter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.utils.counters.CanonicFuncCounter">
+<em class="property">class </em><tt class="descclassname">Orange.utils.counters.</tt><tt class="descname">CanonicFuncCounter</tt><big>(</big><em>places</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.CanonicFuncCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all sequences of a given length where no numbers are skipped (see below) and none of
+the generated sequence is equal to another if only the labels are changed. For instance, [0, 2, 2, 1]
+and [1, 0, 0, 2] are considered equivalent: if we take the former and replace 0 by 1, 2
+by 0 and 1 by 2 we get the second list.</p>
+<p>The sequences generated are equivalent to all possible functions from a set of cardinality of the sequences length.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">CanonicFuncCounter</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">t</span>
+<span class="gp">...</span>
+<span class="go">[0, 0, 0, 0]</span>
+<span class="go">[0, 0, 0, 1]</span>
+<span class="go">[0, 0, 1, 0]</span>
+<span class="go">[0, 0, 1, 1]</span>
+<span class="go">[0, 0, 1, 2]</span>
+<span class="go">[0, 1, 0, 0]</span>
+<span class="go">[0, 1, 0, 1]</span>
+<span class="go">[0, 1, 0, 2]</span>
+<span class="go">[0, 1, 1, 0]</span>
+<span class="go">[0, 1, 1, 1]</span>
+<span class="go">[0, 1, 1, 2]</span>
+<span class="go">[0, 1, 2, 0]</span>
+<span class="go">[0, 1, 2, 1]</span>
+<span class="go">[0, 1, 2, 2]</span>
+<span class="go">[0, 1, 2, 3]</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="Orange.utils.counters.CanonicFuncCounter.state">
+<tt class="descname">state</tt><a class="headerlink" href="#Orange.utils.counters.CanonicFuncCounter.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current counter state (the last result of a call to next) is also stored as attribute attribute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.CanonicFuncCounter.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>places</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.CanonicFuncCounter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>places</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of places.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.CanonicFuncCounter.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.counters.CanonicFuncCounter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next state of the counter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.utils.counters.LimitedCounter">
+<em class="property">class </em><tt class="descclassname">Orange.utils.counters.</tt><tt class="descname">LimitedCounter</tt><big>(</big><em>limits</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.LimitedCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class is similar to <a class="reference internal" href="#Orange.utils.counters.BooleanCounter" title="Orange.utils.counters.BooleanCounter"><tt class="xref py py-class docutils literal"><span class="pre">BooleanCounter</span></tt></a> except that the digits do not count
+from 0 to 1, but to the limits that are specified individually for each digit.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">LimitedCounter</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">t</span>
+<span class="go">[0, 0]</span>
+<span class="go">[0, 1]</span>
+<span class="go">[0, 2]</span>
+<span class="go">[0, 3]</span>
+<span class="go">[0, 4]</span>
+<span class="go">[1, 0]</span>
+<span class="go">[1, 1]</span>
+<span class="go">[1, 2]</span>
+<span class="go">[1, 3]</span>
+<span class="go">[1, 4]</span>
+<span class="go">[2, 0]</span>
+<span class="go">[2, 1]</span>
+<span class="go">[2, 2]</span>
+<span class="go">[2, 3]</span>
+<span class="go">[2, 4]</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="Orange.utils.counters.LimitedCounter.state">
+<tt class="descname">state</tt><a class="headerlink" href="#Orange.utils.counters.LimitedCounter.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current counter state (the last result of a call to next) is also stored as attribute attribute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.LimitedCounter.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>limits</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.LimitedCounter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>limits</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; Domain size per bit position.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.LimitedCounter.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.counters.LimitedCounter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next state of the counter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.utils.counters.MofNCounter">
+<em class="property">class </em><tt class="descclassname">Orange.utils.counters.</tt><tt class="descname">MofNCounter</tt><big>(</big><em>m</em>, <em>n</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.MofNCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counter returns all consecutive subset lists of length <tt class="docutils literal"><span class="pre">m</span></tt> out of <tt class="docutils literal"><span class="pre">n</span></tt> where <tt class="docutils literal"><span class="pre">m</span></tt> &lt;= <tt class="docutils literal"><span class="pre">n</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">MofNCounter</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">t</span>
+<span class="gp">...</span>
+<span class="go">[0, 1, 2]</span>
+<span class="go">[1, 2, 3]</span>
+<span class="go">[2, 3, 4]</span>
+<span class="go">[3, 4, 5]</span>
+<span class="go">[4, 5, 6]</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="Orange.utils.counters.MofNCounter.state">
+<tt class="descname">state</tt><a class="headerlink" href="#Orange.utils.counters.MofNCounter.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current counter state (the last result of a call to next) is also stored as attribute attribute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.MofNCounter.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>m</em>, <em>n</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.MofNCounter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>m</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Length of subset list.</li>
+<li><strong>n</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Total length.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.MofNCounter.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.counters.MofNCounter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next state of the counter.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.utils.counters.NondecreasingCounter">
+<em class="property">class </em><tt class="descclassname">Orange.utils.counters.</tt><tt class="descname">NondecreasingCounter</tt><big>(</big><em>places</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.NondecreasingCounter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Nondecreasing counter generates all non-decreasing integer sequences in which no numbers are skipped,
+that is, if n is in the sequence, the sequence also includes all numbers between 0 and n. For instance,
+[0, 0, 1, 0] is illegal since it decreases, and [0, 0, 2, 2] is illegal since it has 2 without having 1
+first. Or, with an example</p>
+<p>Nondecreasing counter generates all non-decreasing integer sequences in which no numbers are skipped,
+that is, if <tt class="docutils literal"><span class="pre">n</span></tt> is in the sequence, the sequence also includes all numbers between 0 and <tt class="docutils literal"><span class="pre">n</span></tt>. For instance,
+[0, 0, 1, 0] is illegal since it decreases, and [0, 0, 2, 2] is illegal since it has 2 without having 1 first.
+Or, with an example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">NondecreasingCounter</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">t</span>
+<span class="gp">...</span>
+<span class="go">[0, 0, 0, 0]</span>
+<span class="go">[0, 0, 0, 1]</span>
+<span class="go">[0, 0, 1, 1]</span>
+<span class="go">[0, 0, 1, 2]</span>
+<span class="go">[0, 1, 1, 1]</span>
+<span class="go">[0, 1, 1, 2]</span>
+<span class="go">[0, 1, 2, 2]</span>
+<span class="go">[0, 1, 2, 3]</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="Orange.utils.counters.NondecreasingCounter.state">
+<tt class="descname">state</tt><a class="headerlink" href="#Orange.utils.counters.NondecreasingCounter.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current counter state (the last result of a call to next) is also stored as attribute attribute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.NondecreasingCounter.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>places</em><big>)</big><a class="headerlink" href="#Orange.utils.counters.NondecreasingCounter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>places</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of places.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.counters.NondecreasingCounter.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.counters.NondecreasingCounter.next" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the next state of the counter.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-Orange.utils.render"></span><div class="section" id="render-render">
+<h3>Render (<tt class="docutils literal"><span class="pre">render</span></tt>)<a class="headerlink" href="#render-render" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="index-4"></span></div>
+<span class="target" id="module-Orange.utils.addons"><span id="index-5"></span></span><span class="target" id="module-Orange.utils.selection"></span><div class="section" id="selection-selection">
+<h3>Selection (<tt class="docutils literal"><span class="pre">selection</span></tt>)<a class="headerlink" href="#selection-selection" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="index-6"></span><p id="index-7">Many machine learning techniques generate a set of different solutions or
+have to choose, as for instance in classification tree induction, between
+different features. The most trivial solution is to iterate through the 
+candidates, compare them and remember the optimal one. The problem occurs,
+however, when there are multiple candidates that are equally good, and the
+naive approaches would select the first or the last one, depending upon the
+formulation of the if-statement.</p>
+<p><a class="reference internal" href="#module-Orange.utils.selection" title="Orange.utils.selection"><tt class="xref py py-class docutils literal"><span class="pre">Orange.utils.selection</span></tt></a> provides a class that makes a random choice
+in such cases. Each new candidate is compared with the currently optimal
+one; it replaces the optimal if it is better, while if they are equal,
+one is chosen by random. The number of competing optimal candidates is stored,
+so in this random choice the probability to select the new candidate (over the
+current one) is 1/w, where w is the current number of equal candidates,
+including the present one. One can easily verify that this gives equal
+chances to all candidates, independent of the order in which they are
+presented.</p>
+<div class="section" id="id1">
+<h4>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>The following snippet loads the data set lymphography and prints out the
+feature with the highest information gain.</p>
+<p>part of <a class="reference download internal" href="../../_downloads/misc-selection-bestonthefly.py"><tt class="xref download docutils literal"><span class="pre">misc-selection-bestonthefly.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">lymphography</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;zoo&quot;</span><span class="p">)</span>
+
+<span class="n">find_best</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">BestOnTheFly</span><span class="p">(</span><span class="n">call_compare_on_1st</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">lymphography</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+    <span class="n">find_best</span><span class="o">.</span><span class="n">candidate</span><span class="p">((</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">GainRatio</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">lymphography</span><span class="p">),</span> <span class="n">attr</span><span class="p">))</span>
+
+<span class="k">print</span> <span class="s">&quot;</span><span class="si">%5.3f</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">find_best</span><span class="o">.</span><span class="n">winner</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Our candidates are tuples gain ratios and features, so we set
+<tt class="xref py py-obj docutils literal"><span class="pre">call_compare_on_1st</span></tt> to make the compare function compare the first
+element (gain ratios). We could achieve the same by initializing the object
+like this:</p>
+<p>part of <a class="reference download internal" href="../../_downloads/misc-selection-bestonthefly.py"><tt class="xref download docutils literal"><span class="pre">misc-selection-bestonthefly.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">find_best</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">BestOnTheFly</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">compare_first_bigger</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The other way to do it is through indices.</p>
+<p><a class="reference download internal" href="../../_downloads/misc-selection-bestonthefly.py"><tt class="xref download docutils literal"><span class="pre">misc-selection-bestonthefly.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">find_best</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">BestOnTheFly</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">lymphography</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+    <span class="n">find_best</span><span class="o">.</span><span class="n">candidate</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">GainRatio</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">lymphography</span><span class="p">))</span>
+
+<span class="n">best_index</span> <span class="o">=</span> <span class="n">find_best</span><span class="o">.</span><span class="n">winner_index</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="si">%5.3f</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">find_best</span><span class="o">.</span><span class="n">winner</span><span class="p">(),</span> <span class="n">lymphography</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="n">best_index</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Here we only give gain ratios to <a class="reference internal" href="#Orange.utils.selection.BestOnTheFly" title="Orange.utils.selection.BestOnTheFly"><tt class="xref py py-obj docutils literal"><span class="pre">BestOnTheFly</span></tt></a>, so we don&#8217;t have
+to specify a special compare operator. After checking all features we
+get the index of the  optimal one by calling <tt class="xref py py-obj docutils literal"><span class="pre">winner_index</span></tt>.</p>
+<dl class="class">
+<dt id="Orange.utils.selection.BestOnTheFly">
+<em class="property">class </em><tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">BestOnTheFly</tt><big>(</big><em>compare=&lt;built-in function cmp&gt;</em>, <em>seed=0</em>, <em>call_compare_on_1st=False</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.BestOnTheFly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the optimal object in a sequence of objects. The class is fed the
+candidates one by one, and remembers the winner. It can thus be used by
+methods that generate different solutions to a problem and need to
+select the optimal one, but do not want to store them all.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>compare</strong> &#8211; compare function.</li>
+<li><strong>seed</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; If not given, a random seed of 0 is used to ensure that    the same experiment always gives the same results, despite    pseudo-randomness.random seed.</li>
+<li><strong>call_compare_on_1st</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If set, <a class="reference internal" href="#Orange.utils.selection.BestOnTheFly" title="Orange.utils.selection.BestOnTheFly"><tt class="xref py py-obj docutils literal"><span class="pre">BestOnTheFly</span></tt></a> will suppose    that the candidates are lists are tuples, and it will call compare    with the first element of the tuple.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.selection.select_best">
+<tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">select_best</tt><big>(</big><em>x</em>, <em>compare=&lt;built-in function cmp&gt;</em>, <em>seed=0</em>, <em>call_compare_on_1st=False</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.select_best" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the optimal object from list x. The function is used if the candidates
+are already in the list, so using the more complicated <a class="reference internal" href="#Orange.utils.selection.BestOnTheFly" title="Orange.utils.selection.BestOnTheFly"><tt class="xref py py-obj docutils literal"><span class="pre">BestOnTheFly</span></tt></a> directly is
+not needed.</p>
+<p>To demonstrate the use of <a class="reference internal" href="#Orange.utils.selection.BestOnTheFly" title="Orange.utils.selection.BestOnTheFly"><tt class="xref py py-obj docutils literal"><span class="pre">BestOnTheFly</span></tt></a> see the implementation of
+<tt class="xref py py-obj docutils literal"><span class="pre">selectBest</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">selectBest</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="nb">cmp</span><span class="p">,</span> <span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">call_compare_on_1st</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+    <span class="n">bs</span><span class="o">=</span><span class="n">BestOnTheFly</span><span class="p">(</span><span class="n">compare</span><span class="p">,</span> <span class="n">seed</span><span class="p">,</span> <span class="n">call_compare_on_1st</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+        <span class="n">bs</span><span class="o">.</span><span class="n">candidate</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bs</span><span class="o">.</span><span class="n">winner</span><span class="p">()</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of existing candidates.</li>
+<li><strong>compare</strong> &#8211; compare function.</li>
+<li><strong>seed</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; If not given, a random seed of 0 is used to ensure that
+the same experiment always gives the same results, despite
+pseudo-randomness.random seed.</li>
+<li><strong>call_compare_on_1st</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If set, <a class="reference internal" href="#Orange.utils.selection.BestOnTheFly" title="Orange.utils.selection.BestOnTheFly"><tt class="xref py py-obj docutils literal"><span class="pre">BestOnTheFly</span></tt></a> will suppose
+that the candidates are lists are tuples, and it will call compare
+with the first element of the tuple.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.selection.select_best_index">
+<tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">select_best_index</tt><big>(</big><em>x</em>, <em>compare=&lt;built-in function cmp&gt;</em>, <em>seed=0</em>, <em>call_compare_on_1st=False</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.select_best_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to <tt class="xref py py-obj docutils literal"><span class="pre">selectBest</span></tt> except that it doesn&#8217;t return the best object
+but its index in the list x.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.selection.compare_first_bigger">
+<tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">compare_first_bigger</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.compare_first_bigger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function takes two lists and compares first elements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of values.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of values.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cmp(x[0], y[0])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.selection.compare_first_smaller">
+<tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">compare_first_smaller</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.compare_first_smaller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function takes two lists and compares first elements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of values.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of values.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">-cmp(x[0], y[0])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.selection.compare_last_bigger">
+<tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">compare_last_bigger</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.compare_last_bigger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function takes two lists and compares last elements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of values.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of values.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cmp(x[0], y[0])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.selection.compare_last_smaller">
+<tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">compare_last_smaller</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.compare_last_smaller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function takes two lists and compares last elements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of values.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of values.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">-cmp(x[0], y[0])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.selection.compare_bigger">
+<tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">compare_bigger</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.compare_bigger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function takes and compares two numbers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; value.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cmp(x, y)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.selection.compare_smaller">
+<tt class="descclassname">Orange.utils.selection.</tt><tt class="descname">compare_smaller</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#Orange.utils.selection.compare_smaller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function takes and compares two numbers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; value.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; value.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">cmp(x, y)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<span class="target" id="module-Orange.utils.serverfiles"></span><div class="section" id="server-files-serverfiles">
+<h3>Server files (<tt class="docutils literal"><span class="pre">serverfiles</span></tt>)<a class="headerlink" href="#server-files-serverfiles" title="Permalink to this headline">¶</a></h3>
+<p id="index-8">Server files allows users to download files from a common
+repository residing on the Orange server. It was designed to simplify
+the download and updates of external data sources for Orange Genomics add-on.
+Furthermore, an authenticated user can also manage the repository files with
+this module.</p>
+<p>Orange server file repository was created to store large files that do not
+come with Orange installation, but may be required from the user when
+running specific Orange functions. A typical example is Orange Bioinformatics
+package, which relies on large data files storing genome information.
+These do not come pre-installed, but are rather downloaded from the server
+when needed and stored in the local repository. The module provides low-level
+functionality to manage these files, and is used by Orange modules to locate
+the files from the local repository and update/download them when and if needed.</p>
+<p>Each managed file is described by domain and the file name.
+Domains are like directories - a place where files are put in.</p>
+<p>Domain should consist of less than 255 alphanumeric ASCII characters, whereas 
+filenames can be arbitary long and can contain any ASCII character (including
+&#8220;&#8221; ~ . / { }). Please, refrain from using not-ASCII character both in
+domain and filenames. Files can be protected or not. Protected files can 
+only be accessed by authenticated users</p>
+<div class="section" id="local-file-management">
+<h4>Local file management<a class="headerlink" href="#local-file-management" title="Permalink to this headline">¶</a></h4>
+<p>The files are saved under Orange&#8217;s settings directory, 
+subdirectory buffer/bigfiles. Each domain is a subdirectory. 
+A corresponding info 
+file bearing the same name and an extension &#8221;.info&#8221; is created
+with every download. Info files
+contain title, tags, size and date and time of the file.</p>
+<dl class="function">
+<dt id="Orange.utils.serverfiles.allinfo">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">allinfo</tt><big>(</big><em>domain</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.allinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Goes through all files in a domain on a local repository and returns a 
+dictionary, where keys are names of the files and values are their 
+information.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.download">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">download</tt><big>(</big><em>domain</em>, <em>filename</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads file from the repository to local orange installation.
+To download files as an authenticated user you should also pass an
+instance of ServerFiles class. Callback can be a function without
+arguments. It will be called once for each downloaded percent of
+file: 100 times for the whole file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.info">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">info</tt><big>(</big><em>domain</em>, <em>filename</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns info of a file in a local repository.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.listdomains">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">listdomains</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.listdomains" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all file domains in the local repository.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.listfiles">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">listfiles</tt><big>(</big><em>domain</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.listfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all files from a domain in a local repository.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.localpath">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">localpath</tt><big>(</big><em>domain=None</em>, <em>filename=None</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.localpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a path for the domain in the local repository. If 
+filename is given, return a path to corresponding file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.localpath_download">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">localpath_download</tt><big>(</big><em>domain</em>, <em>filename</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.localpath_download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return local path for the given domain and file. If file does not exist, 
+download it. Additional arguments are passed to the <a class="reference internal" href="#Orange.utils.serverfiles.download" title="Orange.utils.serverfiles.download"><tt class="xref py py-obj docutils literal"><span class="pre">download</span></tt></a> function.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.needs_update">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">needs_update</tt><big>(</big><em>domain</em>, <em>filename</em>, <em>serverfiles=None</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.needs_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if a file does not exist in the local repository
+or if there is a newer version on the server.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.remove">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">remove</tt><big>(</big><em>domain</em>, <em>filename</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a file from local repository.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.remove_domain">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">remove_domain</tt><big>(</big><em>domain</em>, <em>force=False</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.remove_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a domain. If force is True, domain is removed even 
+if it is not empty (contains files).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.search">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">search</tt><big>(</big><em>sstrings</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for files in the local repository where all substrings in a list 
+are contained in at least one chosen field (tag, title, name). Return a 
+list of tuples: first tuple element is the domain of the file, second 
+its name.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.utils.serverfiles.update">
+<tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">update</tt><big>(</big><em>domain</em>, <em>filename</em>, <em>serverfiles=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads the corresponding file from the server and places it in 
+the local repository, but only if the server copy of the file is newer 
+or the local copy does not exist. An optional  <a class="reference internal" href="#Orange.utils.serverfiles.ServerFiles" title="Orange.utils.serverfiles.ServerFiles"><tt class="xref py py-class docutils literal"><span class="pre">ServerFiles</span></tt></a> object
+can be passed for authenticated access.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="remote-file-management">
+<h4>Remote file management<a class="headerlink" href="#remote-file-management" title="Permalink to this headline">¶</a></h4>
+<dl class="class">
+<dt id="Orange.utils.serverfiles.ServerFiles">
+<em class="property">class </em><tt class="descclassname">Orange.utils.serverfiles.</tt><tt class="descname">ServerFiles</tt><big>(</big><em>username=None</em>, <em>password=None</em>, <em>server=None</em>, <em>access_code=None</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>To work with the repository, you need to create an instance of
+ServerFiles object. To access the repository as an authenticated user, a
+username and password should be passed to the constructor. All password
+protected operations and transfers are secured by SSL; this secures
+both password and content.</p>
+<p>Repository files are set as protected when first uploaded: only
+authenticated users can see them. They need to be unprotected for
+public use.</p>
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>username=None</em>, <em>password=None</em>, <em>server=None</em>, <em>access_code=None</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a ServerFiles instance. Pass your username and password
+to use the repository as an authenticated user. If you want to use
+your access code (as an non-authenticated user), pass it also.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.allinfo">
+<tt class="descname">allinfo</tt><big>(</big><em>domain</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.allinfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Go through all accessible files in a given domain and return a
+dictionary, where key is file&#8217;s name and value its info.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.create_domain">
+<tt class="descname">create_domain</tt><big>(</big><em>domain</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.create_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a server domain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.download">
+<tt class="descname">download</tt><big>(</big><em>domain</em>, <em>filename</em>, <em>target</em>, <em>callback=None</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.download" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads file from the repository to a given target name. Callback
+can be a function without arguments. It will be called once for each
+downloaded percent of file: 100 times for the whole file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.downloadFH">
+<tt class="descname">downloadFH</tt><big>(</big><em>domain</em>, <em>filename</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.downloadFH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a file handle to the file that we would like to download.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.info">
+<tt class="descname">info</tt><big>(</big><em>domain</em>, <em>filename</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary containing repository file info. 
+Keys: title, tags, size, datetime.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.listdomains">
+<tt class="descname">listdomains</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.listdomains" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all domains on repository.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.listfiles">
+<tt class="descname">listfiles</tt><big>(</big><em>domain</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.listfiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>List all files in a repository domain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.protect">
+<tt class="descname">protect</tt><big>(</big><em>domain</em>, <em>filename</em>, <em>access_code=1</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.protect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hide file from non-authenticated users. If an access code (string)
+is passed, the file will be available to authenticated users and
+non-authenticated users with that access code.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.protection">
+<tt class="descname">protection</tt><big>(</big><em>domain</em>, <em>filename</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.protection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return file protection. Legend: &#8220;0&#8221; - public use,
+&#8220;1&#8221; - for authenticated users only, anything else
+represents a specific access code.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.remove">
+<tt class="descname">remove</tt><big>(</big><em>domain</em>, <em>filename</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a file from the server repository.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.remove_domain">
+<tt class="descname">remove_domain</tt><big>(</big><em>domain</em>, <em>force=False</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.remove_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a domain. If force is True, domain is removed even
+if it is not empty (contains files).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.search">
+<tt class="descname">search</tt><big>(</big><em>sstrings</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search for files on the repository where all substrings in a list
+are contained in at least one choosen field (tag, title, name). Return
+a list of tuples: first tuple element is the file&#8217;s domain, second its
+name. As for now the search is performed locally, therefore
+information on files in repository is transfered on first call of
+this function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.unprotect">
+<tt class="descname">unprotect</tt><big>(</big><em>domain</em>, <em>filename</em><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.unprotect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put a file into public use.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.utils.serverfiles.ServerFiles.upload">
+<tt class="descname">upload</tt><big>(</big><em>domain</em>, <em>filename</em>, <em>file</em>, <em>title=</em>, <em>tags=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.utils.serverfiles.ServerFiles.upload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uploads a file &#8220;file&#8221; to the domain where it is saved with filename
+&#8220;filename&#8221;. If file does not exist yet, set it as protected. Parameter
+file can be a file handle open for reading or a file name.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h4>
+<p>Listing local files, files from the repository and downloading all available files from domain &#8220;demo&#8221; (<a class="reference download internal" href="../../_downloads/serverfiles1.py"><tt class="xref download docutils literal"><span class="pre">serverfiles1.py</span></tt></a>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">sf</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">serverfiles</span>
+
+<span class="n">repository</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">ServerFiles</span><span class="p">()</span> 
+
+<span class="k">print</span> <span class="s">&quot;My files (in demo)&quot;</span><span class="p">,</span> <span class="n">sf</span><span class="o">.</span><span class="n">listfiles</span><span class="p">(</span><span class="s">&#39;demo&#39;</span><span class="p">)</span> 
+<span class="k">print</span> <span class="s">&quot;Repository files&quot;</span><span class="p">,</span> <span class="n">repository</span><span class="o">.</span><span class="n">listfiles</span><span class="p">(</span><span class="s">&#39;demo&#39;</span><span class="p">)</span> 
+<span class="k">print</span> <span class="s">&quot;Downloading all files in domain &#39;demo&#39;&quot;</span> 
+
+<span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">repository</span><span class="o">.</span><span class="n">listfiles</span><span class="p">(</span><span class="s">&#39;demo&#39;</span><span class="p">):</span> 
+    <span class="k">print</span> <span class="s">&quot;Datetime for&quot;</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">repository</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;demo&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="p">)[</span><span class="s">&quot;datetime&quot;</span><span class="p">]</span> 
+    <span class="n">sf</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s">&#39;demo&#39;</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span> 
+    
+<span class="k">print</span> <span class="s">&quot;My files (in demo) after download&quot;</span><span class="p">,</span> <span class="n">sf</span><span class="o">.</span><span class="n">listfiles</span><span class="p">(</span><span class="s">&#39;demo&#39;</span><span class="p">)</span> 
+<span class="k">print</span> <span class="s">&quot;My domains&quot;</span><span class="p">,</span> <span class="n">sf</span><span class="o">.</span><span class="n">listdomains</span><span class="p">()</span> 
+</pre></div>
+</div>
+<p>A possible output (it depends on the current repository state):</p>
+<div class="highlight-python"><pre>My files []
+Repository files ['orngServerFiles.py', 'urllib2_file.py']
+Downloading all files in domain 'test'
+Datetime for orngServerFiles.py 2008-08-20 12:25:54.624000
+Downloading orngServerFiles.py
+progress: ===============&gt;100%  10.7 KB       47.0 KB/s    0:00 ETA
+Datetime for urllib2_file.py 2008-08-20 12:25:54.827000
+Downloading urllib2_file.py
+progress: ===============&gt;100%  8.5 KB       37.4 KB/s    0:00 ETA
+My files after download ['urllib2_file.py', 'orngServerFiles.py']
+My domains ['KEGG', 'gene_sets', 'dictybase', 'NCBI_geneinfo', 'GO', 'miRNA', 'demo', 'Taxonomy', 'GEO']</pre>
+</div>
+<p>A domain with a simple file can be built as follows (<a class="reference download internal" href="../../_downloads/serverfiles2.py"><tt class="xref download docutils literal"><span class="pre">serverfiles2.py</span></tt></a>). Of course,
+the username and password should be valid.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="n">sf</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">serverfiles</span>
+
+<span class="n">ordinary</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">ServerFiles</span><span class="p">()</span>
+<span class="n">authenticated</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="n">ServerFiles</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="c">#authentication is provided as command line arguments</span>
+
+<span class="k">try</span><span class="p">:</span> 
+    <span class="n">authenticated</span><span class="o">.</span><span class="n">remove_domain</span><span class="p">(</span><span class="s">&#39;demo2&#39;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span> 
+    <span class="k">pass</span> 
+    
+<span class="n">authenticated</span><span class="o">.</span><span class="n">create_domain</span><span class="p">(</span><span class="s">&#39;demo2&#39;</span><span class="p">)</span>
+<span class="n">authenticated</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="s">&#39;demo2&#39;</span><span class="p">,</span> <span class="s">&#39;titanic.tab&#39;</span><span class="p">,</span> <span class="s">&#39;titanic.tab&#39;</span><span class="p">,</span> \
+    <span class="n">title</span><span class="o">=</span><span class="s">&quot;A sample .tab file&quot;</span><span class="p">,</span> <span class="n">tags</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;basic&quot;</span><span class="p">,</span> <span class="s">&quot;data set&quot;</span><span class="p">])</span>
+<span class="k">print</span> <span class="s">&quot;Uploaded.&quot;</span>
+<span class="k">print</span> <span class="s">&quot;Non-authenticated users see:&quot;</span><span class="p">,</span> <span class="n">ordinary</span><span class="o">.</span><span class="n">listfiles</span><span class="p">(</span><span class="s">&#39;demo2&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Authenticated users see:&quot;</span><span class="p">,</span> <span class="n">authenticated</span><span class="o">.</span><span class="n">listfiles</span><span class="p">(</span><span class="s">&#39;demo2&#39;</span><span class="p">)</span>
+<span class="n">authenticated</span><span class="o">.</span><span class="n">unprotect</span><span class="p">(</span><span class="s">&#39;demo2&#39;</span><span class="p">,</span> <span class="s">&#39;titanic.tab&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Non-authenticated users now see:&quot;</span><span class="p">,</span> <span class="n">ordinary</span><span class="o">.</span><span class="n">listfiles</span><span class="p">(</span><span class="s">&#39;demo2&#39;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;orngServerFiles.py file info:&quot;</span>
+<span class="kn">import</span> <span class="nn">pprint</span><span class="p">;</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">ordinary</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;demo2&#39;</span><span class="p">,</span> <span class="s">&#39;titanic.tab&#39;</span><span class="p">))</span> 
+</pre></div>
+</div>
+<p>A possible output:</p>
+<div class="highlight-python"><pre>Uploaded.
+Non-authenticated users see: ['']
+Authenticated users see: ['titanic.tab']
+Non-authenticated users now see: ['titanic.tab']
+orngServerFiles.py file info:
+{'datetime': '2011-03-15 13:18:53.029000',
+ 'size': '45112',
+ 'tags': ['basic', 'data set'],
+ 'title': 'A sample .tab file'}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

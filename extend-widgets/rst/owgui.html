@@ -1,0 +1,523 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>OWGUI: Library of Common GUI Controls &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">OWGUI: Library of Common GUI Controls</a><ul>
+<li><a class="reference internal" href="#common-attributes">Common Attributes</a></li>
+<li><a class="reference internal" href="#controls">Controls</a><ul>
+<li><a class="reference internal" href="#check-box">Check Box</a></li>
+<li><a class="reference internal" href="#line-edit">Line Edit</a></li>
+<li><a class="reference internal" href="#button">Button</a></li>
+<li><a class="reference internal" href="#radio-buttons">Radio Buttons</a></li>
+<li><a class="reference internal" href="#combo-box">Combo Box</a></li>
+<li><a class="reference internal" href="#list-box">List Box</a></li>
+<li><a class="reference internal" href="#spin">Spin</a></li>
+<li><a class="reference internal" href="#slider">Slider</a></li>
+<li><a class="reference internal" href="#check-box-with-spin">Check Box with Spin</a></li>
+<li><a class="reference internal" href="#labels">Labels</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#utilities">Utilities</a><ul>
+<li><a class="reference internal" href="#widget-box">Widget box</a></li>
+<li><a class="reference internal" href="#idented-box">Idented box</a></li>
+<li><a class="reference internal" href="#inserting-space-between-widgets">Inserting Space between Widgets</a></li>
+<li><a class="reference internal" href="#attribute-icons">Attribute Icons</a></li>
+<li><a class="reference internal" href="#send-automatically-send">Send automatically / Send</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-OWGUI"></span><div class="section" id="owgui-library-of-common-gui-controls">
+<h1>OWGUI: Library of Common GUI Controls<a class="headerlink" href="#owgui-library-of-common-gui-controls" title="Permalink to this headline">¶</a></h1>
+<p>Orange Widgets wrap Orange&#8217;s classes in an easy to use interactive graphical
+interface. As such, much of their code is about the interface, event control
+and maintaining the state of the GUI controls.</p>
+<p>In the spirit of constructive laziness, we wrote a library using which a single
+line of code can construct a check box, line edit or a combo, make it being
+synchronized with a Python object&#8217;s attribute (which, by the way, gets
+automatically saved and retrieved when the widgets is closed and reopened),
+attaches a callback function to the control, make it disable or enable other
+controls...</p>
+<div class="section" id="common-attributes">
+<h2>Common Attributes<a class="headerlink" href="#common-attributes" title="Permalink to this headline">¶</a></h2>
+<p>Many functions that construct controls share one or more common arguments,
+usually in the same order. These are described here. Descriptions of individual
+controls will only list their specific arguments, while the arguments which are
+presented here will only be described in cases where they have a different meaning.</p>
+<dl class="docutils">
+<dt><cite>widget</cite> (required)</dt>
+<dd>Widget on which control will be drawn - can be widget&#8217;s <tt class="xref py py-obj docutils literal"><span class="pre">controlArea</span></tt>
+or another box.</dd>
+<dt><cite>master</cite> (required)</dt>
+<dd>Object which includes an attribute that are used to store control&#8217;s
+state, most often the object which called the function that
+initialized the control.</dd>
+<dt><cite>value</cite> (required)</dt>
+<dd>String with the name of the master&#8217;s attribute that synchronizes with the
+state of the control (and vice-versa - when this attribute is changed, the
+control changes as well). This attribute should usually be also included
+the master&#8217;s <tt class="xref py py-obj docutils literal"><span class="pre">settingsList</span></tt>, so that it is automatically saved and
+retrieved.</dd>
+<dt><cite>box</cite> (default: None)</dt>
+<dd>Indicates if there should be a box that is drawn around the control.
+If <cite>box</cite> is <tt class="docutils literal"><span class="pre">None</span></tt>, no box is drawn; if it is a string, it is also used
+as box&#8217;s name. If <cite>box</cite> is any other true value (such as <tt class="docutils literal"><span class="pre">True</span></tt> :),
+an unlabeled box is drawn.</dd>
+<dt><cite>callback</cite> (default: None)</dt>
+<dd>A function to be called when the state of the control is changed. Can
+include a single function, or a list of functions that will be called in
+the order provided. If callback function changes the value of the controlled
+attribute (the one given as the <cite>value</cite> argument described above) it may
+trigger a cycle</dd>
+<dt><cite>tooltip</cite> (default: None)</dt>
+<dd>A string that is displayed in a tooltip that appears when mouse is over the
+control.</dd>
+<dt><cite>label</cite> (default: None)</dt>
+<dd>A string that is displayed as control&#8217;s label.</dd>
+<dt><cite>labelWidth</cite> (default: None)</dt>
+<dd>Sets the label&#8217;s width. This is useful for aligning the controls.</dd>
+<dt><cite>orientation</cite> (default: &#8220;vertical&#8221;)</dt>
+<dd>When label is used, determines the relative placement of the label and the
+control. Label can be above the control, &#8220;vertical&#8221;, or in the same line
+with control, &#8220;horizontal&#8221;. Instead of &#8220;vertical&#8221; and &#8220;horizontal&#8221; you can
+also use <tt class="docutils literal"><span class="pre">True</span></tt> and <tt class="docutils literal"><span class="pre">False</span></tt> or 1 and 0, respectively. (Remember this
+as &#8220;vertical&#8221; being the usual order of controls in the widgets, so vertical
+is &#8220;true&#8221;.)</dd>
+<dt><cite>disabled</cite> (default: False)</dt>
+<dd>Tells whether the control be disabled upon the initialization.</dd>
+<dt><cite>addSpace</cite> (default: False)</dt>
+<dd>If true, a space of 8 pixels is added after the widget by calling
+<a class="reference internal" href="#OWGUI.separator" title="OWGUI.separator"><tt class="xref py py-func docutils literal"><span class="pre">separator()</span></tt></a>. <cite>addSpace</cite> can also be an integer specifying the height
+of the added space.</dd>
+</dl>
+</div>
+<div class="section" id="controls">
+<h2>Controls<a class="headerlink" href="#controls" title="Permalink to this headline">¶</a></h2>
+<p>This section describes the OWGUI wrappers for controls like check boxes, buttons
+and similar. All the important Qt&#8217;s controls can be constructed through this
+functions.</p>
+<div class="section" id="check-box">
+<h3>Check Box<a class="headerlink" href="#check-box" title="Permalink to this headline">¶</a></h3>
+<p>Check box, a wrapper around QCheckBox, adding a label, box, tooltip, callback
+and synchronization with the designated widget&#8217;s attribute.</p>
+<dl class="function">
+<dt id="OWGUI.checkBox">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">checkBox</tt><big>(</big><em>widget</em>, <em>master</em>, <em>value</em>, <em>label</em><span class="optional">[</span>, <em>box</em>, <em>tooltip</em>, <em>callback</em>, <em>disabled</em>, <em>labelWidth</em>, <em>disables</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.checkBox" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>disables</cite> (default: [])</dt>
+<dd>If the check box needs to disable some other controls they can be given
+in list  <cite>disables</cite>, e.g. <tt class="docutils literal"><span class="pre">disables=[someOtherCheckBox,</span> <span class="pre">someLineEdit]</span></tt>.
+If the other control should be disabled when the checkbox is checked, do
+it like this: <tt class="docutils literal"><span class="pre">disables=[someOtherCheckBox,</span> <span class="pre">(-1,</span> <span class="pre">someLineEdit)]</span></tt> - now
+<cite>someOtherCheckBox</cite> will be enabled when this check box is checked,
+while <cite>someLineEdit</cite> will be enabled when the check box is unchecked.</dd>
+<dt><cite>labelWidth</cite> (default: None)</dt>
+<dd><cite>labelWidth</cite> can be used to align this widget with others.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="line-edit">
+<h3>Line Edit<a class="headerlink" href="#line-edit" title="Permalink to this headline">¶</a></h3>
+<p>Edit box, a wrapper around QLineEdit.</p>
+<dl class="function">
+<dt id="OWGUI.lineEdit">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">lineEdit</tt><big>(</big><em>widget</em>, <em>master</em>, <em>value</em><span class="optional">[</span>, <em>label</em>, <em>labelWidth</em>, <em>orientation</em>, <em>box</em>, <em>tooltip</em>, <em>callback</em>, <em>valueType</em>, <em>validator</em>, <em>controlWidth</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.lineEdit" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>valueType</cite> (default: str)</dt>
+<dd>A type into which the <cite>value</cite> is cast.</dd>
+<dt><cite>validator</cite> (default: None)</dt>
+<dd>A standard Qt validator that can be associated with the control.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="button">
+<h3>Button<a class="headerlink" href="#button" title="Permalink to this headline">¶</a></h3>
+<p>A wrapper around QPushButton, just to be able to define a button
+and its callback in a single line.</p>
+<dl class="function">
+<dt id="OWGUI.button">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">button</tt><big>(</big><em>widget</em>, <em>master</em>, <em>label</em><span class="optional">[</span>, <em>callback</em>, <em>disabled</em>, <em>tooltip</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.button" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="radio-buttons">
+<h3>Radio Buttons<a class="headerlink" href="#radio-buttons" title="Permalink to this headline">¶</a></h3>
+<p>OWGUI can create an individual radio button or a box of radio buttons or an
+individual radio button.</p>
+<p>An individual radio button is created by <a class="reference internal" href="#OWGUI.radioButton" title="OWGUI.radioButton"><tt class="xref py py-obj docutils literal"><span class="pre">radioButton</span></tt></a>.</p>
+<dl class="function">
+<dt id="OWGUI.radioButton">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">radioButton</tt><big>(</big><em>widget</em>, <em>master</em>, <em>value</em>, <em>label</em><span class="optional">[</span>, <em>box</em>, <em>tooltip</em>, <em>callback</em>, <em>addSpace</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.radioButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function provides the usual capabilities of OWGUI controls. It is though
+your responsibility to put it in something like a <tt class="xref py py-obj docutils literal"><span class="pre">QVButtonGroup</span></tt>.</p>
+</dd></dl>
+
+<p>A box of radio buttons is created by function <a class="reference internal" href="#OWGUI.radioButtonsInBox" title="OWGUI.radioButtonsInBox"><tt class="xref py py-obj docutils literal"><span class="pre">radioButtonsInBox</span></tt></a>.</p>
+<dl class="function">
+<dt id="OWGUI.radioButtonsInBox">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">radioButtonsInBox</tt><big>(</big><em>widget, master, value, btnLabels[, box, tooltips, callback</em><big>)</big><a class="headerlink" href="#OWGUI.radioButtonsInBox" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>value</cite> (required)</dt>
+<dd>Synchronized with the index of the selected radio button.</dd>
+<dt><cite>btnLabels</cite> (required)</dt>
+<dd>A list with labels for radio buttons. Labels can be strings or pixmaps.</dd>
+<dt><cite>tooltips</cite> (default: None)</dt>
+<dd>A list of tooltips, one for each button.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="combo-box">
+<h3>Combo Box<a class="headerlink" href="#combo-box" title="Permalink to this headline">¶</a></h3>
+<p>A wrapper around QComboBox.</p>
+<dl class="function">
+<dt id="OWGUI.comboBox">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">comboBox</tt><big>(</big><em>widget</em>, <em>master</em>, <em>value</em><span class="optional">[</span>, <em>box</em>, <em>label</em>, <em>labelWidth</em>, <em>orientation</em>, <em>items</em>, <em>tooltip</em>, <em>callback</em>, <em>sendSelectedValue</em>, <em>valueType</em>, <em>control2attributeDict</em>, <em>emptyString</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.comboBox" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>items</cite> (default: [])</dt>
+<dd>A list of combo box&#8217;s items. Unlike most OWGUI, <cite>items</cite> have one
+Orange-specific quirk: its element can be either a string, in which
+case it is used as a label, or a tuple, where the first element is a
+label name and the last is the attribute type which is used to create
+an icon. Most attribute lists in Orange Widgets are constructed this way.</dd>
+<dt><cite>sendSelectedValue</cite> (default: 0)</dt>
+<dd>If false, attribute <cite>value</cite> will be assigned the index of the selected
+item. Otherwise, it is assigned the currently selected item&#8217;s label.</dd>
+<dt><cite>control2attributeDict</cite> (default: {})</dt>
+<dd>A dictionary for translating the item&#8217;s label into <cite>value</cite>. It is used
+only is <cite>sendSelectedValue</cite> is true, and even then a label is translated
+only if an item with such a key is found in the dictionary; otherwise,
+label is written to <cite>value</cite> as it is.</dd>
+<dt><cite>emptyString</cite> (default: &#8220;&#8221;)</dt>
+<dd>Tells which combo box&#8217;s item corresponds to an empty <cite>value</cite>. This is
+typically used when combo box&#8217;s labels are attribute names and an item
+&#8220;(none)&#8221;, which allows user to select no attribute. If we give
+<tt class="docutils literal"><span class="pre">emptyString=&quot;(none)&quot;</span></tt>, <cite>value</cite> will be an empty string when the user
+selects &#8220;(none)&#8221;. This is equivalent to specifying
+<tt class="docutils literal"><span class="pre">control2attributeDict={&quot;(none)&quot;:</span> <span class="pre">&quot;&quot;}</span></tt> (and is actually implemented
+like that), but far more convenient.</dd>
+<dt><cite>valueType</cite> (default: str or unicode)</dt>
+<dd>A function through which the currently selected item&#8217;s label is
+converted prior to looking into <cite>control2attributeDict</cite>. Needed to
+convert Qt&#8217;s QString.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="list-box">
+<h3>List Box<a class="headerlink" href="#list-box" title="Permalink to this headline">¶</a></h3>
+<p>This control, which might be the most complicated control in OWGUI, is a
+sophisticated wrapper around QListBox. It&#8217;s complexity arises from
+synchronization.</p>
+<dl class="function">
+<dt id="OWGUI.listBox">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">listBox</tt><big>(</big><em>widget</em>, <em>master</em>, <em>value</em>, <em>labels</em><span class="optional">[</span>, <em>box</em>, <em>tooltip</em>, <em>callback</em>, <em>selectionMode</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.listBox" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>value</cite> (required)</dt>
+<dd>The name of master&#8217;s attribute containing indices of all selected values.</dd>
+<dt><cite>labels</cite> (required)</dt>
+<dd>The name of master&#8217;s attribute containing the list box&#8217;s labels. Similar
+to <cite>items</cite> in combo box, list <cite>labels</cite> have one Orange-specific quirk:
+its element can be either a string, in which case it is used as a label
+or a tuple, where the first element is a label name and the second can
+be either an icon on an integer, representing the attribute type which
+is used to create an icon. Most attribute lists in Orange Widgets are
+constructed this way.</dd>
+<dt><cite>selectionMode</cite> (default: QListWidget.SingleSelection)</dt>
+<dd>Tells whether the user can select a single item
+(<tt class="xref py py-obj docutils literal"><span class="pre">QListWidget.SingleSelection</span></tt>), multiple items
+(<tt class="xref py py-obj docutils literal"><span class="pre">QListWidget.MultiSelection</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">QListWidget.ExtendedSelection</span></tt>)
+or nothing (<tt class="xref py py-obj docutils literal"><span class="pre">QListWidget.NoSelection</span></tt>).</dd>
+</dl>
+<p><cite>value</cite> is automatically cast to <tt class="xref py py-obj docutils literal"><span class="pre">OWGUI.ControlledList</span></tt> (this is
+needed because the list should report any changes to the control, the list
+box; <tt class="xref py py-obj docutils literal"><span class="pre">OWGUI.ControlledList</span></tt> is like an ordinary Python <a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a>
+except that it triggers synchronization with the list box at every change).</p>
+<p><cite>labels</cite> is only partially synchronized with the list box: if a new list
+is assigning to <cite>labels</cite> attribute, the list will change. If elements of
+the existing list are changed or added, the list box won&#8217;t budge. You
+should never change the list, but always assign a new list (or reassign
+the same after it&#8217;s changed). If the labels are stored in
+<tt class="docutils literal"><span class="pre">self.listLabels</span></tt> and you write <tt class="docutils literal"><span class="pre">self.listLabels[1]=&quot;a</span> <span class="pre">new</span> <span class="pre">label&quot;</span></tt>,
+the list box won&#8217;t change. To trigger the synchronization, you should
+continue by <tt class="docutils literal"><span class="pre">self.listLabels</span> <span class="pre">=</span> <span class="pre">self.listLabels</span></tt>. This may seem awkward,
+but by our experience a list of selected items is seldom changed changed
+&#8220;per-item&#8221;, so we were too lazy to write the annoyingly complex backward
+callbacks.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="spin">
+<h3>Spin<a class="headerlink" href="#spin" title="Permalink to this headline">¶</a></h3>
+<p>Spin control, a wrapper around QSpinBox.</p>
+<dl class="function">
+<dt id="OWGUI.spin">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">spin</tt><big>(</big><em>widget</em>, <em>master</em>, <em>value</em>, <em>min</em>, <em>max</em><span class="optional">[</span>, <em>step</em>, <em>box</em>, <em>label</em>, <em>labelWidth</em>, <em>orientation</em>, <em>tooltip</em>, <em>callback</em>, <em>controlWidth</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.spin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>min</cite>, <cite>max</cite>, <cite>step=1</cite></dt>
+<dd>Minimal and maximal value, and step.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="slider">
+<h3>Slider<a class="headerlink" href="#slider" title="Permalink to this headline">¶</a></h3>
+<p>A wrapper around QSlider that allows user setting a numerical value between
+the given bounds.</p>
+<dl class="function">
+<dt id="OWGUI.hSlider">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">hSlider</tt><big>(</big><em>widget</em>, <em>master</em>, <em>value</em><span class="optional">[</span>, <em>box</em>, <em>minValue</em>, <em>maxValue</em>, <em>step</em>, <em>callback</em>, <em>labelFormat</em>, <em>ticks</em>, <em>divideFactor</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.hSlider" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>minValue</cite> (default: 0), <cite>maxValue</cite> (default: 10), <cite>step</cite> (default: 1)</dt>
+<dd>Minimal and maximal value for the spin control, and its step.</dd>
+<dt><cite>ticks</cite> (default: 0)</dt>
+<dd>If non-zero, it gives the interval between two ticks. The ticks will
+appear below the groove.</dd>
+<dt><cite>labelFormat</cite> (default: &#8221; %d&#8221;)</dt>
+<dd>Defines the look of the label on the righthand side of the slider. It
+has to contain one format character (like %d in the default), but can
+contain other text as well.</dd>
+<dt><cite>divideFactor</cite> (default: 1.0)</dt>
+<dd>The value printed in the label is divided by <cite>divideFactor</cite>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="check-box-with-spin">
+<h3>Check Box with Spin<a class="headerlink" href="#check-box-with-spin" title="Permalink to this headline">¶</a></h3>
+<p>Check box with spin, or, essentially, a wrapper around OWGUI.checkBox and
+OWGUI.spin.</p>
+<dl class="function">
+<dt id="OWGUI.checkWithSpin">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">checkWithSpin</tt><big>(</big><em>widget</em>, <em>master</em>, <em>label</em>, <em>min</em>, <em>max</em>, <em>checked</em>, <em>value</em><span class="optional">[</span>, <em>posttext</em>, <em>step</em>, <em>tooltip</em>, <em>checkCallback</em>, <em>spinCallback</em>, <em>labelWidth</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.checkWithSpin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>min</cite>, <cite>max</cite>, <cite>step</cite> (required)</dt>
+<dd>Minimal and maximal value for the spin control, and its step.</dd>
+<dt><cite>checked</cite> (required)</dt>
+<dd>Master&#8217;s attribute that is synchronized with the state of the check box.</dd>
+<dt><cite>value</cite> (required)</dt>
+<dd>The attribute that is synchronized with the spin.</dd>
+<dt><cite>posttext</cite> (default: None)</dt>
+<dd>Text which appears on the right-hand side of the control.</dd>
+<dt><cite>checkCallback</cite> (default: None), <cite>spinCallback</cite> (default: None)</dt>
+<dd>Function that are called when the state of the check box or spin changes.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="labels">
+<h3>Labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h3>
+<p>There are two functions for constructing labels. The first is a simple wrapper
+around QLabel which differs only in allowing to specify a fixed width without
+needing an extra line. Note that unlike most other OWGUI widgets, this one
+does not have the argument <cite>master</cite>.</p>
+<dl class="function">
+<dt id="OWGUI.widgetLabel">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">widgetLabel</tt><big>(</big><em>widget</em>, <em>label</em><span class="optional">[</span>, <em>labelWidth</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.widgetLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>The second is a label which can synchronize with values of master widget&#8217;s
+attributes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="OWGUI.label">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">label</tt><big>(</big><em>widget</em>, <em>master</em>, <em>label</em><span class="optional">[</span>, <em>labelWidth</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.label" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>label</cite></dt>
+<dd><cite>label</cite> is a format string following Python&#8217;s syntax (see the
+corresponding Python documentation): the label&#8217;s content is rendered as
+<tt class="docutils literal"><span class="pre">label</span> <span class="pre">%</span> <span class="pre">master.__dict__</span></tt>.</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="widget-box">
+<h3>Widget box<a class="headerlink" href="#widget-box" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="OWGUI.widgetBox">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">widgetBox</tt><big>(</big><em>widget</em>, <em>box=None</em>, <em>orientation='vertical'</em>, <em>addSpace=False</em><big>)</big><a class="headerlink" href="#OWGUI.widgetBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a box in which other widgets can be put. If <cite>box</cite> is given
+and not false, the box will be framed. If <cite>box</cite> is a string, it will
+be used for the box name (don&#8217;t capitalize each word; spaces in front or
+after the string will be trimmed and replaced with a single space).
+Argument <cite>orientation</cite> can be <tt class="docutils literal"><span class="pre">&quot;vertical&quot;</span></tt> or <tt class="docutils literal"><span class="pre">&quot;horizontal&quot;</span></tt>
+(or <tt class="docutils literal"><span class="pre">True</span></tt> and <tt class="docutils literal"><span class="pre">False</span></tt>, or <tt class="docutils literal"><span class="pre">1</span></tt> and <tt class="docutils literal"><span class="pre">0</span></tt>, respectively).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="idented-box">
+<h3>Idented box<a class="headerlink" href="#idented-box" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="OWGUI.indentedBox">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">indentedBox</tt><big>(</big><em>widget</em>, <em>sep=20</em><big>)</big><a class="headerlink" href="#OWGUI.indentedBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an indented box. Widgets which are subsequently put into
+that box will be arranged vertically and aligned with an indentation
+of <cite>sep</cite>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="inserting-space-between-widgets">
+<h3>Inserting Space between Widgets<a class="headerlink" href="#inserting-space-between-widgets" title="Permalink to this headline">¶</a></h3>
+<p>Most widgets look better if we insert some vertical space between the controls
+or groups of controls. A few functions have an optional argument <cite>addSpace</cite>
+by which we can request such space to be added. For other occasions, we can use
+the following two functions.</p>
+<dl class="function">
+<dt id="OWGUI.separator">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">separator</tt><big>(</big><em>widget</em>, <em>width=0</em>, <em>height=8</em><big>)</big><a class="headerlink" href="#OWGUI.separator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function <cite>separator</cite> inserts a fixed amount of space into <cite>widget</cite>.
+Although the caller can specify the amount, leaving the default will help the
+widgets having uniform look.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="OWGUI.rubber">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">rubber</tt><big>(</big><em>widget</em><span class="optional">[</span>, <em>orientation=&quot;vertical&quot;</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#OWGUI.rubber" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to separator, except that the size is (1, 1) and that it expands in the
+specified direction if the widget is expanded. Most widgets should have rubber
+somewhere in their <tt class="xref py py-obj docutils literal"><span class="pre">controlArea</span></tt>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="attribute-icons">
+<h3>Attribute Icons<a class="headerlink" href="#attribute-icons" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="OWGUI.getAttributeIcons">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">getAttributeIcons</tt><big>(</big><big>)</big><a class="headerlink" href="#OWGUI.getAttributeIcons" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with attribute types (<tt class="xref py py-obj docutils literal"><span class="pre">orange.VarTypes.Discrete</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">orange.VarTypes.Continuous</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">orange.VarTypes.String</span></tt>, -1) as keys
+and colored pixmaps as values. The dictionary can be used in list and combo
+boxes showing attributes for easier distinguishing between attributes of different types.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="send-automatically-send">
+<h3>Send automatically / Send<a class="headerlink" href="#send-automatically-send" title="Permalink to this headline">¶</a></h3>
+<p>Many widgets have a &#8220;Send&#8221; button (perhaps named &#8220;Apply&#8221;, &#8220;Commit&#8221;...)
+accompanied with a check box &#8220;Send automatically&#8221;, having the same effect as
+if the user pressed the button after each change. A well behaved widget cares
+to:</p>
+<ul class="simple">
+<li>disable the button, when the check box is checked;</li>
+<li>when the user checks the check box, the data needs to be send (or the
+changes applied), but only if there is any pending change which has not been
+(manually) sent yet.</li>
+</ul>
+<p>Programming this into every widget is annoying and error-prone; at the time
+when the function described here was written, not many widgets actually did
+this properly.</p>
+<dl class="function">
+<dt id="OWGUI.setStopper">
+<tt class="descclassname">OWGUI.</tt><tt class="descname">setStopper</tt><big>(</big><em>master</em>, <em>sendButton</em>, <em>stopCheckbox</em>, <em>changedFlag</em>, <em>callback</em><big>)</big><a class="headerlink" href="#OWGUI.setStopper" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt><cite>sendButton</cite></dt>
+<dd>The button that will be disabled when the check box is checked.</dd>
+<dt><cite>stopCheckbox</cite></dt>
+<dd>Check box that decides whether the changes are sent/commited/applied
+automatically.</dd>
+<dt><cite>changedFlag</cite></dt>
+<dd>The name of the <cite>master</cite>&#8216;s attribute which tells whether there is a
+change which has not been sent/applied yet.</dd>
+<dt><cite>callback</cite></dt>
+<dd>The function that sends the data or applies the changes. This is
+typically the function which is also used as the <cite>sendButton</cite>&#8216;s callback.</dd>
+</dl>
+</dd></dl>
+
+<p><a class="reference internal" href="#OWGUI.setStopper" title="OWGUI.setStopper"><tt class="xref py py-obj docutils literal"><span class="pre">setStopper</span></tt></a> is a trivial three lines long function which connects a few
+signals. Its true importance is in enforcing the correct procedure for
+implementing such button-check box combinations.</p>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

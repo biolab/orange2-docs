@@ -1,0 +1,805 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Support Vector Machines (svm) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Support Vector Machines (<tt class="docutils literal"><span class="pre">svm</span></tt>)</a><ul>
+<li><a class="reference internal" href="#svm-learners-from-libsvm">SVM learners (from LibSVM)</a></li>
+<li><a class="reference internal" href="#linear-svm-learners-from-liblinear">Linear SVM learners (from LIBLINEAR)</a></li>
+<li><a class="reference internal" href="#svm-based-feature-selection-and-scoring">SVM Based feature selection and scoring</a></li>
+<li><a class="reference internal" href="#utility-functions">Utility functions</a></li>
+<li><a class="reference internal" href="#kernel-wrappers">Kernel wrappers</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="index-0"></span><div class="section" id="support-vector-machines-svm">
+<h1>Support Vector Machines (<tt class="docutils literal"><span class="pre">svm</span></tt>)<a class="headerlink" href="#support-vector-machines-svm" title="Permalink to this headline">¶</a></h1>
+<p>The module for <a class="reference external" href="http://en.wikipedia.org/wiki/Support_vector_machine">Support Vector Machine</a> (SVM) classification is based
+on the popular <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LibSVM</a> and <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/liblinear/">LIBLINEAR</a> libraries. It provides several
+learning algorithms:</p>
+<ul>
+<li><p class="first"><a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-obj docutils literal"><span class="pre">SVMLearner</span></tt></a>, a general SVM learner;</p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#Orange.classification.svm.SVMLearnerEasy" title="Orange.classification.svm.SVMLearnerEasy"><tt class="xref py py-obj docutils literal"><span class="pre">SVMLearnerEasy</span></tt></a>, which is similar to the <cite>svm-easy.py</cite> script</dt>
+<dd><p class="first last">from the LibSVM distribution and helps with the data normalization and
+parameter tuning;</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#Orange.classification.svm.LinearSVMLearner" title="Orange.classification.svm.LinearSVMLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LinearSVMLearner</span></tt></a>, a fast learner useful for data sets with a large</dt>
+<dd><p class="first last">number of features.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="svm-learners-from-libsvm">
+<h2>SVM learners (from <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LibSVM</a>)<a class="headerlink" href="#svm-learners-from-libsvm" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">SVMLearner</span></tt></a> uses the standard <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LibSVM</a> learner. It supports
+several built-in kernel types and user-defined kernels functions
+written in Python. The kernel type is denoted by constants <tt class="docutils literal"><span class="pre">Linear</span></tt>,
+<tt class="docutils literal"><span class="pre">Polynomial</span></tt>, <tt class="docutils literal"><span class="pre">RBF</span></tt>, <tt class="docutils literal"><span class="pre">Sigmoid</span></tt> and <tt class="docutils literal"><span class="pre">Custom</span></tt> defined in
+<tt class="docutils literal"><span class="pre">Orange.classification.svm.kernels</span></tt>.  A custom kernel function must
+accept two data instances and return a float. See
+<a class="reference internal" href="#kernel-wrapper"><em>Kernel wrappers</em></a> for examples.</p>
+<p>The class also supports several types of optimization: <tt class="docutils literal"><span class="pre">C_SVC</span></tt>,
+<tt class="docutils literal"><span class="pre">Nu_SVC</span></tt> (default), <tt class="docutils literal"><span class="pre">OneClass</span></tt>, <tt class="docutils literal"><span class="pre">Epsilon_SVR</span></tt> and <tt class="docutils literal"><span class="pre">Nu_SVR</span></tt>
+(defined in <tt class="docutils literal"><span class="pre">Orange.classification.svm.SVMLearner</span></tt>).</p>
+<p>Class <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-obj docutils literal"><span class="pre">SVMLearner</span></tt></a> works on non-sparse data and
+<a class="reference internal" href="#Orange.classification.svm.SVMLearnerSparse" title="Orange.classification.svm.SVMLearnerSparse"><tt class="xref py py-class docutils literal"><span class="pre">SVMLearnerSparse</span></tt></a> class works on sparse data sets, for
+instance data from the <cite>basket</cite> format).</p>
+<dl class="class">
+<dt id="Orange.classification.svm.SVMLearner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.</tt><tt class="descname">SVMLearner</tt><big>(</big><em>svm_type=Nu_SVC</em>, <em>kernel_type=RBF</em>, <em>kernel_func=None</em>, <em>C=1</em>, <em>nu=0.5</em>, <em>p=0.1</em>, <em>gamma=0.0</em>, <em>degree=3</em>, <em>coef0=0</em>, <em>shrinking=True</em>, <em>probability=True</em>, <em>verbose=False</em>, <em>cache_size=200</em>, <em>eps=0.001</em>, <em>normalization=True</em>, <em>class_weights=</em><span class="optional">[</span><span class="optional">]</span>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.SVMLearner" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>svm_type</strong> (<em>SVMLearner.SVMType</em>) &#8211; the SVM type</li>
+<li><strong>kernel_type</strong> (<em>SVMLearner.Kernel</em>) &#8211; the kernel type</li>
+<li><strong>degree</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; kernel parameter (only for <tt class="docutils literal"><span class="pre">Polynomial</span></tt>)</li>
+<li><strong>gamma</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; kernel parameter; if 0, it is set to 1.0/#features
+(for <tt class="docutils literal"><span class="pre">Polynomial</span></tt>, <tt class="docutils literal"><span class="pre">RBF</span></tt> and <tt class="docutils literal"><span class="pre">Sigmoid</span></tt>)</li>
+<li><strong>coef0</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; kernel parameter (for <tt class="docutils literal"><span class="pre">Polynomial</span></tt> and <tt class="docutils literal"><span class="pre">Sigmoid</span></tt>)</li>
+<li><strong>kernel_func</strong> (<em>callable object</em>) &#8211; kernel function if <tt class="docutils literal"><span class="pre">kernel_type</span></tt> is
+<tt class="docutils literal"><span class="pre">kernels.Custom</span></tt></li>
+<li><strong>C</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; C parameter (for <tt class="docutils literal"><span class="pre">C_SVC</span></tt>, <tt class="docutils literal"><span class="pre">Epsilon_SVR</span></tt> and <tt class="docutils literal"><span class="pre">Nu_SVR</span></tt>)</li>
+<li><strong>nu</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Nu parameter (for <tt class="docutils literal"><span class="pre">Nu_SVC</span></tt>, <tt class="docutils literal"><span class="pre">Nu_SVR</span></tt> and <tt class="docutils literal"><span class="pre">OneClass</span></tt>)</li>
+<li><strong>p</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; epsilon parameter (for <tt class="docutils literal"><span class="pre">Epsilon_SVR</span></tt>)</li>
+<li><strong>cache_size</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; cache memory size in MB</li>
+<li><strong>eps</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; tolerance of termination criterion</li>
+<li><strong>probability</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; build a probability model</li>
+<li><strong>shrinking</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; use shrinking heuristics</li>
+<li><strong>normalization</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; normalize the input data prior to learning into
+range [0..1] and replace discrete features with indicator columns
+one for each value of the feature using
+<a class="reference internal" href="Orange.data.continuization.html#Orange.data.continuization.DomainContinuizer" title="Orange.data.continuization.DomainContinuizer"><tt class="xref py py-class docutils literal"><span class="pre">DomainContinuizer</span></tt></a> class
+(default <tt class="docutils literal"><span class="pre">True</span></tt>)</li>
+<li><strong>class_weights</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of (index, weight) class weights.</li>
+<li><strong>verbose</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If <cite>True</cite> show training progress (default is <cite>False</cite>).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Orange.classification</span> <span class="kn">import</span> <span class="n">svm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">Orange.evaluation</span> <span class="kn">import</span> <span class="n">testing</span><span class="p">,</span> <span class="n">scoring</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;vehicle.tab&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVMLearner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">results</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">([</span><span class="n">learner</span><span class="p">],</span> <span class="n">data</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;CA:  </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">CA:  0.79</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;AUC: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">AUC: 0.95</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="Orange.classification.svm.SVMLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>weight=0</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.SVMLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a SVM classifier</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; data with continuous features</li>
+<li><strong>weight</strong> &#8211; ignored (required due to base class signature);</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Orange.classification.svm.SVMLearner.max_nu">
+<em class="property">static </em><tt class="descname">max_nu</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.SVMLearner.max_nu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the maximum nu parameter for the given data table for
+Nu_SVC learning.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; Data with discrete class variable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.svm.SVMLearner.tune_parameters">
+<tt class="descname">tune_parameters</tt><big>(</big><em>data</em>, <em>parameters=None</em>, <em>folds=5</em>, <em>verbose=0</em>, <em>progress_callback=None</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.SVMLearner.tune_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tune the <tt class="docutils literal"><span class="pre">parameters</span></tt> on the given <tt class="docutils literal"><span class="pre">data</span></tt> using
+internal cross validation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; data for parameter tuning</li>
+<li><strong>parameters</strong> (<em>list of strings</em>) &#8211; names of parameters to tune
+(default: [&#8220;nu&#8221;, &#8220;C&#8221;, &#8220;gamma&#8221;])</li>
+<li><strong>folds</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of folds for internal cross validation</li>
+<li><strong>verbose</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; set verbose output</li>
+<li><strong>progress_callback</strong> (<em>callback function</em>) &#8211; callback function for reporting progress</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Here is example of tuning the <cite>gamma</cite> parameter using
+3-fold cross validation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">svm</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">svm</span><span class="o">.</span><span class="n">SVMLearner</span><span class="p">()</span>
+<span class="n">svm</span><span class="o">.</span><span class="n">tune_parameters</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;gamma&quot;</span><span class="p">],</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.SVMLearnerSparse">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.</tt><tt class="descname">SVMLearnerSparse</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.SVMLearnerSparse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.svm.SVMLearner</span></tt></a></p>
+<p>A <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">SVMLearner</span></tt></a> that learns from data stored in meta
+attributes. Meta attributes do not need to be registered with the
+data set domain, or present in all data instances.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.SVMLearnerEasy">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.</tt><tt class="descname">SVMLearnerEasy</tt><big>(</big><em>folds=4</em>, <em>verbose=0</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.SVMLearnerEasy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.svm.SVMLearner</span></tt></a></p>
+<p>A class derived from <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-obj docutils literal"><span class="pre">SVMLearner</span></tt></a> that automatically
+scales the data and performs parameter optimization using
+<a class="reference internal" href="#Orange.classification.svm.SVMLearner.tune_parameters" title="Orange.classification.svm.SVMLearner.tune_parameters"><tt class="xref py py-func docutils literal"><span class="pre">SVMLearner.tune_parameters()</span></tt></a>. The procedure is similar to
+that implemented in easy.py script from the LibSVM package.</p>
+<dl class="method">
+<dt id="Orange.classification.svm.SVMLearnerEasy.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>folds=4</em>, <em>verbose=0</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.SVMLearnerEasy.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>folds</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the number of folds to use in cross validation</li>
+<li><strong>verbose</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; verbosity of the tuning procedure.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p><tt class="docutils literal"><span class="pre">kwargs</span></tt> is passed to <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">SVMLearner</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The example below compares the performances of <a class="reference internal" href="#Orange.classification.svm.SVMLearnerEasy" title="Orange.classification.svm.SVMLearnerEasy"><tt class="xref py py-obj docutils literal"><span class="pre">SVMLearnerEasy</span></tt></a>
+with automatic data preprocessing and parameter tuning and
+<a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-obj docutils literal"><span class="pre">SVMLearner</span></tt></a> with the default <tt class="xref py py-obj docutils literal"><span class="pre">nu</span></tt> and
+<tt class="xref py py-obj docutils literal"><span class="pre">gamma</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Orange</span> <span class="kn">import</span> <span class="n">data</span>
+<span class="kn">from</span> <span class="nn">Orange.classification</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="n">vehicle</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;vehicle.tab&quot;</span><span class="p">)</span>
+
+<span class="n">svm_easy</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVMLearnerEasy</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;svm easy&quot;</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">svm_normal</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVMLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;svm&quot;</span><span class="p">)</span>
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">svm_easy</span><span class="p">,</span> <span class="n">svm_normal</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">Orange.evaluation</span> <span class="kn">import</span> <span class="n">testing</span><span class="p">,</span> <span class="n">scoring</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="n">testing</span><span class="o">.</span><span class="n">proportion_test</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">vehicle</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Name     CA        AUC&quot;</span>
+<span class="k">for</span> <span class="n">learner</span><span class="p">,</span><span class="n">CA</span><span class="p">,</span><span class="n">AUC</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">results</span><span class="p">),</span> <span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">results</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-8s</span><span class="s"> </span><span class="si">%.2f</span><span class="s">      </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">CA</span><span class="p">,</span> <span class="n">AUC</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="linear-svm-learners-from-liblinear">
+<h2>Linear SVM learners (from <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/liblinear/">LIBLINEAR</a>)<a class="headerlink" href="#linear-svm-learners-from-liblinear" title="Permalink to this headline">¶</a></h2>
+<p>Linear SVM learners are more suitable for large scale problems since
+they are significantly faster then <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">SVMLearner</span></tt></a> and its
+subclasses. A down side is that they support only a linear kernel and
+can not estimate probabilities.</p>
+<dl class="class">
+<dt id="Orange.classification.svm.LinearSVMLearner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.</tt><tt class="descname">LinearSVMLearner</tt><big>(</big><em>solver_type=L2R_L2Loss_SVC_Dual</em>, <em>C=1</em>, <em>eps=0.01</em>, <em>bias=1</em>, <em>normalization=True</em>, <em>multinomial_treatment=NValues</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.LinearSVMLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train a linear SVM model.</p>
+<dl class="method">
+<dt id="Orange.classification.svm.LinearSVMLearner.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>solver_type=L2R_L2Loss_SVC_Dual</em>, <em>C=1</em>, <em>eps=0.01</em>, <em>bias=1</em>, <em>normalization=True</em>, <em>multinomial_treatment=NValues</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.LinearSVMLearner.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>solver_type</strong> &#8211; <p>One of the following class constants:
+<tt class="docutils literal"><span class="pre">L2R_L2LOSS_DUAL</span></tt>, <tt class="docutils literal"><span class="pre">L2R_L2LOSS</span></tt>,
+<tt class="docutils literal"><span class="pre">L2R_L1LOSS_DUAL</span></tt>, <tt class="docutils literal"><span class="pre">L1R_L2LOSS</span></tt></p>
+<p>The first part (<tt class="docutils literal"><span class="pre">L2R</span></tt> or <tt class="docutils literal"><span class="pre">L1R</span></tt>) is the regularization term
+on the weight vector (squared or absolute norm respectively),
+the <tt class="docutils literal"><span class="pre">L1LOSS</span></tt> or <tt class="docutils literal"><span class="pre">L2LOSS</span></tt> indicate absolute or squared
+loss function <tt class="docutils literal"><span class="pre">DUAL</span></tt> means the optimization problem is
+solved in the dual space (for more information see the
+documentation on <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/liblinear/">LIBLINEAR</a>).</p>
+</li>
+<li><strong>C</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Regularization parameter (default 1.0)</li>
+<li><strong>eps</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Stopping criteria (default 0.01)</li>
+<li><strong>bias</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; If non negative then each instance is appended a constant
+bias term (default 1.0).</li>
+<li><strong>normalization</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Normalize the input data into range [0..1] prior
+to learning (default <tt class="docutils literal"><span class="pre">True</span></tt>)</li>
+<li><strong>multinomial_treatment</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Defines how to handle multinomial
+features for learning. It can be one of the
+<a class="reference internal" href="Orange.data.continuization.html#Orange.data.continuization.DomainContinuizer" title="Orange.data.continuization.DomainContinuizer"><tt class="xref py py-class docutils literal"><span class="pre">DomainContinuizer</span></tt></a> <cite>multinomial_treatment</cite>
+constants (default: <cite>DomainContinuizer.NValues</cite>).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.6.1: </span>Added <cite>multinomial_treatment</cite></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default if the training data contains discrete features
+they are replaced by indicator columns one for each value of the
+feature regardless of the value of <cite>normalization</cite>. This is
+different then in <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">SVMLearner</span></tt></a> where this is done only if
+<cite>normalization</cite> is <tt class="docutils literal"><span class="pre">True</span></tt>.</p>
+</div>
+<p>Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">linear_svm</span> <span class="o">=</span> <span class="n">LinearSVMLearner</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">solver_type</span><span class="o">=</span><span class="n">LinearSVMLearner</span><span class="o">.</span><span class="n">L1R_L2LOSS</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">C</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.MultiClassSVMLearner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.</tt><tt class="descname">MultiClassSVMLearner</tt><big>(</big><em>C=1</em>, <em>eps=0.01</em>, <em>bias=1</em>, <em>normalization=True</em>, <em>multinomial_treatment=NValues</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.MultiClassSVMLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multi-class SVM (Crammer and Singer) from the <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/liblinear/">LIBLINEAR</a> library.</p>
+<dl class="method">
+<dt id="Orange.classification.svm.MultiClassSVMLearner.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>C=1</em>, <em>eps=0.01</em>, <em>bias=1</em>, <em>normalization=True</em>, <em>multinomial_treatment=NValues</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.MultiClassSVMLearner.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>C</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Regularization parameter (default 1.0)</li>
+<li><strong>eps</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Stopping criteria (default 0.01)</li>
+<li><strong>bias</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; If non negative then each instance is appended a constant
+bias term (default 1.0).</li>
+<li><strong>normalization</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Normalize the input data prior to learning
+(default True)</li>
+<li><strong>multinomial_treatment</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Defines how to handle multinomial
+features for learning. It can be one of the
+<a class="reference internal" href="Orange.data.continuization.html#Orange.data.continuization.DomainContinuizer" title="Orange.data.continuization.DomainContinuizer"><tt class="xref py py-class docutils literal"><span class="pre">DomainContinuizer</span></tt></a> <cite>multinomial_treatment</cite>
+constants (default: <cite>DomainContinuizer.NValues</cite>).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.6.1: </span>Added <cite>multinomial_treatment</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.LinearClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.</tt><tt class="descname">LinearClassifier</tt><a class="headerlink" href="#Orange.classification.svm.LinearClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>The classifier returned by LIBLINEAR based learners.</p>
+<dl class="attribute">
+<dt id="Orange.classification.svm.LinearClassifier.weights">
+<tt class="descname">weights</tt><a class="headerlink" href="#Orange.classification.svm.LinearClassifier.weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 2 dim table of computed feature weights of the classifier,
+one for each one vs. rest underlying binary classifier (i.e.
+<tt class="docutils literal"><span class="pre">classifier.weights[i]</span></tt> contains the i&#8217;th class vs. rest
+binary classifier weights. If <a class="reference internal" href="#Orange.classification.svm.LinearClassifier.bias" title="Orange.classification.svm.LinearClassifier.bias"><tt class="xref py py-attr docutils literal"><span class="pre">bias</span></tt></a> &gt; 0 then the bias
+weight term is appended as the last element of the weight
+vector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.svm.LinearClassifier.bias">
+<tt class="descname">bias</tt><a class="headerlink" href="#Orange.classification.svm.LinearClassifier.bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>The bias parameter as passed to the learner.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="svm-based-feature-selection-and-scoring">
+<h2>SVM Based feature selection and scoring<a class="headerlink" href="#svm-based-feature-selection-and-scoring" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Orange.classification.svm.RFE">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.</tt><tt class="descname">RFE</tt><big>(</big><em>learner=None</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.RFE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterative feature elimination based on weights computed by a
+linear SVM.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;promoters.tab&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">svm_l</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">svm</span><span class="o">.</span><span class="n">SVMLearner</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">kernel_type</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">svm</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">Linear</span><span class="p">)</span>
+<span class="gp">...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rfe</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">svm</span><span class="o">.</span><span class="n">RFE</span><span class="p">(</span><span class="n">learner</span><span class="o">=</span><span class="n">svm_l</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_with_subset_of_features</span> <span class="o">=</span> <span class="n">rfe</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_with_subset_of_features</span><span class="o">.</span><span class="n">domain</span>
+<span class="go">[p-45, p-36, p-35, p-34, p-33, p-31, p-18, p-12, p-10, p-04, y]</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="Orange.classification.svm.RFE.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>learner=None</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.RFE.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>learner</strong> (<a class="reference internal" href="#Orange.classification.svm.LinearSVMLearner" title="Orange.classification.svm.LinearSVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">LinearSVMLearner</span></tt></a> or <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">SVMLearner</span></tt></a> with
+linear kernel) &#8211; A linear svm learner for use for scoring (this
+learner is passed to <a class="reference internal" href="#Orange.classification.svm.ScoreSVMWeights" title="Orange.classification.svm.ScoreSVMWeights"><tt class="xref py py-class docutils literal"><span class="pre">ScoreSVMWeights</span></tt></a>)</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#Orange.classification.svm.ScoreSVMWeights" title="Orange.classification.svm.ScoreSVMWeights"><tt class="xref py py-class docutils literal"><span class="pre">ScoreSVMWeights</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.svm.RFE.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>num_selected=20</em>, <em>progress_callback=None</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.RFE.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new dataset with only <cite>num_selected</cite> best scoring
+attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; Data</li>
+<li><strong>num_selected</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of features to preserve</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.ScoreSVMWeights">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.</tt><tt class="descname">ScoreSVMWeights</tt><big>(</big><em>learner=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.ScoreSVMWeights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.scoring.Score</span></tt></a></p>
+<p>Score a feature using squared weights of a linear SVM model.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">table</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;vehicle.tab&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">score</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">svm</span><span class="o">.</span><span class="n">ScoreSVMWeights</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">svm_scores</span> <span class="o">=</span> <span class="p">[(</span><span class="n">score</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">table</span><span class="p">),</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">feature_score</span><span class="p">,</span> <span class="n">feature</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">svm_scores</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-35s</span><span class="s">: </span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">feature_score</span><span class="p">)</span>
+<span class="go">pr.axis aspect ratio               : 44.3</span>
+<span class="go">kurtosis about major axis          : 42.6</span>
+<span class="go">max.length rectangularity          : 39.4</span>
+<span class="go">radius ratio                       : 28.7</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="Orange.classification.svm.ScoreSVMWeights.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>learner=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.ScoreSVMWeights.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>learner</strong> (<em>Orange.core.LinearLearner</em>) &#8211; Learner used for weight estimation
+(by default
+<tt class="docutils literal"><span class="pre">LinearSVMLearner(solver_type=L2R_L2LOSS_DUAL,</span> <span class="pre">C=1.0)</span></tt>
+will be used for classification problems and
+<tt class="docutils literal"><span class="pre">SVMLearner(svm_type=Epsilon_SVR,</span> <span class="pre">kernel_type=Linear,</span> <span class="pre">C=1.0,</span> <span class="pre">p=0.25)</span></tt>
+for regression problems).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions">
+<h2>Utility functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="staticmethod">
+<dt id="Orange.classification.svm.max_nu">
+<em class="property">static </em><tt class="descclassname">svm.</tt><tt class="descname">max_nu</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.max_nu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the maximum nu parameter for the given data table for
+Nu_SVC learning.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; Data with discrete class variable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Orange.classification.svm.get_linear_svm_weights">
+<em class="property">static </em><tt class="descclassname">svm.</tt><tt class="descname">get_linear_svm_weights</tt><big>(</big><em>classifier</em>, <em>sum=True</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.get_linear_svm_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract attribute weights from the linear SVM classifier.</p>
+<p>For multi class classification, the result depends on the argument
+<a class="reference external" href="http://docs.python.org/library/functions.html#sum" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">sum</span></tt></a>. If <tt class="docutils literal"><span class="pre">True</span></tt> (default) the function computes the
+squared sum of the weights over all binary one vs. one
+classifiers. If <a class="reference external" href="http://docs.python.org/library/functions.html#sum" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">sum</span></tt></a> is <tt class="docutils literal"><span class="pre">False</span></tt> it returns a list of
+weights for each individual binary classifier (in the order of
+[class1 vs class2, class1 vs class3 ... class2 vs class3 ...]).</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Orange.classification.svm.table_to_svm_format">
+<em class="property">static </em><tt class="descclassname">svm.</tt><tt class="descname">table_to_svm_format</tt><big>(</big><em>data</em>, <em>file</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.table_to_svm_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a> to a format used by LibSVM.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; Data</li>
+<li><strong>file</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#file" title="(in Python v2.7)"><em>file</em></a>) &#8211; file pointer</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The following example shows how to get linear SVM weights:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Orange</span> <span class="kn">import</span> <span class="n">data</span>
+<span class="kn">from</span> <span class="nn">Orange.classification</span> <span class="kn">import</span> <span class="n">svm</span>
+
+<span class="n">brown</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;brown-selected&quot;</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">SVMLearner</span><span class="p">(</span><span class="n">brown</span><span class="p">,</span>
+                            <span class="n">kernel_type</span><span class="o">=</span><span class="n">svm</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">Linear</span><span class="p">,</span>
+                            <span class="n">normalization</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                            <span class="n">eps</span><span class="o">=</span><span class="mf">1e-9</span><span class="p">)</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="n">svm</span><span class="o">.</span><span class="n">get_linear_svm_weights</span><span class="p">(</span><span class="n">classifier</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">sorted</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%.4f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">w</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+<span class="kn">import</span> <span class="nn">pylab</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="kernel-wrappers">
+<span id="kernel-wrapper"></span><h2>Kernel wrappers<a class="headerlink" href="#kernel-wrappers" title="Permalink to this headline">¶</a></h2>
+<p>Kernel wrappers are helper classes for building custom kernels for use
+with <a class="reference internal" href="#Orange.classification.svm.SVMLearner" title="Orange.classification.svm.SVMLearner"><tt class="xref py py-class docutils literal"><span class="pre">SVMLearner</span></tt></a> and subclasses. They take and transform one
+or two Python functions (attributes <tt class="xref py py-obj docutils literal"><span class="pre">wrapped</span></tt> or <tt class="xref py py-obj docutils literal"><span class="pre">wrapped1</span></tt>
+and <tt class="xref py py-obj docutils literal"><span class="pre">wrapped2</span></tt>). The function must be a positive definite kernel
+that takes two arguments of type <a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Instance</span></tt></a> and
+returns a float.</p>
+<dl class="class">
+<dt id="Orange.classification.svm.kernels.KernelWrapper">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.kernels.</tt><tt class="descname">KernelWrapper</tt><big>(</big><em>wrapped</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.KernelWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base class for kernel function wrappers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>wrapped</strong> &#8211; a kernel function to wrap</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.kernels.DualKernelWrapper">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.kernels.</tt><tt class="descname">DualKernelWrapper</tt><big>(</big><em>wrapped1</em>, <em>wrapped2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.DualKernelWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A base class for kernel wrapper that wraps two kernel functions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wrapped1</strong> &#8211; first kernel function</li>
+<li><strong>wrapped2</strong> &#8211; second kernel function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.kernels.RBFKernelWrapper">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.kernels.</tt><tt class="descname">RBFKernelWrapper</tt><big>(</big><em>wrapped</em>, <em>gamma=0.5</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.RBFKernelWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Kernel wrapper that wraps the given function into RBF</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wrapped</strong> &#8211; a kernel function</li>
+<li><strong>gamma</strong> (<em>double</em>) &#8211; the gamma of the RBF</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.classification.svm.kernels.RBFKernelWrapper.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>inst1</em>, <em>inst2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.RBFKernelWrapper.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <span class="math">exp(-gamma * wrapped(inst1, inst2) ^ 2)</span></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.kernels.PolyKernelWrapper">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.kernels.</tt><tt class="descname">PolyKernelWrapper</tt><big>(</big><em>wrapped</em>, <em>degree=3</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.PolyKernelWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Polynomial kernel wrapper.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wrapped</strong> &#8211; a kernel function</li>
+<li><strong>degree</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; degree of the polynomial</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.classification.svm.kernels.PolyKernelWrapper.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>inst1</em>, <em>inst2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.PolyKernelWrapper.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <span class="math">wrapped(inst1, inst2) ^ d</span></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.kernels.AdditionKernelWrapper">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.kernels.</tt><tt class="descname">AdditionKernelWrapper</tt><big>(</big><em>wrapped1</em>, <em>wrapped2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.AdditionKernelWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Addition kernel wrapper.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wrapped1</strong> &#8211; first kernel function</li>
+<li><strong>wrapped2</strong> &#8211; second kernel function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.classification.svm.kernels.AdditionKernelWrapper.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>inst1</em>, <em>inst2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.AdditionKernelWrapper.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <span class="math">wrapped1(inst1, inst2) + wrapped2(inst1, inst2)</span></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.kernels.MultiplicationKernelWrapper">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.kernels.</tt><tt class="descname">MultiplicationKernelWrapper</tt><big>(</big><em>wrapped1</em>, <em>wrapped2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.MultiplicationKernelWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiplication kernel wrapper.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wrapped1</strong> &#8211; first kernel function</li>
+<li><strong>wrapped2</strong> &#8211; second kernel function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.classification.svm.kernels.MultiplicationKernelWrapper.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>inst1</em>, <em>inst2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.MultiplicationKernelWrapper.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <span class="math">wrapped1(inst1, inst2) * wrapped2(inst1, inst2)</span></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.kernels.CompositeKernelWrapper">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.kernels.</tt><tt class="descname">CompositeKernelWrapper</tt><big>(</big><em>wrapped1</em>, <em>wrapped2</em>, <em>l=0.5</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.CompositeKernelWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Composite kernel wrapper.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>wrapped1</strong> &#8211; first kernel function</li>
+<li><strong>wrapped2</strong> &#8211; second kernel function</li>
+<li><strong>l</strong> (<em>double</em>) &#8211; coefficient</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.classification.svm.kernels.CompositeKernelWrapper.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>inst1</em>, <em>inst2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.CompositeKernelWrapper.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <span class="math">l*wrapped1(inst1, inst2) + (1-l)*wrapped2(inst1, inst2)</span></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.svm.kernels.SparseLinKernel">
+<em class="property">class </em><tt class="descclassname">Orange.classification.svm.kernels.</tt><tt class="descname">SparseLinKernel</tt><a class="headerlink" href="#Orange.classification.svm.kernels.SparseLinKernel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Orange.classification.svm.kernels.SparseLinKernel.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>inst1</em>, <em>inst2</em><big>)</big><a class="headerlink" href="#Orange.classification.svm.kernels.SparseLinKernel.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a linear kernel function using the instances&#8217; meta attributes.
+The meta attributes&#8217; values must be floats.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Orange</span> <span class="kn">import</span> <span class="n">data</span>
+<span class="kn">from</span> <span class="nn">Orange</span> <span class="kn">import</span> <span class="n">evaluation</span>
+
+<span class="kn">from</span> <span class="nn">Orange.classification.svm</span> <span class="kn">import</span> <span class="n">SVMLearner</span><span class="p">,</span> <span class="n">kernels</span>
+<span class="kn">from</span> <span class="nn">Orange.distance</span> <span class="kn">import</span> <span class="n">Euclidean</span>
+<span class="kn">from</span> <span class="nn">Orange.distance</span> <span class="kn">import</span> <span class="n">Hamming</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+<span class="n">l1</span> <span class="o">=</span> <span class="n">SVMLearner</span><span class="p">()</span>
+<span class="n">l1</span><span class="o">.</span><span class="n">kernel_func</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">RBFKernelWrapper</span><span class="p">(</span><span class="n">Euclidean</span><span class="p">(</span><span class="n">iris</span><span class="p">),</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">l1</span><span class="o">.</span><span class="n">kernel_type</span> <span class="o">=</span> <span class="n">SVMLearner</span><span class="o">.</span><span class="n">Custom</span>
+<span class="n">l1</span><span class="o">.</span><span class="n">probability</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">l1</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<span class="n">l1</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;SVM - RBF(Euclidean)&quot;</span>
+
+<span class="n">l2</span> <span class="o">=</span> <span class="n">SVMLearner</span><span class="p">()</span>
+<span class="n">l2</span><span class="o">.</span><span class="n">kernel_func</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">RBFKernelWrapper</span><span class="p">(</span><span class="n">Hamming</span><span class="p">(</span><span class="n">iris</span><span class="p">),</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">l2</span><span class="o">.</span><span class="n">kernel_type</span> <span class="o">=</span> <span class="n">SVMLearner</span><span class="o">.</span><span class="n">Custom</span>
+<span class="n">l2</span><span class="o">.</span><span class="n">probability</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">l2</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<span class="n">l2</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;SVM - RBF(Hamming)&quot;</span>
+
+<span class="n">l3</span> <span class="o">=</span> <span class="n">SVMLearner</span><span class="p">()</span>
+<span class="n">l3</span><span class="o">.</span><span class="n">kernel_func</span> <span class="o">=</span> <span class="n">kernels</span><span class="o">.</span><span class="n">CompositeKernelWrapper</span><span class="p">(</span>
+    <span class="n">kernels</span><span class="o">.</span><span class="n">RBFKernelWrapper</span><span class="p">(</span><span class="n">Euclidean</span><span class="p">(</span><span class="n">iris</span><span class="p">),</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span>
+    <span class="n">kernels</span><span class="o">.</span><span class="n">RBFKernelWrapper</span><span class="p">(</span><span class="n">Hamming</span><span class="p">(</span><span class="n">iris</span><span class="p">),</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">l</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">l3</span><span class="o">.</span><span class="n">kernel_type</span> <span class="o">=</span> <span class="n">SVMLearner</span><span class="o">.</span><span class="n">Custom</span>
+<span class="n">l3</span><span class="o">.</span><span class="n">probability</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">l1</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<span class="n">l3</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;SVM - Composite&quot;</span>
+
+<span class="n">tests</span> <span class="o">=</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">([</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="n">l3</span><span class="p">],</span> <span class="n">iris</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">[</span><span class="n">ca1</span><span class="p">,</span> <span class="n">ca2</span><span class="p">,</span> <span class="n">ca3</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">tests</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">l1</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;CA: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ca1</span>
+<span class="k">print</span> <span class="n">l2</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;CA: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ca2</span>
+<span class="k">print</span> <span class="n">l3</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;CA: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ca3</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

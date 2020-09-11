@@ -1,0 +1,429 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Linear regression (linear) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Linear regression (<tt class="docutils literal"><span class="pre">linear</span></tt>)</a><ul>
+<li><a class="reference internal" href="#utility-functions">Utility functions</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#prediction">Prediction</a></li>
+<li><a class="reference internal" href="#poperties-of-fitted-model">Poperties of fitted model</a></li>
+<li><a class="reference internal" href="#id1">Stepwise regression</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.regression.linear"></span><div class="section" id="linear-regression-linear">
+<h1>Linear regression (<tt class="docutils literal"><span class="pre">linear</span></tt>)<a class="headerlink" href="#linear-regression-linear" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><p><a class="reference external" href="http://en.wikipedia.org/wiki/Linear_regression">Linear regression</a> 
+is a statistical regression method which tries to predict a value of 
+a continuous response (class) variable based on the values of several 
+predictors. The model assumes that the response variable is a linear
+combination of the predictors, the task of linear regression is 
+therefore to fit the unknown coefficients.</p>
+<p>To fit the regression parameters on housing data set use the following code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">housing</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing&quot;</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">LinearRegressionLearner</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">housing</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.regression.linear.LinearRegressionLearner">
+<em class="property">class </em><tt class="descclassname">Orange.regression.linear.</tt><tt class="descname">LinearRegressionLearner</tt><big>(</big><em>name=linear regression</em>, <em>intercept=True</em>, <em>compute_stats=True</em>, <em>ridge_lambda=None</em>, <em>imputer=None</em>, <em>continuizer=None</em>, <em>use_vars=None</em>, <em>stepwise=False</em>, <em>add_sig=0.05</em>, <em>remove_sig=0.2</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.regression.linear.LinearRegressionLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the linear regression model, i.e. learns the regression parameters
+The class is derived from
+<a class="reference internal" href="Orange.regression.html#Orange.regression.base.BaseRegressionLearner" title="Orange.regression.base.BaseRegressionLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.regression.base.BaseRegressionLearner</span></tt></a>
+which is used for preprocessing the data (continuization and imputation)
+before fitting the regression parameters.</p>
+<dl class="method">
+<dt id="Orange.regression.linear.LinearRegressionLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>table</em>, <em>weight=None</em>, <em>verbose=0</em><big>)</big><a class="headerlink" href="#Orange.regression.linear.LinearRegressionLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; data instances.</li>
+<li><strong>weight</strong> (<em>None or list of Orange.feature.Continuous
+which stores weights for instances</em>) &#8211; the weights for instances. Default: None, i.e.
+all data instances are equally important in fitting
+the regression parameters</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.linear.LinearRegressionLearner.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>name=linear regression</em>, <em>intercept=True</em>, <em>compute_stats=True</em>, <em>ridge_lambda=None</em>, <em>imputer=None</em>, <em>continuizer=None</em>, <em>use_vars=None</em>, <em>stepwise=False</em>, <em>add_sig=0.05</em>, <em>remove_sig=0.2</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.regression.linear.LinearRegressionLearner.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; name of the linear model, default &#8216;linear regression&#8217;</li>
+<li><strong>intercept</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, the intercept beta0 is included
+in the model</li>
+<li><strong>compute_stats</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, statistical properties of
+the estimators (standard error, t-scores, significances)
+and statistical properties of the model
+(sum of squares, R2, adjusted R2) are computed</li>
+<li><strong>ridge_lambda</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a> or <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>) &#8211; if not None, ridge regression is performed 
+with the given lambda parameter controlling
+the regularization</li>
+<li><strong>use_vars</strong> (<em>list of Orange.feature.Descriptor or None</em>) &#8211; the list of independent varaiables included in
+regression model. If None (default) all variables are used</li>
+<li><strong>stepwise</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True, <a class="reference external" href="http://en.wikipedia.org/wiki/Stepwise_regression">stepwise regression</a>
+based on F-test is performed. The significance parameters are
+add_sig and remove_sig</li>
+<li><strong>add_sig</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; lower bound of significance for which the variable
+is included in regression model
+default value = 0.05</li>
+<li><strong>remove_sig</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; upper bound of significance for which
+the variable is excluded from the regression model
+default value = 0.2</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.regression.linear.LinearRegression">
+<em class="property">class </em><tt class="descclassname">Orange.regression.linear.</tt><tt class="descname">LinearRegression</tt><big>(</big><em>class_var=None</em>, <em>domain=None</em>, <em>coefficients=None</em>, <em>F=None</em>, <em>std_error=None</em>, <em>t_scores=None</em>, <em>p_vals=None</em>, <em>dict_model=None</em>, <em>fitted=None</em>, <em>residuals=None</em>, <em>m=None</em>, <em>n=None</em>, <em>mu_y=None</em>, <em>r2=None</em>, <em>r2adj=None</em>, <em>sst=None</em>, <em>sse=None</em>, <em>ssr=None</em>, <em>std_coefficients=None</em>, <em>intercept=None</em><big>)</big><a class="headerlink" href="#Orange.regression.linear.LinearRegression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Linear regression predicts value of the response variable
+based on the values of independent variables.</p>
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.F">
+<tt class="descname">F</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.F" title="Permalink to this definition">¶</a></dt>
+<dd><p>F-statistics of the model.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.coefficients">
+<tt class="descname">coefficients</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regression coefficients stored in list. If the intercept is included
+the first item corresponds to the estimated intercept.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.std_error">
+<tt class="descname">std_error</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.std_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard errors of the coefficient estimator, stored in list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.t_scores">
+<tt class="descname">t_scores</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.t_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of t-scores for the estimated regression coefficients.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.p_vals">
+<tt class="descname">p_vals</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.p_vals" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of p-values for the null hypothesis that the regression
+coefficients equal 0 based on t-scores and two sided
+alternative hypothesis.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.dict_model">
+<tt class="descname">dict_model</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.dict_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Statistical properties of the model in a dictionary:
+Keys - names of the independent variables (or &#8220;Intercept&#8221;)
+Values - tuples (coefficient, standard error,
+t-value, p-value)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.fitted">
+<tt class="descname">fitted</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.fitted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimated values of the dependent variable for all instances
+from the training table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.residuals">
+<tt class="descname">residuals</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.residuals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Differences between estimated and actual values of the
+dependent variable for all instances from the training table.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.m">
+<tt class="descname">m</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of independent (predictor) variables.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.n">
+<tt class="descname">n</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of instances.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.mu_y">
+<tt class="descname">mu_y</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.mu_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample mean of the dependent variable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.r2">
+<tt class="descname">r2</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.r2" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://en.wikipedia.org/wiki/Coefficient_of_determination">Coefficient of determination</a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.r2adj">
+<tt class="descname">r2adj</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.r2adj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adjusted coefficient of determination.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">sst, sse, ssr</tt></dt>
+<dd><p>Total sum of squares, explained sum of squares and
+residual sum of squares respectively.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.linear.LinearRegression.std_coefficients">
+<tt class="descname">std_coefficients</tt><a class="headerlink" href="#Orange.regression.linear.LinearRegression.std_coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standardized regression coefficients.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.linear.LinearRegression.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.regression.linear.LinearRegression.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-obj docutils literal"><span class="pre">Instance</span></tt></a>) &#8211; data instance for which the value of the response
+variable will be predicted</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.linear.LinearRegression.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>class_var=None</em>, <em>domain=None</em>, <em>coefficients=None</em>, <em>F=None</em>, <em>std_error=None</em>, <em>t_scores=None</em>, <em>p_vals=None</em>, <em>dict_model=None</em>, <em>fitted=None</em>, <em>residuals=None</em>, <em>m=None</em>, <em>n=None</em>, <em>mu_y=None</em>, <em>r2=None</em>, <em>r2adj=None</em>, <em>sst=None</em>, <em>sse=None</em>, <em>ssr=None</em>, <em>std_coefficients=None</em>, <em>intercept=None</em><big>)</big><a class="headerlink" href="#Orange.regression.linear.LinearRegression.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> (<a class="reference internal" href="#Orange.regression.linear.LinearRegressionLearner" title="Orange.regression.linear.LinearRegressionLearner"><tt class="xref py py-class docutils literal"><span class="pre">LinearRegressionLearner</span></tt></a>) &#8211; fitted linear regression model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.linear.LinearRegression.to_string">
+<tt class="descname">to_string</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.regression.linear.LinearRegression.to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty-prints linear regression model,
+i.e. estimated regression coefficients with standard errors, t-scores
+and significances.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="utility-functions">
+<h2>Utility functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="Orange.regression.linear.stepwise">
+<tt class="descclassname">Orange.regression.linear.</tt><tt class="descname">stepwise</tt><big>(</big><em>table</em>, <em>weight</em>, <em>add_sig=0.05</em>, <em>remove_sig=0.2</em><big>)</big><a class="headerlink" href="#Orange.regression.linear.stepwise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs <a class="reference external" href="http://en.wikipedia.org/wiki/Stepwise_regression">stepwise linear regression</a>:
+on table and returns the list of remaing independent variables
+which fit a significant linear regression model.coefficients</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; data instances.</li>
+<li><strong>weight</strong> (<em>None or list of Orange.feature.Continuous
+which stores the weights</em>) &#8211; the weights for instances. Default: None, i.e. all data
+instances are eqaully important in fitting the regression parameters</li>
+<li><strong>add_sig</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; lower bound of significance for which the variable
+is included in regression model
+default value = 0.05</li>
+<li><strong>remove_sig</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; upper bound of significance for which the variable
+is excluded from the regression model
+default value = 0.2</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="prediction">
+<h3>Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h3>
+<p>Predict values of the first 5 data instances</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># prediction for five data instances and comparison to actual values</span>
+<span class="k">for</span> <span class="n">ins</span> <span class="ow">in</span> <span class="n">housing</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="s">&quot;Actual: </span><span class="si">%3.2f</span><span class="s">, predicted: </span><span class="si">%3.2f</span><span class="s"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ins</span><span class="o">.</span><span class="n">get_class</span><span class="p">(),</span> <span class="n">classifier</span><span class="p">(</span><span class="n">ins</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The output of this code is</p>
+<div class="highlight-python"><pre>Actual: 24.00, predicted: 30.00
+Actual: 21.60, predicted: 25.03
+Actual: 34.70, predicted: 30.57
+Actual: 33.40, predicted: 28.61
+Actual: 36.20, predicted: 27.94</pre>
+</div>
+</div>
+<div class="section" id="poperties-of-fitted-model">
+<h3>Poperties of fitted model<a class="headerlink" href="#poperties-of-fitted-model" title="Permalink to this headline">¶</a></h3>
+<p>Print regression coefficients with standard errors, t-scores, p-values
+and significances</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">classifier</span>
+</pre></div>
+</div>
+<p>The code output is</p>
+<div class="highlight-python"><pre> Variable  Coeff Est  Std Error    t-value          p      
+Intercept     36.459      5.103      7.144      0.000   ***
+     CRIM     -0.108      0.033     -3.287      0.001    **
+       ZN      0.046      0.014      3.382      0.001   ***
+    INDUS      0.021      0.061      0.334      0.738      
+     CHAS      2.687      0.862      3.118      0.002    **
+      NOX    -17.767      3.820     -4.651      0.000   ***
+       RM      3.810      0.418      9.116      0.000   ***
+      AGE      0.001      0.013      0.052      0.958      
+      DIS     -1.476      0.199     -7.398      0.000   ***
+      RAD      0.306      0.066      4.613      0.000   ***
+      TAX     -0.012      0.004     -3.280      0.001    **
+  PTRATIO     -0.953      0.131     -7.283      0.000   ***
+        B      0.009      0.003      3.467      0.001   ***
+    LSTAT     -0.525      0.051    -10.347      0.000   ***</pre>
+</div>
+</div>
+<div class="section" id="id1">
+<h3>Stepwise regression<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>To use stepwise regression initialize learner with <tt class="docutils literal"><span class="pre">stepwise=True</span></tt>.
+The upper and lower bound for significance are controlled with
+<tt class="docutils literal"><span class="pre">add_sig</span></tt> and <tt class="docutils literal"><span class="pre">remove_sig</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">learner2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">LinearRegressionLearner</span><span class="p">(</span><span class="n">stepwise</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                                           <span class="n">add_sig</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                                                           <span class="n">remove_sig</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner2</span><span class="p">(</span><span class="n">housing</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">classifier</span>
+</pre></div>
+</div>
+<p>As you can see from the output, the non-significant coefficients
+have been removed from the model.</p>
+<div class="highlight-python"><pre>Variable  Coeff Est  Std Error    t-value          p
+ Intercept     36.341      5.067      7.171      0.000   ***
+     LSTAT     -0.523      0.047    -11.019      0.000   ***
+        RM      3.802      0.406      9.356      0.000   ***
+   PTRATIO     -0.947      0.129     -7.334      0.000   ***
+       DIS     -1.493      0.186     -8.037      0.000   ***
+       NOX    -17.376      3.535     -4.915      0.000   ***
+      CHAS      2.719      0.854      3.183      0.002    **
+         B      0.009      0.003      3.475      0.001   ***
+        ZN      0.046      0.014      3.390      0.001   ***
+      CRIM     -0.108      0.033     -3.307      0.001    **
+       RAD      0.300      0.063      4.726      0.000   ***
+       TAX     -0.012      0.003     -3.493      0.001   ***
+Signif. codes:  0 *** 0.001 ** 0.01 * 0.05 . 0.1 empty 1</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

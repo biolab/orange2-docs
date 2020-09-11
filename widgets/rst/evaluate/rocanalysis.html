@@ -1,0 +1,195 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ROC Analysis &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">ROC Analysis</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="roc-analysis">
+<span id="id1"></span><h1>ROC Analysis<a class="headerlink" href="#roc-analysis" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/ROCAnalysis.svg" /><p>Shows the ROC curves and analyzes them.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Evaluation Results (orngTest.ExperimentResults)</dt>
+<dd><p class="first last">Results of classifiers&#8217; tests on data</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<p>None</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The widget show ROC curves for the tested models and the corresponding convex
+hull. Given the costs of false positives and false negatives, it can also
+determine the optimal classifier and threshold.</p>
+<img alt="../../../_images/ROCAnalysis.png" src="../../../_images/ROCAnalysis.png" />
+<p>Option <tt class="xref py py-obj docutils literal"><span class="pre">Target</span> <span class="pre">class</span></tt> chooses the positive class. In case there are
+more than two classes, the widget considers all other classes as a single,
+negative class.</p>
+<p>If the test results contain more than one classifier, the user can choose
+which curves she or he wants to see plotted.</p>
+<img alt="../../../_images/ROCAnalysis-Convex.png" src="../../../_images/ROCAnalysis-Convex.png" />
+<p>Option <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">convex</span> <span class="pre">curves</span></tt> refers to convex curves over each individual
+classifier (the thin lines on the cutout on the left). <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">convex</span> <span class="pre">hull</span></tt>
+plots a convex hull over ROC curves for all classifiers (the thick yellow
+line). Plotting both types of convex curves them makes sense since selecting a
+threshold in a concave part of the curve cannot yield optimal results,
+disregarding the cost matrix. Besides, it is possible to reach any point
+on the convex curve by combining the classifiers represented by the points
+at the border of the concave region.</p>
+<p>The diagonal line represents the behaviour of a random classifier.</p>
+<p>When the data comes from multiple iterations of training and testing, such
+as k-fold cross validation, the results can be (and usually are) averaged.
+The averaging options are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Merge</span> <span class="pre">(expected</span> <span class="pre">ROC</span> <span class="pre">perf.)</span></tt> treats all the test data as if it
+came from a single iteration</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Vertical</span></tt> averages the curves vertically, showing the corresponding
+confidence intervals</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Threshold</span></tt> traverses over threshold, averages the curves positions
+at them and shows horizontal and vertical confidence intervals</li>
+<li><a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a> does not average but prints all the curves instead</li>
+</ul>
+</div></blockquote>
+<img alt="../../../_images/ROCAnalysis-Vertical.png" src="../../../_images/ROCAnalysis-Vertical.png" />
+<img alt="../../../_images/ROCAnalysis-Threshold.png" src="../../../_images/ROCAnalysis-Threshold.png" />
+<img alt="../../../_images/ROCAnalysis-None.png" src="../../../_images/ROCAnalysis-None.png" />
+<img alt="../../../_images/ROCAnalysis-Analysis.png" src="../../../_images/ROCAnalysis-Analysis.png" />
+<p>The second sheet of settings is dedicated to analysis of the curve. The user
+can specify the cost of false positives and false negatives, and the prior
+target class probability. <tt class="xref py py-obj docutils literal"><span class="pre">Compute</span> <span class="pre">from</span> <span class="pre">Data</span></tt> sets it to the proportion
+of examples of this class in the data.</p>
+<p>Iso-performance line is a line in the ROC space such that all points on the
+line give the same profit/loss. The line to the upper left are better those
+down and right. The direction of the line depends upon the above costs and
+probabilities. Put together, this gives a recipe for depicting the optimal
+threshold for the given costs: it is the point where the tangent with the
+given inclination touches the curve. If we go higher or more to the left,
+the points on the isoperformance line cannot be reached by the learner.
+Going down or to the right, decreases the performance.</p>
+<p>The widget can show the performance line, which changes as the user
+changes the parameters. The points where the line touches any of the
+curves - that is, the optimal point for any of the given classifiers -
+is also marked and the corresponding threshold (the needed probability
+of the target class for the example to be classified into that class) is
+shown besides.</p>
+<p>The widget allows setting costs from 1 to 1000. The units are not important,
+as are not the magnitudes. What matters is the relation between the two costs,
+so setting them to 100 and 200 will give the same result as 400 and 800.</p>
+<img alt="../../../_images/ROCAnalysis-Performance2.png" src="../../../_images/ROCAnalysis-Performance2.png" />
+<p>Defaults: both costs equal (500), Prior target class probability 44%
+(from the data)</p>
+<img alt="../../../_images/ROCAnalysis-Performance1.png" src="../../../_images/ROCAnalysis-Performance1.png" />
+<p>False positive cost: 838, False negative cost 650, Prior target class
+probability 73%</p>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Default</span> <span class="pre">threshold</span> <span class="pre">(0.5)</span> <span class="pre">point</span></tt> shows the point on the ROC curve
+achieved by the classifier if it predicts the target class if its probability
+equals or exceeds 0.5.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>At the moment, the only widget which give the right type of the signal
+needed by ROC Analysis is <a class="reference internal" href="testlearners.html#test-learners"><em>Test Learners</em></a>. The ROC Analysis will hence
+always follow Test Learners and, since it has no outputs, no other widgets
+follow it. Here is a typical example.</p>
+<img alt="../../../_images/ROCLiftCalibration-Schema.png" src="../../../_images/ROCLiftCalibration-Schema.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

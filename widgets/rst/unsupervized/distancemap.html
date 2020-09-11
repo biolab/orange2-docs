@@ -1,0 +1,221 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Distance Map &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Distance Map</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="distance-map">
+<span id="id1"></span><h1>Distance Map<a class="headerlink" href="#distance-map" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/DistanceMatrix1.svg" /><p>Visualizes distances between items</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Distance Matrix (SymMatrix)</dt>
+<dd><p class="first last">A distance matrix</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Examples corresponding to selected elements of the matrix</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Attribute List (orange.VarList)</dt>
+<dd><p class="first last">Attributes corresponding to selected elements of the matrix</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Distance Map is a visualization of distances between objects. The visualization
+is rather simple: it is the same as is we printed out a table of numbers,
+except that the numbers are replaced by spots colored by colors from the
+specified palette.</p>
+<p>The distances are most often distances between examples (for instance from
+<a class="reference internal" href="exampledistance.html#example-distance"><em>Example Distance</em></a> or attributes (for instance from
+<a class="reference internal" href="attributedistance.html#attribute-distance"><em>Attribute Distance</em></a>. The widget does not require that (another option
+can be loading the distances from a file using <a class="reference internal" href="distancefile.html#distance-file"><em>Distance File</em></a>, although
+when one of these is the case, the user can select a region of the map and the
+widget will output the corresponding examples or attributes through the
+appropriate signal.</p>
+<img alt="../../../_images/DistanceMap.png" src="../../../_images/DistanceMap.png" />
+<p>The snapshot shows distances between attributes in the heart disease data,
+using the preset Black - Red palette, where smaller numbers are represented
+with black and larger with red. The matrix is symmetric and the diagonal is
+black - no attribute is different from itself. The former (symmetricity) is
+always assumed, while the diagonal may also be non-zero.</p>
+<img alt="../../../_images/DistanceMap-Settings.png" src="../../../_images/DistanceMap-Settings.png" />
+<p>The widget&#8217;s settings are divided into three tabs. The first one defines the
+size and order of cells. <tt class="xref py py-obj docutils literal"><span class="pre">Width</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">Height</span></tt> in the <tt class="xref py py-obj docutils literal"><span class="pre">Cell</span> <span class="pre">Size</span></tt>
+box set the size of the cells. The cells can be restricted to squares
+(<tt class="xref py py-obj docutils literal"><span class="pre">Cells</span> <span class="pre">as</span> <span class="pre">squares</span></tt>) and drawn with or without gridlines in between
+(<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">grid</span></tt>). When cells are too small (8 pixels or less), the grid
+disappears in any case.</p>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Merge</span></tt> merges multiple cells into a single cell, which can be useful
+when the matrix is too large. For this option to yield meaningful results,
+items need to be sorted so similar items are merged. The widget has three
+options; it can leave the items as they are (<tt class="xref py py-obj docutils literal"><span class="pre">No</span> <span class="pre">sorting</span></tt>) it can put
+similar items together (<tt class="xref py py-obj docutils literal"><span class="pre">Adjacent</span> <span class="pre">distance</span></tt>) or randomly shuffle the
+items (<tt class="xref py py-obj docutils literal"><span class="pre">Random</span> <span class="pre">order</span></tt>). Of these, adjacent distance is unfortunately not
+implemented yet.</p>
+<img alt="../../../_images/DistanceMap-Colors.png" src="../../../_images/DistanceMap-Colors.png" />
+<p>The second tab defines the colors that represent the numeric values.
+<tt class="xref py py-obj docutils literal"><span class="pre">Gamma</span></tt> defines how numbers are mapped onto the palette colors.
+When set to 1 (default), the mapping is linear. When it decreases, the numeric
+values at the lower end get similar colors, the curve get steeper in the
+middle, and higher values are again represented with colors which are more
+similar than if gamma was higher. The graph below shows the mapping function
+at gamma=0.25.</p>
+<img alt="../../../_images/DistanceMap-gamma.png" src="../../../_images/DistanceMap-gamma.png" />
+<p>Setting gamma is useful when the distribution of distances has long tails which
+are not very interested. The widget also offers controls for cutting of the
+outliers. Normally, the color palette is used to visualize the entire range
+of distances appearing in the matrix. This can be changed be checking
+<tt class="xref py py-obj docutils literal"><span class="pre">Enable</span> <span class="pre">thresholds</span></tt> and setting the low and high threshold. Distances
+outside this interval are then shown using special colors, so the color
+spectrum can be used for visualizing the interesting part of the distribution.</p>
+<p>The widget supports different color schemes. The built-in schemes are named
+<tt class="xref py py-obj docutils literal"><span class="pre">Blue</span> <span class="pre">-</span> <span class="pre">Yellow</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">Black</span> <span class="pre">-</span> <span class="pre">Red</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">Green</span> <span class="pre">-</span> <span class="pre">Black</span> <span class="pre">-</span> <span class="pre">Red</span></tt>. The
+schema is defined, first, by the two colors representing the lowest and
+highest distances. The two colors are set by clicking the rectangles to the
+left and right of the color strip below the schema name. The transition can go
+either from one color to another (in the RGB space) or
+<tt class="xref py py-obj docutils literal"><span class="pre">Pass</span> <span class="pre">through</span> <span class="pre">black</span></tt>, that is, from one color to black and then to
+another. Colors can also be set for undefined values (<tt class="xref py py-obj docutils literal"><span class="pre">N/A</span></tt>), values
+below and above the low and high thresholds (<tt class="xref py py-obj docutils literal"><span class="pre">Underflow</span></tt> and
+<tt class="xref py py-obj docutils literal"><span class="pre">Overflow</span></tt>), the background (<tt class="xref py py-obj docutils literal"><span class="pre">Background</span></tt>), the outline of the cell
+under the mouse cursor (<tt class="xref py py-obj docutils literal"><span class="pre">Cell</span> <span class="pre">outline</span></tt>) and the marker around the selected
+region (<tt class="xref py py-obj docutils literal"><span class="pre">Selected</span> <span class="pre">cells</span></tt>).</p>
+<p>User can modify the existing schemata and also create new, customized schemata
+(<tt class="xref py py-obj docutils literal"><span class="pre">New</span></tt>). The built-in schemata are shown below.</p>
+<img alt="../../../_images/DistanceMap-Green-Black-Red.png" src="../../../_images/DistanceMap-Green-Black-Red.png" />
+<img alt="../../../_images/DistanceMap-Info.png" src="../../../_images/DistanceMap-Info.png" />
+<p>The last tab defines the shown information and controls selection of cells.
+<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">legend</span></tt> determines whether the widget shows the colored strip at
+the top which shows the mapping of numbers into colors. <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">labels</span></tt>
+shows and hides the item names (e.g. age, gender etc) besides the map. Labels
+can only be shown it they exist; they do when the data represents distances
+between attributes or when the data is loaded from a labeled distance file.</p>
+<p>If <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">balloon</span></tt> is checked, a ballon appears when the mouse is hovering
+over a cell, which shows the numerical distances and, if
+<tt class="xref py py-obj docutils literal"><span class="pre">Display</span> <span class="pre">item</span> <span class="pre">names</span></tt> is checked, also the names of the corresponding
+items.</p>
+<p>The user can select a region in the map by the usual click-and-drag with the
+mouse. When a part of the map is selected, the widget output all items
+corresponding to the selected cells. The three buttons in the <tt class="xref py py-obj docutils literal"><span class="pre">Select</span></tt>
+can undo the last selection, remove all selections and send the selected
+data. If <tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">after</span> <span class="pre">mouse</span> <span class="pre">release</span></tt> is checked, the data is set
+automatically, without needing to press the button above.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The above snapshots were obtained by the following schema:</p>
+<img alt="../../../_images/DistanceMap-Schema.png" src="../../../_images/DistanceMap-Schema.png" />
+<p>The file widget loads the iris data set; we then compute the attribute
+distances and visualize them.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

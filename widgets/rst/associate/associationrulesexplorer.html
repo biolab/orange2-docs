@@ -1,0 +1,170 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Association Rules Tree Viewer &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Association Rules Tree Viewer</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="association-rules-tree-viewer">
+<span id="association-rules-explorer"></span><h1>Association Rules Tree Viewer<a class="headerlink" href="#association-rules-tree-viewer" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/AssociationRulesExplorer.svg" /><p>A tree-like association rules viewer</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Association Rules</dt>
+<dd><p class="first last">A list of rules</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last simple">
+<li>None</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This widget is a tree-like association rules viewer.</p>
+<p>The widget can be used to find all the rules that include a particular
+condition on the left-hand side. The below snapshot is made on the Titanic
+data set, using the filter as shown on the page on the
+<a class="reference internal" href="associationrulesfilter.html#association-rules-filter"><em>Association Rules Filter</em></a>.</p>
+<img alt="Association Rules Tree Viewer Widget" src="../../../_images/AssociationRulesTreeViewer-closed.png" />
+<p>Say that we are interested in rules regarding the survival of adults. By
+opening the branch &#8220;age=adult&#8221;, we discover four rules that contain this
+condition as the sole condition on the left-hand side, while the right-hand
+sides contain different combinations of sex, status and survival.</p>
+<img alt="Association Rules Tree Viewer Widget" src="../../../_images/AssociationRulesTreeViewer-semi-open.png" />
+<p>Besides that, there are rules with (at least) two conditions on the
+left-hand side, &#8220;age=adult&#8221; and &#8220;sex=male&#8221;; to explore these rules,
+we would need to open the corresponding branch.</p>
+<p>Each leaf of the tree corresponds to one particular ordering of the
+left-hand side conditions in a particular rule. Turned around, this
+means that each rule appears in many places in the tree. As the completely
+open tree below shows, the rule &#8220;age=adult &amp; sex=male -&gt; status=crew&#8221;
+appears in two places (the seventh and the eleventh row).</p>
+<p>On the left-hand side of the widget, we can choose the measures we want
+to observe. Let L, R and B be the number of examples that fit the left,
+the right and both sides of the rule, respectively, and N the total number
+of examples in the data set. The measures are then defined as follows</p>
+<blockquote>
+<div><ul class="simple">
+<li>confidence = B / L</li>
+<li>confidence = B / L</li>
+<li>coverage = L / N</li>
+<li>strength = R / L</li>
+<li>lift = N * B / (L * R)</li>
+<li>leverage = N * B - L * R</li>
+</ul>
+</div></blockquote>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Tree</span> <span class="pre">depth</span></tt> sets the depth to which the tree is expanded. If, it is set
+to, for instance, three, then the leaves corresponding to rules with five
+conditions will, besides the right-hand side, also contain the two conditions
+which are not shown in the branches.</p>
+<p>With <tt class="xref py py-obj docutils literal"><span class="pre">Display</span> <span class="pre">whole</span> <span class="pre">rules</span></tt> we can decide whether we want the entire rule
+(including the information that is already contained in the branches, that
+is, in the path from the root to the rule) reprinted again in the leaf.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This widget is typically used with the <a class="reference internal" href="associationrules.html#association-rules"><em>Association Rules</em></a> and possibly
+<a class="reference internal" href="associationrulesfilter.html#association-rules-filter"><em>Association Rules Filter</em></a>. A typical schema is shown below.</p>
+<img alt="Association Rules" src="../../../_images/AssociationRules-Schema.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

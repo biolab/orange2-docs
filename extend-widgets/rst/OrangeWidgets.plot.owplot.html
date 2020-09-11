@@ -1,0 +1,588 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Plot (owplot) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Plot (<tt class="docutils literal"><span class="pre">owplot</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-OrangeWidgets.plot.owplot"></span><div class="section" id="plot-owplot">
+<h1>Plot (<tt class="docutils literal"><span class="pre">owplot</span></tt>)<a class="headerlink" href="#plot-owplot" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="OrangeWidgets.plot.OWPlot">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.</tt><tt class="descname">OWPlot</tt><big>(</big><em>parent=None, name=None, show_legend=1, axes=[2, 0], widget=None</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>The base class for all plots in Orange. It uses the Qt Graphics View Framework
+to draw elements on a graph.</p>
+<p><strong>Plot layout</strong></p>
+<blockquote>
+<div><dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.show_legend">
+<tt class="descname">show_legend</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.show_legend" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean controlling whether the legend is displayed or not</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.show_main_title">
+<tt class="descname">show_main_title</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.show_main_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls whether or not the main plot title is displayed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.main_title">
+<tt class="descname">main_title</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.main_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>The plot title, usually show on top of the plot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.set_main_title">
+<tt class="descname">set_main_title</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.set_main_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the main title to <tt class="docutils literal"><span class="pre">t</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.set_show_main_title">
+<tt class="descname">set_show_main_title</tt><big>(</big><em>b</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.set_show_main_title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the main title if <tt class="docutils literal"><span class="pre">b</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt>, and hides it otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.axis_margin">
+<tt class="descname">axis_margin</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.axis_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>How much space (in pixels) should be left on each side for the axis, its label and its title.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.title_margin">
+<tt class="descname">title_margin</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.title_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>How much space (in pixels) should be left at the top of the plot for the title, if the title is shown.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">attribute <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.show_main_title" title="OrangeWidgets.plot.owplot.OWPlot.show_main_title"><tt class="xref py py-attr docutils literal"><span class="pre">show_main_title</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.plot_margin">
+<tt class="descname">plot_margin</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.plot_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>How much space (in pixels) should be left at each side of the plot as whitespace.</p>
+</dd></dl>
+
+</div></blockquote>
+<p><strong>Coordinate transformation</strong></p>
+<blockquote>
+<div><p>There are several coordinate systems used by OWPlot:</p>
+<ul>
+<li><p class="first"><cite>widget</cite> coordinates.</p>
+<p>This is the coordinate system of the position returned by <tt class="xref py py-meth docutils literal"><span class="pre">QEvent.pos()</span></tt>. 
+No calculations or positions is done with this coordinates, they must first be converted 
+to scene coordinates with <tt class="xref py py-meth docutils literal"><span class="pre">mapToScene()</span></tt>.</p>
+</li>
+<li><p class="first"><cite>data</cite> coordinates.</p>
+<p>The value used internally in Orange to specify the values of attributes. 
+For example, this can be age in years, the number of legs, or any other numeric value.</p>
+</li>
+<li><p class="first"><cite>plot</cite> coordinates.</p>
+<p>These coordinates specify where the plot items are placed on the graph, but doesn&#8217;t account for zoom. 
+They can be retrieved for a particular plot item with <tt class="xref py py-meth docutils literal"><span class="pre">PlotItem.pos()</span></tt>.</p>
+</li>
+<li><p class="first"><cite>scene</cite> or <cite>zoom</cite> coordinates.</p>
+<p>Like plot coordinates, except that they take the <tt class="xref py py-attr docutils literal"><span class="pre">zoom_transform</span></tt> into account. They represent the
+actual position of an item on the scene.</p>
+<p>These are the coordinates returned by <tt class="xref py py-meth docutils literal"><span class="pre">PlotItem.scenePos()</span></tt> and <tt class="xref py py-meth docutils literal"><span class="pre">mapToScene()</span></tt>.</p>
+<p>For example, they can be used to determine what is under the cursor.</p>
+</li>
+</ul>
+<p>In most cases, you will use data coordinates for interacting with the actual data, and scene coordinates for
+interacting with the plot items. The other two sets are mostly used for converting.</p>
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.map_to_graph">
+<tt class="descname">map_to_graph</tt><big>(</big><em>point</em>, <em>axes=None</em>, <em>zoom=False</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.map_to_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps <tt class="docutils literal"><span class="pre">point</span></tt>, which can be ether a tuple of (x,y), a QPoint or a QPointF, from data coordinates
+to plot coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point</strong> (<em>tuple or QPointF</em>) &#8211; The point in data coordinates</li>
+<li><strong>axes</strong> (<em>tuple of float float</em>) &#8211; The pair of axes along which to transform the point. 
+If none are specified, (xBottom, yLeft) will be used.</li>
+<li><strong>zoom</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, the current <tt class="xref py py-attr docutils literal"><span class="pre">zoom_transform</span></tt> will be considered in the transformation, and the result will be in scene coordinates instead.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The transformed point in scene coordinates</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Type :</th><td class="field-body"><p class="first last">tuple of float float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.map_from_graph">
+<tt class="descname">map_from_graph</tt><big>(</big><em>point</em>, <em>axes=None</em>, <em>zoom=False</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.map_from_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maps <tt class="docutils literal"><span class="pre">point</span></tt>, which can be ether a tuple of (x,y), a QPoint or a QPointF, from plot coordinates
+to data coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>point</strong> (<em>tuple or QPointF</em>) &#8211; The point in data coordinates</li>
+<li><strong>axes</strong> (<em>tuple of float float</em>) &#8211; The pair of axes along which to transform the point. If none are specified, (xBottom, yLeft) will be used.</li>
+<li><strong>zoom</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, the current <tt class="xref py py-attr docutils literal"><span class="pre">zoom_transform</span></tt> will be considered in the transformation, and the <tt class="docutils literal"><span class="pre">point</span></tt> should be in scene coordinates instead.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The transformed point in data coordinates</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple of float float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.transform">
+<tt class="descname">transform</tt><big>(</big><em>axis_id</em>, <em>value</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the <tt class="docutils literal"><span class="pre">value</span></tt> from data to plot coordinates along the axis <tt class="docutils literal"><span class="pre">axis_id</span></tt>.</p>
+<p>This function always ignores zoom. If you need to account for zooming, use <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.map_to_graph" title="OrangeWidgets.plot.owplot.OWPlot.map_to_graph"><tt class="xref py py-meth docutils literal"><span class="pre">map_to_graph()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.inv_transform">
+<tt class="descname">inv_transform</tt><big>(</big><em>axis_id</em>, <em>value</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.inv_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms the <tt class="docutils literal"><span class="pre">value</span></tt> from plot to data coordinates along the axis <tt class="docutils literal"><span class="pre">axis_id</span></tt>.</p>
+<p>This function always ignores zoom. If you need to account for zooming, use <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.map_from_graph" title="OrangeWidgets.plot.owplot.OWPlot.map_from_graph"><tt class="xref py py-meth docutils literal"><span class="pre">map_from_graph()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.nearest_point">
+<tt class="descname">nearest_point</tt><big>(</big><em>pos</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.nearest_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the point nearest to <tt class="docutils literal"><span class="pre">pos</span></tt>, or <tt class="docutils literal"><span class="pre">None</span></tt> if no point is close enough.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> (<em>QPointF</em>) &#8211; The position in scene coordinates</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="OrangeWidgets.plot.owpoint.html#OrangeWidgets.plot.owpoint.OWPoint" title="OrangeWidgets.plot.owpoint.OWPoint"><tt class="xref py py-obj docutils literal"><span class="pre">OWPoint</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.point_at">
+<tt class="descname">point_at</tt><big>(</big><em>pos</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.point_at" title="Permalink to this definition">¶</a></dt>
+<dd><p>If there is a point with data coordinates equal to <tt class="docutils literal"><span class="pre">pos</span></tt>, if is returned. 
+Otherwise, this function returns None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> (<em>tuple of float float</em>) &#8211; The position in data coordinates</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="OrangeWidgets.plot.owpoint.html#OrangeWidgets.plot.owpoint.OWPoint" title="OrangeWidgets.plot.owpoint.OWPoint"><tt class="xref py py-obj docutils literal"><span class="pre">OWPoint</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div></blockquote>
+<dl class="docutils">
+<dt><strong>Data curves</strong></dt>
+<dd><p class="first">The preferred method for showing a series of data points is <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.set_main_curve_data" title="OrangeWidgets.plot.owplot.OWPlot.set_main_curve_data"><tt class="xref py py-meth docutils literal"><span class="pre">set_main_curve_data()</span></tt></a>. 
+It allows you to specify point positions, colors, labels, sizes and shapes.</p>
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.set_main_curve_data">
+<tt class="descname">set_main_curve_data</tt><big>(</big><em>x_data</em>, <em>y_data</em>, <em>color_data</em>, <em>label_data</em>, <em>size_data</em>, <em>shape_data</em>, <em>marked_data=</em><span class="optional">[</span><span class="optional">]</span>, <em>valid_data=</em><span class="optional">[</span><span class="optional">]</span>, <em>x_axis_key=2</em>, <em>y_axis_key=0</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.set_main_curve_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a single curve that can have points of different colors, shapes and sizes. 
+This is the preferred method for visualization that show a series of different points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x_data</strong> (<em>list of float</em>) &#8211; The list of X coordinates of the points</li>
+<li><strong>y_data</strong> (<em>list of float</em>) &#8211; The list of Y coordinates of the points</li>
+<li><strong>color_data</strong> (<em>list of QColor</em>) &#8211; The list of point colors</li>
+<li><strong>label_data</strong> (<em>list of str</em>) &#8211; The list of point labels</li>
+<li><strong>size_data</strong> (<em>list of int</em>) &#8211; The list of point sizes</li>
+<li><strong>shape_data</strong> (<em>list of int</em>) &#8211; The list of point symbols</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The number of points in the curve will be equal to min(len(x_data), len(y_data)). 
+The other four list can be empty, in which case a default value will be used. 
+If they contain only one element, its value will be used for all points.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function does not add items to the legend automatically. 
+You will have to add them yourself with <a class="reference internal" href="OrangeWidgets.plot.owlegend.html#OrangeWidgets.plot.owlegend.OWLegend.add_item" title="OrangeWidgets.plot.owlegend.OWLegend.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">OWLegend.add_item()</span></tt></a>.</p>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="OrangeWidgets.plot.owcurve.html#Orange.OrangeWidgets.plot.owcurve.OWMultiCurve" title="Orange.OrangeWidgets.plot.owcurve.OWMultiCurve"><tt class="xref py py-obj docutils literal"><span class="pre">OWMultiCurve</span></tt></a>, <a class="reference internal" href="OrangeWidgets.plot.owpoint.html#OrangeWidgets.plot.owpoint.OWPoint" title="OrangeWidgets.plot.owpoint.OWPoint"><tt class="xref py py-obj docutils literal"><span class="pre">OWPoint</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.add_curve">
+<tt class="descname">add_curve</tt><big>(</big><em>name</em>, <em>brushColor=None</em>, <em>penColor=None</em>, <em>size=5</em>, <em>style=0</em>, <em>symbol=0</em>, <em>enableLegend=False</em>, <em>xData=</em><span class="optional">[</span><span class="optional">]</span>, <em>yData=</em><span class="optional">[</span><span class="optional">]</span>, <em>showFilledSymbols=None</em>, <em>lineWidth=1</em>, <em>pen=None</em>, <em>autoScale=0</em>, <em>antiAlias=None</em>, <em>penAlpha=255</em>, <em>brushAlpha=255</em>, <em>x_axis_key=2</em>, <em>y_axis_key=0</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.add_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new <a class="reference internal" href="OrangeWidgets.plot.owcurve.html#Orange.OrangeWidgets.plot.owcurve.OWCurve" title="Orange.OrangeWidgets.plot.owcurve.OWCurve"><tt class="xref py py-obj docutils literal"><span class="pre">OWCurve</span></tt></a> with the specified parameters and adds it to the graph. 
+If <tt class="docutils literal"><span class="pre">enableLegend</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt>, a curve symbol is added to the legend.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.add_custom_curve">
+<tt class="descname">add_custom_curve</tt><big>(</big><em>curve</em>, <em>enableLegend=False</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.add_custom_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a custom PlotItem <tt class="docutils literal"><span class="pre">curve</span></tt> to the plot. 
+If <tt class="docutils literal"><span class="pre">enableLegend</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt>, a curve symbol defined by 
+<a class="reference internal" href="OrangeWidgets.plot.owcurve.html#Orange.OrangeWidgets.plot.owcurve.OWCurve.point_item" title="Orange.OrangeWidgets.plot.owcurve.OWCurve.point_item"><tt class="xref py py-meth docutils literal"><span class="pre">OWCurve.point_item()</span></tt></a> and the <tt class="docutils literal"><span class="pre">curve</span></tt>&#8216;s name
+<a class="reference internal" href="OrangeWidgets.plot.owcurve.html#Orange.OrangeWidgets.plot.owcurve.OWCurve.name" title="Orange.OrangeWidgets.plot.owcurve.OWCurve.name"><tt class="xref py py-obj docutils literal"><span class="pre">OWCurve.name</span></tt></a> is added to the legend.</p>
+<p>This function recalculates axis bounds and replots the plot if needed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>curve</strong> (<a class="reference internal" href="OrangeWidgets.plot.owcurve.html#Orange.OrangeWidgets.plot.owcurve.OWCurve" title="Orange.OrangeWidgets.plot.owcurve.OWCurve"><tt class="xref py py-obj docutils literal"><span class="pre">OWCurve</span></tt></a>) &#8211; The curve to add</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.add_marker">
+<tt class="descname">add_marker</tt><big>(</big><em>name</em>, <em>x</em>, <em>y</em>, <em>alignment=-1</em>, <em>bold=0</em>, <em>color=None</em>, <em>brushColor=None</em>, <em>size=None</em>, <em>antiAlias=None</em>, <em>x_axis_key=2</em>, <em>y_axis_key=0</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.add_marker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.add_item">
+<tt class="descname">add_item</tt><big>(</big><em>item</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.add_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds any PlotItem <tt class="docutils literal"><span class="pre">item</span></tt> to this plot. 
+Calling this function directly is useful for adding a <a class="reference internal" href="OrangeWidgets.plot.owtools.html#OrangeWidgets.plot.owtools.Marker" title="OrangeWidgets.plot.owtools.Marker"><tt class="xref py py-obj docutils literal"><span class="pre">Marker</span></tt></a> or another object that does not have to appear in the legend. 
+For data curves, consider using <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.add_custom_curve" title="OrangeWidgets.plot.owplot.OWPlot.add_custom_curve"><tt class="xref py py-meth docutils literal"><span class="pre">add_custom_curve()</span></tt></a> instead.</p>
+</dd></dl>
+
+<dl class="last method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.plot_items">
+<tt class="descname">plot_items</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.plot_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of all plot items added to this graph with <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.add_item" title="OrangeWidgets.plot.owplot.OWPlot.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">add_item()</span></tt></a> or <tt class="xref py py-meth docutils literal"><span class="pre">PlotItem.attach()</span></tt>.</p>
+</dd></dl>
+
+</dd>
+</dl>
+<p><strong>Axes</strong></p>
+<blockquote>
+<div><dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.add_axis">
+<tt class="descname">add_axis</tt><big>(</big><em>axis_id</em>, <em>title=</em>, <em>title_above=False</em>, <em>title_location=4</em>, <em>line=None</em>, <em>arrows=0</em>, <em>zoomable=False</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.add_axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an <tt class="xref py py-obj docutils literal"><span class="pre">OrangeWidgets.plot.OWAxis</span></tt> with the specified <tt class="docutils literal"><span class="pre">axis_id</span></tt> and <tt class="docutils literal"><span class="pre">title</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.add_custom_axis">
+<tt class="descname">add_custom_axis</tt><big>(</big><em>axis_id</em>, <em>axis</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.add_custom_axis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a custom <tt class="docutils literal"><span class="pre">axis</span></tt> with id <tt class="docutils literal"><span class="pre">axis_id</span></tt> to the plot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.set_axis_enabled">
+<tt class="descname">set_axis_enabled</tt><big>(</big><em>axis</em>, <em>enable</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.set_axis_enabled" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.set_axis_labels">
+<tt class="descname">set_axis_labels</tt><big>(</big><em>axis_id</em>, <em>labels</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.set_axis_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the labels of axis <tt class="docutils literal"><span class="pre">axis_id</span></tt> to <tt class="docutils literal"><span class="pre">labels</span></tt>. This is used for axes displaying a discrete data type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>labels</strong> (<em>A list of strings</em>) &#8211; The ID of the axis to change</li>
+<li><strong>labels</strong> &#8211; The list of labels to be displayed along the axis</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This changes the axis scale and removes any previous scale set with <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.set_axis_scale" title="OrangeWidgets.plot.owplot.OWPlot.set_axis_scale"><tt class="xref py py-meth docutils literal"><span class="pre">set_axis_scale()</span></tt></a>.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.set_axis_scale">
+<tt class="descname">set_axis_scale</tt><big>(</big><em>axis_id</em>, <em>min</em>, <em>max</em>, <em>step_size=0</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.set_axis_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the scale of axis <tt class="docutils literal"><span class="pre">axis_id</span></tt> to show an interval between <tt class="docutils literal"><span class="pre">min</span></tt> and <tt class="docutils literal"><span class="pre">max</span></tt>. 
+If <tt class="docutils literal"><span class="pre">step</span></tt> is specified and non-zero, it determines the steps between label on the axis. 
+Otherwise, they are calculated automatically.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This changes the axis scale and removes any previous labels set with <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.set_axis_labels" title="OrangeWidgets.plot.owplot.OWPlot.set_axis_labels"><tt class="xref py py-meth docutils literal"><span class="pre">set_axis_labels()</span></tt></a>.</p>
+</div>
+</dd></dl>
+
+</div></blockquote>
+<p><strong>Settings</strong></p>
+<blockquote>
+<div><dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.gui">
+<tt class="descname">gui</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.gui" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference internal" href="OrangeWidgets.plot.owplotgui.html#OrangeWidgets.plot.OWPlotGUI" title="OrangeWidgets.plot.OWPlotGUI"><tt class="xref py py-obj docutils literal"><span class="pre">OWPlotGUI</span></tt></a> object associated with this graph</p>
+</dd></dl>
+
+</div></blockquote>
+<p><strong>Point Selection and Marking</strong></p>
+<blockquote>
+<div><p>There are four possible selection behaviors used for selecting or marking points in OWPlot. 
+They are used in <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.select_points" title="OrangeWidgets.plot.owplot.OWPlot.select_points"><tt class="xref py py-meth docutils literal"><span class="pre">select_points()</span></tt></a> and <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.mark_points" title="OrangeWidgets.plot.owplot.OWPlot.mark_points"><tt class="xref py py-meth docutils literal"><span class="pre">mark_points()</span></tt></a> and are the same for both operations.</p>
+<dl class="data">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.AddSelection">
+<tt class="descname">AddSelection</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.AddSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The points are added to the selection, without affected the currently selected points</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.RemoveSelection">
+<tt class="descname">RemoveSelection</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.RemoveSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The points are removed from the selection, without affected the currently selected points</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.ToggleSelection">
+<tt class="descname">ToggleSelection</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.ToggleSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The points&#8217; selection state is toggled</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.ReplaceSelection">
+<tt class="descname">ReplaceSelection</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.ReplaceSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current selection is replaced with the new one</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">There are exacly the same functions for point selection and marking. 
+For simplicity, they are only documented once.</p>
+</div>
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.select_points">
+<tt class="descname">select_points</tt><big>(</big><em>area</em>, <em>behavior</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.select_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.mark_points">
+<tt class="descname">mark_points</tt><big>(</big><em>area</em>, <em>behavior</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.mark_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects or marks all points inside the <tt class="docutils literal"><span class="pre">area</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>area</strong> (<em>QRectF or QPolygonF</em>) &#8211; The newly selected/marked area</li>
+<li><strong>behavior</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.AddSelection" title="OrangeWidgets.plot.owplot.OWPlot.AddSelection"><tt class="xref py py-data docutils literal"><span class="pre">AddSelection</span></tt></a>, <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.RemoveSelection" title="OrangeWidgets.plot.owplot.OWPlot.RemoveSelection"><tt class="xref py py-data docutils literal"><span class="pre">RemoveSelection</span></tt></a>, <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.ToggleSelection" title="OrangeWidgets.plot.owplot.OWPlot.ToggleSelection"><tt class="xref py py-data docutils literal"><span class="pre">ToggleSelection</span></tt></a> or <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.ReplaceSelection" title="OrangeWidgets.plot.owplot.OWPlot.ReplaceSelection"><tt class="xref py py-data docutils literal"><span class="pre">ReplaceSelection</span></tt></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.unselect_all_points">
+<tt class="descname">unselect_all_points</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.unselect_all_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.unmark_all_points">
+<tt class="descname">unmark_all_points</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.unmark_all_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unselects or unmarks all the points in the plot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.selected_points">
+<tt class="descname">selected_points</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.selected_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.marked_points">
+<tt class="descname">marked_points</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.marked_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all selected or marked points</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of OWPoint</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">selected_points</tt><big>(</big><em>xData</em>, <em>yData</em><big>)</big></dt>
+<dd><p>For each of the point specified by <tt class="docutils literal"><span class="pre">xData</span></tt> and <tt class="docutils literal"><span class="pre">yData</span></tt>, the point&#8217;s selection state is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>xData</strong> (<em>list of float</em>) &#8211; The list of x coordinates</li>
+<li><strong>yData</strong> (<em>list of float</em>) &#8211; The list of y coordinates</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div></blockquote>
+<p><strong>Color schemes</strong></p>
+<blockquote>
+<div><p>By default, OWPlot uses the application&#8217;s system palette for drawing everything
+except data curves and points. This way, it maintains consistency with other application
+with regards to the user interface.</p>
+<p>If data is plotted with no color specified, it will use a system color as well, 
+so that a good contrast with the background in guaranteed.</p>
+<p>OWPlot uses the <tt class="xref py py-meth docutils literal"><span class="pre">OWidget.palette()</span></tt> to determine its color scheme, so it can be 
+changed using <tt class="xref py py-meth docutils literal"><span class="pre">QWidget.setPalette()</span></tt>. There are also two predefined color schemes:
+<tt class="docutils literal"><span class="pre">OWPalette.Dark</span></tt> and <tt class="docutils literal"><span class="pre">OWPalette.Light</span></tt>, which provides a dark and a light scheme
+respectively.</p>
+<dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.theme_name">
+<tt class="descname">theme_name</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.theme_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string attribute with three possible values:
+==============  ===========================
+Value           Meaning
+&#8212;&#8212;&#8212;&#8212;&#8211;  &#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;
+&#8220;default&#8221;       The system palette is used
+&#8220;dark&#8221;          The dark theme is used
+&#8220;light&#8221;         The light theme is used 
+==============  ===========================</p>
+<p>To apply the settings, first set this attribute&#8217;s value, and then call <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.update_theme" title="OrangeWidgets.plot.owplot.OWPlot.update_theme"><tt class="xref py py-meth docutils literal"><span class="pre">update_theme()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.update_theme">
+<tt class="descname">update_theme</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.update_theme" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the current color theme, depending on the value of <a class="reference internal" href="#OrangeWidgets.plot.owplot.OWPlot.theme_name" title="OrangeWidgets.plot.owplot.OWPlot.theme_name"><tt class="xref py py-attr docutils literal"><span class="pre">theme_name</span></tt></a>.</p>
+</dd></dl>
+
+<p>On the other hand, curves with a specified color will use colors from Orange&#8217;s palette, 
+which can be configured within Orange. Each plot contains two separate palettes: 
+one for continuous attributes, and one for discrete ones. Both are created by
+<tt class="xref py py-obj docutils literal"><span class="pre">OWColorPalette.ColorPaletteGenerator</span></tt></p>
+<dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.continuous_palette">
+<tt class="descname">continuous_palette</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.continuous_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>The palette used when point color represents a continuous attribute</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="OrangeWidgets.plot.owplot.OWPlot.discrete_palette">
+<tt class="descname">discrete_palette</tt><a class="headerlink" href="#OrangeWidgets.plot.owplot.OWPlot.discrete_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>The palette used when point color represents a discrete attribute</p>
+</dd></dl>
+
+</div></blockquote>
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

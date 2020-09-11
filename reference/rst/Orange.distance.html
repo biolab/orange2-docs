@@ -1,0 +1,429 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Distance (distance) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Distance (<tt class="docutils literal"><span class="pre">distance</span></tt>)</a><ul>
+<li><a class="reference internal" href="#computing-distances">Computing distances</a><ul>
+<li><a class="reference internal" href="#pairwise-distances">Pairwise distances</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#measures">Measures</a></li>
+<li><a class="reference internal" href="#utilities">Utilities</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="distance-distance">
+<h1>Distance (<tt class="docutils literal"><span class="pre">distance</span></tt>)<a class="headerlink" href="#distance-distance" title="Permalink to this headline">¶</a></h1>
+<p>The following example demonstrates how to compute distances between two instances:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+<span class="c">#build a distance with a DistanceConstructor</span>
+<span class="n">measure</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">Euclidean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Distance between first two examples:&quot;</span><span class="p">,</span> \
+    <span class="n">measure</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c">#use the Distance</span>
+</pre></div>
+</div>
+<p>A matrix with all pairwise distances can be computed with <a class="reference internal" href="#Orange.distance.distance_matrix" title="Orange.distance.distance_matrix"><tt class="xref py py-obj docutils literal"><span class="pre">distance_matrix</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">matrix</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">distance_matrix</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Distance between first two examples:&quot;</span><span class="p">,</span> \
+    <span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Unknown values are treated correctly only by Euclidean and Relief
+distance.  For other measures, a distance between unknown and known or
+between two unknown values is always 0.5.</p>
+<div class="section" id="computing-distances">
+<h2>Computing distances<a class="headerlink" href="#computing-distances" title="Permalink to this headline">¶</a></h2>
+<p>Distance measures typically have to be adjusted to the data. For instance,
+when the data set contains continuous features, the distances between
+continuous values should be normalized to ensure that all features have
+similar impats, e.g. by dividing the distance with the range.</p>
+<p>Distance measures thus appear in pairs:</p>
+<ul class="simple">
+<li>a class that constructs the distance measure based on the
+data (subclass of <a class="reference internal" href="#Orange.distance.DistanceConstructor" title="Orange.distance.DistanceConstructor"><tt class="xref py py-obj docutils literal"><span class="pre">DistanceConstructor</span></tt></a>, for
+example <a class="reference internal" href="#Orange.distance.Euclidean" title="Orange.distance.Euclidean"><tt class="xref py py-obj docutils literal"><span class="pre">Euclidean</span></tt></a>), and returns is as</li>
+<li>a class that measures the distance between two instances
+(subclass of <a class="reference internal" href="#Orange.distance.Distance" title="Orange.distance.Distance"><tt class="xref py py-obj docutils literal"><span class="pre">Distance</span></tt></a>, for example <a class="reference internal" href="#Orange.distance.EuclideanDistance" title="Orange.distance.EuclideanDistance"><tt class="xref py py-obj docutils literal"><span class="pre">EuclideanDistance</span></tt></a>).</li>
+</ul>
+<dl class="class">
+<dt id="Orange.distance.DistanceConstructor">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">DistanceConstructor</tt><a class="headerlink" href="#Orange.distance.DistanceConstructor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Orange.distance.DistanceConstructor.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>[data, weightID][, distributions][, basic_stat]</em><big>)</big><a class="headerlink" href="#Orange.distance.DistanceConstructor.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs an <a class="reference internal" href="#Orange.distance.Distance" title="Orange.distance.Distance"><tt class="xref py py-obj docutils literal"><span class="pre">Distance</span></tt></a>. Not all arguments are required.
+Most measures can be constructed from basic_stat; if it is
+not given, instances or distributions can be used.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.Distance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">Distance</tt><a class="headerlink" href="#Orange.distance.Distance" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Orange.distance.Distance.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance1</em>, <em>instance2</em><big>)</big><a class="headerlink" href="#Orange.distance.Distance.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a distance between the given instances (as a floating point number).</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="pairwise-distances">
+<h3>Pairwise distances<a class="headerlink" href="#pairwise-distances" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Orange.distance.distance_matrix">
+<tt class="descclassname">Orange.distance.</tt><tt class="descname">distance_matrix</tt><big>(</big><em>data</em>, <em>distance_constructor=&lt;type 'Orange.distance.Euclidean'&gt;</em>, <em>progress_callback=None</em><big>)</big><a class="headerlink" href="#Orange.distance.distance_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function that computes an <a class="reference internal" href="Orange.misc.html#Orange.misc.SymMatrix" title="Orange.misc.SymMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.misc.SymMatrix</span></tt></a> of all
+pairwise distances between instances in <cite>data</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; A data table</li>
+<li><strong>distance_constructor</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">Orange.distances.DistanceConstructor</span></tt>) &#8211; An DistanceConstructor instance (defaults to <a class="reference internal" href="#Orange.distance.Euclidean" title="Orange.distance.Euclidean"><tt class="xref py py-obj docutils literal"><span class="pre">Euclidean</span></tt></a>).</li>
+<li><strong>progress_callback</strong> (<em>function</em>) &#8211; A function (taking one argument) to use for
+reporting on the progress.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.misc.html#Orange.misc.SymMatrix" title="Orange.misc.SymMatrix"><tt class="xref py py-class docutils literal"><span class="pre">Orange.misc.SymMatrix</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="measures">
+<h2>Measures<a class="headerlink" href="#measures" title="Permalink to this headline">¶</a></h2>
+<p>Distance measures are defined with two classes: a subclass of obj:<cite>DistanceConstructor</cite>
+and a subclass of <a class="reference internal" href="#Orange.distance.Distance" title="Orange.distance.Distance"><tt class="xref py py-obj docutils literal"><span class="pre">Distance</span></tt></a>.</p>
+<dl class="class">
+<dt id="Orange.distance.Hamming">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">Hamming</tt><a class="headerlink" href="#Orange.distance.Hamming" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.HammingDistance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">HammingDistance</tt><a class="headerlink" href="#Orange.distance.HammingDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of features in which the two instances differ. This measure
+is not appropriate for instances that contain continuous features.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.Maximal">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">Maximal</tt><a class="headerlink" href="#Orange.distance.Maximal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.MaximalDistance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">MaximalDistance</tt><a class="headerlink" href="#Orange.distance.MaximalDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The maximal distance
+between two feature values. If dist is the result of
+<a class="reference internal" href="#Orange.distance.DistanceNormalized.feature_distances" title="Orange.distance.DistanceNormalized.feature_distances"><tt class="xref py py-obj docutils literal"><span class="pre">feature_distances</span></tt></a>,
+then <a class="reference internal" href="#Orange.distance.Maximal" title="Orange.distance.Maximal"><tt class="xref py py-class docutils literal"><span class="pre">Maximal</span></tt></a> returns <tt class="docutils literal"><span class="pre">max(dist)</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.Manhattan">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">Manhattan</tt><a class="headerlink" href="#Orange.distance.Manhattan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.ManhattanDistance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">ManhattanDistance</tt><a class="headerlink" href="#Orange.distance.ManhattanDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sum of absolute values
+of distances between pairs of features, e.g. <tt class="docutils literal"><span class="pre">sum(abs(x)</span> <span class="pre">for</span> <span class="pre">x</span> <span class="pre">in</span> <span class="pre">dist)</span></tt>
+where dist is the result of <a class="reference internal" href="#Orange.distance.DistanceNormalized.feature_distances" title="Orange.distance.DistanceNormalized.feature_distances"><tt class="xref py py-obj docutils literal"><span class="pre">feature_distances</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.Euclidean">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">Euclidean</tt><a class="headerlink" href="#Orange.distance.Euclidean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.EuclideanDistance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">EuclideanDistance</tt><a class="headerlink" href="#Orange.distance.EuclideanDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The square root of sum of squared per-feature distances,
+i.e. <tt class="docutils literal"><span class="pre">sqrt(sum(x*x</span> <span class="pre">for</span> <span class="pre">x</span> <span class="pre">in</span> <span class="pre">dist))</span></tt>, where dist is the result of
+<a class="reference internal" href="#Orange.distance.DistanceNormalized.feature_distances" title="Orange.distance.DistanceNormalized.feature_distances"><tt class="xref py py-obj docutils literal"><span class="pre">feature_distances</span></tt></a>.</p>
+<dl class="method">
+<dt id="Orange.distance.EuclideanDistance.distributions">
+<tt class="descname">distributions</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.distance.EuclideanDistance.distributions" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-obj docutils literal"><span class="pre">Distribution</span></tt></a> containing
+the distributions for all discrete features used for
+computation of distances between known and unknown values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.distance.EuclideanDistance.both_special_dist">
+<tt class="descname">both_special_dist</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.distance.EuclideanDistance.both_special_dist" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list containing the distance between two unknown values for each
+discrete feature.</p>
+</dd></dl>
+
+<p>Unknown values are handled by computing the
+expected square of distance based on the distribution from the
+&#8220;training&#8221; data. Squared distance between</p>
+<blockquote>
+<div><ul class="simple">
+<li>A known and unknown continuous feature equals squared distance
+between the known and the average, plus variance.</li>
+<li>Two unknown continuous features equals double variance.</li>
+<li>A known and unknown discrete feature equals the probability
+that the unknown feature has different value than the known
+(i.e., 1 - probability of the known value).</li>
+<li>Two unknown discrete features equals the probability that two
+random chosen values are equal, which can be computed as
+1 - sum of squares of probabilities.</li>
+</ul>
+</div></blockquote>
+<p>Continuous cases are handled as inherited from
+<a class="reference internal" href="#Orange.distance.DistanceNormalized" title="Orange.distance.DistanceNormalized"><tt class="xref py py-class docutils literal"><span class="pre">DistanceNormalized</span></tt></a>. The data for discrete cases are
+stored in distributions (used for unknown vs. known value) and
+in <a class="reference internal" href="#Orange.distance.EuclideanDistance.both_special_dist" title="Orange.distance.EuclideanDistance.both_special_dist"><tt class="xref py py-obj docutils literal"><span class="pre">both_special_dist</span></tt></a> (the precomputed distance between two
+unknown values).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.Relief">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">Relief</tt><a class="headerlink" href="#Orange.distance.Relief" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.ReliefDistance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">ReliefDistance</tt><a class="headerlink" href="#Orange.distance.ReliefDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Relief is similar to Manhattan distance, but incorporates the
+treatment of undefined values, which is used by ReliefF measure.</p>
+<p>This class is derived directly from <a class="reference internal" href="#Orange.distance.Distance" title="Orange.distance.Distance"><tt class="xref py py-obj docutils literal"><span class="pre">Distance</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.PearsonR">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">PearsonR</tt><a class="headerlink" href="#Orange.distance.PearsonR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.PearsonRDistance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">PearsonRDistance</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.distance.PearsonRDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://en.wikipedia.org/wiki/Pearson_product-moment_correlation_coefficient">Pearson correlation coefficient</a>.</p>
+<dl class="method">
+<dt id="Orange.distance.PearsonRDistance.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>e1</em>, <em>e2</em><big>)</big><a class="headerlink" href="#Orange.distance.PearsonRDistance.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>e1</strong> &#8211; data instances.</li>
+<li><strong>e2</strong> &#8211; data instances.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns Pearson&#8217;s disimilarity between e1 and e2,
+i.e. (1-r)/2 where r is Pearson&#8217;s rank coefficient.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.SpearmanR">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">SpearmanR</tt><a class="headerlink" href="#Orange.distance.SpearmanR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.SpearmanRDistance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">SpearmanRDistance</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.distance.SpearmanRDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient">Spearman&#8217;s rank correlation coefficient</a>.</p>
+<dl class="method">
+<dt id="Orange.distance.SpearmanRDistance.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>e1</em>, <em>e2</em><big>)</big><a class="headerlink" href="#Orange.distance.SpearmanRDistance.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>e1</strong> &#8211; data instances.</li>
+<li><strong>e2</strong> &#8211; data instances.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns Sprearman&#8217;s disimilarity between e1 and e2,
+i.e. (1-r)/2 where r is Sprearman&#8217;s rank coefficient.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.Mahalanobis">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">Mahalanobis</tt><a class="headerlink" href="#Orange.distance.Mahalanobis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="Orange.distance.MahalanobisDistance">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">MahalanobisDistance</tt><big>(</big><em>domain</em>, <em>icm</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.distance.MahalanobisDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://en.wikipedia.org/wiki/Mahalanobis_distance">Mahalanobis distance</a></p>
+<dl class="method">
+<dt id="Orange.distance.MahalanobisDistance.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>e1</em>, <em>e2</em><big>)</big><a class="headerlink" href="#Orange.distance.MahalanobisDistance.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>e1</strong> &#8211; data instances.</li>
+<li><strong>e2</strong> &#8211; data instances.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns Mahalanobis distance between e1 and e2.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="utilities">
+<h2>Utilities<a class="headerlink" href="#utilities" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Orange.distance.DistanceNormalized">
+<em class="property">class </em><tt class="descclassname">Orange.distance.</tt><tt class="descname">DistanceNormalized</tt><a class="headerlink" href="#Orange.distance.DistanceNormalized" title="Permalink to this definition">¶</a></dt>
+<dd><p>An abstract class that provides normalization.</p>
+<dl class="attribute">
+<dt id="Orange.distance.DistanceNormalized.normalizers">
+<tt class="descname">normalizers</tt><a class="headerlink" href="#Orange.distance.DistanceNormalized.normalizers" title="Permalink to this definition">¶</a></dt>
+<dd><p>A precomputed list of normalizing factors for feature values. They are:</p>
+<ul class="simple">
+<li>1/(max_value-min_value) for continuous and 1/number_of_values
+for ordinal features.
+If either feature is unknown, the distance is 0.5. Such factors
+are used to multiply differences in feature&#8217;s values.</li>
+<li><tt class="docutils literal"><span class="pre">-1</span></tt> for nominal features; the distance
+between two values is 0 if they are same (or at least one is
+unknown) and 1 if they are different.</li>
+<li><tt class="docutils literal"><span class="pre">0</span></tt> for ignored features.</li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">bases, averages, variances</tt></dt>
+<dd><p>The minimal values, averages and variances
+(continuous features only).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.distance.DistanceNormalized.domain_version">
+<tt class="descname">domain_version</tt><a class="headerlink" href="#Orange.distance.DistanceNormalized.domain_version" title="Permalink to this definition">¶</a></dt>
+<dd><p>The domain version changes each time a domain description is
+changed (i.e. features are added or removed).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.distance.DistanceNormalized.feature_distances">
+<tt class="descname">feature_distances</tt><big>(</big><em>instance1</em>, <em>instance2</em><big>)</big><a class="headerlink" href="#Orange.distance.DistanceNormalized.feature_distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of floats representing normalized distances between
+pairs of feature values of the two instances.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

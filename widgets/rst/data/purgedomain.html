@@ -1,0 +1,177 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Purge Domain &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Purge Domain</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="purge-domain">
+<span id="id1"></span><h1>Purge Domain<a class="headerlink" href="#purge-domain" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/PurgeDomain.svg" /><p>Removes the unused attribute values and useless attributes, sorts values of
+the remaining.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">A data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Filtered data set</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Definitions of nominal attributes sometimes contain values which don&#8217;t appear
+in the data. Even if this does not happen in the original data, filtering the
+data, selecting examples subsets and similar can remove all examples for which
+the attribute has some particular value. Such values clutter data presentation,
+especially various visualizations, and should be removed.</p>
+<p>After purging an attribute, it may become single-valued or, in extreme case,
+have no values at all (if the value of this attribute was undefined for all
+examples). In such cases, the attribute can be removed.</p>
+<p>A different issue is the order of attribute values: if the data is read from a
+file in a format where the values are not declared in advance, they are sorted
+&#8220;in order of appearance&#8221;. Sometimes we would prefer to have them sorted
+alphabetically.</p>
+<img alt="../../../_images/PurgeDomain.png" src="../../../_images/PurgeDomain.png" />
+<p>Such purification is done by widget Purge Domain. Ordinary attributes and class
+attributes are treated separately. For each, we can decide if we want the
+values sorted or not. Next, we may allow the widget to remove attributes with
+less than two values, or remove the class attribute if there are less than two
+classes. Finally, we can instruct the widget to check which values of
+attributes actually appear in the data and remove the unused values. The widget
+cannot remove values if it is not allowed to remove the attributes; since
+(potentially) having attributes without values makes no sense.</p>
+<p>If <tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">automatically</span></tt> is checked, the widget will send data at each
+change of widget settings. Otherwise, sending the data needs to be explicitly
+initiated by clicking the <tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">data</span></tt> button.</p>
+<p>The new, reduced attributes get a prefix &#8220;R&#8221;, which distinguishes them from
+the original ones. The values of new attributes can be computed from the old
+ones, but not the opposite. This means that if you construct a classifier from
+the new attributes, you can use it to classify the examples described by the
+original attributes. But not the opposite: constructing the classifier from
+old attributes and using it on examples described by the reduced ones won&#8217;t
+work. Fortunately, the latter is seldom the case. In a typical setup, one would
+explore the data, visualize it, filter it, purify it... and then test the final
+model on the original data.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Purge Domain would typically appear after data filtering, for instance when
+selecting a subset of visualized examples.</p>
+<img alt="Schema with Purge Domain" src="../../../_images/PurgeDomain-Schema.png" />
+<p>In the above schema we play with the Zoo data set: we visualize it and select
+a portion of the data which contains only four out of the seven original
+classes. To get rid of the empty classes, we put the data through Purge Domain
+before going on in, say, Attribute Statistics widget. The latter shows only
+the four classes which actually appear. To see the effect of data
+purification, uncheck <tt class="xref py py-obj docutils literal"><span class="pre">Remove</span> <span class="pre">unused</span> <span class="pre">class</span> <span class="pre">values</span></tt> and observe the effect
+this has on Attribute Statistics.</p>
+<img alt="Schema with Purge Domain" src="../../../_images/PurgeDomain-Widgets.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

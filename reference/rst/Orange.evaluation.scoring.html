@@ -1,0 +1,692 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Method scoring (scoring) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Method scoring (<tt class="docutils literal"><span class="pre">scoring</span></tt>)</a><ul>
+<li><a class="reference internal" href="#classification">Classification</a><ul>
+<li><a class="reference internal" href="#calibration-scores">Calibration scores</a></li>
+<li><a class="reference internal" href="#discriminatory-scores">Discriminatory scores</a></li>
+<li><a class="reference internal" href="#comparison-of-algorithms">Comparison of Algorithms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#regression">Regression</a></li>
+<li><a class="reference internal" href="#ploting-functions">Ploting functions</a></li>
+<li><a class="reference internal" href="#utility-functions">Utility Functions</a></li>
+<li><a class="reference internal" href="#multi-label-classification">Multi-label classification</a><ul>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.evaluation.scoring"></span><div class="section" id="method-scoring-scoring">
+<h1>Method scoring (<tt class="docutils literal"><span class="pre">scoring</span></tt>)<a class="headerlink" href="#method-scoring-scoring" title="Permalink to this headline">¶</a></h1>
+<p>Scoring plays and integral role in evaluation of any prediction model. Orange
+implements various scores for evaluation of classification,
+regression and multi-label models. Most of the methods needs to be called
+with an instance of <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;bayes&quot;</span><span class="p">),</span>
+            <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;tree&quot;</span><span class="p">),</span>
+            <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">majority</span><span class="o">.</span><span class="n">MajorityLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;majority&quot;</span><span class="p">)]</span>
+
+<span class="n">voting</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting&quot;</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">voting</span><span class="p">)</span>
+<span class="n">CAs</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+<span class="n">AUCs</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;</span><span class="si">%10s</span><span class="s">  </span><span class="si">%5s</span><span class="s"> </span><span class="si">%5s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s">&quot;Learner&quot;</span><span class="p">,</span> <span class="s">&quot;AUC&quot;</span><span class="p">,</span> <span class="s">&quot;CA&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">learners</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%10s</span><span class="s">: </span><span class="si">%5.3f</span><span class="s"> </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">learners</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">AUCs</span><span class="p">[</span><span class="n">l</span><span class="p">],</span> <span class="n">CAs</span><span class="p">[</span><span class="n">l</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="section" id="classification">
+<h2>Classification<a class="headerlink" href="#classification" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="calibration-scores">
+<h3>Calibration scores<a class="headerlink" href="#calibration-scores" title="Permalink to this headline">¶</a></h3>
+<p>Many scores for evaluation of the classification models measure whether the
+model assigns the correct class value to the test instances. Many of these
+scores can be computed solely from the confusion matrix constructed manually
+with the <a class="reference internal" href="#Orange.evaluation.scoring.confusion_matrices" title="Orange.evaluation.scoring.confusion_matrices"><tt class="xref py py-obj docutils literal"><span class="pre">confusion_matrices</span></tt></a> function. If class variable has more than
+two values, the index of the value to calculate the confusion matrix for should
+be passed as well.</p>
+<dl class="function">
+<dt id="Orange.evaluation.scoring.CA">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">CA</tt><big>(</big><em>test_results</em>, <em>report_se=False</em>, <em>ignore_weights=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.CA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute percentage of matches between predicted and actual class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</li>
+<li><strong>report_se</strong> &#8211; include standard error in result.</li>
+<li><strong>ignore_weights</strong> &#8211; ignore instance weights.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of scores, one for each learner.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Standard errors are estimated from deviation of CAs across folds (if
+test_results were produced by cross_validation) or approximated under
+the assumption of normal distribution otherwise.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.Sensitivity">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">Sensitivity</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.Sensitivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute <a class="reference external" href="http://en.wikipedia.org/wiki/Sensitivity_and_specificity">sensitivity</a> (proportion
+of actual positives which are correctly identified as such).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.Specificity">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">Specificity</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.Specificity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute <a class="reference external" href="http://en.wikipedia.org/wiki/Sensitivity_and_specificity">specificity</a>
+(proportion of negatives which are correctly identified).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.PPV">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">PPV</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.PPV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute <a class="reference external" href="http://en.wikipedia.org/wiki/Positive_predictive_value">positive predictive value</a> (proportion of
+subjects with positive test results who are correctly diagnosed).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.NPV">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">NPV</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.NPV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute <a class="reference external" href="http://en.wikipedia.org/wiki/Negative_predictive_value">negative predictive value</a> (proportion of
+subjects with a negative test result who are correctly diagnosed).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.Precision">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">Precision</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.Precision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute <a class="reference external" href="http://en.wikipedia.org/wiki/Precision_and_recall">precision</a>
+(retrieved instances that are relevant).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.Recall">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">Recall</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.Recall" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute <a class="reference external" href="http://en.wikipedia.org/wiki/Precision_and_recall">recall</a>
+(fraction of relevant instances that are retrieved).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.F1">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">F1</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.F1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <a class="reference external" href="http://en.wikipedia.org/wiki/F1_score">F1 score</a>
+(harmonic mean of precision and recall).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.Falpha">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">Falpha</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.Falpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the alpha-mean of precision and recall over the given confusion
+matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.MCC">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">MCC</tt><big>(</big><em>cls</em>, <em>test_results</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.MCC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute <a class="reference external" href="http://en.wikipedia.org/wiki/Matthews_correlation_coefficient">Matthew correlation coefficient</a>
+(correlation coefficient between the observed and predicted binary
+classifications).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>test_results</strong> &#8211; <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>
+or list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of scores, one for each learner.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.AP">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">AP</tt><big>(</big><em>res</em>, <em>report_se=False</em>, <em>ignore_weights=False</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.AP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the average probability assigned to the correct class.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.IS">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">IS</tt><big>(</big><em>res</em>, <em>apriori=None</em>, <em>report_se=False</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.IS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the information score as defined by 
+<a class="reference external" href="http://www.springerlink.com/content/g5p7473160476612/">Kononenko and Bratko (1991)</a>.
+Argument <tt class="xref py py-obj docutils literal"><span class="pre">apriori</span></tt> gives the apriori class
+distribution; if it is omitted, the class distribution is computed from
+the actual classes of examples in <tt class="xref py py-obj docutils literal"><span class="pre">res</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.confusion_chi_square">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">confusion_chi_square</tt><big>(</big><em>confusion_matrix</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.confusion_chi_square" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return chi square statistic of the confusion matrix
+(higher value indicates that prediction is not by chance).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="discriminatory-scores">
+<h3>Discriminatory scores<a class="headerlink" href="#discriminatory-scores" title="Permalink to this headline">¶</a></h3>
+<p>Scores that measure how good can the prediction model separate instances with
+different classes are called discriminatory scores.</p>
+<dl class="function">
+<dt id="Orange.evaluation.scoring.Brier_score">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">Brier_score</tt><big>(</big><em>res</em>, <em>report_se=False</em>, <em>ignore_weights=False</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.Brier_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the Brier score, defined as the average (over test instances)
+of <span class="math">\sum_x(t(x) - p(x))^2</span>, where x is a class value, t(x) is 1 for
+the actual class value and 0 otherwise, and p(x) is the predicted
+probability of x.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.AUC">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">AUC</tt><big>(</big><em>test_results=None</em>, <em>multiclass=0</em>, <em>ignore_weights=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.AUC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the area under ROC curve given a set of experimental results.
+If testing consisted of multiple folds, each fold is scored and the
+average score is returned. If a fold contains only instances with the
+same class value, folds will be merged.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>test_results</strong> &#8211; test results to score</li>
+<li><strong>ignore_weights</strong> &#8211; ignore instance weights when calculating score</li>
+<li><strong>multiclass</strong> &#8211; tells what kind of averaging to perform if the target
+class has more than 2 values.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.AUC_for_single_class">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">AUC_for_single_class</tt><big>(</big><em>test_results=None</em>, <em>class_index=-1</em>, <em>ignore_weights=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.AUC_for_single_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute AUC where the class with the given class_index is singled
+out and all other classes are treated as a single class.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.AUC_matrix">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">AUC_matrix</tt><big>(</big><em>test_results=None</em>, <em>multiclass=0</em>, <em>ignore_weights=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.AUC_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a (lower diagonal) matrix with AUCs for all pairs of classes.
+If there are empty classes, the corresponding elements in the matrix
+are -1.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.AUCWilcoxon">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">AUCWilcoxon</tt><big>(</big><em>res</em>, <em>class_index=-1</em>, <em>ignore_weights=False</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.AUCWilcoxon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the area under ROC (AUC) and its standard error using
+Wilcoxon&#8217;s approach proposed by Hanley and McNeal (1982). If 
+<tt class="xref py py-obj docutils literal"><span class="pre">class_index</span></tt> is not specified, the first class is used as
+&#8220;the positive&#8221; and others are negative. The result is a list of
+tuples (aROC, standard error).</p>
+<p>If test results consist of multiple folds, you need to split them using
+<a class="reference internal" href="#Orange.evaluation.scoring.split_by_iterations" title="Orange.evaluation.scoring.split_by_iterations"><tt class="xref py py-obj docutils literal"><span class="pre">split_by_iterations</span></tt></a> and perform this test on each fold separately.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.compute_ROC">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">compute_ROC</tt><big>(</big><em>res</em>, <em>class_index=-1</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.compute_ROC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a ROC curve as a list of (x, y) tuples, where x is 
+1-specificity and y is sensitivity.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.confusion_matrices">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">confusion_matrices</tt><big>(</big><em>test_results</em>, <em>class_index=-1</em>, <em>ignore_weights=False</em>, <em>cutoff=0.5</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.confusion_matrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return confusion matrices for test_results.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>test_results</strong> &#8211; test results</li>
+<li><strong>class_index</strong> &#8211; index of class value for which the confusion matrices
+are to be computed (by default unspecified - see note below).</li>
+<li><strong>ignore_weights</strong> &#8211; ignore instance weights.</li>
+<li><strong>cutoff</strong> &#8211; cutoff for probability</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Orange.evaluation.scoring.ConfusionMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">ConfusionMatrix</span></tt></a> or list-of-list-of-lists (see
+note below)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If <cite>class_index</cite> is not specified and <cite>test_results</cite>
+contain predictions for multi-class problem, then the return
+value is a list of 2D tables (list-of-lists) of all class
+value pairwise misclassifications.</p>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.evaluation.scoring.ConfusionMatrix">
+<em class="property">class </em><tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">ConfusionMatrix</tt><a class="headerlink" href="#Orange.evaluation.scoring.ConfusionMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classification result summary.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="comparison-of-algorithms">
+<h3>Comparison of Algorithms<a class="headerlink" href="#comparison-of-algorithms" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="Orange.evaluation.scoring.McNemar">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">McNemar</tt><big>(</big><em>res</em>, <em>ignore_weights=False</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.McNemar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a triangular matrix with McNemar statistics for each pair of
+classifiers. The statistics is distributed by chi-square distribution with
+one degree of freedom; critical value for 5% significance is around 3.84.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.McNemar_of_two">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">McNemar_of_two</tt><big>(</big><em>res</em>, <em>lrn1</em>, <em>lrn2</em>, <em>ignore_weights=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.McNemar_of_two" title="Permalink to this definition">¶</a></dt>
+<dd><p>McNemar_of_two computes a McNemar statistics for a pair of classifier,
+specified by indices learner1 and learner2.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="regression">
+<h2>Regression<a class="headerlink" href="#regression" title="Permalink to this headline">¶</a></h2>
+<p>Several alternative measures, as given below, can be used to evaluate
+the sucess of numeric prediction:</p>
+<img alt="../../_images/statRegression.png" src="../../_images/statRegression.png" />
+<dl class="function">
+<dt id="Orange.evaluation.scoring.MSE">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">MSE</tt><big>(</big><em>res</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.MSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mean-squared error.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.RMSE">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">RMSE</tt><big>(</big><em>res</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.RMSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute root mean-squared error.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.MAE">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">MAE</tt><big>(</big><em>res</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.MAE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute mean absolute error.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.RSE">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">RSE</tt><big>(</big><em>res</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.RSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute relative squared error.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.RRSE">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">RRSE</tt><big>(</big><em>res</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.RRSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute relative squared error.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.RAE">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">RAE</tt><big>(</big><em>res</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.RAE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute relative absolute error.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.R2">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">R2</tt><big>(</big><em>res</em>, <em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.R2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the coefficient of determination, R-squared.</p>
+</dd></dl>
+
+<p>The following code (<a class="reference download internal" href="../../_downloads/statExamples.py"><tt class="xref download docutils literal"><span class="pre">statExamples.py</span></tt></a>) uses most of the above measures to
+score several regression methods.</p>
+<p>The code above produces the following output:</p>
+<div class="highlight-python"><pre>Learner   MSE     RMSE    MAE     RSE     RRSE    RAE     R2
+maj       84.585  9.197   6.653   1.002   1.001   1.001  -0.002
+rt        40.015  6.326   4.592   0.474   0.688   0.691   0.526
+knn       21.248  4.610   2.870   0.252   0.502   0.432   0.748
+lr        24.092  4.908   3.425   0.285   0.534   0.515   0.715</pre>
+</div>
+</div>
+<div class="section" id="ploting-functions">
+<h2>Ploting functions<a class="headerlink" href="#ploting-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="Orange.evaluation.scoring.graph_ranks">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">graph_ranks</tt><big>(</big><em>filename</em>, <em>avranks</em>, <em>names</em>, <em>cd=None</em>, <em>cdmethod=None</em>, <em>lowv=None</em>, <em>highv=None</em>, <em>width=6</em>, <em>textspace=1</em>, <em>reverse=False</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.graph_ranks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws a CD graph, which is used to display  the differences in methods&#8217; 
+performance.
+See Janez Demsar, Statistical Comparisons of Classifiers over 
+Multiple Data Sets, 7(Jan):1&#8211;30, 2006.</p>
+<p>Needs matplotlib to work.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> &#8211; Output file name (with extension). Formats supported 
+by matplotlib can be used.</li>
+<li><strong>avranks</strong> &#8211; List of average methods&#8217; ranks.</li>
+<li><strong>names</strong> &#8211; List of methods&#8217; names.</li>
+<li><strong>cd</strong> &#8211; Critical difference. Used for marking methods that whose
+difference is not statistically significant.</li>
+<li><strong>lowv</strong> &#8211; The lowest shown rank, if None, use 1.</li>
+<li><strong>highv</strong> &#8211; The highest shown rank, if None, use len(avranks).</li>
+<li><strong>width</strong> &#8211; Width of the drawn figure in inches, default 6 in.</li>
+<li><strong>textspace</strong> &#8211; Space on figure sides left for the description
+of methods, default 1 in.</li>
+<li><strong>reverse</strong> &#8211; If True, the lowest rank is on the right. Default: False.</li>
+<li><strong>cdmethod</strong> &#8211; None by default. It can be an index of element in avranks
+or or names which specifies the method which should be
+marked with an interval.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The following script (<a class="reference download internal" href="../../_downloads/statExamplesGraphRanks.py"><tt class="xref download docutils literal"><span class="pre">statExamplesGraphRanks.py</span></tt></a>) shows hot to plot a graph:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="s">&quot;third&quot;</span><span class="p">,</span> <span class="s">&quot;second&quot;</span><span class="p">,</span> <span class="s">&quot;fourth&quot;</span> <span class="p">]</span>
+<span class="n">avranks</span> <span class="o">=</span>  <span class="p">[</span><span class="mf">1.9</span><span class="p">,</span> <span class="mf">3.2</span><span class="p">,</span> <span class="mf">2.8</span><span class="p">,</span> <span class="mf">3.3</span> <span class="p">]</span> 
+<span class="n">cd</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">compute_CD</span><span class="p">(</span><span class="n">avranks</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span> <span class="c">#tested on 30 datasets</span>
+<span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">graph_ranks</span><span class="p">(</span><span class="s">&quot;statExamples-graph_ranks1.png&quot;</span><span class="p">,</span> <span class="n">avranks</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> \
+    <span class="n">cd</span><span class="o">=</span><span class="n">cd</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">textspace</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Code produces the following graph:</p>
+<img alt="../../_images/statExamplesGraphRanks1.png" src="../../_images/statExamplesGraphRanks1.png" />
+<dl class="function">
+<dt id="Orange.evaluation.scoring.compute_CD">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">compute_CD</tt><big>(</big><em>avranks</em>, <em>N</em>, <em>alpha=0.05</em>, <em>type=nemenyi</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.compute_CD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns critical difference for Nemenyi or Bonferroni-Dunn test
+according to given alpha (either alpha=&#8221;0.05&#8221; or alpha=&#8221;0.1&#8221;) for average
+ranks and number of tested data sets N. Type can be either &#8220;nemenyi&#8221; for
+for Nemenyi two tailed test or &#8220;bonferroni-dunn&#8221; for Bonferroni-Dunn test.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.compute_friedman">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">compute_friedman</tt><big>(</big><em>avranks</em>, <em>N</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.compute_friedman" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a tuple composed of (friedman statistic, degrees of freedom)
+and (Iman statistic - F-distribution, degrees of freedoma) given average
+ranks and a number of tested data sets N.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="utility-functions">
+<h2>Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="Orange.evaluation.scoring.split_by_iterations">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">split_by_iterations</tt><big>(</big><em>res</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.split_by_iterations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split ExperimentResults of a multiple iteratation test into a list
+of ExperimentResults, one for each iteration.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="multi-label-classification">
+<h2>Multi-label classification<a class="headerlink" href="#multi-label-classification" title="Permalink to this headline">¶</a></h2>
+<p>Multi-label classification requires different metrics than those used in
+traditional single-label classification. This module presents the various
+metrics that have been proposed in the literature. Let <span class="math">D</span> be a
+multi-label evaluation data set, conisting of <span class="math">|D|</span> multi-label examples
+<span class="math">(x_i,Y_i)</span>, <span class="math">i=1..|D|</span>, <span class="math">Y_i \\subseteq L</span>. Let <span class="math">H</span>
+be a multi-label classifier and <span class="math">Z_i=H(x_i)</span> be the set of labels
+predicted by <span class="math">H</span> for example <span class="math">x_i</span>.</p>
+<dl class="function">
+<dt id="Orange.evaluation.scoring.mlc_hamming_loss">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">mlc_hamming_loss</tt><big>(</big><em>res</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.mlc_hamming_loss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Schapire and Singer (2000) presented Hamming Loss, which id defined as:</p>
+<p><span class="math">HammingLoss(H,D)=\frac{1}{|D|} \sum_{i=1}^{|D|} \frac{Y_i \vartriangle Z_i}{|L|}</span></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.mlc_accuracy">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">mlc_accuracy</tt><big>(</big><em>res</em>, <em>forgiveness_rate=1</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.mlc_accuracy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Godbole &amp; Sarawagi, 2004 uses the metrics accuracy, precision, recall as follows:</p>
+<p><span class="math">Accuracy(H,D)=\frac{1}{|D|} \sum_{i=1}^{|D|} \frac{|Y_i \cap Z_i|}{|Y_i \cup Z_i|}</span></p>
+<p>Boutell et al. (2004) give a more generalized version using a parameter <span class="math">\alpha \ge 0</span>, 
+called forgiveness rate:</p>
+<p><span class="math">Accuracy(H,D)=\frac{1}{|D|} \sum_{i=1}^{|D|} (\frac{|Y_i \cap Z_i|}{|Y_i \cup Z_i|})^{\alpha}</span></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.mlc_precision">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">mlc_precision</tt><big>(</big><em>res</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.mlc_precision" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math">Precision(H,D)=\frac{1}{|D|} \sum_{i=1}^{|D|} \frac{|Y_i \cap Z_i|}{|Z_i|}</span></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.evaluation.scoring.mlc_recall">
+<tt class="descclassname">Orange.evaluation.scoring.</tt><tt class="descname">mlc_recall</tt><big>(</big><em>res</em><big>)</big><a class="headerlink" href="#Orange.evaluation.scoring.mlc_recall" title="Permalink to this definition">¶</a></dt>
+<dd><p><span class="math">Recall(H,D)=\frac{1}{|D|} \sum_{i=1}^{|D|} \frac{|Y_i \cap Z_i|}{|Y_i|}</span></p>
+</dd></dl>
+
+<p>The following script demonstrates the use of those evaluation measures:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="k">def</span> <span class="nf">print_results</span><span class="p">(</span><span class="n">res</span><span class="p">):</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">mlc_hamming_loss</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">mlc_accuracy</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">mlc_precision</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">mlc_recall</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&#39;loss=&#39;</span><span class="p">,</span> <span class="n">loss</span>
+    <span class="k">print</span> <span class="s">&#39;accuracy=&#39;</span><span class="p">,</span> <span class="n">accuracy</span>
+    <span class="k">print</span> <span class="s">&#39;precision=&#39;</span><span class="p">,</span> <span class="n">precision</span>
+    <span class="k">print</span> <span class="s">&#39;recall=&#39;</span><span class="p">,</span> <span class="n">recall</span>
+    <span class="k">print</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">Orange</span><span class="o">.</span><span class="n">multilabel</span><span class="o">.</span><span class="n">MLkNNLearner</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)]</span>
+<span class="n">emotions</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;emotions.tab&quot;</span><span class="p">)</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">emotions</span><span class="p">)</span>
+<span class="n">print_results</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output should look like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">loss</span><span class="o">=</span> <span class="p">[</span><span class="mf">0.9375</span><span class="p">]</span>
+<span class="n">accuracy</span><span class="o">=</span> <span class="p">[</span><span class="mf">0.875</span><span class="p">]</span>
+<span class="n">precision</span><span class="o">=</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">]</span>
+<span class="n">recall</span><span class="o">=</span> <span class="p">[</span><span class="mf">0.875</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<p>Boutell, M.R., Luo, J., Shen, X. &amp; Brown, C.M. (2004), &#8216;Learning multi-label scene classification&#8217;,
+Pattern Recogintion, vol.37, no.9, pp:1757-71</p>
+<p>Godbole, S. &amp; Sarawagi, S. (2004), &#8216;Discriminative Methods for Multi-labeled Classification&#8217;, paper
+presented to Proceedings of the 8th Pacific-Asia Conference on Knowledge Discovery and Data Mining
+(PAKDD 2004)</p>
+<p>Schapire, R.E. &amp; Singer, Y. (2000), &#8216;Boostexter: a bossting-based system for text categorization&#8217;,
+Machine Learning, vol.39, no.2/3, pp:135-68.</p>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

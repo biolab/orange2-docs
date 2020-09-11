@@ -1,0 +1,182 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>File &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">File</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#advanced-options">Advanced Options</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="file">
+<span id="id1"></span><h1>File<a class="headerlink" href="#file" title="Permalink to this headline">¶</a></h1>
+<img alt="File widget icon" class="widget-category-data widget-icon" src="../../../_images/File.svg" /><p>Reads attribute-value data from an input file.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last simple">
+<li>(None)</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Data</span></tt></dt>
+<dd><p class="first last">Attribute-valued data set read from the input file.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<span id="my-reference-label"></span><h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>File widget reads the input data file (data table with data instances)
+and sends the data set to its output channel. It maintains
+a history of most recently opened files. For convenience, the history also
+includes a directory with the sample data sets that come
+pre-installed with Orange.</p>
+<p>The widget reads data from simple tab-delimited or comma-separated files,
+as well as files in
+<a class="reference external" href="http://www.cs.waikato.ac.nz/~ml/weka/arff.html">Weka&#8217;s arrf format</a>.</p>
+<img alt="File widget with loaded Iris data set" class="align-right" src="../../../_images/File-stamped.png" />
+<ol class="stamp-list arabic simple">
+<li>Browse for a data file.</li>
+<li>Browse through previously opened data files, or load any of the sample data
+files.</li>
+<li>Reloads currently selected data file.</li>
+<li>Information on loaded data set (data set size, number and types of
+data features).</li>
+<li>Opens a sub-window with advanced settings.</li>
+<li>Adds a report on data set info (size, features).</li>
+</ol>
+<div class="clearer container">
+<img alt="../../../_images/spacer.png" src="../../../_images/spacer.png" />
+</div>
+</div>
+<div class="section" id="advanced-options">
+<h2>Advanced Options<a class="headerlink" href="#advanced-options" title="Permalink to this headline">¶</a></h2>
+<img alt="Advanced options of File widget" class="align-right" src="../../../_images/File-Advanced-stamped.png" />
+<ol class="stamp-list arabic simple">
+<li>Symbol for don&#8217;t care data entry.</li>
+<li>Symbol for don&#8217;t know data entry.</li>
+<li>Settings for treatment of feature names in the feature space of Orange.</li>
+</ol>
+<div class="clearer container">
+<img alt="../../../_images/spacer.png" src="../../../_images/spacer.png" />
+</div>
+<p>Tab-delimited data file can include user defined symbols for undefined
+values. The symbols for &#8220;don&#8217;t care&#8221; and &#8220;don&#8217;t know&#8221; values can be
+specified in the corresponding edit lines.  The default values for
+&#8220;don&#8217;t know&#8221; and &#8220;don&#8217;t care&#8221; depend upon format. Most users will use
+tab-delimited files: keep the field empty or put a question mark in
+there and that&#8217;s it. Most algorithms do not differ between don&#8217;t know
+and don&#8217;t care values, so consider them both to mean undefined.</p>
+<p>Orange will usually treat the attributes with the same name but
+appearing in different files as the same attribute, so a classifier
+which uses the attribute &#8220;petal length&#8221; from the first will use the
+attribute of the same name from the second. In cases when attributes
+from different files just accidentally bear different names, one can
+instruct Orange to either always construct new attribute or construct
+them when they differ in their domains. Use the options on dealing
+with new attributes with great care (if at all).</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Most Orange workflows would probably start with the File widget. In
+the schema below, the widget is used to read the data that is sent to
+both <a class="reference internal" href="datatable.html#data-table"><em>Data Table</em></a> widget and to widget that displays
+<a class="reference internal" href="../visualize/attributestatistics.html#attribute-statistics"><em>Attribute Statistics</em></a>.</p>
+<img alt="Example schema with File widget" src="../../../_images/File-Workflow.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

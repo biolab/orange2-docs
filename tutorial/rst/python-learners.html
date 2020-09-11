@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Learners in Python &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Learners in Python</a><ul>
+<li><a class="reference internal" href="#classifier-with-feature-selection">Classifier with Feature Selection</a></li>
+<li><a class="reference internal" href="#estimation-of-feature-set-size">Estimation of Feature Set Size</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="learners-in-python">
+<h1>Learners in Python<a class="headerlink" href="#learners-in-python" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Orange comes with plenty classification and regression algorithms. But its also fun to make the new ones. You can build them anew, or wrap existing learners and add some preprocessing to construct new variants. Notice that learners in Orange have to adhere to certain rules. Let us observe them on a classification algorithm:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;titanic&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">LogRegLearner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">&lt;orange.Value &#39;survived&#39;=&#39;no&#39;&gt;</span>
+</pre></div>
+</div>
+<p>When learner is given the data it returns a predictor. In our case, classifier. Classifiers are passed data instances and return a value of a class. They can also return probability distribution, or this together with a class value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">Classifier</span><span class="o">.</span><span class="n">GetProbabilities</span><span class="p">)</span>
+<span class="go">Out[26]: &lt;0.593, 0.407&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">Classifier</span><span class="o">.</span><span class="n">GetBoth</span><span class="p">)</span>
+<span class="go">Out[27]: (&lt;orange.Value &#39;survived&#39;=&#39;no&#39;&gt;, &lt;0.593, 0.407&gt;)</span>
+</pre></div>
+</div>
+<p>Regression is similar, just that the regression model would return only the predicted continuous value.</p>
+<p>Notice also that the constructor for the learner can be given the data, and in that case it will construct a classifier (what else could it do?):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">LogRegLearner</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">42</span><span class="p">])</span>
+<span class="go">&lt;orange.Value &#39;survived&#39;=&#39;no&#39;&gt;</span>
+</pre></div>
+</div>
+<p>Now we are ready to build our own learner. We will do this for a classification problem.</p>
+<div class="section" id="classifier-with-feature-selection">
+<h2>Classifier with Feature Selection<a class="headerlink" href="#classifier-with-feature-selection" title="Permalink to this headline">¶</a></h2>
+<p>Consider a naive Bayesian classifiers. They do perform well, but could loose accuracy when there are many features, especially when these are correlated. Feature selection can help. We may want to wrap naive Bayesian classifier with feature subset selection, such that it would learn only from the few most informative features. We will assume the data contains only discrete features and will score them with information gain. Here is an example that sets the scorer (<tt class="docutils literal"><span class="pre">gain</span></tt>) and uses it to find best five features from the classification data set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;promoters&quot;</span><span class="p">)</span>
+<span class="n">gain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">InfoGain</span><span class="p">()</span>
+<span class="n">best</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">gain</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]]</span>
+<span class="k">print</span> <span class="s">&quot;Features:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Best ones:&quot;</span><span class="p">,</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">best</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>We need to incorporate the feature selection within the learner, at the point where it gets the data. Learners for classification tasks inherit from <tt class="docutils literal"><span class="pre">Orange.classification.PyLearner</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SmallLearner</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">PyLearner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_learner</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">,</span>
+                 <span class="n">name</span><span class="o">=</span><span class="s">&#39;small&#39;</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span>   <span class="o">=</span> <span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_learner</span> <span class="o">=</span> <span class="n">base_learner</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">gain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">InfoGain</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">))</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">((</span><span class="n">gain</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">)[</span><span class="o">-</span><span class="n">m</span><span class="p">:]]</span>
+        <span class="n">domain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">best</span> <span class="o">+</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="p">])</span>
+
+        <span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_learner</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">PyClassifier</span><span class="p">(</span><span class="n">classifier</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The initialization part of the learner (<tt class="docutils literal"><span class="pre">__init__</span></tt>) simply stores the based learner (in our case a naive Bayesian classifier), the name of the learner and a number of features we would like to use. Invocation of the learner (<tt class="docutils literal"><span class="pre">__call__</span></tt>) scores the features, stores the best one in the list (<tt class="docutils literal"><span class="pre">best</span></tt>), construct a data domain and then uses the one to transform the data (<tt class="docutils literal"><span class="pre">Orange.data.Table(domain,</span> <span class="pre">data)</span></tt>) by including only the set of the best features. Besides the most informative features we needed to include also the class. The learner then returns the classifier by using a generic classifier <tt class="docutils literal"><span class="pre">Orange.classification.PyClassifier</span></tt>, where the actual prediction model is passed through <tt class="docutils literal"><span class="pre">classifier</span></tt> argument.</p>
+<p>Note that classifiers in Orange also use the weight vector, which records the importance of training data items. This is useful for several algorithms, like boosting.</p>
+<p>Let&#8217;s check if this works:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;promoters&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s_learner</span> <span class="o">=</span> <span class="n">SmallLearner</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span> <span class="o">=</span> <span class="n">s_learner</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">20</span><span class="p">])</span>
+<span class="go">&lt;orange.Value &#39;y&#39;=&#39;mm&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">classifier</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">20</span><span class="p">],</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">Classifier</span><span class="o">.</span><span class="n">GetProbabilities</span><span class="p">)</span>
+<span class="go">&lt;0.439, 0.561&gt;</span>
+</pre></div>
+</div>
+<p>It does! We constructed the naive Bayesian classifier with only three features. But how do we know what is the best number of features we could use? It&#8217;s time to construct one more learner.</p>
+</div>
+<div class="section" id="estimation-of-feature-set-size">
+<h2>Estimation of Feature Set Size<a class="headerlink" href="#estimation-of-feature-set-size" title="Permalink to this headline">¶</a></h2>
+<p>Given a training data, what is the best number of features we could use with a training algorithm? We can estimate that through cross-validation, by checking possible feature set sizes and estimating how well does the classifier on such reduced feature set behave. When we are done, we use the feature sets size with best performance, and build a classifier on the entire training set. This procedure is often referred to as internal cross validation. We wrap it into a new learner:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">OptimizedSmallLearner</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">PyLearner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;opt_small&quot;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">3</span><span class="p">)):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ms</span> <span class="o">=</span> <span class="n">ms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ms</span><span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">([</span><span class="n">SmallLearner</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">)],</span> <span class="n">data</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">res</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">m</span><span class="p">))</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">best_m</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">SmallLearner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">best_m</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Again, our code stores the arguments at initialization (<tt class="docutils literal"><span class="pre">__init__</span></tt>). The learner invocation part selects the best value of parameter <tt class="docutils literal"><span class="pre">m</span></tt>, the size of the feature set, and uses it to construct the final classifier.</p>
+<p>We can now compare the three classification algorithms. That is, the base classifier (naive Bayesian), the classifier with a fixed number of selected features, and the classifier that estimates the optimal number of features from the training set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nbc</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;nbc&quot;</span><span class="p">)</span>
+<span class="n">s_learner</span> <span class="o">=</span> <span class="n">SmallLearner</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">o_learner</span> <span class="o">=</span> <span class="n">OptimizedSmallLearner</span><span class="p">()</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">o_learner</span><span class="p">,</span> <span class="n">s_learner</span><span class="p">,</span> <span class="n">nbc</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">res</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>And the result? The classifier with feature set size wins (but not substantially. The results would be more pronounced if we would run this on the datasets with larger number of features):</p>
+<div class="highlight-python"><pre>opt_small: 0.942, small: 0.937, nbc: 0.933</pre>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

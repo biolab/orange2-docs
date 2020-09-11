@@ -1,0 +1,181 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Random Forest &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Random Forest</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="random-forest">
+<span id="id1"></span><h1>Random Forest<a class="headerlink" href="#random-forest" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/RandomForest.svg" /><p>Random forest learner</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">A table with training examples</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Learner</dt>
+<dd><p class="first last">The random forest learning algorithm with settings as specified in the
+dialog</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Random Forest Classifier</dt>
+<dd><p class="first last">Trained random forest</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Random forest is a classification technique that proposed by
+<a class="reference internal" href="#breiman2001">[Breiman2001]</a>, given the set of class-labeled data, builds a set of
+classification trees. Each tree is developed from a bootstrap sample
+from the training data. When developing individual trees, an arbitrary
+subset of attributes is drawn (hence the term &#8220;random&#8221;) from which the best
+attribute for the split is selected. The classification is based on the
+majority vote from individually developed tree classifiers in the forest.</p>
+<p>Random forest widget provides for a GUI to Orange&#8217;s own implementation of
+random forest (<a class="reference internal" href="../../../reference/rst/Orange.ensemble.html#Orange.ensemble.forest.RandomForestLearner" title="Orange.ensemble.forest.RandomForestLearner"><tt class="xref py py-class docutils literal"><span class="pre">RandomForestLearner</span></tt></a>). The
+widget output the learner, and, given the training data on its input, the
+random forest. Additional output channel is provided for a selected
+classification tree (from the forest) for the purpose of visualization
+or further analysis.</p>
+<img alt="../../../_images/RandomForest.png" src="../../../_images/RandomForest.png" />
+<p>In the widget, the first field is used to specify the name of the learner
+or classifier. Next block of parameters tells the algorithm how many
+classification trees will be included in the forest
+(<tt class="xref py py-obj docutils literal"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">trees</span> <span class="pre">in</span> <span class="pre">forest</span></tt>), and how many attributes will be
+arbitrarily drawn for consideration at each node. If the later is not
+specified (option <tt class="xref py py-obj docutils literal"><span class="pre">Consider</span> <span class="pre">exactly</span> <span class="pre">...</span></tt> left unchecked), this number
+is equal to square root of number of attributes in the data set. Original
+Brieman&#8217;s proposal is to grow the trees without any pre-prunning, but since
+this later often works quite well the user can set the depth to which the
+trees will be grown (<tt class="xref py py-obj docutils literal"><span class="pre">Maximal</span> <span class="pre">depth</span> <span class="pre">of</span> <span class="pre">individual</span> <span class="pre">trees</span></tt>). As another
+pre-pruning option, the stopping condition in terms of minimal number of
+instances in the node before splitting can be set. Finally, if the training
+data is given to the widget, the <tt class="xref py py-obj docutils literal"><span class="pre">Index</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">tree</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">output</span></tt>
+can be specified, instructing the widget to send the requested classifier.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Snapshot below shows a standard comparison schema of a random forest and
+a tree learner (in this case, C4.5) on a specific data set.</p>
+<img alt="Random forest evaluation" src="../../../_images/RandomForest-Test.png" />
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils citation" frame="void" id="breiman2001" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[Breiman2001]</a></td><td>Breiman L (2001) Random Forests. Machine Learning 45 (1), 5-32.
+(<a class="reference external" href="http://www.springerlink.com/content/u0p06167n6173512/fulltext.pdf">PDF</a>)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

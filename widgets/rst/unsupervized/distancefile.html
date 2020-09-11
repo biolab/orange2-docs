@@ -1,0 +1,177 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Distance File &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Distance File</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="distance-file">
+<span id="id1"></span><h1>Distance File<a class="headerlink" href="#distance-file" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/LoadDistances1.svg" /><p>Computes distances between examples in the data set</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples</dt>
+<dd><p class="first last">A list of examples</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Distance Matrix</dt>
+<dd><p class="first last">A matrix of example distances</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Loads a distance matrix from a text file.</p>
+<p>The first line in the file has to start with the number of items - the
+dimension of the matrix. It can be followed by the word labeled or labelled
+if the file also contains the labels for the items. The rest of the file is
+the matrix, where the elements are separated by tabulators. If the items are
+labelled, the label has to be put in front of each line. The matrix can be
+given with the lower or the upper part, or both. Here are two examples.</p>
+<div class="highlight-python"><pre>0.1
+0.5    0.3
+0.7    0.9    0.2
+0.2    0.8    0.6    0.5</pre>
+</div>
+<div class="highlight-python"><pre>john   0.1
+joe    0.5    0.3
+jack   0.7    0.9    0.2
+jane   0.2    0.8    0.6    0.5</pre>
+</div>
+<img alt="Distance File Widget" src="../../../_images/DistanceFile.png" />
+<p>The file is selected using button <tt class="xref py py-obj docutils literal"></tt>, which opens a file browser.
+File extension is arbitrary.</p>
+<p>Sometimes we get the labels in a separate example table. Say that we have a
+set of 15 examples in a data file, and the distance matrix represents distances
+between these examples. In this case, we would connect the widget providing
+these 15 examples (say a <a class="reference internal" href="../data/file.html#file"><em>File</em></a>) to the input of Distance File and
+select <tt class="xref py py-obj docutils literal"><span class="pre">Use</span> <span class="pre">examples</span> <span class="pre">as</span> <span class="pre">items</span></tt> in Items from input data.
+Distance File would attach the examples to the distance matrix, so further
+widget can, for instance, use a user-selected attribute to label the items.</p>
+<p>In another scenario, the distance matrix would represent distances between
+attributes of some data table. We similarly connect a data providing widget
+to Distance File, but select <tt class="xref py py-obj docutils literal"><span class="pre">Use</span> <span class="pre">attribute</span> <span class="pre">names</span></tt>. Distance File then
+labels the items with the names of the attributes.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The first schema loads the labelled distance file above and shows it with
+the <a class="reference internal" href="distancemap.html#distance-map"><em>Distance Map</em></a>.</p>
+<img alt="../../../_images/DistanceFile1-Schema.png" src="../../../_images/DistanceFile1-Schema.png" />
+<img alt="../../../_images/DistanceFile-DistanceMap1.png" src="../../../_images/DistanceFile-DistanceMap1.png" />
+<p>In the second schema the labels come from a file. The labels given in the file
+loaded by Distance File are replaced by the attribute names (since we checked
+<tt class="xref py py-obj docutils literal"><span class="pre">Use</span> <span class="pre">attribute</span> <span class="pre">names</span></tt>.</p>
+<img alt="../../../_images/DistanceFile2-Schema.png" src="../../../_images/DistanceFile2-Schema.png" />
+<p>In the file widget we loaded the Iris data set, and the resulting distance map
+looks like this.</p>
+<img alt="../../../_images/DistanceFile-DistanceMap2.png" src="../../../_images/DistanceFile-DistanceMap2.png" />
+<p>The widget can of course be connected to any other widget that can do something
+useful with the distances, such as <a class="reference internal" href="mds.html#mds"><em>MDS</em></a> or
+<a class="reference internal" href="hierarchicalclustering.html#hierarchical-clustering"><em>Hierarchical Clustering</em></a>.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

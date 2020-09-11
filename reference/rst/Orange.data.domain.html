@@ -1,0 +1,736 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Domain description (Domain) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Domain description (<tt class="docutils literal"><span class="pre">Domain</span></tt>)</a><ul>
+<li><a class="reference internal" href="#domains-as-lists-and-dictionaries">Domains as lists and dictionaries</a></li>
+<li><a class="reference internal" href="#conversions-between-domains">Conversions between domains</a></li>
+<li><a class="reference internal" href="#multiple-classes">Multiple classes</a></li>
+<li><a class="reference internal" href="#meta-attributes">Meta attributes</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="domain-description-domain">
+<h1>Domain description (<tt class="docutils literal"><span class="pre">Domain</span></tt>)<a class="headerlink" href="#domain-description-domain" title="Permalink to this headline">¶</a></h1>
+<p>In Orange, the term <cite>domain</cite> denotes a set of variables and meta
+attributes that describe data. A domain descriptor is attached to data
+instances, data tables, classifiers and other objects. A descriptor is
+constructed, for instance, after reading data from a file.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;zoo&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span>
+<span class="go">[hair, feathers, eggs, milk, airborne, aquatic, predator, toothed,</span>
+<span class="go">backbone, breathes, venomous, fins, legs, tail, domestic, catsize,</span>
+<span class="go">type], {-2:name}</span>
+</pre></div>
+</div>
+<p>Domains consists of ordinary features (from &#8220;hair&#8221; to &#8220;catsize&#8221; in the
+above example), the class attribute (&#8220;type&#8221;), and meta attributes
+(&#8220;name&#8221;). We will refer to features and the class attribute as
+<em>variables</em>. Variables are printed out in a form similar to a list whose
+elements are attribute names, and meta attributes are printed like a
+dictionary whose &#8220;keys&#8221; are meta attribute id&#8217;s and &#8220;values&#8221; are
+attribute names. In the above case, each data instance corresponds to an
+animal and is described by the animal&#8217;s properties and its type (the
+class); the meta attribute contains the animal&#8217;s name.</p>
+<div class="section" id="domains-as-lists-and-dictionaries">
+<h2>Domains as lists and dictionaries<a class="headerlink" href="#domains-as-lists-and-dictionaries" title="Permalink to this headline">¶</a></h2>
+<p>Domains behave like lists: the length of domain is the number of
+variables including the class variable. Domains can be indexed by integer
+indices, variable names or instances of
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;feathers&quot;</span><span class="p">]</span>
+<span class="go">EnumVariable &#39;feathers&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="go">EnumVariable &#39;feathers&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">feathers</span> <span class="o">=</span> <span class="n">domain</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="p">[</span><span class="n">feathers</span><span class="p">]</span>
+<span class="go">EnumVariable &#39;feathers&#39;</span>
+</pre></div>
+</div>
+<p>Meta attributes work the same:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">StringVariable &#39;name&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span>
+<span class="go">StringVariable &#39;name&#39;</span>
+</pre></div>
+</div>
+<p>Slices can be retrieved, but not set. Iterating through domain goes
+through features and the class variable, but not through meta attributes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">domain</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+<span class="gp">...</span>
+<span class="go">hair feathers eggs milk airborne aquatic predator toothed backbone</span>
+<span class="go">breathes venomous fins legs tail domestic catsize type</span>
+</pre></div>
+</div>
+<p>Method <tt class="xref py py-obj docutils literal"><span class="pre">Domain.index</span></tt> returns the index of a variable specified by a
+descriptor or name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;feathers&quot;</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">feathers</span><span class="p">)</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span>
+<span class="go">-2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="conversions-between-domains">
+<h2>Conversions between domains<a class="headerlink" href="#conversions-between-domains" title="Permalink to this headline">¶</a></h2>
+<p>Domain descriptors can convert instances from one domain to another
+(details on construction of domains are described later).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">new_domain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="s">&quot;feathers&quot;</span><span class="p">,</span> <span class="s">&quot;legs&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">],</span> <span class="n">domain</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inst</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">55</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inst</span>
+<span class="go">[&#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;4&#39;,</span>
+<span class="go">&#39;1&#39;, &#39;0&#39;, &#39;1&#39;, &#39;mammal&#39;], {&quot;name&quot;:&#39;oryx&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inst2</span> <span class="o">=</span> <span class="n">new_domain</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">inst2</span>
+<span class="go">[&#39;0&#39;, &#39;4&#39;, &#39;mammal&#39;]</span>
+</pre></div>
+</div>
+<p>This is used, for instance, in classifiers: classifiers are often
+trained on a preprocessed domain (e.g. on a subset of features or
+on discretized data) and later used on instances from the original
+domain. Classifiers store the training domain descriptor and use it
+for converting new instances.</p>
+<p>Alternatively, instances can be converted by constructing a new instance
+and pass the new domain to the constructor:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">inst2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Instance</span><span class="p">(</span><span class="n">new_domain</span><span class="p">,</span> <span class="n">inst</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Entire data table can be converted in a similar way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">new_domain</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span><span class="p">[</span><span class="mi">55</span><span class="p">]</span>
+<span class="go">[&#39;0&#39;, &#39;4&#39;, &#39;mammal&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multiple-classes">
+<span id="id1"></span><h2>Multiple classes<a class="headerlink" href="#multiple-classes" title="Permalink to this headline">¶</a></h2>
+<p>A domain can have multiple additional class attributes. These are stored
+similarly to other features except that they are not used for learning. The
+list of such classes is stored in <a class="reference internal" href="#Orange.data.Domain.class_vars" title="Orange.data.Domain.class_vars"><tt class="xref py py-obj docutils literal"><span class="pre">class_vars</span></tt></a>.
+When converting between domains, multiple classes can become ordinary
+features or the class, and vice versa.</p>
+</div>
+<div class="section" id="meta-attributes">
+<span id="id2"></span><h2>Meta attributes<a class="headerlink" href="#meta-attributes" title="Permalink to this headline">¶</a></h2>
+<p>Meta attributes hold additional data attached to individual
+instances. Different instances from the same domain or even the same
+table may have different meta attributes. (See documentation on
+<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Instance</span></tt></a> for details about meta values.)</p>
+<p>Meta attributes that appear in instances can - but don&#8217;t need to - be
+listed in the domain. Typically, the meta attribute will be included in
+the domain for the following reasons.</p>
+<blockquote>
+<div><ul class="simple">
+<li>If the domain knows about meta attributes, their values can be
+obtained with indexing by names and variable descriptors,
+e.g. <tt class="docutils literal"><span class="pre">inst[&quot;age&quot;]</span></tt>. Values of unknown meta attributes
+can be obtained only through integer indices (e.g. inst[id], where
+id needs to be an integer).</li>
+<li>When printing out a data instance, the symbolic values of discrete
+meta attributes can only be printed if the attribute is
+registered. Also, if the attribute is registered, the printed
+out example will show a (more informative) attribute&#8217;s name
+instead of a meta-id.</li>
+<li>When saving instances to a file, only the values of registered
+meta attributes are saved.</li>
+<li>When a new data instance is constructed, it will have all the
+meta attributes listed in the domain, with their values set to
+unknown.</li>
+</ul>
+</div></blockquote>
+<p>Meta attribute can be marked as &#8220;optional&#8221;. Non-optional meta
+attributes are <em>expected to be</em> present in all data instances from that
+domain. This rule is not strictly enforced. As one of the few places
+where the difference matters, saving to files fails if a non-optional
+meta value is missing; optional attributes are not written to the file
+at all. Also, newly constructed data instances initially have all the
+non-optional meta attributes.</p>
+<p>While the list of features and the class value are immutable,
+meta attributes can be added and removed at any time:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">misses</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Continuous</span><span class="p">(</span><span class="s">&quot;misses&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">id</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">new_meta_id</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">add_meta</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">misses</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This does not change the data: no attributes are added to data
+instances. Methods related to meta attributes are described in more
+details later.</p>
+<p>Registering meta attributes enables addressing by indexing, either by
+name or by descriptor. For instance, the following snippet sets the new
+attribute to 0 for all instances in the data table:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">inst</span><span class="p">[</span><span class="n">misses</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>An alternative is to refer to the attribute by name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">inst</span><span class="p">[</span><span class="s">&quot;misses&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>If the attribute were not registered, it could still be set using the
+integer index:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="n">inst</span><span class="o">.</span><span class="n">set_meta</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Registering the meta attribute also enhances printouts. When an instance
+is printed, meta-values for registered meta attributes are shown as
+&#8220;name:value&#8221; pairs, while for unregistered only id is given instead
+of a name.</p>
+<p>A meta-attribute can be used, for instance, to record the number of
+misclassifications by a given <tt class="docutils literal"><span class="pre">classifier</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+<span class="gp">... </span><span class="k">if</span> <span class="n">inst</span><span class="o">.</span><span class="n">get_class</span><span class="p">()</span> <span class="o">!=</span> <span class="n">classifier</span><span class="p">(</span><span class="n">inst</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">inst</span><span class="p">[</span><span class="n">misses</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>The other effect of registering meta attributes is that they appear in
+converted instances: whenever an instances is converted to some
+domain, it will have all the meta attributes that are registered in
+that domain. If the meta attributes occur in the original domain of
+the instance or if they can be computed from them, they will have
+appropriate values, otherwise their value will be missing.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">new_domain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="s">&quot;feathers&quot;</span><span class="p">,</span> <span class="s">&quot;legs&quot;</span><span class="p">],</span> <span class="n">domain</span><span class="p">)</span>
+<span class="n">new_domain</span><span class="o">.</span><span class="n">add_meta</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">new_meta_id</span><span class="p">(),</span> <span class="n">domain</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">])</span>
+<span class="n">new_domain</span><span class="o">.</span><span class="n">add_meta</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">new_meta_id</span><span class="p">(),</span> <span class="n">domain</span><span class="p">[</span><span class="s">&quot;legs&quot;</span><span class="p">])</span>
+<span class="n">new_domain</span><span class="o">.</span><span class="n">add_meta</span><span class="p">(</span>
+    <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">new_meta_id</span><span class="p">(),</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;X&quot;</span><span class="p">))</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">new_domain</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Domain <tt class="docutils literal"><span class="pre">new_domain</span></tt> in this example has variables <tt class="docutils literal"><span class="pre">feathers</span></tt> and
+<tt class="docutils literal"><span class="pre">legs</span></tt> and meta attributes <tt class="docutils literal"><span class="pre">type</span></tt>, <tt class="docutils literal"><span class="pre">legs</span></tt> (again) and <tt class="docutils literal"><span class="pre">X</span></tt> which
+is a new feature with no relation to the existing ones.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">55</span><span class="p">]</span>
+<span class="go">[&#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;0&#39;, &#39;0&#39;,</span>
+<span class="go">&#39;4&#39;, &#39;1&#39;, &#39;0&#39;, &#39;1&#39;, &#39;mammal&#39;], {&quot;name&quot;:&#39;oryx&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data2</span><span class="p">[</span><span class="mi">55</span><span class="p">]</span>
+<span class="go">[&#39;0&#39;, &#39;4&#39;], {&quot;type&quot;:&#39;mammal&#39;, &quot;legs&quot;:&#39;4&#39;, &quot;X&quot;:&#39;?&#39;}</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.data.Domain">
+<em class="property">class </em><tt class="descclassname">Orange.data.</tt><tt class="descname">Domain</tt><a class="headerlink" href="#Orange.data.Domain" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.data.Domain.features">
+<tt class="descname">features</tt><a class="headerlink" href="#Orange.data.Domain.features" title="Permalink to this definition">¶</a></dt>
+<dd><p>Immutable list of domain attributes without the class
+variable. Read only.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.Domain.variables">
+<tt class="descname">variables</tt><a class="headerlink" href="#Orange.data.Domain.variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of domain attributes including the class variable. Read only.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.Domain.class_var">
+<tt class="descname">class_var</tt><a class="headerlink" href="#Orange.data.Domain.class_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>The class variable (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>) or
+<tt class="docutils literal"><span class="pre">None</span></tt>. Read only.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.Domain.class_vars">
+<tt class="descname">class_vars</tt><a class="headerlink" href="#Orange.data.Domain.class_vars" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of additional class attributes. Read only.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.Domain.version">
+<tt class="descname">version</tt><a class="headerlink" href="#Orange.data.Domain.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer value that is changed when the domain is
+modified. The value can be also used as unique domain identifier; two
+different domains have different value of <tt class="docutils literal"><span class="pre">version</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>variables</em><span class="optional">[</span>, <em>class_vars=</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.data.Domain.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a domain with the given variables; the
+last one is used as the class variable.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="s">&quot;abc&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">features</span>
+<span class="go">&lt;EnumVariable &#39;a&#39;, EnumVariable &#39;b&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span>
+<span class="go">EnumVariable &#39;c&#39;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>variables</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of variables (instances of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>)</li>
+<li><strong>class_vars</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of multiple classes; must be a keyword argument</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>features</em>, <em>class_var</em><span class="optional">[</span>, <em>class_vars=</em><span class="optional">]</span><big>)</big></dt>
+<dd><p>Construct a domain with the given list of features and the
+class variable.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="n">c</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">features</span>
+<span class="go">&lt;EnumVariable &#39;a&#39;, EnumVariable &#39;b&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span>
+<span class="go">EnumVariable &#39;c&#39;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>features</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of features (instances of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>)</li>
+<li><strong>class_variable</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><em>Orange.feature.Descriptor</em></a>) &#8211; Class variable</li>
+<li><strong>class_vars</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of multiple classes; must be a keyword argument</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>variables</em>, <em>has_class</em><span class="optional">[</span>, <em>class_vars=</em><span class="optional">]</span><big>)</big></dt>
+<dd><p>Construct a domain with the given variables. If <tt class="docutils literal"><span class="pre">has_class</span></tt>
+is <tt class="docutils literal"><span class="pre">True</span></tt>, the last variable is the class.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span> <span class="bp">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">features</span>
+<span class="go">&lt;EnumVariable &#39;a&#39;, EnumVariable &#39;b&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span>
+<span class="go">EnumVariable &#39;c&#39;</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>variables</strong> &#8211; List of variables (instances of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>)</li>
+<li><strong>has_class</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; A flag telling whether the domain has a class</li>
+<li><strong>class_vars</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of multiple classes; must be a keyword argument</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>variables</em>, <em>source</em><span class="optional">[</span>, <em>class_vars=</em><span class="optional">]</span><big>)</big></dt>
+<dd><p>Construct a domain with the given variables. Variables specified
+by names are sought for in the <tt class="docutils literal"><span class="pre">source</span></tt> argument. The last
+variable from the list is used as the class variable.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">domain1</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span> <span class="n">domain</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>variables</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of variables (strings or instances of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>)</li>
+<li><strong>source</strong> (Orange.data.Domain or list of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>) &#8211; An existing domain or a list of variables</li>
+<li><strong>class_vars</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of multiple classes; must be a keyword argument</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>variables</em>, <em>has_class</em>, <em>source</em><span class="optional">[</span>, <em>class_vars=</em><span class="optional">]</span><big>)</big></dt>
+<dd><p>Similar to above except for the flag which tells whether the
+last variable should be used as the class variable.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">domain1</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="bp">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">],</span> <span class="bp">False</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>variables</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of variables (strings or instances of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>)</li>
+<li><strong>has_class</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; A flag telling whether the domain has a class</li>
+<li><strong>source</strong> (Orange.data.Domain or list of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>) &#8211; An existing domain or a list of variables</li>
+<li><strong>class_vars</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of multiple classes; must be a keyword argument</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>domain</em>, <em>class_var</em><span class="optional">[</span>, <em>class_vars=</em><span class="optional">]</span><big>)</big></dt>
+<dd><p>Construct a copy of an existing domain except that the class
+variable is replaced with the one specified in the argument
+and the class variable of the existing domain becomes an
+ordinary feature. If the new class is one of the original
+domain&#8217;s features, <tt class="docutils literal"><span class="pre">class_var</span></tt> can also be specified by name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>domain</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">Domain</span></tt>) &#8211; An existing domain</li>
+<li><strong>class_var</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a> or string) &#8211; Class variable for the new domain</li>
+<li><strong>class_vars</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of multiple classes; must be a keyword argument</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>domain</em>, <em>has_class=False</em><span class="optional">[</span>, <em>class_vars=</em><span class="optional">]</span><big>)</big></dt>
+<dd><p>Construct a copy of the domain. If the <tt class="docutils literal"><span class="pre">has_class</span></tt>
+flag is given and is <a class="reference external" href="http://docs.python.org/library/constants.html#False" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">False</span></tt></a>, the class attribute becomes
+an ordinary feature.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>domain</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">Domain</span></tt>) &#8211; An existing domain</li>
+<li><strong>has_class</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; A flag indicating whether the domain will have a class</li>
+<li><strong>class_vars</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of multiple classes; must be a keword argument</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.has_discrete_attributes">
+<tt class="descname">has_discrete_attributes</tt><big>(</big><em>include_class=True</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.has_discrete_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="docutils literal"><span class="pre">True</span></tt> if the domain has any discrete variables;
+class is included unless <tt class="docutils literal"><span class="pre">include_class</span></tt> is <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>has_class</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; tells whether to consider the class variable</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.has_continuous_attributes">
+<tt class="descname">has_continuous_attributes</tt><big>(</big><em>include_class=True</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.has_continuous_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="docutils literal"><span class="pre">True</span></tt> if the domain has any continuous variables;
+class is included unless <tt class="docutils literal"><span class="pre">include_class</span></tt> is <tt class="docutils literal"><span class="pre">False</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>has_class</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; tells whether to consider the class variable</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.has_other_attributes">
+<tt class="descname">has_other_attributes</tt><big>(</big><em>include_class=True</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.has_other_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="docutils literal"><span class="pre">True</span></tt> if the domain has any variables that are
+neither discrete nor continuous, such as, for instance string
+variables. The class is included unless <tt class="docutils literal"><span class="pre">include_class</span></tt> is
+<tt class="docutils literal"><span class="pre">False</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>has_class</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; tells whether to consider the class variable</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.add_meta">
+<tt class="descname">add_meta</tt><big>(</big><em>id</em>, <em>variable</em>, <em>optional=0</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.add_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a meta attribute with the given id (see
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Descriptor.new_meta_id</span></tt>). The same meta attribute should
+have the same id in all domains in which it is registered.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">newid</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">new_meta_id</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span><span class="o">.</span><span class="n">add_meta</span><span class="p">(</span><span class="n">newid</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">String</span><span class="p">(</span><span class="s">&quot;origin&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">55</span><span class="p">][</span><span class="s">&quot;origin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Nepal&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">55</span><span class="p">]</span>
+<span class="go">[&#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;1&#39;, &#39;0&#39;, &#39;0&#39;, &#39;0&#39;, &#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;0&#39;, &#39;0&#39;,</span>
+<span class="go">&#39;4&#39;, &#39;1&#39;, &#39;0&#39;, &#39;1&#39;, &#39;mammal&#39;], {&quot;name&quot;:&#39;oryx&#39;, &quot;origin&quot;:&#39;Nepal&#39;}</span>
+</pre></div>
+</div>
+<p>The third argument tells whether the meta attribute is optional or
+not; non-zero values indicate optional attributes. Different
+values can be used to distinguish between various types
+optional attributes; the meaning of the value is not defined in
+advance and can be used arbitrarily by the application.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; id of the new meta attribute</li>
+<li><strong>variable</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><em>Orange.feature.Descriptor</em></a>) &#8211; variable descriptor</li>
+<li><strong>optional</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; indicates whether the meta attribute is optional</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.add_metas">
+<tt class="descname">add_metas</tt><big>(</big><em>attributes</em>, <em>optional=0</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.add_metas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add multiple meta attributes at once. The dictionary contains id&#8217;s as
+keys and variables (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>) as the
+corresponding values. The following example shows how to add all
+meta attributes from another domain:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">newdomain</span><span class="o">.</span><span class="n">add_metas</span><span class="p">(</span><span class="n">domain</span><span class="o">.</span><span class="n">get_metas</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The optional second argument has the same meaning as in <a class="reference internal" href="#Orange.data.Domain.add_meta" title="Orange.data.Domain.add_meta"><tt class="xref py py-obj docutils literal"><span class="pre">add_meta</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>attributes</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; dictionary of id&#8217;s and variables</li>
+<li><strong>optional</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; tells whether the meta attribute is optional</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.remove_meta">
+<tt class="descname">remove_meta</tt><big>(</big><em>attribute</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.remove_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes one or multiple meta attributes. Removing a meta attribute has
+no effect on data instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>attribute</strong> (<em>string, int, Orange.feature.Descriptor; or a list</em>) &#8211; attribute(s) to be removed, given as name, id, variable descriptor or a list of them</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.has_attribute">
+<tt class="descname">has_attribute</tt><big>(</big><em>attribute</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.has_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="docutils literal"><span class="pre">True</span></tt> if the domain contains the specified meta
+attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>attribute</strong> (<em>string, int, Orange.feature.Descriptor</em>) &#8211; attribute to be checked</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.meta_id">
+<tt class="descname">meta_id</tt><big>(</big><em>attribute</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.meta_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an id of a meta attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>attribute</strong> (<em>string or Orange.feature.Descriptor</em>) &#8211; name or variable descriptor of the attribute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.get_meta">
+<tt class="descname">get_meta</tt><big>(</big><em>attribute</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.get_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a variable descriptor corresponding to the meta attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>attribute</strong> (<em>string or int</em>) &#8211; name or id of the attribute</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">Orange.feature.Descriptor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.get_metas">
+<tt class="descname">get_metas</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.Domain.get_metas" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary with meta attribute id&#8217;s as keys and
+corresponding variable descriptors as values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">get_metas</tt><big>(</big><em>optional</em><big>)</big></dt>
+<dd><p>Return a dictionary with meta attribute id&#8217;s as keys and
+corresponding variable descriptors as values. The dictionary
+contains only meta attributes for which the argument <tt class="docutils literal"><span class="pre">optional</span></tt>
+matches the flag given when the attributes were added using
+<a class="reference internal" href="#Orange.data.Domain.add_meta" title="Orange.data.Domain.add_meta"><tt class="xref py py-obj docutils literal"><span class="pre">add_meta</span></tt></a> or <a class="reference internal" href="#Orange.data.Domain.add_metas" title="Orange.data.Domain.add_metas"><tt class="xref py py-obj docutils literal"><span class="pre">add_metas</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>optional</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; flag that specifies the attributes to be returned</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Domain.is_optional_meta">
+<tt class="descname">is_optional_meta</tt><big>(</big><em>attribute</em><big>)</big><a class="headerlink" href="#Orange.data.Domain.is_optional_meta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="docutils literal"><span class="pre">True</span></tt> if the given meta attribute is optional,
+and <tt class="docutils literal"><span class="pre">False</span></tt> if it is not.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>attribute</strong> (<em>string, int, Orange.feature.Descriptor</em>) &#8211; attribute to be checked</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

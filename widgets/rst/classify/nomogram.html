@@ -1,0 +1,210 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Nomogram &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Nomogram</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="nomogram">
+<span id="id1"></span><h1>Nomogram<a class="headerlink" href="#nomogram" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/Nomogram.svg" /><p>Nomogram</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Classifier (orange.Classifier)</dt>
+<dd><p class="first last">A classifier (either naive Bayesian classifier or logistic regression)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last simple">
+<li>None</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Nomogram is a simple and intuitive, yet useful and powerful representation of
+linear models, such as logistic regression and naive Bayesian classifier. In
+statistical terms, the nomogram plots log odds ratios for each value of each
+attribute. We shall describe its basic properties here, though we recommend
+reading the paper in which we introduced the nomograms for naive Bayesian
+classifier, <a class="reference external" href="http://www.ailab.si/blaz/papers/2004-PKDD.pdf">Nomograms for Visualization of Naive Bayesian Classifier</a>. This
+description will show the nomogram for a naive Bayesian classifier; nomograms
+for other types of classifiers are similar, though they lack some functionality
+due to inherent limitations of these models.</p>
+<p>The snapshot below shows a naive Bayesian nomogram for the heart disease data.
+The first attribute, gender, has two values, where log odds ratio for
+females is -1 (as read from the axis on the top) and for males it is around
+0.4. For the next attribute, the type of chest pain, the asymptotic pain
+votes for the target class (having narrowed vessels), and the other three
+have negative odds of different magnitudes. Note that these are odds for
+naive Bayesian classifier, where, unlike in logistic regression, there is
+no &#8220;base value&#8221; which would have a odds ratio of zero.</p>
+<img alt="../../../_images/Nomogram.png" src="../../../_images/Nomogram.png" />
+<p>The third attribute, SBP at rest, is continuous. To get log odds ratios
+for a particular value of the attribute, find the value (say 175) of the
+vertical axis to the left of the curve corresponding to the attribute. Then
+imagine a line to the left, at the point where it hits the curve, turn
+upwards and read the number on the top scale. The SBP of 175 has log odds
+ration of approximately 1 (0.93, to be precise). The curve thus shows a
+mapping from attribute values on the left to log odds at the top.</p>
+<p>Nomogram is a great data exploration tool. Lengths of the lines correspond
+to spans of odds ratios, suggesting importance of attributes. It also shows
+impacts of individual values; being female is good and being male is bad
+(w.r.t. this disease, at least); besides, being female is much more
+beneficial than being male is harmful. Gender is, however, a much less
+important attribute than the maximal heart rate (HR) with log odds from
+-3.5 to +2.2. SBP&#8217;s from 125 to 140 are equivalent, that is, have the
+same odds ratios...</p>
+<img alt="../../../_images/Nomogram-predictions.png" src="../../../_images/Nomogram-predictions.png" />
+<p>Nomograms can also be used for making probabilistic prediction. A sum
+of log odds ratios for a male with asymptomatic chest pain, a rest
+SBP of 100, cholesterol 200 and maximal heart rate 175 is
+<cite>0.38 + 1.16 + -0.51 + -0.4 = -0.58</cite>, which corresponds to a probability
+32 % for having the disease. To use the widget for classification,
+check <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">predictions</span></tt>. The widget then shows a blue dots on
+attribute axes, which can be dragged around - or left at the zero-line
+if the corresponding value is unknown. The axes at the bottom then show
+a mapping from the sum of log odds to probabilities.</p>
+<p>Now for the settings. Option <tt class="xref py py-obj docutils literal"><span class="pre">Target</span> <span class="pre">Class</span></tt> defines the target class,
+Attribute values to the right of the zero line represent arguments for
+that class and values to the left are arguments against it.</p>
+<p>Log odds for naive Bayesian classifier are computed so that all values
+can have non-zero log odds. The nomogram is drawn as shown above, if
+alignment is set to <tt class="xref py py-obj docutils literal"><span class="pre">Align</span> <span class="pre">by</span> <span class="pre">zero</span> <span class="pre">influence</span></tt>. If set to
+<tt class="xref py py-obj docutils literal"><span class="pre">Align</span> <span class="pre">left</span></tt>, all attribute axes are left-aligned. Logistic regression
+compares the base value with other attribute values, so the base value
+always has log odds ratio of 0, and the attribute axes are always aligned
+to the left.</p>
+<p>The influence of continuous attribute can be shown as two dimensional
+curves (<tt class="xref py py-obj docutils literal"><span class="pre">2D</span> <span class="pre">curve</span></tt>) or with the values projected onto a single line
+(<tt class="xref py py-obj docutils literal"><span class="pre">1D</span> <span class="pre">projection</span></tt>). The latter make the nomogram smaller, but can be
+unreadable if the log odds are not monotonous. In our sample, the
+nomogram would look OK for the heart rate and SBP, but not for cholesterol.</p>
+<p>The widget can show either log odds ratios (<tt class="xref py py-obj docutils literal"><span class="pre">Log</span> <span class="pre">odds</span> <span class="pre">ratios</span></tt>),
+as above, or &#8220;points&#8221; (<tt class="xref py py-obj docutils literal"><span class="pre">Point</span> <span class="pre">scale</span></tt>). In the latter case, log OR
+are simply scaled to the interval -100 to 100 for easier (manual)
+calculation, for instance, if one wishes to print out the nomogram
+and use it on the paper.</p>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">prediction</span></tt> puts a blue dot at each attribute which we
+can drag to the corresponding value. The widget sums the log odds
+ratios and shows the probability of the target class on the bottom
+axes. <tt class="xref py py-obj docutils literal"><span class="pre">Confidence</span> <span class="pre">intervals</span></tt> adds confidence intervals for the
+individual log ratios and for probability prediction. <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">histogram</span></tt>
+adds a bar whose height represents the relative number of examples for
+each value of discrete attribute, while for continuous attributes the
+curve is thickened where the number of examples is higher.</p>
+<img alt="../../../_images/Nomogram-histograms.png" src="../../../_images/Nomogram-histograms.png" />
+<p>For instance, for gender the number of males is about twice as big than
+the number of females, and the confidence interval for the log OR is
+correspondingly smaller. The histograms and confidence intervals also
+explain the strange finding that extreme cholesterol level (600) is healthy,
+healthier than 200, while really low cholesterol (50) is almost as bad as
+levels around 300. The big majority of patients have cholesterol between
+200 and 300; what happens outside this interval may be a random effect,
+which is also suggested by the very wide confidence intervals.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>To draw a nomogram, we need to get some data (e.g. from the
+<a class="reference internal" href="../data/file.html#file"><em>File</em></a> widget, induce a classifier and give it to the nomogram.</p>
+<img alt="Naive Bayesian Classifier - Schema with a Nomogram" src="../../../_images/NaiveBayes-SchemaClassifier.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,268 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Loading and saving data &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Loading and saving data</a><ul>
+<li><a class="reference internal" href="#orange-s-tab-delimited-format">Orange&#8217;s tab-delimited format</a><ul>
+<li><a class="reference internal" href="#simplified-header">Simplified header</a></li>
+<li><a class="reference internal" href="#baskets">Baskets</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#basket-format">Basket Format</a></li>
+<li><a class="reference internal" href="#other-supported-data-formats">Other supported data formats</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="loading-and-saving-data">
+<span id="orange-data-formats"></span><h1>Loading and saving data<a class="headerlink" href="#loading-and-saving-data" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="orange-s-tab-delimited-format">
+<span id="tab-delimited"></span><h2>Orange&#8217;s tab-delimited format<a class="headerlink" href="#orange-s-tab-delimited-format" title="Permalink to this headline">¶</a></h2>
+<p>Orange comes with its native, tab-delimited data format. This is a standard
+data format with a non-standard 3-line header that specifies the type of features
+and optional flags along with the feature names. The first header line contains
+feature (column) names, the second line specifies their types, and the third
+line provides optional flags. Default file extension of Orange&#8217;s data files is
+&#8221;.tab&#8221;.</p>
+<p>Example of iris dataset in Orange&#8217;s format (<a class="reference download internal" href="../../_downloads/iris.tab"><tt class="xref download docutils literal"><span class="pre">iris.tab</span></tt></a>)</p>
+<div class="highlight-python"><pre>sepal length	sepal width	petal length	petal width	iris
+c	c	c	c	d
+				class
+5.1	3.5	1.4	0.2	Iris-setosa
+4.9	3.0	1.4	0.2	Iris-setosa
+4.7	3.2	1.3	0.2	Iris-setosa
+4.6	3.1	1.5	0.2	Iris-setosa
+</pre>
+</div>
+<dl class="docutils">
+<dt>Three header lines thus include:</dt>
+<dd><ol class="first last arabic">
+<li><p class="first">feature names (first header line). Feature names can include any combination
+of characters.</p>
+</li>
+<li><p class="first">feature types (second header line) report on type of the feature. The
+type has to be provided for all features, and can be any of the
+following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>discrete (or d) - imported as <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Discrete" title="Orange.feature.Discrete"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Discrete</span></tt></a></li>
+<li>continuous (or c) - imported as <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Continuous" title="Orange.feature.Continuous"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Continuous</span></tt></a></li>
+<li>text (or string, s) - imported as <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.String" title="Orange.feature.String"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.String</span></tt></a></li>
+<li>basket - used for storing sparse data. More on basket formats in a
+dedicated section.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">optional flags (third header line) that are either empty (no flag) or
+of the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li>ignore (or i) - feature will not be imported</li>
+<li>class (or c) - feature will be imported as class variable. Only one feature can be marked as class.</li>
+<li>multiclass - feature is one of multiple classes. Data can have both, multiple classes and an ordinary class.</li>
+<li>meta (or m) - feature will be imported as a meta attribute.</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</dd>
+</dl>
+<div class="section" id="simplified-header">
+<h3>Simplified header<a class="headerlink" href="#simplified-header" title="Permalink to this headline">¶</a></h3>
+<p>Instead of a three-line header a single-line header can be used with tags
+listed before feature names and separated from a feature name with a
+hash (&#8220;#&#8221;) sign. Supported tags are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>c for class feature</li>
+<li>i for feature to be ignored</li>
+<li>m for the meta attribute</li>
+<li>C for continuous-typed feature</li>
+<li>D for discrete feature</li>
+<li>S for string</li>
+</ul>
+</div></blockquote>
+<p>Files with simplified header should use extension &#8221;.csv&#8221;.</p>
+<p>An example <a class="reference download internal" href="../../_downloads/abridged-iris.csv"><tt class="xref download docutils literal"><span class="pre">data</span> <span class="pre">file</span></tt></a> in this format is
+shown below:</p>
+<div class="highlight-python"><pre>C#sepal length	iC#sepal width	mC#petal length	mC#petal width	cD#iris
+5.1	3.5	1.4	0.2	Iris-setosa
+4.9	3.0	1.4	0.2	Iris-setosa
+4.7	3.2	1.3	0.2	Iris-setosa
+</pre>
+</div>
+<p>Notice that we have ignored the second column (sepal width), and declared
+third and fourth column (features on petal leaves) as meta:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Orange.data</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;abridged-iris.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">[5.1, &#39;Iris-setosa&#39;], {&quot;petal length&quot;:1.4, &quot;petal width&quot;:0.2}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">domain</span>
+<span class="go">[sepal length, iris], {-3:petal length, -4:petal width}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="baskets">
+<h3>Baskets<a class="headerlink" href="#baskets" title="Permalink to this headline">¶</a></h3>
+<p>Baskets can be used for storing sparse data in tab delimited files. They were
+specifically designed for text mining needs. If text mining and sparse data is
+not your business, you can skip this section.</p>
+<p>Baskets are given as a list of space-separated <tt class="docutils literal"><span class="pre">&lt;name&gt;=&lt;value&gt;</span></tt> atoms. A
+continuous meta attribute named <tt class="docutils literal"><span class="pre">&lt;name&gt;</span></tt> will be created and added to the domain
+as optional if it is not already there. A meta value for that variable will be
+added to the example. If the value is 1, you can omit the <tt class="docutils literal"><span class="pre">=&lt;value&gt;</span></tt> part.</p>
+<p>It is not possible to put meta attributes of other types than continuous in the
+basket.</p>
+<p>A tab delimited file with a basket can look like this:</p>
+<div class="highlight-python"><pre>K       Ca      b_foo     Ba  y
+c       c       basket    c   c
+        meta              i   class
+0.06    8.75    a b a c   0   1
+0.48            b=2 d     0   1
+0.39    7.78              0   1
+0.57    8.22    c=13      0   1</pre>
+</div>
+<p>These are the examples read from such a file:</p>
+<div class="highlight-python"><pre>[0.06, 1], {"Ca":8.75, "a":2.000, "b":1.000, "c":1.000}
+[0.48, 1], {"Ca":?, "b":2.000, "d":1.000}
+[0.39, 1], {"Ca":7.78}
+[0.57, 1], {"Ca":8.22, "c":13.000}</pre>
+</div>
+<p>It is recommended to have the basket as the last column, especially if it
+contains a lot of data.</p>
+<p>Note a few things. The basket column&#8217;s name, <tt class="docutils literal"><span class="pre">b_foo</span></tt>, is not used. In the first
+example, the value of <tt class="docutils literal"><span class="pre">a</span></tt> is 2 since it appears twice. The ordinary meta
+attribute, <tt class="docutils literal"><span class="pre">Ca</span></tt>, appears in all examples, even in those where its value is
+undefined. Meta attributes from the basket appear only where they are defined.
+This is due to the different nature of these meta attributes: <tt class="docutils literal"><span class="pre">Ca</span></tt> is required
+while the others are optional.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">getmetas</span><span class="p">()</span>
+<span class="go">{-6: FloatVariable &#39;d&#39;, -22: FloatVariable &#39;Ca&#39;, -5: FloatVariable &#39;c&#39;, -4: FloatVariable &#39;b&#39;, -3: FloatVariable &#39;a&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">getmetas</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="go">{-22: FloatVariable &#39;Ca&#39;}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">getmetas</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+<span class="go">{-6: FloatVariable &#39;d&#39;, -5: FloatVariable &#39;c&#39;, -4: FloatVariable &#39;b&#39;, -3: FloatVariable &#39;a&#39;}</span>
+</pre></div>
+</div>
+<p>To fully understand all this, you should read the documentation on <a class="reference internal" href="Orange.data.domain.html#meta-attributes"><em>meta
+attributes</em></a> in Domain and on the <a class="reference internal" href="#basket-format"><em>basket file format</em></a> (a simple format that is limited to baskets only).</p>
+</div>
+</div>
+<div class="section" id="basket-format">
+<span id="id1"></span><h2>Basket Format<a class="headerlink" href="#basket-format" title="Permalink to this headline">¶</a></h2>
+<p>Basket files (.basket) are suitable for representing sparse data. Each example
+is represented by a line in the file. The line is written as a comma-separated
+list of name-value pairs. Here&#8217;s an example of such file.</p>
+<div class="highlight-python"><pre>nobody, expects, the, Spanish, Inquisition=5
+our, chief, weapon, is, surprise=3, surprise=2, and, fear,fear, and, surprise
+our, two, weapons, are, fear, and, surprise, and, ruthless, efficiency
+to, the, Pope, and, nice, red, uniforms, oh damn</pre>
+</div>
+<p>The file contains four examples. The first examples has five attributes
+defined, &#8220;nobody&#8221;, &#8220;expects&#8221;, &#8220;the&#8221;, &#8220;Spanish&#8221; and &#8220;Inquisition&#8221;; the first
+four have (the default) value of 1.0 and the last has a value of 5.0.</p>
+<p>The attributes that appear in the domain aren&#8217;t defined in any headers or even
+separate files, as with other formats supported by Orange.</p>
+<p>If attribute appears more than once, its values are added. For instance, the
+value of attribute &#8220;surprise&#8221; in the second examples is 6.0 and the value of
+&#8220;fear&#8221; is 2.0; the former appears three times with values of 3.0, 2.0 and 1.0,
+and the latter appears twice with value of 1.0.</p>
+<p>All attributes are loaded as optional meta-attributes, so zero values don&#8217;t
+take any memory (unless they are given, but initialized to zero). See also
+section on <a class="reference internal" href="Orange.data.domain.html#meta-attributes"><em>meta attributes</em></a> in the reference for domain
+descriptors.</p>
+<p>Notice that at the time of writing this reference only association rules can
+directly use examples presented in the basket format.</p>
+</div>
+<div class="section" id="other-supported-data-formats">
+<h2>Other supported data formats<a class="headerlink" href="#other-supported-data-formats" title="Permalink to this headline">¶</a></h2>
+<p>Orange can import data from csv or tab delimited files where the first line contains attribute names followed by
+lines containing data. For such files, orange tries to guess the type of features and treats the right-most
+column as the class variable. If feature types are known in advance, special orange tab format should be used.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

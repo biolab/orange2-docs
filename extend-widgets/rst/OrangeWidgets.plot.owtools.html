@@ -1,0 +1,332 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Plot tools (owtools) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Plot tools (<tt class="docutils literal"><span class="pre">owtools</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-OrangeWidgets.plot.owtools"></span><div class="section" id="plot-tools-owtools">
+<h1>Plot tools (<tt class="docutils literal"><span class="pre">owtools</span></tt>)<a class="headerlink" href="#plot-tools-owtools" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="OrangeWidgets.plot.owtools.resize_plot_item_list">
+<tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">resize_plot_item_list</tt><big>(</big><em>lst</em>, <em>size</em>, <em>item_type</em>, <em>parent</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.resize_plot_item_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Efficiently resizes a list of QGraphicsItems (PlotItems, Curves, etc.). 
+If the list is to be reduced, i.e. if len(lst) &gt; size, then the extra items are first removed from the scene.
+If items have to be added to the scene, new items will be of type <tt class="docutils literal"><span class="pre">item_type</span></tt> and will have <tt class="docutils literal"><span class="pre">parent</span></tt>
+as their parent item.</p>
+<p>The list is resized in place, this function returns nothing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lst</strong> (<em>list of QGraphicsItem</em>) &#8211; The list to be resized</li>
+<li><strong>size</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The needed size of the list</li>
+<li><strong>item_type</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#type" title="(in Python v2.7)"><em>type</em></a>) &#8211; The type of items that should be added if the list has to be increased</li>
+<li><strong>parent</strong> (<em>QGraphicsItem</em>) &#8211; Any new items will have this as their parent item</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="OrangeWidgets.plot.owtools.move_item">
+<tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">move_item</tt><big>(</big><em>item</em>, <em>pos</em>, <em>animate=True</em>, <em>duration=None</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.move_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Animates <tt class="docutils literal"><span class="pre">item</span></tt> to move to position <tt class="docutils literal"><span class="pre">pos</span></tt>. 
+If animations are turned off globally, the item is instead move immediately, without any animation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>item</strong> (<em>QGraphicsItem</em>) &#8211; The item to move</li>
+<li><strong>pos</strong> (<em>QPointF</em>) &#8211; The final position of the item</li>
+<li><strong>duration</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The duration of the animation. If unspecified, Qt&#8217;s default value of 250 miliseconds is used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="OrangeWidgets.plot.owtools.move_item_xy">
+<tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">move_item_xy</tt><big>(</big><em>item</em>, <em>x</em>, <em>y</em>, <em>animate=True</em>, <em>duration=None</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.move_item_xy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Same as 
+move_item(item, QPointF(x, y), duration)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owtools.TooltipManager">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">TooltipManager</tt><big>(</big><em>plot</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.TooltipManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>A dynamic tool tip manager.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plot</strong> (<a class="reference internal" href="OrangeWidgets.plot.owplot.html#OrangeWidgets.plot.OWPlot" title="OrangeWidgets.plot.OWPlot"><tt class="xref py py-obj docutils literal"><span class="pre">OWPlot</span></tt></a>) &#8211; The plot used for transforming the coordinates</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="OrangeWidgets.plot.owtools.TooltipManager.addToolTip">
+<tt class="descname">addToolTip</tt><big>(</big><em>x</em>, <em>y</em>, <em>text</em>, <em>customX=0</em>, <em>customY=0</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.TooltipManager.addToolTip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a tool tip. If a tooltip with the same name already exists, it updates it instead of adding a new one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The x coordinate of the tip, in data coordinates.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The y coordinate of the tip, in data coordinates.</li>
+<li><strong>text</strong> (<em>str or int</em>) &#8211; The text to show in the tip.</li>
+<li><strong>customX</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The maximum horizontal distance in pixels from the point (x,y) at which to show the tooltip.</li>
+<li><strong>customY</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The maximum vertical distance in pixels from the point (x,y) at which to show the tooltip.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If <tt class="docutils literal"><span class="pre">customX</span></tt> and <tt class="docutils literal"><span class="pre">customY</span></tt> are omitted, a default of 6 pixels is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owtools.TooltipManager.maybeTip">
+<tt class="descname">maybeTip</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.TooltipManager.maybeTip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decides whether to pop up a tool tip and which text to show in it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; the x coordinate of the mouse in data coordinates.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; the y coordinate of the mouse in data coordinates.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A tuple consisting of the <tt class="docutils literal"><span class="pre">text</span></tt>, <tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">y</span></tt> arguments to <a class="reference internal" href="#OrangeWidgets.plot.owtools.TooltipManager.addToolTip" title="OrangeWidgets.plot.owtools.TooltipManager.addToolTip"><tt class="xref py py-meth docutils literal"><span class="pre">addToolTip()</span></tt></a> of the
+closest point.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">tuple of (int or str), float, float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owtools.TooltipManager.removeAll">
+<tt class="descname">removeAll</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.TooltipManager.removeAll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all tips</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owtools.PolygonCurve">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">PolygonCurve</tt><big>(</big><em>pen=&lt;PyQt4.QtGui.QPen object at 0x44b1188&gt;</em>, <em>brush=&lt;PyQt4.QtGui.QBrush object at 0x58ed460&gt;</em>, <em>xData=</em><span class="optional">[</span><span class="optional">]</span>, <em>yData=</em><span class="optional">[</span><span class="optional">]</span>, <em>tooltip=None</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.PolygonCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">OrangeWidgets.plot.owcurve.OWCurve</span></tt></p>
+<p>A plot item that shows a filled or empty polygon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pen</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">QPen</span></tt>) &#8211; The pen used to draw the polygon&#8217;s outline</li>
+<li><strong>brush</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">QBrush</span></tt>) &#8211; The brush used to paint the polygon&#8217;s inside</li>
+<li><strong>xData</strong> (<em>list of float</em>) &#8211; The list of x coordinates</li>
+<li><strong>yData</strong> (<em>list of float</em>) &#8211; The list of y coordinates</li>
+<li><strong>tooltip</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The tool tip shown when hovering over this curve</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="staticmethod">
+<dt id="OrangeWidgets.plot.owtools.PolygonCurve.polygon_from_data">
+<em class="property">static </em><tt class="descname">polygon_from_data</tt><big>(</big><em>xData</em>, <em>yData</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.PolygonCurve.polygon_from_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a polygon from a list of x and y coordinates.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A polygon with point corresponding to <tt class="docutils literal"><span class="pre">xData</span></tt> and <tt class="docutils literal"><span class="pre">yData</span></tt>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QPolygonF</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owtools.RectangleCurve">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">RectangleCurve</tt><big>(</big><em>pen=&lt;PyQt4.QtGui.QPen object at 0x58ed3f8&gt;</em>, <em>brush=&lt;PyQt4.QtGui.QBrush object at 0x58edc80&gt;</em>, <em>xData=None</em>, <em>yData=None</em>, <em>tooltip=None</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.RectangleCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">OrangeWidgets.plot.owcurve.OWCurve</span></tt></p>
+<p>A plot item that shows a rectangle.</p>
+<p>This class accepts the same options as <a class="reference internal" href="#OrangeWidgets.plot.owtools.PolygonCurve" title="OrangeWidgets.plot.owtools.PolygonCurve"><tt class="xref py py-obj docutils literal"><span class="pre">PolygonCurve</span></tt></a>. 
+The rectangle is calculated as the smallest rectangle that contains all points in <tt class="docutils literal"><span class="pre">xData</span></tt> and <tt class="docutils literal"><span class="pre">yData</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owtools.CircleCurve">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">CircleCurve</tt><big>(</big><em>pen=&lt;PyQt4.QtGui.QPen object at 0x58edce8&gt;</em>, <em>brush=&lt;PyQt4.QtGui.QBrush object at 0x58edd50&gt;</em>, <em>xCenter=0.0</em>, <em>yCenter=0.0</em>, <em>radius=1</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.CircleCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">OrangeWidgets.plot.owcurve.OWCurve</span></tt></p>
+<p>Displays a circle on the plot</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pen</strong> (<em>QPen</em>) &#8211; The pen used to draw the outline of the circle</li>
+<li><strong>brush</strong> (<em>QBrush</em>) &#8211; The brush used to paint the inside of the circle</li>
+<li><strong>xCenter</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The x coordinate of the circle&#8217;s center</li>
+<li><strong>yCenter</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The y coordinate of the circle&#8217;s center</li>
+<li><strong>radius</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The circle&#8217;s radius</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owtools.UnconnectedLinesCurve">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">UnconnectedLinesCurve</tt><big>(</big><em>name</em>, <em>pen=&lt;PyQt4.QtGui.QPen object at 0x58edc18&gt;</em>, <em>xData=None</em>, <em>yData=None</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.UnconnectedLinesCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">orangeqt.UnconnectedLinesCurve</span></tt></p>
+<p>A plot item that shows a series of unconnected straight lines.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of this curve. :seealso: <a class="reference internal" href="OrangeWidgets.plot.owcurve.html#Orange.OrangeWidgets.plot.owcurve.OWCurve.name" title="Orange.OrangeWidgets.plot.owcurve.OWCurve.name"><tt class="xref py py-attr docutils literal"><span class="pre">OWCurve.name</span></tt></a></li>
+<li><strong>pen</strong> (<em>QPen</em>) &#8211; The pen used to draw the lines</li>
+<li><strong>xData</strong> (<em>list of float</em>) &#8211; The list of x coordinates</li>
+<li><strong>yData</strong> (<em>list of float</em>) &#8211; The list of y coordinates</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The data should contain an even number of elements. Lines are drawn between the <cite>n</cite>-th and 
+<cite>(n+1)</cite>-th point for each even <cite>n</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owtools.Marker">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owtools.</tt><tt class="descname">Marker</tt><big>(</big><em>text</em>, <em>x</em>, <em>y</em>, <em>align</em>, <em>bold=0</em>, <em>color=None</em>, <em>brushColor=None</em>, <em>size=None</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owtools.Marker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">orangeqt.PlotItem</span></tt></p>
+<p>Displays a text marker on the plot.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> &#8211; The text to display. It can be HTML-formatted</li>
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The x coordinate of the marker&#8217;s position</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The y coordinate of the marker&#8217;s position</li>
+<li><strong>align</strong> &#8211; The text alignment</li>
+<li><strong>bold</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; If <tt class="docutils literal"><span class="pre">True</span></tt>, the text will be show bold.</li>
+<li><strong>color</strong> (<em>QColor</em>) &#8211; The text color</li>
+<li><strong>brushColor</strong> &#8211; The color of the brush user to paint the background</li>
+<li><strong>size</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Font size</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Markers have the QGraphicsItem.ItemIgnoresTransformations flag set by default,
+so text remains the same size when zooming. There is no need to scale the manually.</p>
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

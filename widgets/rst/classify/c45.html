@@ -1,0 +1,205 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>C4.5 Learner &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">C4.5 Learner</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="c4-5-learner">
+<span id="c4-5"></span><h1>C4.5 Learner<a class="headerlink" href="#c4-5-learner" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/C4.5.svg" /><p>C4.5 learner by Ross Quinlan</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">A table with training examples</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Learner</dt>
+<dd><p class="first last">The C4.5 learning algorithm with settings as specified in the dialog.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Classifier</dt>
+<dd><p class="first last">Trained C4.5 classifier</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>C45 Tree (C45Classifier)</dt>
+<dd><p class="first last">Induced tree in the original Quinlan&#8217;s format</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Classification Tree (TreeClassifier)</dt>
+<dd><p class="first last">Induced tree in Orange&#8217;s native format</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Classifier</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">C45</span> <span class="pre">Tree</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">Classification</span> <span class="pre">Tree</span></tt> are
+available only if examples are present on the input. Which of the latter two
+output signals is active is determined by setting
+<tt class="xref py py-obj docutils literal"><span class="pre">Convert</span> <span class="pre">to</span> <span class="pre">orange</span> <span class="pre">tree</span> <span class="pre">structure</span></tt> (see the description below).</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This widget provides a graphical interface to the well-known Quinlan&#8217;s C4.5
+algorithm for construction of classification tree. Orange uses the original
+Quinlan&#8217;s code which must be, due to copyright issues, built and linked in
+separately.</p>
+<p>Orange also implements its own classification tree induction algorithm which
+is comparable to Quinlan&#8217;s, though the results may differ due to technical
+details. It is accessible in widget <a class="reference internal" href="classificationtree.html#classification-tree"><em>Classification Tree Learner</em></a>.</p>
+<p>As all widgets for classification, C4.5 widget provides learner and classifier
+on the output. Learner is a learning algorithm with settings as specified by
+the user. It can be fed into widgets for testing learners, namely
+<a class="reference internal" href="../evaluate/testlearners.html#test-learners"><em>Test Learners</em></a>. Classifier is a classification tree build from the
+training examples on the input. If examples are not given, the widget outputs
+no classifier.</p>
+<img alt="C4.5 Widget" src="../../../_images/C4.5.png" />
+<p>Learner can be given a name under which it will appear in, say,
+<a class="reference internal" href="../evaluate/testlearners.html#test-learners"><em>Test Learners</em></a>. The default name is &#8220;C4.5&#8221;.</p>
+<p>The next block of options deals with splitting. C4.5 uses gain ratio by
+default; to override this, check <tt class="xref py py-obj docutils literal"><span class="pre">Use</span> <span class="pre">information</span> <span class="pre">gain</span> <span class="pre">instead</span> <span class="pre">of</span> <span class="pre">ratio</span></tt>,
+which is equivalent to C4.5&#8217;s command line option <tt class="docutils literal"><span class="pre">-g</span></tt>. If you enable
+<tt class="xref py py-obj docutils literal"><span class="pre">Subsetting</span></tt> (equivalent to <tt class="docutils literal"><span class="pre">-s</span></tt>), C4.5 will merge values of
+multivalued discrete attributes instead of creating one branch for each node.
+<tt class="xref py py-obj docutils literal"><span class="pre">Probabilistic</span> <span class="pre">threshold</span> <span class="pre">for</span> <span class="pre">continuous</span> <span class="pre">attributes</span></tt> (<tt class="docutils literal"><span class="pre">-p</span></tt>) makes
+C4.5 compute the lower and upper boundaries for values of continuous attributes
+for which the number of misclassified examples would be within one standard
+deviation from the base error.</p>
+<p>As for pruning, you can set the <tt class="xref py py-obj docutils literal"><span class="pre">Minimal</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">leaves</span></tt>
+(Quinlan&#8217;s default is 2, but you may want to disable this for noiseless data),
+and the <tt class="xref py py-obj docutils literal"><span class="pre">Post</span> <span class="pre">prunning</span> <span class="pre">with</span> <span class="pre">confidence</span> <span class="pre">level</span></tt>; the default confidence is
+25.</p>
+<p>Trees can be constructed iteratively, with ever larger number of examples. If
+enable, you can set the <tt class="xref py py-obj docutils literal"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">trials</span></tt>, the
+<tt class="xref py py-obj docutils literal"><span class="pre">initial</span> <span class="pre">windows</span> <span class="pre">size</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">window</span> <span class="pre">increment</span></tt>.</p>
+<p>The resulting classifier can be left in the original Quinlan&#8217;s structure, as
+returned by his underlying code, or <tt class="xref py py-obj docutils literal"><span class="pre">Converted</span> <span class="pre">to</span> <span class="pre">orange</span> <span class="pre">the</span> <span class="pre">structure</span></tt>
+that is used by Orange&#8217;s tree induction algorithm. This setting decides which
+of the two signals that output the tree - <tt class="xref py py-obj docutils literal"><span class="pre">C45</span> <span class="pre">Classifier</span></tt> or
+<tt class="xref py py-obj docutils literal"><span class="pre">Tree</span> <span class="pre">Classifier</span></tt> will be active. As Orange&#8217;s structure is more general
+and can easily accommodate all the data that C4.5 tree needs for
+classification, we believe that the converted tree behave exactly the same as
+the original tree, so the results should not depend on this setting. You should
+therefore leave it enabled since only the converted trees can be shown in the
+tree displaying widgets.</p>
+<p>When you change one or more settings, you need to push <tt class="xref py py-obj docutils literal"><span class="pre">Apply</span></tt>; this will
+put the new learner on the output and, if the training examples are given,
+construct a new classifier and output it as well.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>There are two typical uses of this widget. First, you may want to induce the
+tree and see what it looks like, like in the schema on the right.</p>
+<img alt="C4.5 - Schema with a Classifier" src="../../../_images/C4.5-SchemaClassifier2.png" />
+<p>The second schema shows how to compare the results of C4.5 learner with another
+classifier, naive Bayesian Learner.</p>
+<img alt="C4.5 - Schema with a Learner" src="../../../_images/C4.5-SchemaLearner.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

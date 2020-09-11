@@ -1,0 +1,386 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Multidimensional scaling (mds) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Multidimensional scaling (<tt class="docutils literal"><span class="pre">mds</span></tt>)</a><ul>
+<li><a class="reference internal" href="#stress-functions">Stress functions</a></li>
+<li><a class="reference internal" href="#examples">Examples</a><ul>
+<li><a class="reference internal" href="#mds-scatterplot">MDS Scatterplot</a></li>
+<li><a class="reference internal" href="#a-more-advanced-example">A more advanced example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.projection.mds"></span><span class="target" id="index-0"></span><div class="section" id="multidimensional-scaling-mds">
+<span id="index-1"></span><h1>Multidimensional scaling (<tt class="docutils literal"><span class="pre">mds</span></tt>)<a class="headerlink" href="#multidimensional-scaling-mds" title="Permalink to this headline">¶</a></h1>
+<p>The functionality to perform multidimensional scaling
+(<a class="reference external" href="http://en.wikipedia.org/wiki/Multidimensional_scaling">http://en.wikipedia.org/wiki/Multidimensional_scaling</a>).</p>
+<p>The main class to perform multidimensional scaling is
+<a class="reference internal" href="#Orange.projection.mds.MDS" title="Orange.projection.mds.MDS"><tt class="xref py py-class docutils literal"><span class="pre">Orange.projection.mds.MDS</span></tt></a></p>
+<dl class="class">
+<dt id="Orange.projection.mds.MDS">
+<em class="property">class </em><tt class="descclassname">Orange.projection.mds.</tt><tt class="descname">MDS</tt><big>(</big><em>distances=None</em>, <em>dim=2</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.projection.mds.MDS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main class for performing multidimensional scaling.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>distances</strong> (<a class="reference internal" href="Orange.misc.html#Orange.misc.SymMatrix" title="Orange.misc.SymMatrix"><tt class="xref py py-class docutils literal"><span class="pre">Orange.misc.SymMatrix</span></tt></a>) &#8211; original dissimilarity - a distance matrix to operate on.</li>
+<li><strong>dim</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; dimension of the projected space.</li>
+<li><strong>points</strong> (<tt class="xref py py-class docutils literal"><span class="pre">Orange.core.FloatListList</span></tt>) &#8211; an initial configuration of points (optional)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>An instance of MDS object has the following attributes and functions:</p>
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.points">
+<tt class="descname">points</tt><a class="headerlink" href="#Orange.projection.mds.MDS.points" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds the current configuration of projected points in an
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.core.FloatListList</span></tt> object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.distances">
+<tt class="descname">distances</tt><a class="headerlink" href="#Orange.projection.mds.MDS.distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference internal" href="Orange.misc.html#Orange.misc.SymMatrix" title="Orange.misc.SymMatrix"><tt class="xref py py-class docutils literal"><span class="pre">Orange.misc.SymMatrix</span></tt></a> containing the distances that we
+want to achieve (lsmt changes these).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.projected_distances">
+<tt class="descname">projected_distances</tt><a class="headerlink" href="#Orange.projection.mds.MDS.projected_distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference internal" href="Orange.misc.html#Orange.misc.SymMatrix" title="Orange.misc.SymMatrix"><tt class="xref py py-class docutils literal"><span class="pre">Orange.misc.SymMatrix</span></tt></a> containing the distances between
+projected points.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.original_distances">
+<tt class="descname">original_distances</tt><a class="headerlink" href="#Orange.projection.mds.MDS.original_distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference internal" href="Orange.misc.html#Orange.misc.SymMatrix" title="Orange.misc.SymMatrix"><tt class="xref py py-class docutils literal"><span class="pre">Orange.misc.SymMatrix</span></tt></a> containing the original distances
+between points.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.stress">
+<tt class="descname">stress</tt><a class="headerlink" href="#Orange.projection.mds.MDS.stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference internal" href="Orange.misc.html#Orange.misc.SymMatrix" title="Orange.misc.SymMatrix"><tt class="xref py py-class docutils literal"><span class="pre">Orange.misc.SymMatrix</span></tt></a> holding the stress.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.dim">
+<tt class="descname">dim</tt><a class="headerlink" href="#Orange.projection.mds.MDS.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer holding the dimension of the projected space.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.n">
+<tt class="descname">n</tt><a class="headerlink" href="#Orange.projection.mds.MDS.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>An integer holding the number of elements (points).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.avg_stress">
+<tt class="descname">avg_stress</tt><a class="headerlink" href="#Orange.projection.mds.MDS.avg_stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>A float holding the average stress in the <a class="reference internal" href="#Orange.projection.mds.MDS.stress" title="Orange.projection.mds.MDS.stress"><tt class="xref py py-obj docutils literal"><span class="pre">stress</span></tt></a> matrix.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.mds.MDS.progress_callback">
+<tt class="descname">progress_callback</tt><a class="headerlink" href="#Orange.projection.mds.MDS.progress_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p>A function that gets called after each optimization step in the
+<a class="reference internal" href="#Orange.projection.mds.MDS.run" title="Orange.projection.mds.MDS.run"><tt class="xref py py-func docutils literal"><span class="pre">run()</span></tt></a> method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.mds.MDS.calc_stress">
+<tt class="descname">calc_stress</tt><big>(</big><em>stress_func=SgnRelStress</em><big>)</big><a class="headerlink" href="#Orange.projection.mds.MDS.calc_stress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the stress between the current <a class="reference internal" href="#Orange.projection.mds.MDS.projected_distances" title="Orange.projection.mds.MDS.projected_distances"><tt class="xref py py-obj docutils literal"><span class="pre">projected_distances</span></tt></a> and
+<a class="reference internal" href="#Orange.projection.mds.MDS.distances" title="Orange.projection.mds.MDS.distances"><tt class="xref py py-obj docutils literal"><span class="pre">distances</span></tt></a> matrix using <em>stress_func</em> and update the
+<a class="reference internal" href="#Orange.projection.mds.MDS.stress" title="Orange.projection.mds.MDS.stress"><tt class="xref py py-obj docutils literal"><span class="pre">stress</span></tt></a> matrix and <tt class="xref py py-obj docutils literal"><span class="pre">avgStress</span></tt> accordingly.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.mds.MDS.run">
+<tt class="descname">run</tt><big>(</big><em>iter</em>, <em>stress_func=SgnRelStress</em>, <em>eps=1e-3</em>, <em>progress_callback=None</em><big>)</big><a class="headerlink" href="#Orange.projection.mds.MDS.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform optimization until stopping conditions are met.
+Stopping conditions are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>optimization runs for <em>iter</em> iterations of smacof_step function, or</li>
+<li>stress improvement (old stress minus new stress) is smaller than
+eps * old stress.</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>iter</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of optimization iterations.</li>
+<li><strong>stress_func</strong> &#8211; stress function.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.mds.MDS.calc_distance">
+<tt class="descname">calc_distance</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.mds.MDS.calc_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the distances between points and update the
+<a class="reference internal" href="#Orange.projection.mds.MDS.projected_distances" title="Orange.projection.mds.MDS.projected_distances"><tt class="xref py py-obj docutils literal"><span class="pre">projected_distances</span></tt></a> matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.mds.MDS.lsmt">
+<tt class="descname">lsmt</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.mds.MDS.lsmt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute Kruskal monotone transformation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.mds.MDS.smacof_step">
+<tt class="descname">smacof_step</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.mds.MDS.smacof_step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a single iteration of a Smacof algorithm that optimizes
+<a class="reference internal" href="#Orange.projection.mds.MDS.stress" title="Orange.projection.mds.MDS.stress"><tt class="xref py py-obj docutils literal"><span class="pre">stress</span></tt></a> and updates the <a class="reference internal" href="#Orange.projection.mds.MDS.points" title="Orange.projection.mds.MDS.points"><tt class="xref py py-obj docutils literal"><span class="pre">points</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.mds.MDS.torgerson">
+<tt class="descname">torgerson</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.mds.MDS.torgerson" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the Torgerson algorithm that computes an initial analytical
+solution of the problem.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="stress-functions">
+<h2>Stress functions<a class="headerlink" href="#stress-functions" title="Permalink to this headline">¶</a></h2>
+<p>Stress functions that can be used for MDS have to be implemented as functions
+or callable classes:</p>
+<blockquote>
+<div><dl class="method">
+<dt>
+<tt class="descname"> __call__(correct, current, weight=1.0)</tt></dt>
+<dd><p>Compute the stress using the correct and the current distance value (the
+<a class="reference internal" href="#Orange.projection.mds.MDS.distances" title="Orange.projection.mds.MDS.distances"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.projection.mds.MDS.distances</span></tt></a> and
+<a class="reference internal" href="#Orange.projection.mds.MDS.projected_distances" title="Orange.projection.mds.MDS.projected_distances"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.projection.mds.MDS.projected_distances</span></tt></a> elements).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>correct</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; correct (actual) distance between elements, represented by
+the two points.</li>
+<li><strong>current</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; current distance between the points in the MDS space.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div></blockquote>
+<p>This module provides the following stress functions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-obj docutils literal"><span class="pre">SgnRelStress</span></tt></li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">KruskalStress</span></tt></li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">SammonStress</span></tt></li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">SgnSammonStress</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mds-scatterplot">
+<h3>MDS Scatterplot<a class="headerlink" href="#mds-scatterplot" title="Permalink to this headline">¶</a></h3>
+<p>The following script computes the Euclidean distance between the data
+instances and runs MDS. Final coordinates are plotted with matplotlib
+(not included with orange, <a class="reference external" href="http://matplotlib.sourceforge.net/">http://matplotlib.sourceforge.net/</a>).</p>
+<p>Example (<a class="reference download internal" href="../../_downloads/mds-scatterplot.py"><tt class="xref download docutils literal"><span class="pre">mds-scatterplot.py</span></tt></a>)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="c"># Load some data</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+
+<span class="c"># Construct a distance matrix using Euclidean distance</span>
+<span class="n">euclidean</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">Euclidean</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<span class="n">distance</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">SymMatrix</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="p">)):</span>
+   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+       <span class="n">distance</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">euclidean</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">iris</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+<span class="c"># Run 100 steps of MDS optimization</span>
+<span class="n">mds</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">mds</span><span class="o">.</span><span class="n">MDS</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span>
+<span class="n">mds</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="c"># Initialize matplotlib</span>
+<span class="kn">import</span> <span class="nn">pylab</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="s">&quot;yellow&quot;</span><span class="p">,</span> <span class="s">&quot;blue&quot;</span><span class="p">]</span>
+
+<span class="c"># Construct points (x, y, instanceClass)</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iris</span><span class="p">):</span>
+   <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">mds</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">mds</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">d</span><span class="o">.</span><span class="n">getclass</span><span class="p">()))</span>
+
+<span class="c"># Paint each class separately</span>
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="o">.</span><span class="n">values</span><span class="p">)):</span>
+    <span class="n">sel</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">c</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sel</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sel</span><span class="p">]</span>
+    <span class="n">pylab</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+
+<span class="n">pylab</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;mds-scatterplot.py.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The script produces a file <em>mds-scatterplot.py.png</em>. Color denotes
+the class. Iris is a relatively simple data set with respect to
+classification; to no surprise we see that MDS finds such instance
+placement in 2D where instances of different classes are well separated.
+Note that MDS has no knowledge of points&#8217; classes.</p>
+<img alt="../../_images/mds-scatterplot.png" src="../../_images/mds-scatterplot.png" />
+</div>
+<div class="section" id="a-more-advanced-example">
+<h3>A more advanced example<a class="headerlink" href="#a-more-advanced-example" title="Permalink to this headline">¶</a></h3>
+<p>The following script performs 10 steps of Smacof optimization before computing
+the stress. This is suitable if you have a large dataset and want to save some
+time.</p>
+<p>Example (<a class="reference download internal" href="../../_downloads/mds-advanced.py"><tt class="xref download docutils literal"><span class="pre">mds-advanced.py</span></tt></a>)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="c"># Load some data</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+
+<span class="c"># Construct a distance matrix using Euclidean distance</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">Euclidean</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<span class="n">matrix</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">SymMatrix</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">iris</span><span class="p">)):</span>
+   <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+       <span class="n">matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">iris</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+<span class="c"># Run the Torgerson approximation and calculate stress</span>
+<span class="n">mds</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">mds</span><span class="o">.</span><span class="n">MDS</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+<span class="n">mds</span><span class="o">.</span><span class="n">torgerson</span><span class="p">()</span>
+<span class="n">mds</span><span class="o">.</span><span class="n">calc_stress</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">mds</span><span class="o">.</span><span class="n">KruskalStress</span><span class="p">)</span>
+
+<span class="c"># Optimization loop; calculate the stress only after each 10 optimization steps:</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">old_stress</span> <span class="o">=</span> <span class="n">mds</span><span class="o">.</span><span class="n">avg_stress</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">mds</span><span class="o">.</span><span class="n">smacof_step</span><span class="p">()</span>
+
+    <span class="n">mds</span><span class="o">.</span><span class="n">calc_stress</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">mds</span><span class="o">.</span><span class="n">KruskalStress</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">old_stress</span> <span class="o">*</span> <span class="mf">1e-3</span> <span class="o">&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">fabs</span><span class="p">(</span><span class="n">old_stress</span> <span class="o">-</span> <span class="n">mds</span><span class="o">.</span><span class="n">avg_stress</span><span class="p">):</span>
+        <span class="k">break</span>
+
+<span class="c"># Print the points out</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mds</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">iris</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">p</span><span class="p">,</span> <span class="n">e</span>
+</pre></div>
+</div>
+<p>A few representative lines of the output are:</p>
+<div class="highlight-python"><pre>&lt;-0.633911848068, 0.112218663096&gt; [5.1, 3.5, 1.4, 0.2, 'Iris-setosa']
+&lt;-0.624193906784, -0.111143872142&gt; [4.9, 3.0, 1.4, 0.2, 'Iris-setosa']
+...
+&lt;0.265250980854, 0.237793982029&gt; [7.0, 3.2, 4.7, 1.4, 'Iris-versicolor']
+&lt;0.208580598235, 0.116296850145&gt; [6.4, 3.2, 4.5, 1.5, 'Iris-versicolor']
+...
+&lt;0.635814905167, 0.238721415401&gt; [6.3, 3.3, 6.0, 2.5, 'Iris-virginica']
+&lt;0.356859534979, -0.175976261497&gt; [5.8, 2.7, 5.1, 1.9, 'Iris-virginica']
+...</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

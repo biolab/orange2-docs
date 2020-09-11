@@ -1,0 +1,198 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Confusion Matrix &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Confusion Matrix</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="confusion-matrix">
+<span id="id1"></span><h1>Confusion Matrix<a class="headerlink" href="#confusion-matrix" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/ConfusionMatrix.svg" /><p>Shows a confusion matrix.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Evaluation results (orngTest.ExperimentResults)</dt>
+<dd><p class="first last">Results of testing the algorithms; typically from <a class="reference internal" href="testlearners.html#test-learners"><em>Test Learners</em></a></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Selected Examples (ExampleTable)</dt>
+<dd><p class="first last">A set of examples from the selected cells in the confusion matrix.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Confusion Matrix gives the number/proportion of examples from one class
+classified in to another (or same) class. Besides that, selecting elements
+of the matrix feeds the corresponding examples onto the output signal. This
+way, one can observe which specific examples were misclassified in a certai
+way.</p>
+<p>The widget usually gets the evaluation results from <a class="reference internal" href="testlearners.html#test-learners"><em>Test Learners</em></a>;
+an example of the schema is shown below.</p>
+<img alt="../../../_images/ConfusionMatrix.png" src="../../../_images/ConfusionMatrix.png" />
+<p>The widget on the snapshot shows the confusion matrix for classification
+tree and naive Bayesian classifier trained and tested on the Iris data.
+The righthand side of the widget contains the matrix for naive Bayesian
+classifier (since this classifier is selected on the left). Each row
+corresponds to a correct class, and columns represent the predicted classes.
+For instance, seven examples of Iris-versicolor were misclassified as
+Iris-virginica. The rightmost column gives the number of examples from
+each class (there are 50 irises of each of the three classes) and the bottom
+row gives the number of examples classified into each class (e.g., 52
+instances were classified into virginica).</p>
+<p>When the evaluation results contain data on multiple learning algorithms,
+we have to choose one in in box <tt class="xref py py-obj docutils literal"><span class="pre">Learners</span></tt>.</p>
+<img alt="../../../_images/ConfusionMatrix-Schema.png" src="../../../_images/ConfusionMatrix-Schema.png" />
+<p>In <tt class="xref py py-obj docutils literal"><span class="pre">Show</span></tt> we select what data we would like to see in the matrix.
+In the above example, we are observing the <tt class="xref py py-obj docutils literal"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">examples</span></tt>.
+The alternatives are <tt class="xref py py-obj docutils literal"><span class="pre">Proportions</span> <span class="pre">of</span> <span class="pre">predicted</span></tt> and
+<tt class="xref py py-obj docutils literal"><span class="pre">Proportions</span> <span class="pre">of</span> <span class="pre">true</span></tt> classes. In the iris example, &#8220;proportions of
+predicted&#8221; shows how many of examples classified as, say, Iris-versicolor
+are in which true class; in the table we can read the 0% of them are
+actually setosae, 89.6% of those classified as versicolor are versicolors,
+and 10.4% are virginicae.</p>
+<img alt="../../../_images/ConfusionMatrix-propTrue.png" src="../../../_images/ConfusionMatrix-propTrue.png" />
+<p>Proportions of predicted shows the opposite relation: of all true versicolors,
+86% were classified as versicolors and 14% as virginicae.</p>
+<p>Button <tt class="xref py py-obj docutils literal"><span class="pre">Correct</span></tt> sends all correctly classified examples to the output
+by selecting the diagonal of the matrix. <tt class="xref py py-obj docutils literal"><span class="pre">Misclassified</span></tt> selects the
+misclassified examples. <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a> annulates the selection. As mentioned
+before, one can also select individual cells of the table, to select specific
+kinds of misclassified examples, e.g. the versicolors classified as virginicae.</p>
+<p>When sending the selecting examples the widget can add new attributes telling
+the predicted classes or their probabilities, if the corresponding options
+<tt class="xref py py-obj docutils literal"><span class="pre">Append</span> <span class="pre">class</span> <span class="pre">prediction</span></tt> and/or
+<tt class="xref py py-obj docutils literal"><span class="pre">Append</span> <span class="pre">predicted</span> <span class="pre">class</span> <span class="pre">probabilities</span></tt> are checked.</p>
+<p>The widget updates the output at every change if <tt class="xref py py-obj docutils literal"><span class="pre">Commit</span> <span class="pre">automatically</span></tt>
+is checked. If not, the user will need to press <tt class="xref py py-obj docutils literal"><span class="pre">Commit</span></tt> to commit the
+changes.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The following schema demonstrates well what this widget can be used for.</p>
+<img alt="../../../_images/ConfusionMatrix-Schema.png" src="../../../_images/ConfusionMatrix-Schema.png" />
+<p><a class="reference internal" href="testlearners.html#test-learners"><em>Test Learners</em></a> gets data from <a class="reference internal" href="../data/file.html#file"><em>File</em></a> and two learning algorithms
+from <a class="reference internal" href="../classify/naivebayes.html#naive-bayes"><em>Naive Bayesian Learner</em></a> and <a class="reference internal" href="../classify/classificationtree.html#classification-tree"><em>Classification Tree Learner</em></a>. It performs
+cross-validation or some other train-and-test procedures to get
+class predictions by both algorithms for all (or some, depending on the
+procedure) examples from the data. The test results are fed into the confusion
+matrix, where we can observe how many examples were misclassified in which way.</p>
+<p>On the output we connected two other widgets. <a class="reference internal" href="../data/datatable.html#data-table"><em>Data Table</em></a> will show
+the examples we select in the Confusion matrix. If we, for instance,
+click <tt class="xref py py-obj docutils literal"><span class="pre">Misclassified</span></tt> the table will contain all examples which were
+misclassified by the selected method.</p>
+<p><a class="reference internal" href="../visualize/scatterplot.html#scatter-plot"><em>Scatter Plot</em></a> gets two set of examples. From the file widget, it gets
+the complete data and the confusion matrix will send only the selected data,
+for instance the misclassified examples. The scatter plot will show all the
+data, with the symbols representing the selected data filled and the other
+symbols hollow.</p>
+<p>For a nice example, we can load the iris data set and observe the position
+of misclassified examples in the scatter plot with attributes petal
+length and petal width used for x and y axes. As expected, the misclassified
+examples lie on the boundary between the two classes.</p>
+<img alt="../../../_images/ConfusionMatrix-Example.png" src="../../../_images/ConfusionMatrix-Example.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

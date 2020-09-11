@@ -1,0 +1,583 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Linear projection (linear) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Linear projection (<tt class="docutils literal"><span class="pre">linear</span></tt>)</a><ul>
+<li><a class="reference internal" href="#pricipal-component-analysis-pca">Pricipal Component Analysis (<tt class="docutils literal"><span class="pre">pca</span></tt>)</a><ul>
+<li><a class="reference internal" href="#optimizer-and-projector">Optimizer and Projector</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fisher-discriminant-analysis-fda">Fisher discriminant analysis (<tt class="docutils literal"><span class="pre">fda</span></tt>)</a><ul>
+<li><a class="reference internal" href="#id1">Optimizer and Projector</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#freeviz">FreeViz</a><ul>
+<li><a class="reference internal" href="#learner-and-classifier">Learner and Classifier</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.projection.linear"></span><div class="section" id="linear-projection-linear">
+<h1>Linear projection (<tt class="docutils literal"><span class="pre">linear</span></tt>)<a class="headerlink" href="#linear-projection-linear" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><p id="index-1">Linear transformation of the data might provide a unique insight into the data through observation of the optimized
+projection or through visualization of the space with reduced dimensionality.</p>
+<p>This module contains the FreeViz linear projection optimization algorithm
+[1], PCA and FDA and utility classes for classification of instances based on
+kNN in the linearly transformed space.</p>
+<p>Methods in this module use given data set to optimize a linear projection of features into a new vector space. The
+transformation is returned as a <a class="reference internal" href="#Orange.projection.linear.Projector" title="Orange.projection.linear.Projector"><tt class="xref py py-class docutils literal"><span class="pre">Projector</span></tt></a> instance that, when invoked, projects
+any given data with the domain that matches the domain that was used to optimize the projection.</p>
+<dl class="class">
+<dt id="Orange.projection.linear.Projector">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">Projector</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.Projector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a linear projection of data and uses it to transform any given data with matching input domain.</p>
+<dl class="method">
+<dt id="Orange.projection.linear.Projector.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>dataset</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.Projector.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; input data set</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.Projector.center">
+<tt class="descname">center</tt><em class="property"> = array([], dtype=float64)</em><a class="headerlink" href="#Orange.projection.linear.Projector.center" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array containing means of each variable in the data set that was used
+to construct the projection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.Projector.input_domain">
+<tt class="descname">input_domain</tt><em class="property"> = None</em><a class="headerlink" href="#Orange.projection.linear.Projector.input_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Domain of the data set that was used to construct principal component subspace.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.Projector.output_domain">
+<tt class="descname">output_domain</tt><em class="property"> = None</em><a class="headerlink" href="#Orange.projection.linear.Projector.output_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Domain used in returned data sets. This domain has a continuous
+variable for each axis in the projected space,
+and no class variable(s).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.Projector.projection">
+<tt class="descname">projection</tt><em class="property"> = array([], shape=(0, 0), dtype=float64)</em><a class="headerlink" href="#Orange.projection.linear.Projector.projection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array containing projection (vectors that describe the
+transformation from input to output domain).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.Projector.scale">
+<tt class="descname">scale</tt><em class="property"> = array([], dtype=float64)</em><a class="headerlink" href="#Orange.projection.linear.Projector.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>An array containing standard deviations of each variable in the data
+set that was used to construct the projection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.Projector.standardize">
+<tt class="descname">standardize</tt><em class="property"> = True</em><a class="headerlink" href="#Orange.projection.linear.Projector.standardize" title="Permalink to this definition">¶</a></dt>
+<dd><p>True, if standardization was used when constructing the projection. If
+set, instances will be standardized before being projected.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="pricipal-component-analysis-pca">
+<h2>Pricipal Component Analysis (<tt class="docutils literal"><span class="pre">pca</span></tt>)<a class="headerlink" href="#pricipal-component-analysis-pca" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="index-2"></span><p id="index-3"><a class="reference external" href="http://en.wikipedia.org/wiki/Principal_component_analysis">PCA</a> uses an orthogonal transformation to transform input
+features into a set of uncorrelated features called principal
+components. This transformation is defined in such a way that the first principal component has as high variance as
+possible and each succeeding component in turn has the highest variance possible under constraint that it is orthogonal
+to the preceding components.</p>
+<p>Because PCA is sensitive to the relative scaling of the original variables, the default behaviour of PCA class is to
+standardize the input data.</p>
+<div class="section" id="optimizer-and-projector">
+<h3>Optimizer and Projector<a class="headerlink" href="#optimizer-and-projector" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="index-4"></span><dl class="class">
+<dt id="Orange.projection.linear.PCA">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">PCA</tt><big>(</big><em>standardize=True</em>, <em>max_components=0</em>, <em>variance_covered=1</em>, <em>use_generalized_eigenvectors=0</em>, <em>ddof=1</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.PCA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orthogonal transformation of data into a set of uncorrelated variables called
+principal components. This transformation is defined in such a way that the
+first variable has as high variance as possible.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>standardize</strong> (<em>boolean</em>) &#8211; perform standardization of the data set.</li>
+<li><strong>max_components</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of retained components.</li>
+<li><strong>variance_covered</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; percent of the variance to cover with components.</li>
+<li><strong>use_generalized_eigenvectors</strong> (<em>boolean</em>) &#8211; use generalized eigenvectors (ie.
+multiply data matrix with inverse of its covariance matrix).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.projection.linear.PCA.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>dataset</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.PCA.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a PCA analysis on a data set and return a linear projector
+that maps data into principal component subspace.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; input data set.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.projection.linear.PcaProjector" title="Orange.projection.linear.PcaProjector"><tt class="xref py py-class docutils literal"><span class="pre">PcaProjector</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.PCA.ddof">
+<tt class="descname">ddof</tt><em class="property"> = 1</em><a class="headerlink" href="#Orange.projection.linear.PCA.ddof" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delta degrees of freedom used for numpy operations.
+1 means normalization with (N-1) in cov and std operations</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.projection.linear.PcaProjector">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">PcaProjector</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.PcaProjector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.projection.linear.Projector" title="Orange.projection.linear.Projector"><tt class="xref py py-class docutils literal"><span class="pre">Orange.projection.linear.Projector</span></tt></a></p>
+<dl class="method">
+<dt id="Orange.projection.linear.PcaProjector.biplot">
+<tt class="descname">biplot</tt><big>(</big><em>filename=None</em>, <em>components=(0</em>, <em>1)</em>, <em>title=Biplot</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.PcaProjector.biplot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw biplot for PCA. Actual projection must be performed via pca(data)
+before bipot can be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the file to which the plot will be saved.
+If None, plot will be displayed instead.</li>
+<li><strong>components</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of two components to plot.</li>
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Plot title</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.linear.PcaProjector.scree_plot">
+<tt class="descname">scree_plot</tt><big>(</big><em>filename=None</em>, <em>title=Scree Plot</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.PcaProjector.scree_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draw a scree plot of principal components</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of the file to which the plot will be saved.
+If None, plot will be displayed instead.</li>
+<li><strong>title</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Plot title</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.PcaProjector.variance_sum">
+<tt class="descname">variance_sum</tt><em class="property"> = 0.0</em><a class="headerlink" href="#Orange.projection.linear.PcaProjector.variance_sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum of all variances in the data set that was used to construct the PCA space.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.PcaProjector.variances">
+<tt class="descname">variances</tt><em class="property"> = array([], dtype=float64)</em><a class="headerlink" href="#Orange.projection.linear.PcaProjector.variances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array containing variances of principal components.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>The following example demonstrates a straightforward invocation of PCA
+(<a class="reference download internal" href="../../_downloads/pca-run.py"><tt class="xref download docutils literal"><span class="pre">pca-run.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+
+<span class="n">pca</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">Pca</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<span class="n">transformed_data</span> <span class="o">=</span> <span class="n">pca</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">pca</span>
+</pre></div>
+</div>
+<p>The call to the Pca constructor returns an instance of PcaClassifier, which is later used to transform data to PCA
+feature space. Printing the classifier displays how much variance is covered with the first few components. Classifier
+can also be used to access transformation vectors (eigen_vectors) and variance of the pca components (eigen_values).
+Scree plot can be used when deciding, how many components to keep (<a class="reference download internal" href="../../_downloads/pca-scree.py"><tt class="xref download docutils literal"><span class="pre">pca-scree.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+
+<span class="n">pca</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">Pca</span><span class="p">()(</span><span class="n">iris</span><span class="p">)</span>
+<span class="n">pca</span><span class="o">.</span><span class="n">scree_plot</span><span class="p">(</span><span class="s">&quot;pca-scree.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/pca-scree.png"><img alt="../../_images/pca-scree.png" src="../../_images/pca-scree.png" style="width: 400.0px; height: 300.0px;" /></a>
+<span class="target" id="index-5"></span></div>
+</div>
+<div class="section" id="fisher-discriminant-analysis-fda">
+<span id="index-6"></span><h2>Fisher discriminant analysis (<tt class="docutils literal"><span class="pre">fda</span></tt>)<a class="headerlink" href="#fisher-discriminant-analysis-fda" title="Permalink to this headline">¶</a></h2>
+<p>As a variant of LDA (Linear Discriminant Analysis),
+<a class="reference external" href="http://en.wikipedia.org/wiki/Linear_discriminant_analysis#Fisher.27s_linear_discriminant">FDA</a> finds
+a linear combination of features
+that separates two or more classes best.</p>
+<div class="section" id="id1">
+<h3>Optimizer and Projector<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<span class="target" id="index-7"></span><dl class="class">
+<dt id="Orange.projection.linear.Fda">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">Fda</tt><a class="headerlink" href="#Orange.projection.linear.Fda" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a linear projection of data using FDA. When using this projection optimization method, data is always
+standardized prior to being projected.</p>
+<p>If data instances are provided to the constructor,
+the optimization algorithm is called and the resulting projector
+(<a class="reference internal" href="#Orange.projection.linear.FdaProjector" title="Orange.projection.linear.FdaProjector"><tt class="xref py py-class docutils literal"><span class="pre">FdaProjector</span></tt></a>) is
+returned instead of the optimizer (instance of this class).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.projection.linear.Fda" title="Orange.projection.linear.Fda"><tt class="xref py py-class docutils literal"><span class="pre">Fda</span></tt></a> or
+<a class="reference internal" href="#Orange.projection.linear.FdaProjector" title="Orange.projection.linear.FdaProjector"><tt class="xref py py-class docutils literal"><span class="pre">FdaProjector</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.projection.linear.Fda.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>dataset</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.Fda.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a FDA analysis on a data set and return a linear projector
+that maps data into another vector space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; input data set.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.projection.linear.FdaProjector" title="Orange.projection.linear.FdaProjector"><tt class="xref py py-class docutils literal"><span class="pre">FdaProjector</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.projection.linear.FdaProjector">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">FdaProjector</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.FdaProjector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.projection.linear.Projector" title="Orange.projection.linear.Projector"><tt class="xref py py-class docutils literal"><span class="pre">Orange.projection.linear.Projector</span></tt></a></p>
+<dl class="attribute">
+<dt id="Orange.projection.linear.FdaProjector.eigen_vectors">
+<tt class="descname">eigen_vectors</tt><a class="headerlink" href="#Orange.projection.linear.FdaProjector.eigen_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synonymous for <a class="reference internal" href="#Orange.projection.linear.Projector.projection" title="Orange.projection.linear.Projector.projection"><tt class="xref py py-obj docutils literal"><span class="pre">projection</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.FdaProjector.eigen_values">
+<tt class="descname">eigen_values</tt><a class="headerlink" href="#Orange.projection.linear.FdaProjector.eigen_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Array containing eigenvalues corresponding to eigenvectors.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="freeviz">
+<h2>FreeViz<a class="headerlink" href="#freeviz" title="Permalink to this headline">¶</a></h2>
+<p>Freeviz
+<a class="reference external" href="http://www.ailab.si/idamap/idamap2005/papers/12%20Demsar%20CR.pdf">(Demsar et al, 2005)</a>
+is a method that
+finds a good two-dimensional linear projection of the given data, where the
+quality is defined by a separation of the data from different classes and the
+proximity of the instances from the same class. FreeViz would normally be used
+through a widget since it is primarily a method for graphical exploration of
+the data. About the only case where one would like to use this module directly
+is to tests the classification aspects of the method, that is, to verify the
+accuracy of the resulting kNN-like classifiers on a set of benchmark data sets.</p>
+<p>Description of the method itself is far beyond the scope of this page. See the
+above paper for the original version of the method; at the moment of writing
+the method has been largely extended and not published yet, though the basic
+principles are the same.</p>
+<p>[1] Janez Demsar, Gregor Leban, Blaz Zupan: FreeViz - An Intelligent
+Visualization Approach for Class-Labeled Multidimensional Data Sets,
+Proceedings of IDAMAP 2005, Edinburgh.</p>
+<dl class="class">
+<dt id="Orange.projection.linear.FreeViz">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">FreeViz</tt><big>(</big><em>graph=None</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.FreeViz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains an easy-to-use interface to the core of the method, which is
+written in C++. Differs from other linear projection optimizers in that it itself can store the data
+to make iterative optimization and visualization possible. It can, however, still be used as any other
+projection optimizer by calling (<a class="reference internal" href="#Orange.projection.linear.FreeViz.__call__" title="Orange.projection.linear.FreeViz.__call__"><tt class="xref py py-obj docutils literal"><span class="pre">__call__</span></tt></a>) it.</p>
+<dl class="method">
+<dt id="Orange.projection.linear.FreeViz.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>dataset=None</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.FreeViz.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform FreeViz optimization on the dataset, if given, and return a resulting
+linear <a class="reference internal" href="#Orange.projection.linear.Projector" title="Orange.projection.linear.Projector"><tt class="xref py py-class docutils literal"><span class="pre">Projector</span></tt></a>. If no dataset is given,
+the projection currently stored within the FreeViz object is returned as
+a <a class="reference internal" href="#Orange.projection.linear.Projector" title="Orange.projection.linear.Projector"><tt class="xref py py-class docutils literal"><span class="pre">Projector</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dataset</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; input data set.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.projection.linear.Projector" title="Orange.projection.linear.Projector"><tt class="xref py py-class docutils literal"><span class="pre">Projector</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.FreeViz.attract_g">
+<tt class="descname">attract_g</tt><em class="property"> = 1.0</em><a class="headerlink" href="#Orange.projection.linear.FreeViz.attract_g" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coefficient for the attractive forces. By increasing or decreasing the ratio
+between <a class="reference internal" href="#Orange.projection.linear.FreeViz.attract_g" title="Orange.projection.linear.FreeViz.attract_g"><tt class="xref py py-obj docutils literal"><span class="pre">attract_g</span></tt></a> and <a class="reference internal" href="#Orange.projection.linear.FreeViz.repel_g" title="Orange.projection.linear.FreeViz.repel_g"><tt class="xref py py-obj docutils literal"><span class="pre">repel_g</span></tt></a>, you can make one kind of the
+forces stronger.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.FreeViz.force_balancing">
+<tt class="descname">force_balancing</tt><em class="property"> = False</em><a class="headerlink" href="#Orange.projection.linear.FreeViz.force_balancing" title="Permalink to this definition">¶</a></dt>
+<dd><p>If set, the forces are balanced so that the total sum of
+the attractive equals the total of repulsive, before they are multiplied by
+the above factors. (By our experience, this gives bad results so you may
+want to leave this alone.)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.FreeViz.force_sigma">
+<tt class="descname">force_sigma</tt><em class="property"> = 1.0</em><a class="headerlink" href="#Orange.projection.linear.FreeViz.force_sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sigma to be used in LAW_GAUSSIAN and LAW_KNN.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.FreeViz.law">
+<tt class="descname">law</tt><em class="property"> = LAW_LINEAR</em><a class="headerlink" href="#Orange.projection.linear.FreeViz.law" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be LAW_LINEAR, LAW_SQUARE, LAW_GAUSSIAN, LAW_KNN or LAW_LINEAR_PLUS.
+Default is LAW_LINEAR, which means that the attractive forces increase
+linearly by the distance and the repulsive forces are inversely
+proportional to the distance. LAW_SQUARE would make them rise or fall with
+the square of the distance, LAW_GAUSSIAN is based on a kind of
+log-likelihood estimation, LAW_KNN tries to directly optimize the
+classification accuracy of the kNN classifier in the projection space, and
+in LAW_LINEAR_PLUS both forces rise with the square of the distance,
+yielding a method that is somewhat similar to PCA. We found the first law
+perform the best, with the second to not far behind.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.FreeViz.mirror_symmetry">
+<tt class="descname">mirror_symmetry</tt><em class="property"> = True</em><a class="headerlink" href="#Orange.projection.linear.FreeViz.mirror_symmetry" title="Permalink to this definition">¶</a></dt>
+<dd><p>If enabled, it keeps the projection of the second attribute on the upper
+side of the graph (the first is always on the right-hand x-axis). This is
+useful when comparing whether two projections are the same, but has no
+effect on the projection&#8217;s clarity or its classification accuracy.
+There are some more, undescribed, methods of a more internal nature.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.linear.FreeViz.optimize_separation">
+<tt class="descname">optimize_separation</tt><big>(</big><em>steps=10</em>, <em>single_step=False</em>, <em>distances=None</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.FreeViz.optimize_separation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimize the class separation. If you did not change any of the settings
+which are not documented above, it will call a fast C++ routine which
+will make <tt class="xref py py-obj docutils literal"><span class="pre">steps</span></tt> optimization steps at a time, after which the
+graph (if one is given) is updated. If <tt class="xref py py-obj docutils literal"><span class="pre">single_step</span></tt> is True, it
+will do that only once,
+otherwise it calls it on and on, and compares the current positions of
+the anchors with those 50 calls ago. If no anchor moved for more than
+1e-3, it stops. In Orange Canvas the optimization is also stopped if
+someone outside (namely, the stop button) manages to set the FreeViz&#8217;s
+flag attribute
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.projection.linear.FreeViz.cancel_optimization</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.linear.FreeViz.radial_anchors">
+<tt class="descname">radial_anchors</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.linear.FreeViz.radial_anchors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the projection so that the anchors (projections of attributes)
+are placed evenly around the circle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.linear.FreeViz.random_anchors">
+<tt class="descname">random_anchors</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.linear.FreeViz.random_anchors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the projection to a random one.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.linear.FreeViz.repel_g">
+<tt class="descname">repel_g</tt><em class="property"> = 1.0</em><a class="headerlink" href="#Orange.projection.linear.FreeViz.repel_g" title="Permalink to this definition">¶</a></dt>
+<dd><p>Coefficient for the repulsive forces. By increasing or decreasing the ratio
+between <a class="reference internal" href="#Orange.projection.linear.FreeViz.attract_g" title="Orange.projection.linear.FreeViz.attract_g"><tt class="xref py py-obj docutils literal"><span class="pre">attract_g</span></tt></a> and <a class="reference internal" href="#Orange.projection.linear.FreeViz.repel_g" title="Orange.projection.linear.FreeViz.repel_g"><tt class="xref py py-obj docutils literal"><span class="pre">repel_g</span></tt></a>, you can make one kind of the
+forces stronger.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><a class="reference internal" href="#Orange.projection.linear.FreeViz" title="Orange.projection.linear.FreeViz"><tt class="xref py py-class docutils literal"><span class="pre">FreeViz</span></tt></a> can be used in code to optimize
+a linear projection to two dimensions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">zoo</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&#39;zoo&#39;</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">FreeViz</span><span class="p">()</span>
+<span class="n">projector</span> <span class="o">=</span> <span class="n">optimizer</span><span class="p">(</span><span class="n">zoo</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">projected</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">zoo</span><span class="p">,</span> <span class="n">projector</span><span class="p">(</span><span class="n">zoo</span><span class="p">))[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">e</span><span class="p">,</span> <span class="n">projected</span>
+</pre></div>
+</div>
+<div class="section" id="learner-and-classifier">
+<h3>Learner and Classifier<a class="headerlink" href="#learner-and-classifier" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="Orange.projection.linear.FreeVizLearner">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">FreeVizLearner</tt><big>(</big><em>freeviz=None</em>, <em>**kwd</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.FreeVizLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a></p>
+<p>A learner that builds a <a class="reference internal" href="#Orange.projection.linear.FreeVizClassifier" title="Orange.projection.linear.FreeVizClassifier"><tt class="xref py py-class docutils literal"><span class="pre">FreeVizClassifier</span></tt></a> on given data. An
+instance of <a class="reference internal" href="#Orange.projection.linear.FreeViz" title="Orange.projection.linear.FreeViz"><tt class="xref py py-class docutils literal"><span class="pre">FreeViz</span></tt></a> can be passed to the constructor as a
+keyword argument <tt class="xref py py-obj docutils literal"><span class="pre">freeviz</span></tt>.</p>
+<p>If data instances are provided to the constructor, the learning algorithm
+is called and the resulting classifier is returned instead of the learner.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.projection.linear.FreeVizClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">FreeVizClassifier</tt><big>(</big><em>dataset</em>, <em>freeviz</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.FreeVizClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier</span></tt></a></p>
+<p>A kNN classifier on the 2D projection of the data, optimized by FreeViz.</p>
+<p>Usually the learner
+(<a class="reference internal" href="#Orange.projection.linear.FreeVizLearner" title="Orange.projection.linear.FreeVizLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.projection.linear.FreeVizLearner</span></tt></a>) is used to construct the
+classifier.</p>
+<p>When constructing the classifier manually, the following parameters can
+be passed:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dataset</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; table of data instances to project to a 2D plane and use for
+classification.</li>
+<li><strong>freeviz</strong> (<a class="reference internal" href="#Orange.projection.linear.FreeViz" title="Orange.projection.linear.FreeViz"><tt class="xref py py-class docutils literal"><span class="pre">Orange.projection.linear.FreeViz</span></tt></a>) &#8211; the FreeViz algorithm instance to use to optimize the 2D
+projection.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.projection.linear.S2NHeuristicLearner">
+<em class="property">class </em><tt class="descclassname">Orange.projection.linear.</tt><tt class="descname">S2NHeuristicLearner</tt><big>(</big><em>freeviz=None</em>, <em>**kwd</em><big>)</big><a class="headerlink" href="#Orange.projection.linear.S2NHeuristicLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a></p>
+<p>This class is not documented yet.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

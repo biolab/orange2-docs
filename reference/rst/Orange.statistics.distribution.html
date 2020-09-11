@@ -1,0 +1,596 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Distributions (distribution) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Distributions (<tt class="docutils literal"><span class="pre">distribution</span></tt>)</a><ul>
+<li><a class="reference internal" href="#class-distributions">Class distributions</a></li>
+<li><a class="reference internal" href="#distributions-of-all-variables">Distributions of all variables</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="distributions-distribution">
+<span id="index-0"></span><h1>Distributions (<tt class="docutils literal"><span class="pre">distribution</span></tt>)<a class="headerlink" href="#distributions-distribution" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-obj docutils literal"><span class="pre">Distribution</span></tt></a> and derived classes store empirical
+distributions of discrete and continuous variables.</p>
+<dl class="class">
+<dt id="Orange.statistics.distribution.Distribution">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.distribution.</tt><tt class="descname">Distribution</tt><a class="headerlink" href="#Orange.statistics.distribution.Distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class can
+store absolute or relative frequencies. It provides a convenience constructor
+which constructs instances of derived classes.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;adult_sample&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">disc</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">Distribution</span><span class="p">(</span><span class="s">&quot;workclass&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">disc</span>
+<span class="go">&lt;685.000, 72.000, 28.000, 29.000, 59.000, 43.000, 2.000&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="nb">type</span><span class="p">(</span><span class="n">disc</span><span class="p">)</span>
+<span class="go">&lt;type &#39;DiscDistribution&#39;&gt;</span>
+</pre></div>
+</div>
+<p>The resulting distribution is of type <tt class="xref py py-obj docutils literal"><span class="pre">DiscDistribution</span></tt> since variable
+<cite>workclass</cite> is discrete. The printed numbers are counts of examples that have particular
+attribute value.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">workclass</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;workclass&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">workclass</span><span class="o">.</span><span class="n">values</span><span class="p">)):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%20s</span><span class="s">: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">workclass</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">disc</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="go">         Private: 685.000</span>
+<span class="go">Self-emp-not-inc: 72.000</span>
+<span class="go">    Self-emp-inc: 28.000</span>
+<span class="go">     Federal-gov: 29.000</span>
+<span class="go">       Local-gov: 59.000</span>
+<span class="go">       State-gov: 43.000</span>
+<span class="go">     Without-pay: 2.000</span>
+<span class="go">    Never-worked: 0.000</span>
+</pre></div>
+</div>
+<p>Distributions resembles dictionaries, supporting indexing by instances of
+<a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, integers or floats (depending on the distribution
+type), and symbolic names (if <a class="reference internal" href="#Orange.statistics.distribution.Distribution.variable" title="Orange.statistics.distribution.Distribution.variable"><tt class="xref py py-obj docutils literal"><span class="pre">variable</span></tt></a> is defined).</p>
+<p>For instance, the number of examples with <cite>workclass=&#8221;private&#8221;</cite>, can be
+obtained in three ways:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Private: &quot;</span><span class="p">,</span> <span class="n">disc</span><span class="p">[</span><span class="s">&quot;Private&quot;</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;Private: &quot;</span><span class="p">,</span> <span class="n">disc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;Private: &quot;</span><span class="p">,</span> <span class="n">disc</span><span class="p">[</span><span class="n">orange</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">workclass</span><span class="p">,</span> <span class="s">&quot;Private&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Elements cannot be removed from distributions.</p>
+<p>Length of distribution equals the number of possible values for discrete
+distributions (if <a class="reference internal" href="#Orange.statistics.distribution.Distribution.variable" title="Orange.statistics.distribution.Distribution.variable"><tt class="xref py py-obj docutils literal"><span class="pre">variable</span></tt></a> is set), the value with the highest index
+encountered (if distribution is discrete and :obj: <cite>variable</cite> is
+<a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>) or the number of different values encountered (for continuous
+distributions).</p>
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Distribution.variable">
+<tt class="descname">variable</tt><a class="headerlink" href="#Orange.statistics.distribution.Distribution.variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variable to which the distribution applies; may be <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a> if not
+applicable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Distribution.unknowns">
+<tt class="descname">unknowns</tt><a class="headerlink" href="#Orange.statistics.distribution.Distribution.unknowns" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of instances for which the value of the variable was
+undefined.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Distribution.abs">
+<tt class="descname">abs</tt><a class="headerlink" href="#Orange.statistics.distribution.Distribution.abs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum of all elements in the distribution. Usually it equals either
+<a class="reference internal" href="#Orange.statistics.distribution.Distribution.cases" title="Orange.statistics.distribution.Distribution.cases"><tt class="xref py py-obj docutils literal"><span class="pre">cases</span></tt></a> if the instance stores absolute frequencies or 1 if the
+stored frequencies are relative, e.g. after calling <a class="reference internal" href="#Orange.statistics.distribution.Distribution.normalize" title="Orange.statistics.distribution.Distribution.normalize"><tt class="xref py py-obj docutils literal"><span class="pre">normalize</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Distribution.cases">
+<tt class="descname">cases</tt><a class="headerlink" href="#Orange.statistics.distribution.Distribution.cases" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of instances from which the distribution is computed,
+excluding those on which the value was undefined. If instances were
+weighted, this is the sum of weights.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Distribution.normalized">
+<tt class="descname">normalized</tt><a class="headerlink" href="#Orange.statistics.distribution.Distribution.normalized" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">True</span></tt></a> if distribution is normalized.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Distribution.random_generator">
+<tt class="descname">random_generator</tt><a class="headerlink" href="#Orange.statistics.distribution.Distribution.random_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>A pseudo-random number generator used for method <a class="reference internal" href="Orange.misc.html#Orange.misc.Random" title="Orange.misc.Random"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.misc.Random</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>variable</em><span class="optional">[</span>, <em>data</em><span class="optional">[</span>, <em>weightId=0</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct either <tt class="xref py py-obj docutils literal"><span class="pre">DiscDistribution</span></tt> or <tt class="xref py py-obj docutils literal"><span class="pre">ContDistribution</span></tt>,
+depending on the variable type. If the variable is the only argument, it
+must be an instance of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>. In that case,
+an empty distribution is constructed. If data is given as well, the
+variable can also be specified by name or index in the
+domain. Constructor then computes the distribution of the specified
+variable on the given data. If instances are weighted, the id of
+meta-attribute with weights can be passed as the third argument.</p>
+<p>If variable is given by descriptor, it doesn&#8217;t need to exist in the
+domain, but it must be computable from given instances. For example, the
+variable can be a discretized version of a variable from data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.keys">
+<tt class="descname">keys</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.keys" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of possible values (if distribution is discrete and
+<a class="reference internal" href="#Orange.statistics.distribution.Distribution.variable" title="Orange.statistics.distribution.Distribution.variable"><tt class="xref py py-obj docutils literal"><span class="pre">variable</span></tt></a> is set) or a list encountered values otherwise.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.values">
+<tt class="descname">values</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of frequencies of values such as described above.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.items">
+<tt class="descname">items</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of pairs of elements of the above lists.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.native">
+<tt class="descname">native</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.native" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the distribution as a list (for discrete distributions) or as a
+dictionary (for continuous distributions)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.add">
+<tt class="descname">add</tt><big>(</big><em>value</em><span class="optional">[</span>, <em>weight=1</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increase the count of the element corresponding to <tt class="docutils literal"><span class="pre">value</span></tt> by
+<tt class="docutils literal"><span class="pre">weight</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> (<a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, string (if <a class="reference internal" href="#Orange.statistics.distribution.Distribution.variable" title="Orange.statistics.distribution.Distribution.variable"><tt class="xref py py-obj docutils literal"><span class="pre">variable</span></tt></a> is set), <a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a> for discrete distributions or <a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">float</span></tt></a> for continuous distributions) &#8211; Value</li>
+<li><strong>weight</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Weight to be added to the count for <tt class="docutils literal"><span class="pre">value</span></tt></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.normalize">
+<tt class="descname">normalize</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.normalize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide the counts by their sum, set <a class="reference internal" href="#Orange.statistics.distribution.Distribution.normalized" title="Orange.statistics.distribution.Distribution.normalized"><tt class="xref py py-obj docutils literal"><span class="pre">normalized</span></tt></a> to <a class="reference external" href="http://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">True</span></tt></a> and
+<a class="reference internal" href="#Orange.statistics.distribution.Distribution.abs" title="Orange.statistics.distribution.Distribution.abs"><tt class="xref py py-obj docutils literal"><span class="pre">abs</span></tt></a> to 1. Attributes <a class="reference internal" href="#Orange.statistics.distribution.Distribution.cases" title="Orange.statistics.distribution.Distribution.cases"><tt class="xref py py-obj docutils literal"><span class="pre">cases</span></tt></a> and <a class="reference internal" href="#Orange.statistics.distribution.Distribution.unknowns" title="Orange.statistics.distribution.Distribution.unknowns"><tt class="xref py py-obj docutils literal"><span class="pre">unknowns</span></tt></a> are
+unchanged. This changes absoluted frequencies into relative.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.modus">
+<tt class="descname">modus</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.modus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the most common value. If there are multiple such values, one is
+chosen at random, although the chosen value will always be the same for
+the same distribution.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Distribution.random">
+<tt class="descname">random</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Distribution.random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a random value based on the stored empirical probability
+distribution. For continuous distributions, this will always be one of
+the values which actually appeared (e.g. one of the values from
+<a class="reference internal" href="#Orange.statistics.distribution.Distribution.keys" title="Orange.statistics.distribution.Distribution.keys"><tt class="xref py py-obj docutils literal"><span class="pre">keys</span></tt></a>).</p>
+<p>The method uses <a class="reference internal" href="#Orange.statistics.distribution.Distribution.random_generator" title="Orange.statistics.distribution.Distribution.random_generator"><tt class="xref py py-obj docutils literal"><span class="pre">random_generator</span></tt></a>. If none has been constructed or
+assigned yet, a new one is constructed and stored for further use.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.distribution.Discrete">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.distribution.</tt><tt class="descname">Discrete</tt><a class="headerlink" href="#Orange.statistics.distribution.Discrete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a discrete distribution of values. The class differs from its parent
+class in having a few additional constructors.</p>
+<dl class="method">
+<dt id="Orange.statistics.distribution.Discrete.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>variable</em><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Discrete.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct an instance of <a class="reference internal" href="#Orange.statistics.distribution.Discrete" title="Orange.statistics.distribution.Discrete"><tt class="xref py py-obj docutils literal"><span class="pre">Discrete</span></tt></a> and set the variable
+attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>variable</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Discrete" title="Orange.feature.Discrete"><em>Orange.feature.Discrete</em></a>) &#8211; A discrete variable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>frequencies</em><big>)</big></dt>
+<dd><p>Construct an instance and initialize the frequencies from the list, but
+leave <cite>Distribution.variable</cite> empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frequencies</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list of frequencies</td>
+</tr>
+</tbody>
+</table>
+<p>Distribution constructed in this way can be used, for instance, to
+generate random numbers from a given discrete distribution:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">disc</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">Discrete</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">disc</span><span class="o">.</span><span class="n">random</span><span class="p">(),</span>
+</pre></div>
+</div>
+<p>This prints out approximatelly ten 0&#8217;s, six 1&#8217;s and four 2&#8217;s. The values
+can be named by assigning a variable:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">v</span> <span class="o">=</span> <span class="n">orange</span><span class="o">.</span><span class="n">EnumVariable</span><span class="p">(</span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="s">&quot;blue&quot;</span><span class="p">])</span>
+<span class="n">disc</span><span class="o">.</span><span class="n">variable</span> <span class="o">=</span> <span class="n">v</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>distribution</em><big>)</big></dt>
+<dd><p>Copy constructor; makes a shallow copy of the given distribution</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>distribution</strong> (<em>Discrete</em>) &#8211; An existing discrete distribution</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.distribution.Continuous">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.distribution.</tt><tt class="descname">Continuous</tt><a class="headerlink" href="#Orange.statistics.distribution.Continuous" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Stores a continuous distribution, that is, a dictionary-like structure with
+values and their frequencies.</p>
+<dl class="method">
+<dt id="Orange.statistics.distribution.Continuous.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>variable</em><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Continuous.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct an instance of <tt class="xref py py-obj docutils literal"><span class="pre">ContDistribution</span></tt> and set the variable
+attribute.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>variable</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Continuous" title="Orange.feature.Continuous"><em>Orange.feature.Continuous</em></a>) &#8211; A continuous variable</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>frequencies</em><big>)</big></dt>
+<dd><p>Construct an instance of <a class="reference internal" href="#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-obj docutils literal"><span class="pre">Continuous</span></tt></a> and initialize it from
+the given dictionary with frequencies, whose keys and values must be integers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frequencies</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; Values and their corresponding frequencies</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>distribution</em><big>)</big></dt>
+<dd><p>Copy constructor; makes a shallow copy of the given distribution</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>distribution</strong> (<em>Continuous</em>) &#8211; An existing continuous distribution</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Continuous.average">
+<tt class="descname">average</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Continuous.average" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the average value. Note that the average can also be
+computed using a simpler and faster classes from module
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.basic</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Continuous.var">
+<tt class="descname">var</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Continuous.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the variance of distribution.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Continuous.dev">
+<tt class="descname">dev</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Continuous.dev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the standard deviation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Continuous.error">
+<tt class="descname">error</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Continuous.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the standard error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Continuous.percentile">
+<tt class="descname">percentile</tt><big>(</big><em>p</em><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Continuous.percentile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value at the <cite>p</cite>-th percentile.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>p</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The percentile, must be between 0 and 100</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+<p>For example, if <cite>d_age</cite> is a continuous distribution, the quartiles can
+be printed by</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Quartiles: </span><span class="si">%5.3f</span><span class="s"> - </span><span class="si">%5.3f</span><span class="s"> - </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+     <span class="n">dage</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="mi">25</span><span class="p">),</span> <span class="n">dage</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">dage</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="mi">75</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div></blockquote>
+<dl class="method">
+<dt id="Orange.statistics.distribution.Continuous.density">
+<tt class="descname">density</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Continuous.density" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the probability density at <cite>x</cite>. If the value is not in
+<a class="reference internal" href="#Orange.statistics.distribution.Distribution.keys" title="Orange.statistics.distribution.Distribution.keys"><tt class="xref py py-obj docutils literal"><span class="pre">Distribution.keys</span></tt></a>, it is interpolated.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.distribution.Gaussian">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.distribution.</tt><tt class="descname">Gaussian</tt><a class="headerlink" href="#Orange.statistics.distribution.Gaussian" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class imitating <a class="reference internal" href="#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-obj docutils literal"><span class="pre">Continuous</span></tt></a> by returning the statistics and
+densities for Gaussian distribution. The class is not meant only for a
+convenient substitution for code which expects an instance of
+<a class="reference internal" href="#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-obj docutils literal"><span class="pre">Distribution</span></tt></a>. For general use, Python module <a class="reference external" href="http://docs.python.org/library/random.html#module-random" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">random</span></tt></a>
+provides a comprehensive set of functions for various random distributions.</p>
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Gaussian.mean">
+<tt class="descname">mean</tt><a class="headerlink" href="#Orange.statistics.distribution.Gaussian.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>The mean value parameter of the Gauss distribution.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Gaussian.sigma">
+<tt class="descname">sigma</tt><a class="headerlink" href="#Orange.statistics.distribution.Gaussian.sigma" title="Permalink to this definition">¶</a></dt>
+<dd><p>The standard deviation of the distribution</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.distribution.Gaussian.abs">
+<tt class="descname">abs</tt><a class="headerlink" href="#Orange.statistics.distribution.Gaussian.abs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The simulated number of instances; in effect, the Gaussian distribution
+density, as returned by method <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.density" title="Orange.statistics.distribution.Gaussian.density"><tt class="xref py py-obj docutils literal"><span class="pre">density</span></tt></a> is multiplied by
+<a class="reference internal" href="#Orange.statistics.distribution.Gaussian.abs" title="Orange.statistics.distribution.Gaussian.abs"><tt class="xref py py-obj docutils literal"><span class="pre">abs</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Gaussian.__init__">
+<tt class="descname">__init__</tt><big>(</big><span class="optional">[</span><em>mean=0</em>, <em>sigma=1</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Gaussian.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct an instance, set <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.mean" title="Orange.statistics.distribution.Gaussian.mean"><tt class="xref py py-obj docutils literal"><span class="pre">mean</span></tt></a> and <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.sigma" title="Orange.statistics.distribution.Gaussian.sigma"><tt class="xref py py-obj docutils literal"><span class="pre">sigma</span></tt></a> to the given
+values and <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.abs" title="Orange.statistics.distribution.Gaussian.abs"><tt class="xref py py-obj docutils literal"><span class="pre">abs</span></tt></a> to 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>distribution</em><big>)</big></dt>
+<dd><p>Construct a distribution which approximates the given distribution,
+which must be either <a class="reference internal" href="#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-obj docutils literal"><span class="pre">Continuous</span></tt></a>, in which case its
+average and deviation will be used for mean and sigma, or and existing
+<tt class="xref py py-obj docutils literal"><span class="pre">GaussianDistribution</span></tt>, which will be copied. Attribute <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.abs" title="Orange.statistics.distribution.Gaussian.abs"><tt class="xref py py-obj docutils literal"><span class="pre">abs</span></tt></a>
+is set to the given distribution&#8217;s <tt class="docutils literal"><span class="pre">abs</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Gaussian.average">
+<tt class="descname">average</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Gaussian.average" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.mean" title="Orange.statistics.distribution.Gaussian.mean"><tt class="xref py py-obj docutils literal"><span class="pre">mean</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Gaussian.dev">
+<tt class="descname">dev</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Gaussian.dev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.sigma" title="Orange.statistics.distribution.Gaussian.sigma"><tt class="xref py py-obj docutils literal"><span class="pre">sigma</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Gaussian.var">
+<tt class="descname">var</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Gaussian.var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return square of <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.sigma" title="Orange.statistics.distribution.Gaussian.sigma"><tt class="xref py py-obj docutils literal"><span class="pre">sigma</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.distribution.Gaussian.density">
+<tt class="descname">density</tt><big>(</big><em>x</em><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Gaussian.density" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the density at point <tt class="docutils literal"><span class="pre">x</span></tt>, that is, the Gaussian distribution
+density multiplied by <a class="reference internal" href="#Orange.statistics.distribution.Gaussian.abs" title="Orange.statistics.distribution.Gaussian.abs"><tt class="xref py py-obj docutils literal"><span class="pre">abs</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="class-distributions">
+<h2>Class distributions<a class="headerlink" href="#class-distributions" title="Permalink to this headline">¶</a></h2>
+<p>There is a convenience function for computing empirical class distributions from
+data.</p>
+<dl class="function">
+<dt id="Orange.statistics.distribution.getClassDistribution">
+<tt class="descclassname">Orange.statistics.distribution.</tt><tt class="descname">getClassDistribution</tt><big>(</big><em>data</em><span class="optional">[</span>, <em>weightID=0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.getClassDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a class distribution for the given data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; A set of instances.</li>
+<li><strong>weightID</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; An id for meta attribute with weights of instances</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.statistics.distribution.Discrete" title="Orange.statistics.distribution.Discrete"><tt class="xref py py-obj docutils literal"><span class="pre">Discrete</span></tt></a> or <a class="reference internal" href="#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-obj docutils literal"><span class="pre">Continuous</span></tt></a>, depending on the class type</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="distributions-of-all-variables">
+<h2>Distributions of all variables<a class="headerlink" href="#distributions-of-all-variables" title="Permalink to this headline">¶</a></h2>
+<p>Distributions of all variables can be computed and stored in
+<a class="reference internal" href="#Orange.statistics.distribution.Domain" title="Orange.statistics.distribution.Domain"><tt class="xref py py-obj docutils literal"><span class="pre">Domain</span></tt></a>. The list-like object can be indexed by variable
+indices in the domain, as well as by variables and their names.</p>
+<dl class="class">
+<dt id="Orange.statistics.distribution.Domain">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.distribution.</tt><tt class="descname">Domain</tt><a class="headerlink" href="#Orange.statistics.distribution.Domain" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Orange.statistics.distribution.Domain.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>data</em><span class="optional">[</span>, <em>weightID=0</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.distribution.Domain.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct an instance with distributions of all discrete and continuous
+variables from the given data.</p>
+</dd></dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; A set of instances.</li>
+<li><strong>weightID</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; An id for meta attribute with weights of instances</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The script below computes distributions for all attributes in the data and
+prints out distributions for discrete and averages for continuous attributes.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dist</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dist</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">var_type</span> <span class="o">==</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Discrete</span><span class="p">:</span>
+         <span class="k">print</span> <span class="s">&quot;</span><span class="si">%30s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+         <span class="k">print</span> <span class="s">&quot;</span><span class="si">%30s</span><span class="s">: avg. </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">average</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The distribution for, say, attribute <cite>age</cite> can be obtained by its index and also
+by its name:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dist_age</span> <span class="o">=</span> <span class="n">dist</span><span class="p">[</span><span class="s">&quot;age&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

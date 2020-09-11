@@ -1,0 +1,160 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Example Distance &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Example Distance</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="example-distance">
+<span id="id1"></span><h1>Example Distance<a class="headerlink" href="#example-distance" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/Distance1.svg" /><p>Computes distances between examples in the data set</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples</dt>
+<dd><p class="first last">A list of examples</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Distance Matrix</dt>
+<dd><p class="first last">A matrix of example distances</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Widget Example Distances computes the distances between the examples in the
+data sets. Don&#8217;t confuse it with a similar widget for computing the distances
+between attributes.</p>
+<img alt="Example Distance Widget" src="../../../_images/ExampleDistance.png" />
+<p>The available <tt class="xref py py-obj docutils literal"><span class="pre">Distance</span> <span class="pre">Metrics</span></tt> definitions are <tt class="xref py py-obj docutils literal"><span class="pre">Euclidean</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">Manhattan</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">Hammming</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">Relief</span></tt>. Besides, of course,
+different formal definitions, the measures also differ in how correctly
+they treat unknown values. Manhattan and Hamming distance do not excel in
+this respect: when computing by-attribute distances, if any of the two values
+are missing, the corresponding distance is set to 0.5 (on a normalized scale
+where the largest difference in attribute values is 1.0). Relief distance is
+similar to Manhattan, but with a more correct treatment for discrete
+attributes: it computes the expected distances by the probability distribution
+computed from the data (see any Kononenko&#8217;s papers on ReliefF for the
+definition).</p>
+<p>The most correct treatment of unknown values is done by the Euclidean metrics
+which computes and uses the probability distributions of discrete attributes,
+while for continuous distributions it computes the expected distance assuming
+the Gaussian distribution of attribute values, where the distribution&#8217;s
+parameters are again assessed from the data.</p>
+<p>The rows/columns of the resulting distance matrix can be labeled by the
+values of a certain attribute which can be chosen in the bottom box,
+<tt class="xref py py-obj docutils literal"><span class="pre">Example</span> <span class="pre">label</span></tt>.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This widget is a typical intermediate widget: it gives shows no user readable
+results and its output needs to be fed to a widget that can do something
+useful with the computed distances, for instance the <a class="reference internal" href="distancemap.html#distance-map"><em>Distance Map</em></a>,
+<a class="reference internal" href="hierarchicalclustering.html#hierarchical-clustering"><em>Hierarchical Clustering</em></a> or <a class="reference internal" href="mds.html#mds"><em>MDS</em></a>.</p>
+<img alt="Association Rules" src="../../../_images/ExampleDistance-Schema.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

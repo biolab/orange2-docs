@@ -1,0 +1,149 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Majority (majority) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Majority (<tt class="docutils literal"><span class="pre">majority</span></tt>)</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="majority-majority">
+<h1>Majority (<tt class="docutils literal"><span class="pre">majority</span></tt>)<a class="headerlink" href="#majority-majority" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Accuracy of classifiers is often compared with the &#8220;default accuracy&#8221;,
+that is, the accuracy of a classifier which classifies all instances
+to the majority class. The training of such classifier consists of
+computing the class distribution and its modus. The model is
+represented as an instance of
+<a class="reference internal" href="Orange.classification.constant.html#Orange.classification.ConstantClassifier" title="Orange.classification.ConstantClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.ConstantClassifier</span></tt></a>.</p>
+<dl class="class">
+<dt id="Orange.classification.majority.MajorityLearner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.majority.</tt><tt class="descname">MajorityLearner</tt><a class="headerlink" href="#Orange.classification.majority.MajorityLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>MajorityLearner has two components, which are seldom used.</p>
+<dl class="attribute">
+<dt id="Orange.classification.majority.MajorityLearner.estimator_constructor">
+<tt class="descname">estimator_constructor</tt><a class="headerlink" href="#Orange.classification.majority.MajorityLearner.estimator_constructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>An estimator constructor that can be used for estimation of
+class probabilities. If left <tt class="docutils literal"><span class="pre">None</span></tt>, probability of each class is
+estimated as the relative frequency of instances belonging to
+this class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.majority.MajorityLearner.apriori_distribution">
+<tt class="descname">apriori_distribution</tt><a class="headerlink" href="#Orange.classification.majority.MajorityLearner.apriori_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apriori class distribution that is passed to estimator
+constructor if one is given.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>This &#8220;learning algorithm&#8221; will most often be used as a baseline,
+that is, to determine if some other learning algorithm provides
+any information about the class (<a class="reference download internal" href="../../_downloads/majority-classification.py"><tt class="xref download docutils literal"><span class="pre">majority-classification.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">monks</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;monks-1&quot;</span><span class="p">)</span>
+
+<span class="n">treeLearner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">()</span>
+<span class="n">bayesLearner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">()</span>
+<span class="n">majorityLearner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">majority</span><span class="o">.</span><span class="n">MajorityLearner</span><span class="p">()</span>
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">treeLearner</span><span class="p">,</span> <span class="n">bayesLearner</span><span class="p">,</span> <span class="n">majorityLearner</span><span class="p">]</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">monks</span><span class="p">)</span>
+<span class="n">CAs</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">report_se</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Tree:    </span><span class="si">%5.3f</span><span class="s">+-</span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">CAs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;Bayes:   </span><span class="si">%5.3f</span><span class="s">+-</span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">CAs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;Default: </span><span class="si">%5.3f</span><span class="s">+-</span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">CAs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

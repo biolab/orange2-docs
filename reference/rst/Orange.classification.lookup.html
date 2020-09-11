@@ -1,0 +1,526 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lookup classifiers (lookup) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Lookup classifiers (<tt class="docutils literal"><span class="pre">lookup</span></tt>)</a><ul>
+<li><a class="reference internal" href="#classifiers-by-lookup-table">Classifiers by lookup table</a></li>
+<li><a class="reference internal" href="#classifier-by-data-table">Classifier by data table</a></li>
+<li><a class="reference internal" href="#utility-functions">Utility functions</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="lookup-classifiers-lookup">
+<span id="index-0"></span><h1>Lookup classifiers (<tt class="docutils literal"><span class="pre">lookup</span></tt>)<a class="headerlink" href="#lookup-classifiers-lookup" title="Permalink to this headline">¶</a></h1>
+<p>Lookup classifiers predict classes by looking into stored lists of
+cases. There are two kinds of such classifiers in Orange. The simpler
+and faster <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> uses up to three discrete
+features and has a stored mapping from values of those features to the
+class value. The more complex classifiers store an
+<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a> and predict the class by matching the
+instance to instances in the table.</p>
+<p id="index-1">A natural habitat for these classifiers is feature construction: they
+usually reside in <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor.get_value_from" title="Orange.feature.Descriptor.get_value_from"><tt class="xref py py-obj docutils literal"><span class="pre">get_value_from</span></tt></a>
+fields of constructed features to facilitate their automatic
+computation. For instance, the following script shows how to translate
+the <tt class="docutils literal"><span class="pre">monks-1.tab</span></tt> data set features into a more useful subset that
+will only include the features <tt class="docutils literal"><span class="pre">a</span></tt>, <tt class="docutils literal"><span class="pre">b</span></tt>, <tt class="docutils literal"><span class="pre">e</span></tt>, and features that
+will tell whether <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are equal and whether <tt class="docutils literal"><span class="pre">e</span></tt> is 1
+(part of <a class="reference download internal" href="../../_downloads/lookup-lookup.py"><tt class="xref download docutils literal"><span class="pre">lookup-lookup.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">monks</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;monks-1&quot;</span><span class="p">)</span>
+
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">monks</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">],</span> <span class="n">monks</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;b&quot;</span><span class="p">],</span> <span class="n">monks</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;e&quot;</span><span class="p">]</span>
+
+<span class="n">ab</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;a==b&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">])</span>
+<span class="n">ab</span><span class="o">.</span><span class="n">get_value_from</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">lookup</span><span class="o">.</span><span class="n">ClassifierByLookupTable</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span>
+                    <span class="p">[</span><span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">,</span>  <span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">,</span>  <span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">])</span>
+
+<span class="n">e1</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;e==1&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">])</span>
+<span class="n">e1</span><span class="o">.</span><span class="n">get_value_from</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">lookup</span><span class="o">.</span><span class="n">ClassifierByLookupTable</span><span class="p">(</span><span class="n">e1</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span>
+                    <span class="p">[</span><span class="s">&quot;yes&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;?&quot;</span><span class="p">])</span>
+
+<span class="n">monks2</span> <span class="o">=</span> <span class="n">monks</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">ab</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">e1</span><span class="p">,</span> <span class="n">monks</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>We can check the correctness of the script by printing out several
+random examples from table <tt class="docutils literal"><span class="pre">monks2</span></tt>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">monks2</span><span class="o">.</span><span class="n">randomexample</span><span class="p">()</span>
+<span class="go">[&#39;3&#39;, &#39;2&#39;, &#39;no&#39;, &#39;2&#39;, &#39;no&#39;, &#39;0&#39;]</span>
+<span class="go">[&#39;2&#39;, &#39;2&#39;, &#39;yes&#39;, &#39;2&#39;, &#39;no&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;no&#39;, &#39;2&#39;, &#39;no&#39;, &#39;0&#39;]</span>
+<span class="go">[&#39;2&#39;, &#39;3&#39;, &#39;no&#39;, &#39;1&#39;, &#39;yes&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;3&#39;, &#39;no&#39;, &#39;1&#39;, &#39;yes&#39;, &#39;1&#39;]</span>
+</pre></div>
+</div>
+<p>The first <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> takes values of features <tt class="docutils literal"><span class="pre">a</span></tt>
+and <tt class="docutils literal"><span class="pre">b</span></tt> and computes the value of <tt class="docutils literal"><span class="pre">ab</span></tt> according to the rule given in the
+given table. The first three values correspond to <tt class="docutils literal"><span class="pre">a=1</span></tt> and <tt class="docutils literal"><span class="pre">b=1,2,3</span></tt>;
+for the first combination, value of <tt class="docutils literal"><span class="pre">ab</span></tt> should be &#8220;yes&#8221;, for the other
+two <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are different. The next triplet corresponds to <tt class="docutils literal"><span class="pre">a=2</span></tt>;
+here, the middle value is &#8220;yes&#8221;...</p>
+<p>The second lookup is simpler: since it involves only a single feature,
+the list is a simple one-to-one mapping from the four-valued <tt class="docutils literal"><span class="pre">e</span></tt> to the
+two-valued <tt class="docutils literal"><span class="pre">e1</span></tt>. The last value in the list is returned when <tt class="docutils literal"><span class="pre">e</span></tt> is unknown
+and tells that <tt class="docutils literal"><span class="pre">e1</span></tt> should be unknown then as well.</p>
+<p>Note that <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> is not needed for this.
+The new feature <tt class="docutils literal"><span class="pre">e1</span></tt> could be computed with a callback to Python,
+for instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">e2</span><span class="o">.</span><span class="n">get_value_from</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">ex</span><span class="p">,</span> <span class="n">rw</span><span class="p">:</span> <span class="n">orange</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">e2</span><span class="p">,</span> <span class="n">ex</span><span class="p">[</span><span class="s">&quot;e&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="classifiers-by-lookup-table">
+<h2>Classifiers by lookup table<a class="headerlink" href="#classifiers-by-lookup-table" title="Permalink to this headline">¶</a></h2>
+<p id="index-2">Although the above example used <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> as if
+it was a concrete class, <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> is actually
+abstract. Calling its constructor does not return an instance of
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a>, but either
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable1" title="Orange.classification.lookup.ClassifierByLookupTable1"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable1</span></tt></a>, <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable2" title="Orange.classification.lookup.ClassifierByLookupTable2"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable2</span></tt></a> or
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable3" title="Orange.classification.lookup.ClassifierByLookupTable3"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable3</span></tt></a>, that take one (<tt class="docutils literal"><span class="pre">e</span></tt>, above), two
+(like <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt>) or three features, respectively. Class
+predictions for each combination of feature values are stored in a
+(one dimensional) table. To classify an instance, the classifier
+computes an index of the element of the table that corresponds to the
+combination of feature values.</p>
+<p>These classifiers are built to be fast, not safe. For instance, if the
+number of values for one of the features is changed, Orange will most
+probably crash.  To alleviate this, many of these classes&#8217; attributes
+are read-only and can only be set when the object is constructed.</p>
+<dl class="class">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable">
+<em class="property">class </em><tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">ClassifierByLookupTable</tt><big>(</big><em>class_var, variable1[, variable2[, variable3]] [, lookup_table[, distributions]]</em><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A general constructor that, based on the number of feature
+descriptors, constructs one of the three classes discussed. If
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable.lookup_table" title="Orange.classification.lookup.ClassifierByLookupTable.lookup_table"><tt class="xref py py-obj docutils literal"><span class="pre">lookup_table</span></tt></a> and <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable.distributions" title="Orange.classification.lookup.ClassifierByLookupTable.distributions"><tt class="xref py py-obj docutils literal"><span class="pre">distributions</span></tt></a> are omitted, the
+constructor also initializes them to two lists of the right sizes,
+but their elements are missing values and empty distributions. If
+they are given, they must be of correct size.</p>
+<dl class="attribute">
+<dt>
+<tt class="descname">variable1[, variable2[, variable3]](read only)</tt></dt>
+<dd><p>The feature(s) that the classifier uses for classification.
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable1" title="Orange.classification.lookup.ClassifierByLookupTable1"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable1</span></tt></a> only has <tt class="xref py py-obj docutils literal"><span class="pre">variable1</span></tt>,
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable2" title="Orange.classification.lookup.ClassifierByLookupTable2"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable2</span></tt></a> also has <tt class="xref py py-obj docutils literal"><span class="pre">variable2</span></tt> and
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable3" title="Orange.classification.lookup.ClassifierByLookupTable3"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable3</span></tt></a> has all three.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable.variables">
+<tt class="descname">variables</tt><big>(</big><em>read only</em><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable.variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>The above variables, returned as a tuple.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">no_of_values1[, no_of_values2[, no_of_values3]] (read only)</tt></dt>
+<dd><p>The number of values for <tt class="xref py py-obj docutils literal"><span class="pre">variable1</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">variable2</span></tt>
+and <tt class="xref py py-obj docutils literal"><span class="pre">variable3</span></tt>. This is stored here to make the
+classifier faster. These attributes are defined only for
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable2" title="Orange.classification.lookup.ClassifierByLookupTable2"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable2</span></tt></a> (the first two) and
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable3" title="Orange.classification.lookup.ClassifierByLookupTable3"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable3</span></tt></a> (all three).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable.lookup_table">
+<tt class="descname">lookup_table</tt><big>(</big><em>read only</em><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable.lookup_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of values, one for each possible combination of
+features. For <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable1" title="Orange.classification.lookup.ClassifierByLookupTable1"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable1</span></tt></a>, there is an
+additional element that is returned when the feature&#8217;s value
+is unknown. Values are ordered by values of features, with
+<tt class="xref py py-obj docutils literal"><span class="pre">variable1</span></tt> being the most important. For instance, for
+two three-valued features, the elements of <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable.lookup_table" title="Orange.classification.lookup.ClassifierByLookupTable.lookup_table"><tt class="xref py py-obj docutils literal"><span class="pre">lookup_table</span></tt></a>
+correspond to combinations (1, 1), (1, 2), (1, 3), (2, 1), (2,
+2), (2, 3), (3, 1), (3, 2), (3, 3).</p>
+<p>The attribute is read-only; it cannot be assigned a new list,
+but the existing list can be changed. Changing its size will
+most likely crash Orange.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable.distributions">
+<tt class="descname">distributions</tt><big>(</big><em>read only</em><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable.distributions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable.lookup_table" title="Orange.classification.lookup.ClassifierByLookupTable.lookup_table"><tt class="xref py py-obj docutils literal"><span class="pre">lookup_table</span></tt></a>, but storing a distribution for
+each combination of values.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable.data_description">
+<tt class="descname">data_description</tt><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable.data_description" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object of type <tt class="xref py py-obj docutils literal"><span class="pre">EFMDataDescription</span></tt>, defined only for
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable2" title="Orange.classification.lookup.ClassifierByLookupTable2"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable2</span></tt></a> and
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable3" title="Orange.classification.lookup.ClassifierByLookupTable3"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable3</span></tt></a>. They use it to make
+predictions when one or more feature values are missing.
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable1" title="Orange.classification.lookup.ClassifierByLookupTable1"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable1</span></tt></a> does not need it since this
+case is covered by an additional element in
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable.lookup_table" title="Orange.classification.lookup.ClassifierByLookupTable.lookup_table"><tt class="xref py py-obj docutils literal"><span class="pre">lookup_table</span></tt></a> and <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable.distributions" title="Orange.classification.lookup.ClassifierByLookupTable.distributions"><tt class="xref py py-obj docutils literal"><span class="pre">distributions</span></tt></a>, as described
+above.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable.get_index">
+<tt class="descname">get_index</tt><big>(</big><em>inst</em><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable.get_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an index of in <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable.lookup_table" title="Orange.classification.lookup.ClassifierByLookupTable.lookup_table"><tt class="xref py py-obj docutils literal"><span class="pre">lookup_table</span></tt></a> and
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable.distributions" title="Orange.classification.lookup.ClassifierByLookupTable.distributions"><tt class="xref py py-obj docutils literal"><span class="pre">distributions</span></tt></a> that corresponds to the given data
+instance <tt class="docutils literal"><span class="pre">inst</span></tt> . The formula depends upon the type of the
+classifier. If value<em>i</em> is int(example[variable<em>i</em>]), then
+the corresponding formulae are</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">ClassifierByLookupTable1</span></tt>:</dt>
+<dd>index = value1, or len(lookup_table) - 1 if value of <tt class="xref py py-obj docutils literal"><span class="pre">variable1</span></tt> is missing</dd>
+<dt><tt class="docutils literal"><span class="pre">ClassifierByLookupTable2</span></tt>:</dt>
+<dd>index = value1 * no_of_values1 + value2, or -1 if <tt class="docutils literal"><span class="pre">value1</span></tt> or <tt class="docutils literal"><span class="pre">value2</span></tt> is missing</dd>
+<dt>ClassifierByLookupTable3:</dt>
+<dd>index = (value1 * no_of_values1 + value2) * no_of_values2 + value3, or -1 if any value is missing</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable1">
+<em class="property">class </em><tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">ClassifierByLookupTable1</tt><big>(</big><em>class_var</em>, <em>variable1</em><span class="optional">[</span>, <em>lookup_table</em>, <em>distributions</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses a single feature for lookup. See
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> for more details.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable2">
+<em class="property">class </em><tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">ClassifierByLookupTable2</tt><big>(</big><em>class_var</em>, <em>variable1</em>, <em>variable2</em><span class="optional">[</span>, <em>lookup_table</em><span class="optional">[</span>, <em>distributions</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses two features for lookup. See
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> for more details.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.lookup.ClassifierByLookupTable3">
+<em class="property">class </em><tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">ClassifierByLookupTable3</tt><big>(</big><em>class_var</em>, <em>variable1</em>, <em>variable2</em>, <em>variable3</em><span class="optional">[</span>, <em>lookup_table</em><span class="optional">[</span>, <em>distributions</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByLookupTable3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses three features for lookup. See
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> for more details.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="classifier-by-data-table">
+<h2>Classifier by data table<a class="headerlink" href="#classifier-by-data-table" title="Permalink to this headline">¶</a></h2>
+<p id="index-3"><a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a> is used in similar contexts as
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a>. The class is much slower so it is recommended to use <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> if the number of features is less than four.</p>
+<dl class="class">
+<dt id="Orange.classification.lookup.ClassifierByDataTable">
+<em class="property">class </em><tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">ClassifierByDataTable</tt><a class="headerlink" href="#Orange.classification.lookup.ClassifierByDataTable" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a> is the alternative to
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> for more than three features.
+Instead of having a lookup table, it stores the data in
+<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a> that is optimized for faster access.</p>
+<dl class="attribute">
+<dt id="Orange.classification.lookup.ClassifierByDataTable.sorted_examples">
+<tt class="descname">sorted_examples</tt><a class="headerlink" href="#Orange.classification.lookup.ClassifierByDataTable.sorted_examples" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a> with sorted data instances for
+lookup.  If there were multiple instances with the same
+feature values (but possibly different classes) in the
+original data, they can be merged into a single
+instance. Regardless of merging, class values in this table
+are distributed: their <tt class="docutils literal"><span class="pre">svalue</span></tt> contains a
+<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-obj docutils literal"><span class="pre">Distribution</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.lookup.ClassifierByDataTable.classifier_for_unknown">
+<tt class="descname">classifier_for_unknown</tt><a class="headerlink" href="#Orange.classification.lookup.ClassifierByDataTable.classifier_for_unknown" title="Permalink to this definition">¶</a></dt>
+<dd><p>The classifier for instances that are not found in the
+table. If not set, <a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a> returns
+missing value for such instances.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.lookup.ClassifierByDataTable.variables">
+<tt class="descname">variables</tt><big>(</big><em>read only</em><big>)</big><a class="headerlink" href="#Orange.classification.lookup.ClassifierByDataTable.variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>A tuple with features in the domain. Equal to
+<tt class="xref py py-obj docutils literal"><span class="pre">domain.features</span></tt>, but here for similarity with
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.lookup.LookupLearner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">LookupLearner</tt><a class="headerlink" href="#Orange.classification.lookup.LookupLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>A learner that constructs a table for
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable.sorted_examples" title="Orange.classification.lookup.ClassifierByDataTable.sorted_examples"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable.sorted_examples</span></tt></a>. It sorts the data
+instances and merges those with the same feature values.</p>
+<p>The constructor returns an instance of <tt class="xref py py-obj docutils literal"><span class="pre">LookupLearners</span></tt>,
+unless the data is provided, in which case it return
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a>.</p>
+<p><a class="reference internal" href="#Orange.classification.lookup.LookupLearner" title="Orange.classification.lookup.LookupLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LookupLearner</span></tt></a> also supports a different call signature than
+other learners. Besides instances, it accepts a new class
+variable and the features that should be used for
+classification.</p>
+</dd></dl>
+
+<p>part of <a class="reference download internal" href="../../_downloads/lookup-table.py"><tt class="xref download docutils literal"><span class="pre">lookup-table.py</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;monks-1&quot;</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">],</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;b&quot;</span><span class="p">],</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;e&quot;</span><span class="p">]</span>
+
+<span class="n">table_s</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="p">])</span>
+<span class="n">abe</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">lookup</span><span class="o">.</span><span class="n">LookupLearner</span><span class="p">(</span><span class="n">table_s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In <tt class="docutils literal"><span class="pre">table_s</span></tt>, we have prepared a table in which instances are described
+only by <tt class="docutils literal"><span class="pre">a</span></tt>, <tt class="docutils literal"><span class="pre">b</span></tt>, <tt class="docutils literal"><span class="pre">e</span></tt> and the class. The learner constructs a
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a> and stores instances from <tt class="docutils literal"><span class="pre">table_s</span></tt> into its
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable.sorted_examples" title="Orange.classification.lookup.ClassifierByDataTable.sorted_examples"><tt class="xref py py-obj docutils literal"><span class="pre">sorted_examples</span></tt></a>. Instances are merged so that
+there are no duplicates.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">table_s</span><span class="p">)</span>
+<span class="go">556</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">abe</span><span class="o">.</span><span class="n">sorted_examples</span><span class="p">)</span>
+<span class="go">36</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">abe</span><span class="o">.</span><span class="n">sorted_examples</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>  
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">i</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;2&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;3&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;4&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;1&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;2&#39;, &#39;0&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;0&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;4&#39;, &#39;0&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;3&#39;, &#39;1&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;3&#39;, &#39;2&#39;, &#39;0&#39;]</span>
+</pre></div>
+</div>
+<p>Each instance&#8217;s class value also stores the distribution of classes
+for all instances that were merged into it. In our case, the three
+features suffice to unambiguously determine the classes and, since
+instances cover the entire space, all distributions have 12
+instances in one of the class and none in the other.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">abe</span><span class="o">.</span><span class="n">sorted_examples</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>  
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">get_class</span><span class="p">()</span><span class="o">.</span><span class="n">svalue</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;1&#39;] &lt;0.000, 12.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;2&#39;, &#39;1&#39;] &lt;0.000, 12.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;3&#39;, &#39;1&#39;] &lt;0.000, 12.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;4&#39;, &#39;1&#39;] &lt;0.000, 12.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;1&#39;, &#39;1&#39;] &lt;0.000, 12.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;2&#39;, &#39;0&#39;] &lt;12.000, 0.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, &#39;0&#39;] &lt;12.000, 0.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;4&#39;, &#39;0&#39;] &lt;12.000, 0.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;3&#39;, &#39;1&#39;, &#39;1&#39;] &lt;0.000, 12.000&gt;</span>
+<span class="go">[&#39;1&#39;, &#39;3&#39;, &#39;2&#39;, &#39;0&#39;] &lt;12.000, 0.000&gt;</span>
+</pre></div>
+</div>
+<p>A typical use of <a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a> is to construct a new
+feature and put the classifier into its
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor.get_value_from" title="Orange.feature.Descriptor.get_value_from"><tt class="xref py py-obj docutils literal"><span class="pre">get_value_from</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">y2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;y2&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;0&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y2</span><span class="o">.</span><span class="n">get_value_from</span> <span class="o">=</span> <span class="n">abe</span>
+</pre></div>
+</div>
+<p>Although <tt class="docutils literal"><span class="pre">abe</span></tt> determines the value of <tt class="docutils literal"><span class="pre">y2</span></tt>, <tt class="docutils literal"><span class="pre">abe.class_var</span></tt> is
+still <tt class="docutils literal"><span class="pre">y</span></tt>.  Orange does not complain about the mismatch.</p>
+<p>Using the specific <a class="reference internal" href="#Orange.classification.lookup.LookupLearner" title="Orange.classification.lookup.LookupLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LookupLearner</span></tt></a>&#8216;s call signature can save us
+from constructing <cite>table_s</cite> and reassigning the
+<a class="reference internal" href="Orange.data.domain.html#Orange.data.Domain.class_var" title="Orange.data.Domain.class_var"><tt class="xref py py-obj docutils literal"><span class="pre">class_var</span></tt></a>, but it still does not set the
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor.get_value_from" title="Orange.feature.Descriptor.get_value_from"><tt class="xref py py-obj docutils literal"><span class="pre">get_value_from</span></tt></a>.</p>
+<p>part of <a class="reference download internal" href="../../_downloads/lookup-table.py"><tt class="xref download docutils literal"><span class="pre">lookup-table.py</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;monks-1&quot;</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">],</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;b&quot;</span><span class="p">],</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;e&quot;</span><span class="p">]</span>
+
+<span class="n">y2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;y2&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;0&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">])</span>
+<span class="n">abe2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">lookup</span><span class="o">.</span><span class="n">LookupLearner</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">e</span><span class="p">],</span> <span class="n">table</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For the final example, <a class="reference internal" href="#Orange.classification.lookup.LookupLearner" title="Orange.classification.lookup.LookupLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LookupLearner</span></tt></a>&#8216;s alternative call
+arguments offers an easy way to observe feature interactions. For this
+purpose, we shall omit <tt class="docutils literal"><span class="pre">e</span></tt>, and construct a
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a> from <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> only (part of
+<a class="reference download internal" href="../../_downloads/lookup-table.py"><tt class="xref download docutils literal"><span class="pre">lookup-table.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">y2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;y2&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;0&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">])</span>
+<span class="n">abe2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">lookup</span><span class="o">.</span><span class="n">LookupLearner</span><span class="p">(</span><span class="n">y2</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="n">table</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">abe2</span><span class="o">.</span><span class="n">sorted_examples</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">get_class</span><span class="p">()</span><span class="o">.</span><span class="n">svalue</span>
+</pre></div>
+</div>
+<p>The script&#8217;s output show how the classes are distributed for different
+values of <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt>:</p>
+<div class="highlight-python"><pre>['1', '1', '1'] &lt;0.000, 48.000&gt;
+['1', '2', '0'] &lt;36.000, 12.000&gt;
+['1', '3', '0'] &lt;36.000, 12.000&gt;
+['2', '1', '0'] &lt;36.000, 12.000&gt;
+['2', '2', '1'] &lt;0.000, 48.000&gt;
+['2', '3', '0'] &lt;36.000, 12.000&gt;
+['3', '1', '0'] &lt;36.000, 12.000&gt;
+['3', '2', '0'] &lt;36.000, 12.000&gt;
+['3', '3', '1'] &lt;0.000, 48.000&gt;</pre>
+</div>
+<p>For instance, when <tt class="docutils literal"><span class="pre">a</span></tt> is &#8216;1&#8217; and <tt class="docutils literal"><span class="pre">b</span></tt> is &#8216;3&#8217;, the majority class is &#8216;0&#8217;,
+and the class distribution is 36:12 in favor of &#8216;0&#8217;.</p>
+</div>
+<div class="section" id="utility-functions">
+<h2>Utility functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<p>There are several functions related to the above classes.</p>
+<dl class="function">
+<dt id="Orange.classification.lookup.lookup_from_function">
+<tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">lookup_from_function</tt><big>(</big><em>class_var</em>, <em>bound</em>, <em>function</em><big>)</big><a class="headerlink" href="#Orange.classification.lookup.lookup_from_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> or
+<a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a> with the given bound variables and
+then use the function to initialize the lookup table.</p>
+<p>The function is given the values of features as integer indices and
+must return an integer index of the <cite>class_var</cite>&#8216;s value.</p>
+<p>The following example constructs a new feature called <tt class="docutils literal"><span class="pre">a=b</span></tt>
+whose value will be &#8220;yes&#8221; when <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> are equal and &#8220;no&#8221;
+when they are not. We will then add the feature to the data set.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">bound</span> <span class="o">=</span> <span class="p">[</span><span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_var</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;a=b&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">lookup</span><span class="o">.</span><span class="n">lookup_from_function</span><span class="p">(</span><span class="n">new_var</span><span class="p">,</span> <span class="n">bound</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_var</span><span class="o">.</span><span class="n">get_value_from</span> <span class="o">=</span> <span class="n">lookup</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">orngCI</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">table2</span> <span class="o">=</span> <span class="n">orngCI</span><span class="o">.</span><span class="n">addAnAttribute</span><span class="p">(</span><span class="n">new_var</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">table2</span><span class="p">[:</span><span class="mi">30</span><span class="p">]:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">i</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;3&#39;, &#39;1&#39;, &#39;yes&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;3&#39;, &#39;2&#39;, &#39;yes&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;3&#39;, &#39;2&#39;, &#39;1&#39;, &#39;yes&#39;, &#39;1&#39;]</span>
+<span class="gp">...</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;1&#39;, &#39;1&#39;, &#39;1&#39;, &#39;2&#39;, &#39;no&#39;, &#39;1&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;1&#39;, &#39;1&#39;, &#39;2&#39;, &#39;1&#39;, &#39;no&#39;, &#39;0&#39;]</span>
+<span class="go">[&#39;1&#39;, &#39;2&#39;, &#39;1&#39;, &#39;1&#39;, &#39;3&#39;, &#39;1&#39;, &#39;no&#39;, &#39;0&#39;]</span>
+<span class="gp">...</span>
+</pre></div>
+</div>
+<p>The feature was inserted with use of <tt class="docutils literal"><span class="pre">orngCI.addAnAttribute</span></tt>. By setting
+<tt class="docutils literal"><span class="pre">new_var.get_value_from</span></tt> to <tt class="docutils literal"><span class="pre">lookup</span></tt> we state that when converting domains
+(either when needed by <tt class="docutils literal"><span class="pre">addAnAttribute</span></tt> or at some other place), <tt class="docutils literal"><span class="pre">lookup</span></tt>
+should be used to compute <tt class="docutils literal"><span class="pre">new_var</span></tt>&#8216;s value.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.classification.lookup.lookup_from_data">
+<tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">lookup_from_data</tt><big>(</big><em>examples</em><span class="optional">[</span>, <em>weight</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.classification.lookup.lookup_from_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a set of data instances (e.g. <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) and
+turn it into a classifier. If there are one, two or three features
+and no ambiguous data instances (i.e. no instances with same
+feature values and different classes), it will construct an
+appropriate <a class="reference internal" href="#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a>. Otherwise, it will
+return an <a class="reference internal" href="#Orange.classification.lookup.ClassifierByDataTable" title="Orange.classification.lookup.ClassifierByDataTable"><tt class="xref py py-obj docutils literal"><span class="pre">ClassifierByDataTable</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">lookup</span><span class="o">.</span><span class="n">lookup_from_data</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">test_instance</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Instance</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;?&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lookup</span><span class="p">(</span><span class="n">test_instance</span><span class="p">)</span>
+<span class="go">&lt;orange.Value &#39;y&#39;=&#39;0&#39;&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.classification.lookup.dump_lookup_function">
+<tt class="descclassname">Orange.classification.lookup.</tt><tt class="descname">dump_lookup_function</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#Orange.classification.lookup.dump_lookup_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a string with a lookup function. Argument <tt class="docutils literal"><span class="pre">func</span></tt> can be
+any of the above-mentioned classifiers or a feature whose
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor.get_value_from" title="Orange.feature.Descriptor.get_value_from"><tt class="xref py py-obj docutils literal"><span class="pre">get_value_from</span></tt></a> contains one of
+such classifiers.</p>
+<p>For instance, if <tt class="docutils literal"><span class="pre">lookup</span></tt> is such as constructed in the example for
+<tt class="docutils literal"><span class="pre">lookup_from_function</span></tt>, it can be printed by:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">dump_lookup_function</span><span class="p">(</span><span class="n">lookup</span><span class="p">)</span>
+<span class="go">a      b      a=b</span>
+<span class="go">------ ------ ------</span>
+<span class="go">1      1      yes</span>
+<span class="go">1      2      no</span>
+<span class="go">1      3      no</span>
+<span class="go">2      1      no</span>
+<span class="go">2      2      yes</span>
+<span class="go">2      3      no</span>
+<span class="go">3      1      no</span>
+<span class="go">3      2      no</span>
+<span class="go">3      3      yes</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

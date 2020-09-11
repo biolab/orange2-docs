@@ -1,0 +1,426 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sampling and Testing (testing) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Sampling and Testing (<tt class="docutils literal"><span class="pre">testing</span></tt>)</a><ul>
+<li><a class="reference internal" href="#randomness-in-tests">Randomness in tests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.evaluation.testing"><span id="index-0"></span></span><div class="section" id="sampling-and-testing-testing">
+<h1>Sampling and Testing (<tt class="docutils literal"><span class="pre">testing</span></tt>)<a class="headerlink" href="#sampling-and-testing-testing" title="Permalink to this headline">¶</a></h1>
+<p>Module <a class="reference internal" href="#module-Orange.evaluation.testing" title="Orange.evaluation.testing"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.evaluation.testing</span></tt></a> contains methods for
+cross-validation, leave-one out, random sampling and learning
+curves. These procedures split the data onto training and testing set
+and use the training data to induce models; models then make
+predictions for testing data. Predictions are collected in
+<a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a>, together with the actual classes and some
+other data. The latter can be given to functions
+<a class="reference internal" href="Orange.evaluation.scoring.html#module-Orange.evaluation.scoring" title="Orange.evaluation.scoring"><tt class="xref py py-obj docutils literal"><span class="pre">scoring</span></tt></a> that compute the performance scores
+of models.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(),</span>
+            <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">majority</span><span class="o">.</span><span class="n">MajorityLearner</span><span class="p">()]</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">iris</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span> <span class="p">[</span><span class="s">&quot;</span><span class="si">%.4f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">score</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">cv</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>The following call makes 100 iterations of 70:30 test and stores all the
+induced classifiers.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">proportion_test</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">iris</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">store_classifiers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Different evaluation techniques are implemented as instance methods of
+<a class="reference internal" href="#Orange.evaluation.testing.Evaluation" title="Orange.evaluation.testing.Evaluation"><tt class="xref py py-obj docutils literal"><span class="pre">Evaluation</span></tt></a> class. For ease of use, an instance of this class is
+created at module loading time and instance methods are exposed as functions
+in <a class="reference internal" href="#module-Orange.evaluation.testing" title="Orange.evaluation.testing"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.evaluation.testing</span></tt></a>.</p>
+<div class="section" id="randomness-in-tests">
+<h2>Randomness in tests<a class="headerlink" href="#randomness-in-tests" title="Permalink to this headline">¶</a></h2>
+<p>If evaluation method uses random sampling, parameter
+<tt class="docutils literal"><span class="pre">random_generator</span></tt> can be used to either provide either a random
+seed or an instance of <a class="reference internal" href="Orange.misc.html#Orange.misc.Random" title="Orange.misc.Random"><tt class="xref py py-obj docutils literal"><span class="pre">Random</span></tt></a>. If omitted, a new
+instance of random generator is constructed for each call of the
+method with random seed 0.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Running the same script twice will generally give the same
+results.</p>
+</div>
+<p>For conducting a repeatable set of experiments, construct an instance
+of <a class="reference internal" href="Orange.misc.html#Orange.misc.Random" title="Orange.misc.Random"><tt class="xref py py-obj docutils literal"><span class="pre">Random</span></tt></a> and pass it to all of them. This way,
+all methods will use different random numbers, but they will be the
+same for each run of the script.</p>
+<p>For truly random number, set seed to a random number generated with
+python random generator. Since python&#8217;s random generator is reset each
+time python is loaded with current system time as seed, results of the
+script will be different each time you run it.</p>
+<dl class="class">
+<dt id="Orange.evaluation.testing.Evaluation">
+<em class="property">class </em><tt class="descclassname">Orange.evaluation.testing.</tt><tt class="descname">Evaluation</tt><a class="headerlink" href="#Orange.evaluation.testing.Evaluation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Common methods for learner evaluation.</p>
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.cross_validation">
+<tt class="descname">cross_validation</tt><big>(</big><em>learners</em>, <em>examples</em>, <em>folds=10</em>, <em>stratified=StratifiedIfPossible</em>, <em>preprocessors=()</em>, <em>random_generator=0</em>, <em>callback=None</em>, <em>store_classifiers=False</em>, <em>store_examples=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.cross_validation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cross validation test with specified number of folds.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>examples</strong> &#8211; data instances used for training and testing</li>
+<li><strong>folds</strong> &#8211; number of folds</li>
+<li><strong>stratified</strong> &#8211; tells whether to stratify the sampling</li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors to be used on data (obsolete)</li>
+<li><strong>random_generator</strong> &#8211; random seed or generator (see above)</li>
+<li><strong>callback</strong> &#8211; a function that is called after finishing each fold</li>
+<li><strong>store_classifiers</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, classifiers are stored in results</li>
+<li><strong>store_examples</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, examples are stored in results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.leave_one_out">
+<tt class="descname">leave_one_out</tt><big>(</big><em>learners</em>, <em>examples</em>, <em>preprocessors=()</em>, <em>callback=None</em>, <em>store_classifiers=False</em>, <em>store_examples=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.leave_one_out" title="Permalink to this definition">¶</a></dt>
+<dd><p>Leave-one-out evaluation of learning algorithms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>examples</strong> &#8211; data instances used for training and testing</li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors (obsolete)</li>
+<li><strong>callback</strong> &#8211; a function that is called after finishing each fold</li>
+<li><strong>store_classifiers</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, classifiers are stored in results</li>
+<li><strong>store_examples</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, examples are stored in results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.proportion_test">
+<tt class="descname">proportion_test</tt><big>(</big><em>learners</em>, <em>examples</em>, <em>learning_proportion=0.7</em>, <em>times=10</em>, <em>stratification=StratifiedIfPossible</em>, <em>preprocessors=()</em>, <em>random_generator=0</em>, <em>callback=None</em>, <em>store_classifiers=False</em>, <em>store_examples=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.proportion_test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iteratively split the data into training and testing set, and train and test the learnign algorithms.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>examples</strong> &#8211; data instances used for training and testing</li>
+<li><strong>learning_proportion</strong> &#8211; proportion of data used for training</li>
+<li><strong>times</strong> &#8211; number of iterations</li>
+<li><strong>stratification</strong> &#8211; use stratified sampling</li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors (obsolete)</li>
+<li><strong>random_generator</strong> &#8211; random seed or generator (see above)</li>
+<li><strong>callback</strong> &#8211; a function that is called after each fold</li>
+<li><strong>store_classifiers</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, classifiers are stored in results</li>
+<li><strong>store_examples</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, examples are stored in results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.test_with_indices">
+<tt class="descname">test_with_indices</tt><big>(</big><em>learners</em>, <em>examples</em>, <em>indices</em>, <em>preprocessors=()</em>, <em>callback=None</em>, <em>store_classifiers=False</em>, <em>store_examples=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.test_with_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a cross-validation-like test. Examples for each fold are
+selected based on given indices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>examples</strong> &#8211; data instances used for training and testing</li>
+<li><strong>indices</strong> &#8211; a list of integer indices that sort examples into folds; each index corresponds to an example from <tt class="docutils literal"><span class="pre">examples</span></tt></li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors (obsolete)</li>
+<li><strong>callback</strong> &#8211; a function that is called after each fold</li>
+<li><strong>store_classifiers</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, classifiers are stored in results</li>
+<li><strong>store_examples</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, examples are stored in results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.one_fold_with_indices">
+<tt class="descname">one_fold_with_indices</tt><big>(</big><em>learners</em>, <em>examples</em>, <em>fold</em>, <em>indices</em>, <em>preprocessors=()</em>, <em>weight=0</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.one_fold_with_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to <a class="reference internal" href="#Orange.evaluation.testing.Evaluation.test_with_indices" title="Orange.evaluation.testing.Evaluation.test_with_indices"><tt class="xref py py-obj docutils literal"><span class="pre">test_with_indices</span></tt></a> except that it performs single fold of cross-validation, given by argument <tt class="docutils literal"><span class="pre">fold</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.learn_and_test_on_learn_data">
+<tt class="descname">learn_and_test_on_learn_data</tt><big>(</big><em>learners</em>, <em>examples</em>, <em>preprocessors=()</em>, <em>callback=None</em>, <em>store_classifiers=False</em>, <em>store_examples=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.learn_and_test_on_learn_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train learning algorithms and test them on the same data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>examples</strong> &#8211; data instances used for training and testing</li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors (obsolete)</li>
+<li><strong>callback</strong> &#8211; a function that is called after each learning</li>
+<li><strong>store_classifiers</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, classifiers are stored in results</li>
+<li><strong>store_examples</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, examples are stored in results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.learn_and_test_on_test_data">
+<tt class="descname">learn_and_test_on_test_data</tt><big>(</big><em>learners</em>, <em>learn_set</em>, <em>test_set</em>, <em>preprocessors=()</em>, <em>callback=None</em>, <em>store_classifiers=False</em>, <em>store_examples=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.learn_and_test_on_test_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train learning algorithms on one data sets and test them on another.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>learn_set</strong> &#8211; training instances</li>
+<li><strong>test_set</strong> &#8211; testing instances</li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors (obsolete)</li>
+<li><strong>callback</strong> &#8211; a function that is called after each learning</li>
+<li><strong>store_classifiers</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, classifiers are stored in results</li>
+<li><strong>store_examples</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, examples are stored in results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.learning_curve">
+<tt class="descname">learning_curve</tt><big>(</big><em>learners, examples, cv_indices=None, proportion_indices=None, proportions=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], preprocessors=(), random_generator=0, callback=None</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.learning_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a learning curve using multiple cross-validations where
+models are trained on different portions of the training data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>examples</strong> &#8211; data instances used for training and testing</li>
+<li><strong>cv_indices</strong> &#8211; indices used for cross validation (leave <tt class="docutils literal"><span class="pre">None</span></tt> for 10-fold CV)</li>
+<li><strong>proportion_indices</strong> &#8211; indices for proportion selection (leave <tt class="docutils literal"><span class="pre">None</span></tt> to let the function construct the folds)</li>
+<li><strong>proportions</strong> &#8211; list of proportions of data used for training</li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors (obsolete)</li>
+<li><strong>random_generator</strong> &#8211; random seed or generator (see above)</li>
+<li><strong>callback</strong> &#8211; a function that is be called after each learning</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.learning_curve_n">
+<tt class="descname">learning_curve_n</tt><big>(</big><em>learners, examples, folds=10, proportions=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], stratification=StratifiedIfPossible, preprocessors=(), random_generator=0, callback=None</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.learning_curve_n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a learning curve using multiple cross-validations where
+models are trained on different portions of the training data.
+Similar to <a class="reference internal" href="#Orange.evaluation.testing.Evaluation.learning_curve" title="Orange.evaluation.testing.Evaluation.learning_curve"><tt class="xref py py-obj docutils literal"><span class="pre">learning_curve</span></tt></a> except for simpler arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>examples</strong> &#8211; data instances used for training and testing</li>
+<li><strong>folds</strong> &#8211; number of folds for cross-validation</li>
+<li><strong>proportions</strong> &#8211; list of proportions of data used for training</li>
+<li><strong>stratification</strong> &#8211; use stratified sampling</li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors (obsolete)</li>
+<li><strong>random_generator</strong> &#8211; random seed or generator (see above)</li>
+<li><strong>callback</strong> &#8211; a function that is be called after each learning</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.learning_curve_with_test_data">
+<tt class="descname">learning_curve_with_test_data</tt><big>(</big><em>learners, learn_set, test_set, times=10, proportions=[0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], stratification=StratifiedIfPossible, preprocessors=(), random_generator=0, store_classifiers=False, store_examples=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.learning_curve_with_test_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a learning curve given two datasets. Models are learned on
+proportion of the first dataset and then tested on the second.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> &#8211; list of learning algorithms</li>
+<li><strong>learn_set</strong> &#8211; training data</li>
+<li><strong>test_set</strong> &#8211; testing data</li>
+<li><strong>times</strong> &#8211; number of iterations</li>
+<li><strong>straitification</strong> &#8211; use stratified sampling</li>
+<li><strong>proportions</strong> &#8211; a list of proportions of training data to be used</li>
+<li><strong>preprocessors</strong> &#8211; a list of preprocessors (obsolete)</li>
+<li><strong>random_generator</strong> &#8211; random seed or generator (see above)</li>
+<li><strong>store_classifiers</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, classifiers are stored in results</li>
+<li><strong>store_examples</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, examples are stored in results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="Orange.evaluation.html#Orange.evaluation.testing.ExperimentResults" title="Orange.evaluation.testing.ExperimentResults"><tt class="xref py py-obj docutils literal"><span class="pre">ExperimentResults</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.evaluation.testing.Evaluation.test_on_data">
+<tt class="descname">test_on_data</tt><big>(</big><em>classifiers</em>, <em>examples</em>, <em>store_classifiers=False</em>, <em>store_examples=False</em><big>)</big><a class="headerlink" href="#Orange.evaluation.testing.Evaluation.test_on_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test classifiers on the given data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>classifiers</strong> &#8211; a list of classifiers</li>
+<li><strong>examples</strong> &#8211; testing data</li>
+<li><strong>store_classifiers</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, classifiers are stored in results</li>
+<li><strong>store_examples</strong> &#8211; if <tt class="docutils literal"><span class="pre">True</span></tt>, examples are stored in results</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

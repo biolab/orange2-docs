@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Survey Plot &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Survey Plot</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="survey-plot">
+<span id="id1"></span><h1>Survey Plot<a class="headerlink" href="#survey-plot" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/SurveyPlot1.svg" /><p>Displays a Survey Plot.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Input data set.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Attribute Selection List</dt>
+<dd><p class="first last">List of attributes to be shown in the visualization.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Attribute Selection List</dt>
+<dd><p class="first last">List of attributes used in the visualization.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>A survey plot is a simple multi-attribute visualization technique that can help
+to spot correlations between any two variables especially when the data is
+sorted according to a particular dimension. Each horizontal splice in a plot
+corresponds to a particular data instance. The data on a specific attribute is
+shown in a single column, where the length of the line corresponds to the
+dimensional value. When data includes a discrete or continuous class, the
+slices (data instances) are colored correspondingly.</p>
+<p>Implementation in Orange supports sorting by two selected attributes
+(<tt class="xref py py-obj docutils literal"><span class="pre">Sorting</span></tt>). The attributes shown in the plot are listed in
+<tt class="xref py py-obj docutils literal"><span class="pre">Shown</span> <span class="pre">attributes</span></tt> box, all other appear in the list of
+<tt class="xref py py-obj docutils literal"><span class="pre">Hidden</span> <span class="pre">attributes</span></tt>.</p>
+<p>Below is a snapshot of survey plot widget for an Iris. Plot nicely shows that
+petal width and length and sepal length are correlated. It is also very clear
+that Iris-setosa can be classified based on petal length or width alone, while
+for the Iris versicolor and virginica there is some ambiguity with some
+potential outliers, one of which is highlighted in the snapshot.</p>
+<img alt="../../../_images/SurveyPlot-Iris.png" src="../../../_images/SurveyPlot-Iris.png" />
+<p>Values of the attributes may be scaled independently, for each attribute at
+the time, or globally, using the information from all of the attributes This
+option is controlled through <tt class="xref py py-obj docutils literal"><span class="pre">Global</span> <span class="pre">values</span> <span class="pre">scaling</span></tt> check box. Switching
+it on results in a plot shown below; notice that the leafs have smalled widths
+than lengths, and the ratio is bigger with petal leafs. With
+<tt class="xref py py-obj docutils literal"><span class="pre">Example</span> <span class="pre">tracking</span></tt> on, mousing over the plot would bring a box around the
+row representing a single data instance, which would with <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">legend</span></tt>
+display the information about the values of particular instance (just like in
+the snapshot aboce). The attributes appearing in the attribute list may be
+ordered according to selected criteria. <tt class="xref py py-obj docutils literal"><span class="pre">Tooltips</span> <span class="pre">settings</span></tt> controls the
+amount of information displayed in the data instance balloon (essentially, one
+can change between including the information of only visualized attributes, or
+all the attributes in the data set).</p>
+<img alt="../../../_images/SurveyPlot-Settings.png" src="../../../_images/SurveyPlot-Settings.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

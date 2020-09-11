@@ -1,0 +1,488 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Curve (owcurve) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Curve (<tt class="docutils literal"><span class="pre">owcurve</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.OrangeWidgets.plot.owcurve"></span><div class="section" id="curve-owcurve">
+<h1>Curve (<tt class="docutils literal"><span class="pre">owcurve</span></tt>)<a class="headerlink" href="#curve-owcurve" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem">
+<em class="property">class </em><tt class="descclassname">Orange.OrangeWidgets.plot.owcurve.</tt><tt class="descname">OWPlotItem</tt><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a base for any item than can be added to a plot.</p>
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.attach">
+<tt class="descname">attach</tt><big>(</big><em>plot</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.attach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attaches this item to <tt class="docutils literal"><span class="pre">plot</span></tt>. The Plot takes the ownership of this item.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plot</strong> (<a class="reference internal" href="OrangeWidgets.plot.owplot.html#OrangeWidgets.plot.OWPlot" title="OrangeWidgets.plot.OWPlot"><tt class="xref py py-obj docutils literal"><span class="pre">OWPlot</span></tt></a>) &#8211; the plot to which to add this item</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Seealso :</th><td class="field-body"><a class="reference internal" href="OrangeWidgets.plot.owplot.html#OrangeWidgets.plot.owplot.OWPlot.add_item" title="OrangeWidgets.plot.owplot.OWPlot.add_item"><tt class="xref py py-meth docutils literal"><span class="pre">OWPlot.add_item()</span></tt></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.detach">
+<tt class="descname">detach</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.detach" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes this item from its plot. The item&#8217;s ownership is returned to Python.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.plot" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The plot this item is attached to. If the item is not attached to any plot, <tt class="docutils literal"><span class="pre">None</span></tt> is returned.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="OrangeWidgets.plot.owplot.html#OrangeWidgets.plot.OWPlot" title="OrangeWidgets.plot.OWPlot"><tt class="xref py py-obj docutils literal"><span class="pre">OWPlot</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.data_rect">
+<tt class="descname">data_rect</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.data_rect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the bounding rectangle of this item in data coordinates. This method is used in autoscale calculations.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_data_rect">
+<tt class="descname">set_data_rect</tt><big>(</big><em>rect</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_data_rect" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rect</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">QRectF</span></tt>) &#8211; The new bounding rectangle in data coordinates</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_graph_transform">
+<tt class="descname">set_graph_transform</tt><big>(</big><em>transform</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_graph_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the graph transform (the transformation that maps from data to plot coordinates) for this item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.graph_transform">
+<tt class="descname">graph_transform</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.graph_transform" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current graph transformation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QTransform</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_zoom_transform">
+<tt class="descname">set_zoom_transform</tt><big>(</big><em>transform</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_zoom_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the zoom transform (the transformation that maps from plot to scene coordinates) for this item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.zoom_transform">
+<tt class="descname">zoom_transform</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.zoom_transform" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The current zoom transformation.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">QTransform</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_axes">
+<tt class="descname">set_axes</tt><big>(</big><em>x_axis</em>, <em>y_axis</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_axes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the pair of axes used for positioning this item.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.axes">
+<tt class="descname">axes</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.axes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The item&#8217;s pair of axes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">tuple of int int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.update_properties">
+<tt class="descname">update_properties</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.update_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called by the plot, this function is supposed to updates the item&#8217;s internal state to match its settings.</p>
+<p>The default implementation does nothing and shold be reimplemented by subclasses.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.register_points">
+<tt class="descname">register_points</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.register_points" title="Permalink to this definition">¶</a></dt>
+<dd><p>If this item constains any points (of type <a class="reference internal" href="OrangeWidgets.plot.owpoint.html#OrangeWidgets.plot.owpoint.OWPoint" title="OrangeWidgets.plot.owpoint.OWPoint"><tt class="xref py py-obj docutils literal"><span class="pre">OWPoint</span></tt></a>), add them to the plot in this function.</p>
+<p>The default implementation does nothing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_in_background">
+<tt class="descname">set_in_background</tt><big>(</big><em>background</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_in_background" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <tt class="docutils literal"><span class="pre">background</span></tt> is <tt class="docutils literal"><span class="pre">True</span></tt>, the item is moved to be background of this plot, behind other items and axes. 
+Otherwise, it&#8217;s brought to the front, in front of axes.</p>
+<p>The default in <tt class="docutils literal"><span class="pre">False</span></tt>, so that items apper in front of axes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.is_in_background">
+<tt class="descname">is_in_background</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.is_in_background" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns if item is in the background, set with <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_in_background" title="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.set_in_background"><tt class="xref py py-meth docutils literal"><span class="pre">set_in_background()</span></tt></a>.</p>
+</dd></dl>
+
+<p><strong>Subclassing</strong></p>
+<blockquote>
+<div><p>Often you will want to create a custom curve class that inherits from OWCurve. 
+For this purpose, OWPlotItem provides two virtual methods: <tt class="xref py py-meth docutils literal"><span class="pre">paint()</span></tt> and <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWPlotItem.update_properties" title="Orange.OrangeWidgets.plot.owcurve.OWPlotItem.update_properties"><tt class="xref py py-meth docutils literal"><span class="pre">update_properties()</span></tt></a>.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">update_properties()</span></tt> is called whenever a curve or the plot is changed and needs to be updated. 
+In this method, child items and other members should be recalculated and updated. 
+The OWCurve even provides a number of methods for asynchronous (threaded) updating.</li>
+<li><cite>paint()</cite> is called whenever the item needs to be painted on the scene. 
+This method is called more often, so it&#8217;s advisable to avoid long operation in the method.</li>
+</ul>
+<p>Most provided plot items, including <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve" title="Orange.OrangeWidgets.plot.owcurve.OWCurve"><tt class="xref py py-obj docutils literal"><span class="pre">OWCurve</span></tt></a>, <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWMultiCurve" title="Orange.OrangeWidgets.plot.owcurve.OWMultiCurve"><tt class="xref py py-obj docutils literal"><span class="pre">OWMultiCurve</span></tt></a> and utility curves in <a class="reference internal" href="OrangeWidgets.plot.owtools.html#module-OrangeWidgets.plot.owtools" title="OrangeWidgets.plot.owtools"><tt class="xref py py-mod docutils literal"><span class="pre">owtools</span></tt></a>
+only reimplement the first method, because they are optimized for performance with large data sets.</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve">
+<em class="property">class </em><tt class="descclassname">Orange.OrangeWidgets.plot.owcurve.</tt><tt class="descname">OWCurve</tt><big>(</big><em>xData=</em><span class="optional">[</span><span class="optional">]</span>, <em>yData=</em><span class="optional">[</span><span class="optional">]</span>, <em>x_axis_key=2</em>, <em>y_axis_key=0</em>, <em>tooltip=None</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class represents a curve on a plot. 
+It is essentially a plot item with a series of data points or a continuous line.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>xData</strong> (<em>list of float</em>) &#8211; list of x coordinates</li>
+<li><strong>yData</strong> (<em>list of float</em>) &#8211; list of y coordinates</li>
+<li><strong>x_axis_key</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The x axis of this curve</li>
+<li><strong>y_axis_key</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The y axis of this curve</li>
+<li><strong>tooltip</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The curve&#8217;s tooltip</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All the points or line segments in an OWCurve have the same properties. 
+Different points in one curve are supported by the <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWMultiCurve" title="Orange.OrangeWidgets.plot.owcurve.OWMultiCurve"><tt class="xref py py-obj docutils literal"><span class="pre">OWMultiCurve</span></tt></a> class.</p>
+</div>
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.point_item">
+<tt class="descname">point_item</tt><big>(</big><em>x</em>, <em>y</em>, <em>size=0</em>, <em>parent=None</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.point_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a single point with this curve&#8217;s properties. 
+It is useful for representing the curve, for example in the legend.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The x coordinate of the point.</li>
+<li><strong>y</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; The y coordinate of the point.</li>
+<li><strong>size</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; If nonzero, this argument determines the size of the resulting point. 
+Otherwise, the point is created with the curve&#8217;s <tt class="xref py py-meth docutils literal"><span class="pre">OWCurve.point_size()</span></tt></li>
+<li><strong>parent</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">QGraphicsItem</span></tt>) &#8211; An optional parent for the returned item.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.name">
+<tt class="descname">name</tt><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the curve, used in the legend or in tooltips.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.set_data">
+<tt class="descname">set_data</tt><big>(</big><em>x_data</em>, <em>y_data</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.set_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the curve&#8217;s data to a list of coordinates specified by <tt class="docutils literal"><span class="pre">x_data</span></tt> and <tt class="docutils literal"><span class="pre">y_data</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.data">
+<tt class="descname">data</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.data" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The curve&#8217;s data as a list of data points.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">list of tuple of float float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.set_style">
+<tt class="descname">set_style</tt><big>(</big><em>style</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.set_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the curve&#8217;s style to <tt class="docutils literal"><span class="pre">style</span></tt>.</p>
+<p>The following values are recognized by OWCurve:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>OWCurve.Points</td>
+<td>Only points are shown, no lines</td>
+</tr>
+<tr class="row-odd"><td>OWCurve.Lines</td>
+<td>A continuous line is shown, no points</td>
+</tr>
+<tr class="row-even"><td>OWCurve.LinesPoints</td>
+<td>Both points and lines between them are shown</td>
+</tr>
+<tr class="row-odd"><td>OWCurve.Dots</td>
+<td>A dotted line is shown, no points</td>
+</tr>
+<tr class="row-even"><td>OWCurve.NoCurve</td>
+<td>Deprecated, same as <tt class="docutils literal"><span class="pre">OWCurve.Points</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Curve subclasses can use this value for different drawing modes. 
+Values up to OWCurve.UserCurve are reserved, so use only higher numbers, like the following example:</p>
+<div class="highlight-python"><pre>class MyCurve(OWCurve):
+    PonyStyle = OWCurve.UserCurve + 42
+
+    def draw_ponies()
+        # Draw type-specific things here
+
+    def update_properties(self):
+        if self.style() == PonyStyle:
+            self.draw_ponies()
+        else:
+            OWCurve.update_properties(self)</pre>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.style">
+<tt class="descname">style</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.style" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The curve&#8217;s style, set with <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.set_style" title="Orange.OrangeWidgets.plot.owcurve.OWCurve.set_style"><tt class="xref py py-meth docutils literal"><span class="pre">set_style()</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.cancel_all_updates">
+<tt class="descname">cancel_all_updates</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.cancel_all_updates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancel all pending threaded updates and block until they are finished. 
+This is usually called before starting a new round of updates.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.update_number_of_items">
+<tt class="descname">update_number_of_items</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.update_number_of_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes the point list so that it matches the number of data points in <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.data" title="Orange.OrangeWidgets.plot.owcurve.OWCurve.data"><tt class="xref py py-meth docutils literal"><span class="pre">data()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.update_point_coordinates">
+<tt class="descname">update_point_coordinates</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.update_point_coordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the coordinates of each point to match <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.data" title="Orange.OrangeWidgets.plot.owcurve.OWCurve.data"><tt class="xref py py-meth docutils literal"><span class="pre">data()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWCurve.update_point_positions">
+<tt class="descname">update_point_positions</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.update_point_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the scene positions of the points to match their data coordinates.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWMultiCurve">
+<em class="property">class </em><tt class="descclassname">Orange.OrangeWidgets.plot.owcurve.</tt><tt class="descname">OWMultiCurve</tt><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWMultiCurve" title="Permalink to this definition">¶</a></dt>
+<dd><p>A multi-curve is a curve in which each point can have its own properties. 
+The point coordinates can be set by calling <a class="reference internal" href="#Orange.OrangeWidgets.plot.owcurve.OWCurve.set_data" title="Orange.OrangeWidgets.plot.owcurve.OWCurve.set_data"><tt class="xref py py-meth docutils literal"><span class="pre">OWCurve.set_data()</span></tt></a>, just like in a normal curve.</p>
+<p>In addition, OWMultiCurve provides methods for setting properties for individual points. 
+Each of this methods take a list as a parameter. If the list has less elements that the curve&#8217;s data, 
+the first element is used for all points.</p>
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWMultiCurve.set_point_colors">
+<tt class="descname">set_point_colors</tt><big>(</big><em>lst</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWMultiCurve.set_point_colors" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lst</strong> (<em>list of QColor</em>) &#8211; The list of colors to assign to points</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="OrangeWidgets.plot.owpoint.html#OrangeWidgets.plot.owpoint.OWPoint.set_color" title="OrangeWidgets.plot.owpoint.OWPoint.set_color"><tt class="xref py py-meth docutils literal"><span class="pre">OWPoint.set_color()</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWMultiCurve.set_point_sizes">
+<tt class="descname">set_point_sizes</tt><big>(</big><em>lst</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWMultiCurve.set_point_sizes" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lst</strong> (<em>list of int</em>) &#8211; The list of sizes to assign to points</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="OrangeWidgets.plot.owpoint.html#OrangeWidgets.plot.owpoint.OWPoint.set_size" title="OrangeWidgets.plot.owpoint.OWPoint.set_size"><tt class="xref py py-meth docutils literal"><span class="pre">OWPoint.set_size()</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.OrangeWidgets.plot.owcurve.OWMultiCurve.set_point_symbols">
+<tt class="descname">set_point_symbols</tt><big>(</big><em>lst</em><big>)</big><a class="headerlink" href="#Orange.OrangeWidgets.plot.owcurve.OWMultiCurve.set_point_symbols" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lst</strong> (<em>list of int</em>) &#8211; The list of symbols to assign to points</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="OrangeWidgets.plot.owpoint.html#OrangeWidgets.plot.owpoint.OWPoint.set_symbol" title="OrangeWidgets.plot.owpoint.OWPoint.set_symbol"><tt class="xref py py-meth docutils literal"><span class="pre">OWPoint.set_symbol()</span></tt></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

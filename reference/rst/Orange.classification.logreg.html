@@ -1,0 +1,601 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Logistic regression (logreg) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Logistic regression (<tt class="docutils literal"><span class="pre">logreg</span></tt>)</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.classification.logreg"></span><div class="section" id="logistic-regression-logreg">
+<h1>Logistic regression (<tt class="docutils literal"><span class="pre">logreg</span></tt>)<a class="headerlink" href="#logistic-regression-logreg" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Logistic_regression">Logistic regression</a> is a statistical
+classification method that fits data to a logistic function. Orange
+provides various enhancement of the method, such as stepwise selection
+of variables and handling of constant variables and singularities.</p>
+<dl class="class">
+<dt id="Orange.classification.logreg.LogRegLearner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.logreg.</tt><tt class="descname">LogRegLearner</tt><big>(</big><em>remove_singular=0</em>, <em>fitter=None</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.LogRegLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logistic regression learner.</p>
+<p>Returns either a learning algorithm (instance of
+<a class="reference internal" href="#Orange.classification.logreg.LogRegLearner" title="Orange.classification.logreg.LogRegLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegLearner</span></tt></a>) or, if data is provided, a fitted model
+(instance of <a class="reference internal" href="#Orange.classification.logreg.LogRegClassifier" title="Orange.classification.logreg.LogRegClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegClassifier</span></tt></a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; data table; it may contain discrete and continuous features</li>
+<li><strong>weight_id</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; the ID of the weight meta attribute</li>
+<li><strong>remove_singular</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; automated removal of constant
+features and singularities (default: <cite>False</cite>)</li>
+<li><strong>fitter</strong> &#8211; the fitting algorithm (default: <a class="reference internal" href="#Orange.classification.logreg.LogRegFitter_Cholesky" title="Orange.classification.logreg.LogRegFitter_Cholesky"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegFitter_Cholesky</span></tt></a>)</li>
+<li><strong>stepwise_lr</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; enables stepwise feature selection (default: <cite>False</cite>)</li>
+<li><strong>add_crit</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; threshold for adding a feature in stepwise
+selection (default: 0.2)</li>
+<li><strong>delete_crit</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; threshold for removing a feature in stepwise
+selection (default: 0.3)</li>
+<li><strong>num_features</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of features in stepwise selection
+(default: -1, no limit)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.classification.logreg.LogRegLearner" title="Orange.classification.logreg.LogRegLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegLearner</span></tt></a> or <a class="reference internal" href="#Orange.classification.logreg.LogRegClassifier" title="Orange.classification.logreg.LogRegClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegClassifier</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.classification.logreg.LogRegLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>weight=0</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.LogRegLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit a model to the given data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Table</span></tt></a>) &#8211; Data instances.</li>
+<li><strong>weight</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Id of meta attribute with instance weights</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.classification.logreg.LogRegClassifier" title="Orange.classification.logreg.LogRegClassifier"><tt class="xref py py-class docutils literal"><span class="pre">LogRegClassifier</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.logreg.LogRegClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.classification.logreg.</tt><tt class="descname">LogRegClassifier</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>A logistic regression classification model. Stores estimated values of
+regression coefficients and their significances, and uses them to predict
+classes and class probabilities.</p>
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegClassifier.beta">
+<tt class="descname">beta</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegClassifier.beta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimated regression coefficients.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegClassifier.beta_se">
+<tt class="descname">beta_se</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegClassifier.beta_se" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimated standard errors for regression coefficients.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegClassifier.wald_Z">
+<tt class="descname">wald_Z</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegClassifier.wald_Z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wald Z statistics for beta coefficients. Wald Z is computed
+as beta/beta_se.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegClassifier.P">
+<tt class="descname">P</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegClassifier.P" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of P-values for beta coefficients, that is, the probability
+that beta coefficients differ from 0.0. The probability is
+computed from squared Wald Z statistics that is distributed with
+chi-squared distribution.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegClassifier.likelihood">
+<tt class="descname">likelihood</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegClassifier.likelihood" title="Permalink to this definition">¶</a></dt>
+<dd><p>The likelihood of the sample (ie. learning data) given the
+fitted model.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegClassifier.fit_status">
+<tt class="descname">fit_status</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegClassifier.fit_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells how the model fitting ended, either regularly
+(<a class="reference internal" href="#Orange.classification.logreg.LogRegFitter.OK" title="Orange.classification.logreg.LogRegFitter.OK"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegFitter.OK</span></tt></a>), or it was interrupted due to one of
+beta coefficients escaping towards infinity
+(<a class="reference internal" href="#Orange.classification.logreg.LogRegFitter.Infinity" title="Orange.classification.logreg.LogRegFitter.Infinity"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegFitter.Infinity</span></tt></a>) or since the values did not
+converge (<a class="reference internal" href="#Orange.classification.logreg.LogRegFitter.Divergence" title="Orange.classification.logreg.LogRegFitter.Divergence"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegFitter.Divergence</span></tt></a>).</p>
+<p>Although the model is functional in all cases, it is
+recommended to inspect whether the coefficients of the model
+if the fitting did not end normally.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.logreg.LogRegClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.LogRegClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify a new instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Instance</span></tt></a>) &#8211; instance to be classified.</li>
+<li><strong>result_type</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">GetValue</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">GetProbabilities</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">GetBoth</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a>,
+<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a> or a
+tuple with both</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.logreg.LogRegFitter">
+<em class="property">class </em><tt class="descclassname">Orange.classification.logreg.</tt><tt class="descname">LogRegFitter</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegFitter" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#Orange.classification.logreg.LogRegFitter" title="Orange.classification.logreg.LogRegFitter"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegFitter</span></tt></a> is the abstract base class for logistic
+fitters. Fitters can be called with a data table and return a
+vector of coefficients and the corresponding statistics, or a
+status signifying an error. The possible statuses are</p>
+<blockquote>
+<div><dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegFitter.OK">
+<tt class="descname">OK</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegFitter.OK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimization converged</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegFitter.Infinity">
+<tt class="descname">Infinity</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegFitter.Infinity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Optimization failed due to one or more beta coefficients
+escaping towards infinity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegFitter.Divergence">
+<tt class="descname">Divergence</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegFitter.Divergence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Beta coefficients failed to converge, but without any of beta
+coefficients escaping toward infinity.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegFitter.Constant">
+<tt class="descname">Constant</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegFitter.Constant" title="Permalink to this definition">¶</a></dt>
+<dd><p>The data is singular due to a constant variable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.logreg.LogRegFitter.Singularity">
+<tt class="descname">Singularity</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegFitter.Singularity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The data is singular.</p>
+</dd></dl>
+
+</div></blockquote>
+<dl class="method">
+<dt id="Orange.classification.logreg.LogRegFitter.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>weight_id</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.LogRegFitter.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the model and return a tuple with the fitted values and
+the corresponding statistics or an error indicator. The two
+cases differ by the tuple length and the status (the first
+tuple element).</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">(status,</span> <span class="pre">beta,</span> <span class="pre">beta_se,</span> <span class="pre">likelihood)</span></tt> Fitting succeeded. The</dt>
+<dd>first element, <tt class="docutils literal"><span class="pre">status</span></tt> is either <a class="reference internal" href="#Orange.classification.logreg.LogRegFitter.OK" title="Orange.classification.logreg.LogRegFitter.OK"><tt class="xref py py-obj docutils literal"><span class="pre">OK</span></tt></a>,
+<a class="reference internal" href="#Orange.classification.logreg.LogRegFitter.Infinity" title="Orange.classification.logreg.LogRegFitter.Infinity"><tt class="xref py py-obj docutils literal"><span class="pre">Infinity</span></tt></a> or <a class="reference internal" href="#Orange.classification.logreg.LogRegFitter.Divergence" title="Orange.classification.logreg.LogRegFitter.Divergence"><tt class="xref py py-obj docutils literal"><span class="pre">Divergence</span></tt></a>. In the latter cases,
+returned values may still be useful for making
+predictions, but it is recommended to inspect the
+coefficients and their errors and decide whether to use
+the model or not.</dd>
+<dt><tt class="docutils literal"><span class="pre">(status,</span> <span class="pre">variable)</span></tt></dt>
+<dd>The fitter failed due to the indicated
+<tt class="docutils literal"><span class="pre">variable</span></tt>. <tt class="docutils literal"><span class="pre">status</span></tt> is either <a class="reference internal" href="#Orange.classification.logreg.LogRegFitter.Constant" title="Orange.classification.logreg.LogRegFitter.Constant"><tt class="xref py py-obj docutils literal"><span class="pre">Constant</span></tt></a> or
+<a class="reference internal" href="#Orange.classification.logreg.LogRegFitter.Singularity" title="Orange.classification.logreg.LogRegFitter.Singularity"><tt class="xref py py-obj docutils literal"><span class="pre">Singularity</span></tt></a>.</dd>
+</dl>
+<p>The proper way of calling the fitter is to handle both scenarios</p>
+<div class="highlight-python"><pre>res = fitter(examples)
+if res[0] in [fitter.OK, fitter.Infinity, fitter.Divergence]:
+   status, beta, beta_se, likelihood = res
+   &lt; proceed by doing something with what you got &gt;
+else:
+   status, attr = res
+   &lt; remove the attribute or complain to the user or ... &gt;</pre>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.logreg.LogRegFitter_Cholesky">
+<em class="property">class </em><tt class="descclassname">Orange.classification.logreg.</tt><tt class="descname">LogRegFitter_Cholesky</tt><a class="headerlink" href="#Orange.classification.logreg.LogRegFitter_Cholesky" title="Permalink to this definition">¶</a></dt>
+<dd><p>The sole fitter available at the
+moment. This is a C++ translation of <a class="reference external" href="http://users.bigpond.net.au/amiller/">Alan Miller&#8217;s logistic regression
+code</a> that uses Newton-Raphson
+algorithm to iteratively minimize least squares error computed from
+training data.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.logreg.StepWiseFSS">
+<em class="property">class </em><tt class="descclassname">Orange.classification.logreg.</tt><tt class="descname">StepWiseFSS</tt><big>(</big><em>add_crit=0.2</em>, <em>delete_crit=0.3</em>, <em>num_features=-1</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.StepWiseFSS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></a></p>
+<p>A learning algorithm for logistic regression that implements a
+stepwise feature subset selection as described in Applied Logistic
+Regression (Hosmer and Lemeshow, 2000).</p>
+<p>Each step of the algorithm is composed of two parts. The first is
+backward elimination in which the least significant variable in the
+model is removed if its p-value is above the prescribed threshold
+<tt class="xref py py-obj docutils literal"><span class="pre">delete_crit</span></tt>. The second step is forward selection in which
+all variables are tested for addition to the model, and the one with
+the most significant contribution is added if the corresponding
+p-value is smaller than the prescribed :obj:d`add_crit`. The
+algorithm stops when no more variables can be added or removed.</p>
+<p>The model can be additionaly constrained by setting
+<tt class="xref py py-obj docutils literal"><span class="pre">num_features</span></tt> to a non-negative value. The algorithm will then
+stop when the number of variables exceeds the given limit.</p>
+<p>Significances are assesed by the likelihood ratio chi-square
+test. Normal F test is not appropriate since the errors are assumed
+to follow a binomial distribution.</p>
+<p>The class constructor returns an instance of learning algorithm or,
+if given training data, a list of selected variables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; training data.</li>
+<li><strong>add_crit</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; threshold for adding a variable (default: 0.2)</li>
+<li><strong>delete_crit</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; threshold for removing a variable
+(default: 0.3); should be higher than <tt class="xref py py-obj docutils literal"><span class="pre">add_crit</span></tt>.</li>
+<li><strong>num_features</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; maximum number of selected features,
+use -1 for infinity.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.classification.logreg.StepWiseFSS" title="Orange.classification.logreg.StepWiseFSS"><tt class="xref py py-obj docutils literal"><span class="pre">StepWiseFSS</span></tt></a> or list of features</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.classification.logreg.dump">
+<tt class="descclassname">Orange.classification.logreg.</tt><tt class="descname">dump</tt><big>(</big><em>classifier</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.dump" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a formatted string describing the logistic regression model</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>classifier</strong> &#8211; logistic regression classifier.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.logreg.LibLinearLogRegLearner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.logreg.</tt><tt class="descname">LibLinearLogRegLearner</tt><big>(</big><em>solver_type=L2R_LR</em>, <em>C=1</em>, <em>eps=0.01</em>, <em>normalization=True</em>, <em>bias=-1</em>, <em>multinomial_treatment=NValues</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.LibLinearLogRegLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>A logistic regression learner from <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/liblinear/">LIBLINEAR</a>.</p>
+<p>Supports L2 regularized learning.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Unlike <a class="reference internal" href="#Orange.classification.logreg.LogRegLearner" title="Orange.classification.logreg.LogRegLearner"><tt class="xref py py-class docutils literal"><span class="pre">LogRegLearner</span></tt></a> this one supports multi-class
+classification using one vs. rest strategy.</p>
+</div>
+<dl class="method">
+<dt id="Orange.classification.logreg.LibLinearLogRegLearner.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>solver_type=L2R_LR</em>, <em>C=1</em>, <em>eps=0.01</em>, <em>normalization=True</em>, <em>bias=-1</em>, <em>multinomial_treatment=NValues</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.LibLinearLogRegLearner.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>solver_type</strong> &#8211; One of the following class constants:
+<tt class="docutils literal"><span class="pre">L2_LR</span></tt>, <tt class="docutils literal"><span class="pre">L2_LR_DUAL</span></tt>, <tt class="docutils literal"><span class="pre">L1R_LR</span></tt>.</li>
+<li><strong>C</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Regularization parameter (default 1.0). Higher values of
+C mean less regularization (C is a coefficient for the loss
+function).</li>
+<li><strong>eps</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Stopping criteria (default 0.01)</li>
+<li><strong>normalization</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; Normalize the input data prior to learning
+(default True)</li>
+<li><strong>bias</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; If positive, use it as a bias (default -1).</li>
+<li><strong>multinomial_treatment</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Defines how to handle multinomial
+features for learning. It can be one of the
+<a class="reference internal" href="Orange.data.continuization.html#Orange.data.continuization.DomainContinuizer" title="Orange.data.continuization.DomainContinuizer"><tt class="xref py py-class docutils literal"><span class="pre">DomainContinuizer</span></tt></a> <cite>multinomial_treatment</cite>
+constants (default: <cite>DomainContinuizer.NValues</cite>).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.6.1: </span>Added <cite>multinomial_treatment</cite></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.logreg.LibLinearLogRegLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>weight_id=None</em><big>)</big><a class="headerlink" href="#Orange.classification.logreg.LibLinearLogRegLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a classifier trained on the <cite>data</cite> (<cite>weight_id</cite> is ignored).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; Training data set.</li>
+<li><strong>weight_id</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Ignored.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Rval :</th><td class="field-body"><p class="first last">Orange.core.LinearClassifier</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="xref py py-class docutils literal"><span class="pre">Orange.core.LinearClassifier</span></tt> is same class as
+<a class="reference internal" href="Orange.classification.svm.html#Orange.classification.svm.LinearClassifier" title="Orange.classification.svm.LinearClassifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.svm.LinearClassifier</span></tt></a>.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The first example shows a straightforward use a logistic regression (<a class="reference download internal" href="../../_downloads/logreg-run.py"><tt class="xref download docutils literal"><span class="pre">logreg-run.py</span></tt></a>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">titanic</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;titanic&quot;</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">LogRegLearner</span><span class="p">(</span><span class="n">titanic</span><span class="p">)</span>
+
+<span class="c"># compute classification accuracy</span>
+<span class="n">correct</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">titanic</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">lr</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span> <span class="o">==</span> <span class="n">ex</span><span class="o">.</span><span class="n">getclass</span><span class="p">():</span>
+        <span class="n">correct</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="k">print</span> <span class="s">&quot;Classification accuracy:&quot;</span><span class="p">,</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">titanic</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Result:</p>
+<div class="highlight-python"><pre>Classification accuracy: 0.778282598819
+
+class attribute = survived
+class values = &lt;no, yes&gt;
+
+      Feature       beta  st. error     wald Z          P OR=exp(beta)
+
+    Intercept      -1.23       0.08     -15.15      -0.00
+ status=first       0.86       0.16       5.39       0.00 2.35e0
+status=second      -0.16       0.18      -0.91       0.36 8.51e-1
+ status=third      -0.92       0.15      -6.12       0.00 3.98e-1
+    age=child       1.06       0.25       4.30       0.00 2.89e0
+   sex=female       2.42       0.14      17.04       0.00 1.12e1</pre>
+</div>
+<p>The next examples shows how to handle singularities in data sets
+(<a class="reference download internal" href="../../_downloads/logreg-singularities.py"><tt class="xref download docutils literal"><span class="pre">logreg-singularities.py</span></tt></a>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">adult</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;adult_sample&quot;</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">LogRegLearner</span><span class="p">(</span><span class="n">adult</span><span class="p">,</span> <span class="n">remove_singular</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">adult</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">ex</span><span class="o">.</span><span class="n">getclass</span><span class="p">(),</span> <span class="n">lr</span><span class="p">(</span><span class="n">ex</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The first few lines of the output of this script are:</p>
+<div class="highlight-python"><pre>&lt;=50K &lt;=50K
+&lt;=50K &lt;=50K
+&lt;=50K &lt;=50K
+&gt;50K &gt;50K
+&lt;=50K &gt;50K
+
+class attribute = y
+class values = &lt;&gt;50K, &lt;=50K&gt;
+
+                             Feature       beta  st. error     wald Z          P OR=exp(beta)
+
+                           Intercept       6.62       0.00        inf       0.00
+                                 age      -0.04       0.00       -inf       0.00 9.64e-1
+                              fnlwgt      -0.00       0.00       -inf       0.00 9.99e-1
+                       education-num      -0.28       0.00       -inf       0.00 7.57e-1
+             marital-status=Divorced       4.29       0.00        inf       0.00 7.26e1
+        marital-status=Never-married       3.79       0.00        inf       0.00 4.44e1
+            marital-status=Separated       3.46       0.00        inf       0.00 3.19e1
+              marital-status=Widowed       3.85       0.00        inf       0.00 4.69e1
+marital-status=Married-spouse-absent       3.98       0.00        inf       0.00 5.36e1
+    marital-status=Married-AF-spouse       4.01       0.00        inf       0.00 5.51e1
+             occupation=Tech-support      -0.32       0.00       -inf       0.00 7.22e-1</pre>
+</div>
+<p>If <tt class="xref py py-obj docutils literal"><span class="pre">remove_singular</span></tt> is set to 0, inducing a logistic regression
+classifier returns an error:</p>
+<div class="highlight-python"><pre>Traceback (most recent call last):
+  File "logreg-singularities.py", line 4, in &lt;module&gt;
+    lr = classification.logreg.LogRegLearner(table, removeSingular=0)
+  File "/home/jure/devel/orange/Orange/classification/logreg.py", line 255, in LogRegLearner
+    return lr(examples, weightID)
+  File "/home/jure/devel/orange/Orange/classification/logreg.py", line 291, in __call__
+    lr = learner(examples, weight)
+orange.KernelException: 'orange.LogRegLearner': singularity in workclass=Never-worked</pre>
+</div>
+<p>The attribute variable which causes the singularity is <tt class="docutils literal"><span class="pre">workclass</span></tt>.</p>
+<p>The example below shows how the use of stepwise logistic regression can help to
+gain in classification performance (<a class="reference download internal" href="../../_downloads/logreg-stepwise.py"><tt class="xref download docutils literal"><span class="pre">logreg-stepwise.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">ionosphere</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;ionosphere.tab&quot;</span><span class="p">)</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">LogRegLearner</span><span class="p">(</span><span class="n">remove_singular</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">learners</span> <span class="o">=</span> <span class="p">(</span>
+  <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">LogRegLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;logistic&#39;</span><span class="p">,</span>
+      <span class="n">remove_singular</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+  <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilteredLearner</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span>
+     <span class="nb">filter</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">StepWiseFSSFilter</span><span class="p">(</span><span class="n">add_crit</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+         <span class="n">delete_crit</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;filtered&#39;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">ionosphere</span><span class="p">,</span> <span class="n">store_classifiers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c"># output the results</span>
+<span class="k">print</span> <span class="s">&quot;Learner      CA&quot;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">learners</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-12s</span><span class="s"> </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">learners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="c"># find out which features were retained by filtering</span>
+
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Number of times features were used in cross-validation:&quot;</span>
+<span class="n">features_used</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">classifiers</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">atts</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">features_used</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">features_used</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">features_used</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">features_used</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%2d</span><span class="s"> x </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">features_used</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">k</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output of this script is:</p>
+<div class="highlight-python"><pre>Learner      CA
+logistic     0.841
+filtered     0.846
+
+Number of times attributes were used in cross-validation:
+ 1 x a21
+10 x a22
+ 8 x a23
+ 7 x a24
+ 1 x a25
+10 x a26
+10 x a27
+ 3 x a28
+ 7 x a29
+ 9 x a31
+ 2 x a16
+ 7 x a12
+ 1 x a32
+ 8 x a15
+10 x a14
+ 4 x a17
+ 7 x a30
+10 x a11
+ 1 x a10
+ 1 x a13
+10 x a34
+ 2 x a19
+ 1 x a18
+10 x a3
+10 x a5
+ 4 x a4
+ 4 x a7
+ 8 x a6
+10 x a9
+10 x a8</pre>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

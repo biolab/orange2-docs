@@ -1,0 +1,261 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Interactive Tree Builder &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Interactive Tree Builder</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="interactive-tree-builder">
+<span id="id1"></span><h1>Interactive Tree Builder<a class="headerlink" href="#interactive-tree-builder" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/InteractiveTreeBuilder.svg" /><p>A widget for manual construction and/or editing of classification trees</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Learning examples</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Tree Learner (orange.TreeLearner)</dt>
+<dd><p class="first last">An optional tree learner to be used instead of the default tree learner.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples (orange.ExampleTable)</dt>
+<dd><p class="first last">Examples from the selected tree node.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Classifier (orange.TreeClassifier)</dt>
+<dd><p class="first last">The constructed tree.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Tree Learner (orange.Learner)</dt>
+<dd><p class="first last">A learner which always returns the same tree - the one constructed in
+the widget</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Signal <tt class="xref py py-obj docutils literal"><span class="pre">Examples</span></tt> sends data only if some tree node is selected and
+contains some examples.</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This is a very exciting widget which is useful for teaching induction of
+classification trees and also in practice, where a data miner and an area
+expert can use it to manually construct a classification tree helped by the
+entire Orange&#8217;s widgetry.</p>
+<p>The widget is based on <a class="reference internal" href="classificationtreeviewer.html#classification-tree-viewer"><em>Classification Tree Viewer</em></a>. It is mostly the
+same (so you are encouraged to read the related documentation), except for
+the different input/output signals and the addition of a few buttons.</p>
+<img alt="Interactive Tree Builder widget" src="../../../_images/InteractiveTreeBuilder.png" />
+<p>Button <tt class="xref py py-obj docutils literal"><span class="pre">Split</span></tt> splits the selected tree node according to the criterion
+above the button. For instance, if we pressed Split in the above widget,
+the animals that don&#8217;t give milk and have no feathers (the pictures shows
+a tree for the zoo data set) would be split according to whether they are
+<em>aquatic</em> or not. In case of continuous attributes, a cut off point
+needs to be specified as well.</p>
+<p>If Split is used on a node which is not a leaf, the criterion at that node
+is replaced. If we, for instance, selected the <tt class="xref py py-obj docutils literal"><span class="pre">&lt;root&gt;</span></tt> node and pushed
+<tt class="xref py py-obj docutils literal"><span class="pre">Split</span></tt>, the criterion <em>milk</em> would be replaced with <em>aquatic</em>
+and the nodes below (<em>feathers</em>) are removed.</p>
+<p>Button <tt class="xref py py-obj docutils literal"><span class="pre">Cut</span></tt> cuts the tree at the selected node. If we pushed Cut
+in the situation in the picture, nothing would happen since the selected
+node (<tt class="xref py py-obj docutils literal"><span class="pre">feathers=0</span></tt>) is already a leaf. If we selected <tt class="xref py py-obj docutils literal"><span class="pre">&lt;root&gt;</span></tt>
+and pushed Cut, the entire tree would be cut off.</p>
+<p>Cut is especially useful in combination with <tt class="xref py py-obj docutils literal"><span class="pre">Build</span></tt> which builds
+a subtree at the current node. So, if we push Build in the situation
+depicted above, a subtree would be built for the milkless featherless
+animals, leaving the rest of the tree (that is, the existing two nodes)
+intact. If Build is pressed at a node which is not leaf, the entire subtree
+at that node is replaced with an automatically induced tree.</p>
+<p>Build uses some reasonable default parameters for tree learning (information
+gain ratio is used for attribute selection with a minimum of 2 examples per
+leaf, which gives an algorithm equivalent to Quinlan&#8217;s C4.5). To gain more
+control on the tree construction arguments, use a <a class="reference internal" href="classificationtree.html#classification-tree"><em>Classification Tree Learner</em></a>
+widget or <a class="reference internal" href="c45.html#c4-5"><em>C4.5 Learner</em></a> widget, set its parameters and connect it to the
+input of Interactive Tree Builder. The set parameters will the be used for
+the tree induction. (If you use C4.5, the original Quinlan&#8217;s algorithm,
+don&#8217;t forget to check <tt class="xref py py-obj docutils literal"><span class="pre">Convert</span> <span class="pre">to</span> <span class="pre">orange</span> <span class="pre">tree</span> <span class="pre">structure</span></tt>.)</p>
+<p>The widget has several outputs. <tt class="xref py py-obj docutils literal"><span class="pre">Examples</span></tt> gives, as in
+<a class="reference internal" href="classificationtreeviewer.html#classification-tree-viewer"><em>Classification Tree Viewer</em></a> the list of examples from the selected node.
+This output can be used to observe the statistical properties or
+visualizations of various attributes for a specific node, based on which
+we should decide whether we should split the examples and how.</p>
+<p>Signal <tt class="xref py py-obj docutils literal"><span class="pre">Classification</span> <span class="pre">Tree</span></tt> can be attached to another tree viewer.
+Using a <a class="reference internal" href="classificationtreeviewer.html#classification-tree-viewer"><em>Classification Tree Viewer</em></a> is not really useful as it will
+show the same picture as Interactive Tree Builder. We can however connect
+the more colorful <a class="reference internal" href="classificationtreegraph.html#classification-tree-graph"><em>Classification Tree Graph</em></a>.</p>
+<p>The last output is <tt class="xref py py-obj docutils literal"><span class="pre">Tree</span> <span class="pre">Learner</span></tt>. This is a tree learner which always
+gives the same tree - the one we constructed in this widget. This can be used
+to assess the tree&#8217;s quality with the <a class="reference internal" href="../evaluate/testlearners.html#test-learners"><em>Test Learners</em></a> widget. This
+requires some caution, though: you should not test the tree on the same
+data you used to induce it. See the Examples section below for the correct
+procedure.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The first snapshot shows the typical &#8220;environment&#8221; of the Interactive
+Tree Builder.</p>
+<img alt="A schema with Interactive Tree Builder" src="../../../_images/InteractiveTreeBuilder-SchemaInduction.png" />
+<p>The learning examples may come from a file. We also use a
+<a class="reference internal" href="classificationtree.html#classification-tree"><em>Classification Tree Learner</em></a> widget to able to set the tree induction parameters
+for the parts of the tree we want to induce automatically.</p>
+<p>On the right hand side, we have the <a class="reference internal" href="../data/rank.html#rank"><em>Rank</em></a> widget which assesses the
+quality of attributes through measures like information gain, gini index
+and others. Emulating the induction algorithm by selecting the attributes
+having the highest value for one of these measures should give the same
+results as using Classification Tree widget instead of the Interactive
+Builder. However, in manual construction we can (and should) also rely on
+the visualization widgets. One-dimensional visualizations like
+<a class="reference internal" href="../visualize/distributions.html#distributions"><em>Distributions</em></a> give us an impression about the properties of a single
+attribute, while two- and more dimensional visualizations like
+<a class="reference internal" href="../visualize/scatterplot.html#scatter-plot"><em>Scatter Plot</em></a> and <a class="reference internal" href="../visualize/linearprojection.html#linear-projection"><em>Linear Projection</em></a> will give us a kind of
+lookahead by telling us about the useful combinations of attributes. We
+have also deployed the <a class="reference internal" href="../data/datatable.html#data-table"><em>Data Table</em></a> widget since seeing particular
+examples in a tree node may also sometimes help the expert.</p>
+<p>Finally, we use the <a class="reference internal" href="classificationtreegraph.html#classification-tree-graph"><em>Classification Tree Graph</em></a> to present the resulting
+tree in a fancy looking picture.</p>
+<p>As the widget name suggests, the tree construction should be interactive,
+making the best use of the available Orange&#8217;s visualization techniques
+and help of the area expert. At the beginning the widget presents a tree
+containing only the root. One way to proceed is to immediately click
+Build and then study the resulting tree. Data examples for various nodes
+can be presented and visualized to decide which parts of the tree make sense,
+which don&#8217;t and should better be reconstructed manually, and which subtrees
+should be cut off. The other way is to start constructing the tree
+manually, adding the nodes according to the expert&#8217;s knowledge and
+occasionally use Build button to let Orange make a suggestion.</p>
+<p>Although expert&#8217;s help will usually prevent overfitting the data,
+special care still needs to be taken when we are interested in knowing
+the performance of the induced tree. Since the widely used cross-validation
+is for obvious reasons inapplicable when the model is constructed
+manually, we should split the data into training and testing set prior
+to building the tree.</p>
+<img alt="A schema with Interactive Tree Builder" src="../../../_images/InteractiveTreeBuilder-SchemaSampling.png" />
+<p>We have used the <a class="reference internal" href="../data/datasampler.html#data-sampler"><em>Data Sampler</em></a> widget for splitting the data; in most
+cases we recommend using stratified random sampling with a sample size
+of 70% for training. These examples (denoted as &#8220;Examples&#8221; in the snapshot)
+are fed to the Interactive Tree Builder where we employ the Orange&#8217;s armory
+to construct the tree as described above.</p>
+<p>The tricky part is connecting the <a class="reference internal" href="../evaluate/testlearners.html#test-learners"><em>Test Learners</em></a>: Data Sampler&#8217;s
+Examples should be used as Test Learners&#8217; Data, and Data Sampler&#8217;s
+Remaining Examples are the Test Learners&#8217; Separate Test Data.</p>
+<img alt="Connecting Data Sampler to Test Learners when using Interactive Tree Builder" src="../../../_images/InteractiveTreeBuilder-SchemaSampling-Wiring.png" />
+<p>In Test Learners, don&#8217;t forget to set the Sampling type to
+<tt class="xref py py-obj docutils literal"><span class="pre">Test</span> <span class="pre">on</span> <span class="pre">test</span> <span class="pre">data</span></tt>. Interactive Tree Builder should then give its
+Tree Learner to Test Learners. To compare the manually constructed tree
+with, say, an automatically constructed one and with a Naive Bayesian
+classifier, we can include these two in the schema.</p>
+<p>Test Learners will now feed the training data (70% sample it gets from
+Data Sampler) to all three learning algorithms. While Naive Bayes and
+Classification Tree will actually learn, Interactive Tree Builder will
+ignore the training examples and return the manually built tree.
+All three models will then be tested on the remaining 30% examples.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,182 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>k-Nearest Neighbours Learner &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">k-Nearest Neighbours Learner</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="k-nearest-neighbours-learner">
+<span id="k-nearest-neighbours"></span><h1>k-Nearest Neighbours Learner<a class="headerlink" href="#k-nearest-neighbours-learner" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/kNearestNeighbours.svg" /><p>k-Nearest Neighbours (kNN) learner</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">A table with training examples</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Learner</dt>
+<dd><p class="first last">The kNN learning algorithm with settings as specified in the dialog.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>KNN Classifier</dt>
+<dd><p class="first last">Trained classifier (a subtype of Classifier)</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Signal <tt class="xref py py-obj docutils literal"><span class="pre">KNN</span> <span class="pre">Classifier</span></tt> sends data only if the learning data (signal
+<tt class="xref py py-obj docutils literal"><span class="pre">Examples</span></tt> is present.</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This widget provides a graphical interface to the k-Nearest Neighbours
+classifier.</p>
+<p>As all widgets for classification, it provides a learner and classifier
+on the output. Learner is a learning algorithm with settings as specified
+by the user. It can be fed into widgets for testing learners, for instance
+<a class="reference internal" href="../evaluate/testlearners.html#test-learners"><em>Test Learners</em></a>. Classifier is a kNN Classifier (a subtype of a general
+classifier), built from the training examples on the input. If examples are
+not given, there is no classifier on the output.</p>
+<img alt="k-Nearest Neighbours Widget" src="../../../_images/k-NearestNeighbours.png" />
+<p>Learner can be given a name under which it will appear in, say,
+<a class="reference internal" href="../evaluate/testlearners.html#test-learners"><em>Test Learners</em></a>. The default name is &#8220;kNN&#8221;.</p>
+<p>Then, you can set the <tt class="xref py py-obj docutils literal"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">neighbours</span></tt>. Neighbours are weighted
+by their proximity to the example being classified, so there&#8217;s no harm in
+using ten or twenty examples as neighbours. Weights use a Gaussian kernel,
+so that the last neighbour has a weight of 0.001. If you check
+<tt class="xref py py-obj docutils literal"><span class="pre">Weighting</span> <span class="pre">by</span> <span class="pre">ranks,</span> <span class="pre">not</span> <span class="pre">distances</span></tt>, the weighting formula will
+use the rank of the neighbour instead of its distance to the reference
+example.</p>
+<p>The <tt class="xref py py-obj docutils literal"><span class="pre">Metrics</span></tt> you can use are Euclidean, Hamming (the number of
+attributes in which the two examples differ - not suitable for continuous
+attributes), Manhattan (the sum of absolute differences for all attributes)
+and Maximal (the maximal difference between attributes).</p>
+<p>If you check <tt class="xref py py-obj docutils literal"><span class="pre">Normalize</span> <span class="pre">continuous</span> <span class="pre">attributes</span></tt>, their values will be
+divided by their span (on the training data). This ensures that all
+continuous attributes have equal impact, independent of their original scale.</p>
+<p>If you use Euclidean distance leave <tt class="xref py py-obj docutils literal"><span class="pre">Ignore</span> <span class="pre">unknown</span> <span class="pre">values</span></tt>
+unchecked. The corresponding class for measuring distances will compute
+the distributions of attribute values and return statistically valid distance
+estimations.</p>
+<p>If you use other metrics and have missing values in the data, imputation
+may be the optimal way to go, since other measures don&#8217;t have any such
+treatment of unknowns. If you don&#8217;t impute, you can either
+<tt class="xref py py-obj docutils literal"><span class="pre">Ignore</span> <span class="pre">unknown</span> <span class="pre">values</span></tt>, which treats all missing values as wildcards
+(so they are equivalent to any other attribute value). If you leave it
+unchecked, &#8220;don&#8217;t cares&#8221; are wildcards, and &#8220;don&#8217;t knows&#8221; as different
+from all values.</p>
+<p>When you change one or more settings, you need to push <tt class="xref py py-obj docutils literal"><span class="pre">Apply</span></tt>, which
+will put the new learner on the output and, if the training examples are
+given, construct a new classifier and output it as well.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This schema compares the results of k-Nearest neighbours with the default
+classifier which always predicts the majority class</p>
+<img alt="k-Nearest Neighbours Classifier" src="../../../_images/Majority-Knn-SchemaLearner.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,179 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Association Rules Filter &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Association Rules Filter</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="association-rules-filter">
+<span id="id1"></span><h1>Association Rules Filter<a class="headerlink" href="#association-rules-filter" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/AssociationRulesFilter.svg" /><p>A widget for printing out the rules and for their manual exploration and
+selection.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Association Rules</dt>
+<dd><p class="first last">A list of rules</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Association Rules</dt>
+<dd><p class="first last">Selected rules</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>This widget can be used for three purposes:</dt>
+<dd><ul class="first last simple">
+<li>graphically showing the confidence and support of the induced rules</li>
+<li>selecting a subset of rules based on their confidence and support</li>
+<li>listing the induced rules and the corresponding measures of quality</li>
+</ul>
+</dd>
+</dl>
+<p>The columns of the grid on the left hand side of the widget represent
+different supports and the rows represents confidences. The scale is given
+above the grid: for the case in this snapshot, support goes from 28% to 75%
+and the confidence ranges from 29% to 100%. Each cell is colored according
+to the number of rules with that particular support and confidence - the
+darker the cell, the more rules are inside it.</p>
+<p>You can select a part of the grid. In the snapshot we selected the rules
+with supports between 36% and 66% and confidences from 33% to 82%.</p>
+<p>When the widget receives certain data, it shows the area containing all
+the rules. You can <tt class="xref py py-obj docutils literal"><span class="pre">Zoom</span></tt> in to enlarge the selected part, push
+<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">All</span></tt> to see the region with the rules again, or <tt class="xref py py-obj docutils literal"><span class="pre">No</span> <span class="pre">Zoom</span></tt>
+to see the region with support and confidence from 0 to 1. <tt class="xref py py-obj docutils literal"><span class="pre">Unselect</span></tt>
+removes the selection.</p>
+<p>If nothing is selected, the widget outputs all rules.</p>
+<p>On the right hand side of the widget there is a list of the selected rules.
+The checkboxes above can be used to select the measures of rule quality that
+we are interested in. Let L, R and B be the number of examples that fit the
+left, the right and both sides of the rule, respectively, and N the total
+number of examples in the data set. The measures are then defined as follows</p>
+<blockquote>
+<div><ul class="simple">
+<li>support = B / N</li>
+<li>confidence = B / L</li>
+<li>coverage = L / N</li>
+<li>strength = R / L</li>
+<li>lift = N * B / (L * R)</li>
+<li>leverage = N * B - L * R</li>
+</ul>
+</div></blockquote>
+<p>With the buttons below you can <tt class="xref py py-obj docutils literal"><span class="pre">Save</span> <span class="pre">Rules</span></tt> into a tab-delimited file
+or <tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">Rules</span></tt> to the widget connected to the output. The latter is
+only enabled if <tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">rules</span> <span class="pre">automatically</span></tt> is unchecked. When it is
+checked, the rules are put on the widget&#8217;s output automatically at every
+selection change.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>This widget is used with the <a class="reference internal" href="associationrules.html#association-rules"><em>Association Rules</em></a> and maybe with a
+tree-like <a class="reference internal" href="associationrulesexplorer.html#association-rules-explorer"><em>Association Rules Tree Viewer</em></a> The typical schema is shown below.</p>
+<img alt="Association Rules" src="../../../_images/AssociationRules-Schema.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

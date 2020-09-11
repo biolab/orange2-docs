@@ -1,0 +1,170 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CN2 Rule Learner &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">CN2 Rule Learner</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="cn2-rule-learner">
+<span id="cn2-rules"></span><h1>CN2 Rule Learner<a class="headerlink" href="#cn2-rule-learner" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/CN2.svg" /><p>CN2: A widget for learning an unordered set of classification if-then rules.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Examples (ExampleTable)</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Learner (orange.Learner)</p>
+</li>
+<li><dl class="first docutils">
+<dt>Classifier (orange.Classifier)</dt>
+<dd><p class="first last">A rule classifier induced from given data.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>CN2UnorderedClassifier (orngCN2.CN2UnorderedClassifier)</dt>
+<dd><p class="first last">The same as &#8220;Classifier&#8221;.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Use this widget to learn a set of if-then rules from data. The algorithm
+is based on CN2 algorithm, however the variety of options in widget allows
+user to implement different kinds of cover-and-remove rule learning
+algorithms.</p>
+<img alt="CN2 Widget" src="../../../_images/CN2.png" />
+<p>In the first box user can select between three evaluation functions. The
+first, <tt class="xref py py-obj docutils literal"><span class="pre">Laplace</span></tt>, was originally used in CN2 algorithm. The second
+function is <tt class="xref py py-obj docutils literal"><span class="pre">m-estimate</span></tt> of probability (used in later versions of
+CN2) and the last is <tt class="xref py py-obj docutils literal"><span class="pre">WRACC</span></tt> (weighted relative accuracy), used
+in CN2-SD algorithm.</p>
+<p>In the second box the user can define pre-prunning of rules. The first
+parameter, <tt class="xref py py-obj docutils literal"><span class="pre">Alpha</span> <span class="pre">(vs.</span> <span class="pre">default</span> <span class="pre">rule)</span></tt>, is a parameter of LRS
+(likelihood ratio statistics). Alpha determines required significance of
+a rule when compared to the default rule. The second parameter,
+<tt class="xref py py-obj docutils literal"><span class="pre">Stopping</span> <span class="pre">Alpha</span> <span class="pre">(vs.</span> <span class="pre">parent</span> <span class="pre">rule)</span></tt>, is also the parameter of LRS,
+only that in this case the rule is compared to its parent rule: it verifies
+whether the last specialization of the rule is significant enough.
+The third parameter, <tt class="xref py py-obj docutils literal"><span class="pre">Minimum</span> <span class="pre">coverage</span></tt> specifies the minimal number
+of examples that each induced rule must cover. The last parameter,
+<tt class="xref py py-obj docutils literal"><span class="pre">Maximal</span> <span class="pre">rule</span> <span class="pre">length</span></tt> limits the length of induced rules.</p>
+<blockquote>
+<div><tt class="xref py py-obj docutils literal"><span class="pre">Beam</span> <span class="pre">width</span></tt> is the number of best rules that are, in each step,
+further specialized. Other rules are discarded.</div></blockquote>
+<p>Covering and removing examples can be done in two different ways.
+<tt class="xref py py-obj docutils literal"><span class="pre">Exclusive</span> <span class="pre">covering</span></tt>, as in the original CN2, removes all covered
+examples and continues learning on remaining examples. Alternative type of
+covering is <tt class="xref py py-obj docutils literal"><span class="pre">weighted</span> <span class="pre">covering</span></tt>, which only decreases weight of covered
+examples instead of removing them. The parameter of weighted covering is
+the multiplier; the weights of all covered examples are multiplied by this
+number.</p>
+<p>Any changes of arguments must be confirmed by pushing <tt class="xref py py-obj docutils literal"><span class="pre">Apply</span></tt> before
+they are propagated through the schema.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The figure shows a simple use of the widget. Rules are learned with
+CN2 widget and the classifier is sent to the <a class="reference internal" href="cn2rulesviewer.html#cn2-rules-viewer"><em>Rule Viewer</em></a>.</p>
+<img alt="CN2 - Interaction" src="../../../_images/CN2-Interaction-S.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

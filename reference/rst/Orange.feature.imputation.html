@@ -1,0 +1,671 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Imputation (imputation) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Imputation (<tt class="docutils literal"><span class="pre">imputation</span></tt>)</a><ul>
+<li><a class="reference internal" href="#imputers">Imputers</a><ul>
+<li><a class="reference internal" href="#simple-imputation">Simple imputation</a></li>
+<li><a class="reference internal" href="#random-imputation">Random imputation</a></li>
+<li><a class="reference internal" href="#model-based-imputation">Model-based imputation</a></li>
+<li><a class="reference internal" href="#missing-values-as-special-values">Missing values as special values</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-imputers">Using imputers</a><ul>
+<li><a class="reference internal" href="#imputer-as-a-component">Imputer as a component</a></li>
+<li><a class="reference internal" href="#wrappers-for-learning">Wrappers for learning</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#write-your-own-imputer">Write your own imputer</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="index-0"></span><div class="section" id="imputation-imputation">
+<span id="index-1"></span><h1>Imputation (<tt class="docutils literal"><span class="pre">imputation</span></tt>)<a class="headerlink" href="#imputation-imputation" title="Permalink to this headline">¶</a></h1>
+<p>Imputation replaces missing feature values with appropriate values, for instancewith minimal values of features:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">bridges</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bridges&quot;</span><span class="p">)</span>
+
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">MinimalConstructor</span><span class="p">()</span>
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">imputer</span><span class="p">(</span><span class="n">bridges</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Example with missing values&quot;</span>
+<span class="k">print</span> <span class="n">bridges</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;Imputed values:&quot;</span>
+<span class="k">print</span> <span class="n">imputer</span><span class="p">(</span><span class="n">bridges</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span>
+
+<span class="n">imputed_bridges</span> <span class="o">=</span> <span class="n">imputer</span><span class="p">(</span><span class="n">bridges</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">imputed_bridges</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The output of this code is:</p>
+<div class="highlight-python"><pre>Example with missing values
+['A', 1853, 'RR', ?, 2, 'N', 'DECK', 'WOOD', '?', 'S', 'WOOD']
+Imputed values:
+['A', 1853, 'RR', 804, 2, 'N', 'DECK', 'WOOD', 'SHORT', 'S', 'WOOD']
+['A', 1853, 'RR', 804, 2, 'N', 'DECK', 'WOOD', 'SHORT', 'S', 'WOOD']</pre>
+</div>
+<div class="section" id="imputers">
+<h2>Imputers<a class="headerlink" href="#imputers" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#Orange.feature.imputation.Constructor" title="Orange.feature.imputation.Constructor"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.imputation.Constructor</span></tt></a> is the abstract root of a
+hierarchy of classes that accept training data and construct an instance of
+a class derived from <tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.imputation.Imputer</span></tt>. When an
+<tt class="xref py py-obj docutils literal"><span class="pre">Imputer</span></tt> is called with an
+<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-obj docutils literal"><span class="pre">Instance</span></tt></a> it returns a new instance with the
+missing values imputed (leaving the original instance intact). If imputer is
+called with a <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Table</span></tt></a> it returns a new data table with
+imputed values.</p>
+<dl class="class">
+<dt id="Orange.feature.imputation.Constructor">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">Constructor</tt><a class="headerlink" href="#Orange.feature.imputation.Constructor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.feature.imputation.Constructor.impute_class">
+<tt class="descname">impute_class</tt><a class="headerlink" href="#Orange.feature.imputation.Constructor.impute_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether to impute the class value. Defaults to True.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="simple-imputation">
+<h3>Simple imputation<a class="headerlink" href="#simple-imputation" title="Permalink to this headline">¶</a></h3>
+<p>Simple imputation always imputes the same value for a particular feature,
+disregarding the values of other features.</p>
+<dl class="class">
+<dt id="Orange.feature.imputation.Defaults">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">Defaults</tt><a class="headerlink" href="#Orange.feature.imputation.Defaults" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.feature.imputation.Defaults.defaults">
+<tt class="descname">defaults</tt><a class="headerlink" href="#Orange.feature.imputation.Defaults.defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data instance <a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-obj docutils literal"><span class="pre">Instance</span></tt></a> with the default
+values that are imputed instead of the missing
+values. Features whose values are left unspecified are not
+imputed. The instances to which the data is imputed be from
+the same <a class="reference internal" href="Orange.data.domain.html#Orange.data.Domain" title="Orange.data.Domain"><tt class="xref py py-obj docutils literal"><span class="pre">Domain</span></tt></a> as
+<a class="reference internal" href="#Orange.feature.imputation.Defaults.defaults" title="Orange.feature.imputation.Defaults.defaults"><tt class="xref py py-obj docutils literal"><span class="pre">defaults</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.feature.imputation.Defaults.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>domain</em><big>)</big><a class="headerlink" href="#Orange.feature.imputation.Defaults.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a new instance of
+<a class="reference internal" href="#Orange.feature.imputation.Defaults" title="Orange.feature.imputation.Defaults"><tt class="xref py py-obj docutils literal"><span class="pre">Defaults</span></tt></a> and set
+<a class="reference internal" href="#Orange.feature.imputation.Defaults.defaults" title="Orange.feature.imputation.Defaults.defaults"><tt class="xref py py-obj docutils literal"><span class="pre">defaults</span></tt></a> to a data instance with from the given domain
+all values undefined.</p>
+<p>The following example constructs an imputer that sets the
+unknown bridge lengths to 1234 and leaves are all other values
+as they are:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">imputer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">Defaults</span><span class="p">(</span><span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">defaults</span><span class="p">[</span><span class="s">&quot;LENGTH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1234</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>values</em><big>)</big></dt>
+<dd><p>Construct a new instance of the class and set the
+<a class="reference internal" href="#Orange.feature.imputation.Defaults.defaults" title="Orange.feature.imputation.Defaults.defaults"><tt class="xref py py-obj docutils literal"><span class="pre">defaults</span></tt></a> to the given values. The constructor does not
+copy the data instance, so if the instance is not constructed
+specifically for the imputer, the caller should make a copy
+(e.g. by calling
+<tt class="docutils literal"><span class="pre">Orange.feature.imputation.Defaults(Orange.data.Instance(inst))</span></tt>
+and not <tt class="docutils literal"><span class="pre">Orange.feature.imputation.Defaults(inst)</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Instances of <a class="reference internal" href="#Orange.feature.imputation.Defaults" title="Orange.feature.imputation.Defaults"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.imputation.Defaults</span></tt></a> are returned
+by <tt class="xref py py-obj docutils literal"><span class="pre">MinimalConstructor</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">MaximalConstructor</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">AverageConstructor</span></tt>.</p>
+<p>For continuous features, they will impute the smallest, largest or the average
+values encountered in the training instances. For discrete,
+they will impute the lowest (the one with index 0, e. g. attr.values[0]),
+the highest (attr.values[-1]), and the most common value encountered in the
+data, respectively. If values of discrete features are ordered according to
+their impact on class (for example, possible values for symptoms of some
+disease can be ordered according to their seriousness),
+the minimal and maximal imputers  will then represent optimistic and
+pessimistic imputations.</p>
+</div>
+<div class="section" id="random-imputation">
+<h3>Random imputation<a class="headerlink" href="#random-imputation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="Orange.feature.imputation.Random">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">Random</tt><a class="headerlink" href="#Orange.feature.imputation.Random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imputes random values. The corresponding constructor is
+<tt class="xref py py-obj docutils literal"><span class="pre">RandomConstructor</span></tt>.</p>
+<dl class="attribute">
+<dt id="Orange.feature.imputation.Random.impute_class">
+<tt class="descname">impute_class</tt><a class="headerlink" href="#Orange.feature.imputation.Random.impute_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Tells whether to impute the class values or not. Defaults to True.</p>
+<dl class="attribute">
+<dt id="Orange.feature.imputation.Random.deterministic">
+<tt class="descname">deterministic</tt><a class="headerlink" href="#Orange.feature.imputation.Random.deterministic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>If true (defaults to False), random generator is initialized for each
+instance using the instance&#8217;s hash value as a seed. This results in same
+instances being always imputed with the same (random) values.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="model-based-imputation">
+<h3>Model-based imputation<a class="headerlink" href="#model-based-imputation" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="Orange.feature.imputation.ModelConstructor">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">ModelConstructor</tt><a class="headerlink" href="#Orange.feature.imputation.ModelConstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Model-based imputers learn to predict the features&#8217;s value from values of
+other features. <a class="reference internal" href="#Orange.feature.imputation.ModelConstructor" title="Orange.feature.imputation.ModelConstructor"><tt class="xref py py-obj docutils literal"><span class="pre">ModelConstructor</span></tt></a>
+is given two learning algorithms and constructs a classifier for
+each attribute. The constructed imputer
+<a class="reference internal" href="#Orange.feature.imputation.Model" title="Orange.feature.imputation.Model"><tt class="xref py py-obj docutils literal"><span class="pre">Model</span></tt></a> stores a list of
+classifiers that are used for imputation.</p>
+<dl class="attribute">
+<dt>
+<tt class="descname">learner_discrete, learner_continuous</tt></dt>
+<dd></dd></dl>
+
+<p>Learner for discrete and for continuous attributes. If any of them is
+missing, the attributes of the corresponding type will not get imputed.</p>
+<dl class="attribute">
+<dt id="Orange.feature.imputation.ModelConstructor.use_class">
+<tt class="descname">use_class</tt><a class="headerlink" href="#Orange.feature.imputation.ModelConstructor.use_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Tells whether the imputer can use the class attribute. Defaults to
+False. It is useful in more complex designs in which one imputer is used
+on learning instances, where it uses the class value,
+and a second imputer on testing instances, where class is not available.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.imputation.Model">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">Model</tt><a class="headerlink" href="#Orange.feature.imputation.Model" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.feature.imputation.Model.models">
+<tt class="descname">models</tt><a class="headerlink" href="#Orange.feature.imputation.Model.models" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A list of classifiers, each corresponding to one attribute to be imputed.
+The <tt class="xref py py-obj docutils literal"><span class="pre">class_var</span></tt>&#8216;s of the models should equal the instances&#8217;
+attributes. If an element is <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>, the corresponding attribute&#8217;s
+values are not imputed.</p>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<p>Examples are taken from <a class="reference download internal" href="../../_downloads/imputation-complex.py"><tt class="xref download docutils literal"><span class="pre">imputation-complex.py</span></tt></a>. The following imputer predicts the missing
+attribute values using classification and regression trees with the minimum
+of 20 examples in a leaf.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">imputer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">ModelConstructor</span><span class="p">()</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">learner_continuous</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">learner_discrete</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">min_subset</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">imputer</span><span class="p">(</span><span class="n">bridges</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A common setup, where different learning algorithms are used for discrete
+and continuous features, is to use
+<a class="reference internal" href="Orange.classification.bayes.html#Orange.classification.bayes.NaiveLearner" title="Orange.classification.bayes.NaiveLearner"><tt class="xref py py-class docutils literal"><span class="pre">NaiveLearner</span></tt></a> for discrete and
+<tt class="xref py py-class docutils literal"><span class="pre">MeanLearner</span></tt> (which
+just remembers the average) for continuous attributes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">imputer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">ModelConstructor</span><span class="p">()</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">learner_continuous</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">MeanLearner</span><span class="p">()</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">learner_discrete</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">()</span>
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">imputer</span><span class="p">(</span><span class="n">bridges</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To construct a user-defined <a class="reference internal" href="#Orange.feature.imputation.Model" title="Orange.feature.imputation.Model"><tt class="xref py py-class docutils literal"><span class="pre">Model</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">imputer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;LANES&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">ConstantClassifier</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+<span class="n">tord</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">ConstantClassifier</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;T-OR-D&quot;</span><span class="p">],</span> <span class="s">&quot;THROUGH&quot;</span><span class="p">))</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;T-OR-D&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">tord</span>
+</pre></div>
+</div>
+<p>A list of empty models is first initialized
+<a class="reference internal" href="#Orange.feature.imputation.Model.models" title="Orange.feature.imputation.Model.models"><tt class="xref py py-obj docutils literal"><span class="pre">models</span></tt></a>.
+Continuous feature &#8220;LANES&#8221; is imputed with value 2 using
+<a class="reference internal" href="Orange.classification.constant.html#Orange.classification.ConstantClassifier" title="Orange.classification.ConstantClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">ConstantClassifier</span></tt></a>. A float must be
+given, because integer values are interpreted as indexes of discrete
+features. Discrete feature &#8220;T-OR-D&#8221; is imputed using
+<a class="reference internal" href="Orange.classification.constant.html#Orange.classification.ConstantClassifier" title="Orange.classification.ConstantClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">ConstantClassifier</span></tt></a> which is given the index of
+value &#8220;THROUGH&#8221; as an argument.</p>
+<p>Feature &#8220;LENGTH&#8221; is computed with a regression tree induced from &#8220;MATERIAL&#8221;,
+&#8220;SPAN&#8221; and &#8220;ERECTED&#8221; (feature &#8220;LENGTH&#8221; is used as class attribute here).
+Domain is initialized by giving a list of feature names and domain as an
+additional argument where Orange will look for features.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">len_domain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="s">&quot;MATERIAL&quot;</span><span class="p">,</span> <span class="s">&quot;SPAN&quot;</span><span class="p">,</span> <span class="s">&quot;ERECTED&quot;</span><span class="p">,</span> <span class="s">&quot;LENGTH&quot;</span><span class="p">],</span> <span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="p">)</span>
+<span class="n">len_data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">len_domain</span><span class="p">,</span> <span class="n">bridges</span><span class="p">)</span>
+<span class="n">len_tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">len_data</span><span class="p">,</span> <span class="n">min_subset</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">imputer</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;LENGTH&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">len_tree</span>
+<span class="k">print</span> <span class="n">len_tree</span>
+</pre></div>
+</div>
+<p>This is how the inferred tree should look like:</p>
+<div class="highlight-python"><pre>&lt;XMP class=code&gt;SPAN=SHORT: 1158
+SPAN=LONG: 1907
+SPAN=MEDIUM
+|    ERECTED&lt;1908.500: 1325
+|    ERECTED&gt;=1908.500: 1528
+&lt;/XMP&gt;</pre>
+</div>
+<p>Wooden bridges and walkways are short, while the others are mostly
+medium. This could be encoded in feature &#8220;SPAN&#8221; using
+<a class="reference internal" href="Orange.classification.lookup.html#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-class docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a>,
+which is faster than the
+Python function used here:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">span_var</span> <span class="o">=</span> <span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;SPAN&quot;</span><span class="p">]</span>
+<span class="k">def</span> <span class="nf">compute_span</span><span class="p">(</span><span class="n">ex</span><span class="p">,</span> <span class="n">rw</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">ex</span><span class="p">[</span><span class="s">&quot;TYPE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;WOOD&quot;</span> <span class="ow">or</span> <span class="n">ex</span><span class="p">[</span><span class="s">&quot;PURPOSE&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;WALK&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">span_var</span><span class="p">,</span> <span class="s">&quot;SHORT&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">span_var</span><span class="p">,</span> <span class="s">&quot;MEDIUM&quot;</span><span class="p">)</span>
+
+<span class="n">imputer</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">bridges</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&quot;SPAN&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">compute_span</span>
+</pre></div>
+</div>
+<p>If <tt class="xref py py-obj docutils literal"><span class="pre">compute_span</span></tt> is written as a class it must behave like a
+classifier: it accepts an instance and returns a value. The second
+argument tells what the caller expects the classifier to return - a value,
+a distribution or both. Currently,
+<a class="reference internal" href="#Orange.feature.imputation.Model" title="Orange.feature.imputation.Model"><tt class="xref py py-obj docutils literal"><span class="pre">Model</span></tt></a>, always expects values and the
+argument can be ignored.</p>
+</div>
+<div class="section" id="missing-values-as-special-values">
+<h3>Missing values as special values<a class="headerlink" href="#missing-values-as-special-values" title="Permalink to this headline">¶</a></h3>
+<p>Missing values sometimes have a special meaning. Cautious is needed when
+using such values in decision models. When the decision not to measure
+something (for example, performing a laboratory test on a patient) is based
+on the expert&#8217;s knowledge of the class value, such missing values clearly
+should not be used in models.</p>
+<dl class="class">
+<dt id="Orange.feature.imputation.AsValueConstructor">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">AsValueConstructor</tt><a class="headerlink" href="#Orange.feature.imputation.AsValueConstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>It constructs <a class="reference internal" href="#Orange.feature.imputation.AsValue" title="Orange.feature.imputation.AsValue"><tt class="xref py py-obj docutils literal"><span class="pre">AsValue</span></tt></a> that
+converts the instance into the new domain.</p>
+<p>Constructs a new domain in which each discrete feature is replaced
+with a new feature that have one more value: &#8220;NA&#8221;. The new feature
+computes its values on the fly, copying the normal values from the old
+one and replacing the unknowns with &#8220;NA&#8221;.</p>
+<p>For continuous attributes, it constructs a two-valued discrete attribute
+with values &#8220;def&#8221; and &#8220;undef&#8221;, telling whether the value is defined or
+not.  The features&#8217;s name will equal the original&#8217;s with &#8220;_def&#8221; appended.
+The original continuous feature will remain in the domain and its
+unknowns will be replaced by averages.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.imputation.AsValue">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">AsValue</tt><a class="headerlink" href="#Orange.feature.imputation.AsValue" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.feature.imputation.AsValue.domain">
+<tt class="descname">domain</tt><a class="headerlink" href="#Orange.feature.imputation.AsValue.domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>The domain with the new feature constructed by
+<a class="reference internal" href="#Orange.feature.imputation.AsValueConstructor" title="Orange.feature.imputation.AsValueConstructor"><tt class="xref py py-class docutils literal"><span class="pre">AsValueConstructor</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.imputation.AsValue.defaults">
+<tt class="descname">defaults</tt><a class="headerlink" href="#Orange.feature.imputation.AsValue.defaults" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default values for continuous features.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following code shows what the imputer actually does to the domain:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">imputer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">AsValueConstructor</span><span class="p">(</span><span class="n">bridges</span><span class="p">)</span>
+<span class="n">original</span> <span class="o">=</span> <span class="n">bridges</span><span class="p">[</span><span class="mi">19</span><span class="p">]</span>
+<span class="n">imputed</span> <span class="o">=</span> <span class="n">imputer</span><span class="p">(</span><span class="n">bridges</span><span class="p">[</span><span class="mi">19</span><span class="p">])</span>
+<span class="k">print</span> <span class="n">original</span><span class="o">.</span><span class="n">domain</span>
+<span class="k">print</span>
+<span class="k">print</span> <span class="n">imputed</span><span class="o">.</span><span class="n">domain</span>
+<span class="k">print</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">original</span><span class="o">.</span><span class="n">domain</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s"> -&gt; </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">original</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">imputed</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">]),</span>
+    <span class="k">if</span> <span class="n">original</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">var_type</span> <span class="o">==</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Continuous</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;(</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">imputed</span><span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;_def&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span>
+<span class="k">print</span>
+</pre></div>
+</div>
+<p>The script&#8217;s output looks like this:</p>
+<div class="highlight-python"><pre>[RIVER, ERECTED, PURPOSE, LENGTH, LANES, CLEAR-G, T-OR-D, MATERIAL, SPAN, REL-L, TYPE]
+
+[RIVER, ERECTED_def, ERECTED, PURPOSE, LENGTH_def, LENGTH, LANES_def, LANES, CLEAR-G, T-OR-D, MATERIAL, SPAN, REL-L, TYPE]
+
+RIVER: M -&gt; M
+ERECTED: 1874 -&gt; 1874 (def)
+PURPOSE: RR -&gt; RR
+LENGTH: ? -&gt; 1567 (undef)
+LANES: 2 -&gt; 2 (def)
+CLEAR-G: ? -&gt; NA
+T-OR-D: THROUGH -&gt; THROUGH
+MATERIAL: IRON -&gt; IRON
+SPAN: ? -&gt; NA
+REL-L: ? -&gt; NA
+TYPE: SIMPLE-T -&gt; SIMPLE-T</pre>
+</div>
+<p>The two intances have the same attribute, <tt class="samp docutils literal"><span class="pre">imputed</span></tt> having a few
+additional ones. Comparing <tt class="samp docutils literal"><span class="pre">original.domain[0]</span> <span class="pre">==</span> <span class="pre">imputed.domain[0]</span></tt>
+will result in False. While the names are same, they represent different
+features. Writting, <tt class="samp docutils literal"><span class="pre">imputed[i]</span></tt>  would fail since <tt class="samp docutils literal"><span class="pre">imputed</span></tt> has
+no attribute <tt class="samp docutils literal"><span class="pre">i</span></tt>, but it has an attribute with the same name.
+Using <tt class="samp docutils literal"><span class="pre">i.name</span></tt> to index the attributes of <tt class="samp docutils literal"><span class="pre">imputed</span></tt> will work,
+yet it is not fast. If a frequently used, it is better to compute the index
+with <tt class="samp docutils literal"><span class="pre">imputed.domain.index(i.name)</span></tt>.</p>
+<p>For continuous features, there is an additional feature with name prefix
+&#8220;_def&#8221;, which is accessible by <tt class="samp docutils literal"><span class="pre">i.name+&quot;_def&quot;</span></tt>. The value of the first
+continuous feature &#8220;ERECTED&#8221; remains 1874, and the additional attribute
+&#8220;ERECTED_def&#8221; has value &#8220;def&#8221;. The undefined value  in &#8220;LENGTH&#8221; is replaced
+by the average (1567) and the new attribute has value &#8220;undef&#8221;. The
+undefined discrete attribute  &#8220;CLEAR-G&#8221; (and all other undefined discrete
+attributes) is assigned the value &#8220;NA&#8221;.</p>
+</div>
+</div>
+<div class="section" id="using-imputers">
+<h2>Using imputers<a class="headerlink" href="#using-imputers" title="Permalink to this headline">¶</a></h2>
+<p>Imputation is also used by learning algorithms and other methods that are not
+capable of handling unknown values.</p>
+<div class="section" id="imputer-as-a-component">
+<h3>Imputer as a component<a class="headerlink" href="#imputer-as-a-component" title="Permalink to this headline">¶</a></h3>
+<p>Learners that cannot handle missing values should provide a slot
+for imputer constructor. An example of such class is
+<a class="reference internal" href="Orange.classification.logreg.html#Orange.classification.logreg.LogRegLearner" title="Orange.classification.logreg.LogRegLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegLearner</span></tt></a> with attribute
+<tt class="xref py py-obj docutils literal"><span class="pre">imputer_constructor</span></tt>,
+which imputes to average value by default. When given learning instances,
+<a class="reference internal" href="Orange.classification.logreg.html#Orange.classification.logreg.LogRegLearner" title="Orange.classification.logreg.LogRegLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegLearner</span></tt></a> will pass them to
+<tt class="xref py py-obj docutils literal"><span class="pre">imputer_constructor</span></tt> to get
+an imputer and use it to impute the missing values in the learning data.
+Imputed data is then used by the actual learning algorithm. When a
+classifier <a class="reference internal" href="Orange.classification.logreg.html#Orange.classification.logreg.LogRegClassifier" title="Orange.classification.logreg.LogRegClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegClassifier</span></tt></a> is
+constructed, the imputer is stored in its attribute
+<tt class="xref py py-obj docutils literal"><span class="pre">imputer</span></tt>. During
+classification the same imputer is used for imputation of missing values
+in (testing) instances.</p>
+<p>Details may vary from algorithm to algorithm, but this is how the imputation
+is generally used. When writing user-defined learners,
+it is recommended to use imputation according to the described procedure.</p>
+<p>The choice of the imputer depends on the problem domain. In this example the
+minimal value of each feature is imputed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">lr</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">LogRegLearner</span><span class="p">()</span>
+<span class="n">imputer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">MinimalConstructor</span>
+
+<span class="n">imlr</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">ImputeLearner</span><span class="p">(</span><span class="n">base_learner</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span>
+    <span class="n">imputer_constructor</span><span class="o">=</span><span class="n">imputer</span><span class="p">)</span>
+
+<span class="n">voting</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting&quot;</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">([</span><span class="n">lr</span><span class="p">,</span> <span class="n">imlr</span><span class="p">],</span> <span class="n">voting</span><span class="p">)</span>
+<span class="n">CAs</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Without imputation: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">CAs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;With imputation: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">CAs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The output of this code is:</p>
+<div class="highlight-python"><pre>Without imputation: 0.945
+With imputation: 0.954</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Just one instance of
+<a class="reference internal" href="Orange.classification.logreg.html#Orange.classification.logreg.LogRegLearner" title="Orange.classification.logreg.LogRegLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegLearner</span></tt></a> is constructed and then
+used twice in each fold. Once it is given the original instances as they
+are. It returns an instance of
+<a class="reference internal" href="Orange.classification.logreg.html#Orange.classification.logreg.LogRegLearner" title="Orange.classification.logreg.LogRegLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegLearner</span></tt></a>. The second time it is
+called by <tt class="xref py py-obj docutils literal"><span class="pre">imra</span></tt> and the
+<a class="reference internal" href="Orange.classification.logreg.html#Orange.classification.logreg.LogRegLearner" title="Orange.classification.logreg.LogRegLearner"><tt class="xref py py-obj docutils literal"><span class="pre">LogRegLearner</span></tt></a> gets wrapped
+into <tt class="xref py py-obj docutils literal"><span class="pre">Classifier</span></tt>. There is only one
+learner, which produces two different classifiers in each round of
+testing.</p>
+</div>
+</div>
+<div class="section" id="wrappers-for-learning">
+<h3>Wrappers for learning<a class="headerlink" href="#wrappers-for-learning" title="Permalink to this headline">¶</a></h3>
+<p>In a learning/classification process, imputation is needed on two occasions.
+Before learning, the imputer needs to process the training instances.
+Afterwards, the imputer is called for each instance to be classified. For
+example, in cross validation, imputation should be done on training folds
+only. Imputing the missing values on all data and subsequently performing
+cross-validation will give overly optimistic results.</p>
+<p>Most of Orange&#8217;s learning algorithms do not use imputers because they can
+appropriately handle the missing values. Bayesian classifier, for instance,
+simply skips the corresponding attributes in the formula, while
+classification/regression trees have components for handling the missing
+values in various ways. A wrapper is provided for learning algorithms that
+require imputed data.</p>
+<dl class="class">
+<dt id="Orange.feature.imputation.ImputeLearner">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">ImputeLearner</tt><a class="headerlink" href="#Orange.feature.imputation.ImputeLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps a learner and performs data imputation before learning.</p>
+<p>This learner returns either an instance of
+<a class="reference internal" href="#Orange.feature.imputation.ImputeLearner" title="Orange.feature.imputation.ImputeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">ImputeLearner</span></tt></a> or,
+if called with <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Table</span></tt></a>, an instance of a classifier.</p>
+<dl class="attribute">
+<dt id="Orange.feature.imputation.ImputeLearner.base_learner">
+<tt class="descname">base_learner</tt><a class="headerlink" href="#Orange.feature.imputation.ImputeLearner.base_learner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A wrapped learner.</p>
+<dl class="attribute">
+<dt id="Orange.feature.imputation.ImputeLearner.imputer_constructor">
+<tt class="descname">imputer_constructor</tt><a class="headerlink" href="#Orange.feature.imputation.ImputeLearner.imputer_constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An instance of a class derived from
+<a class="reference internal" href="#Orange.feature.imputation.Constructor" title="Orange.feature.imputation.Constructor"><tt class="xref py py-obj docutils literal"><span class="pre">Constructor</span></tt></a> or a class with the
+same call operator.</p>
+<dl class="attribute">
+<dt id="Orange.feature.imputation.ImputeLearner.dont_impute_classifier">
+<tt class="descname">dont_impute_classifier</tt><a class="headerlink" href="#Orange.feature.imputation.ImputeLearner.dont_impute_classifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>If set and a table is given, the classifier is not be
+wrapped into an imputer. This can be done if classifier can handle
+missing values.</p>
+<p>The learner is best illustrated by its code - here&#8217;s its complete
+<tt class="xref py py-obj docutils literal"><span class="pre">__call__</span></tt> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">trained_imputer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imputer_constructor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+    <span class="n">imputed_data</span> <span class="o">=</span> <span class="n">trained_imputer</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+    <span class="n">base_classifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_learner</span><span class="p">(</span><span class="n">imputed_data</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dont_impute_classifier</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">base_classifier</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ImputeClassifier</span><span class="p">(</span><span class="n">base_classifier</span><span class="p">,</span> <span class="n">trained_imputer</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>During learning, <a class="reference internal" href="#Orange.feature.imputation.ImputeLearner" title="Orange.feature.imputation.ImputeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">ImputeLearner</span></tt></a>
+will first construct the imputer. It will then impute the data and call the
+given <a class="reference internal" href="#Orange.feature.imputation.ImputeLearner.base_learner" title="Orange.feature.imputation.ImputeLearner.base_learner"><tt class="xref py py-obj docutils literal"><span class="pre">base_learner</span></tt></a> to construct a classifier. For instance,
+<a class="reference internal" href="#Orange.feature.imputation.ImputeLearner.base_learner" title="Orange.feature.imputation.ImputeLearner.base_learner"><tt class="xref py py-obj docutils literal"><span class="pre">base_learner</span></tt></a> could be a learner for logistic regression and the
+result would be a logistic regression model. If the classifier can handle
+unknown values (that is, if <a class="reference internal" href="#Orange.feature.imputation.ImputeLearner.dont_impute_classifier" title="Orange.feature.imputation.ImputeLearner.dont_impute_classifier"><tt class="xref py py-obj docutils literal"><span class="pre">dont_impute_classifier</span></tt></a>,
+it is returned as is, otherwise it is wrapped into
+<a class="reference internal" href="#Orange.feature.imputation.ImputeClassifier" title="Orange.feature.imputation.ImputeClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">ImputeClassifier</span></tt></a>,
+which holds the base classifier and the imputer used to impute the
+missing values in (testing) data.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.imputation.ImputeClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.feature.imputation.</tt><tt class="descname">ImputeClassifier</tt><a class="headerlink" href="#Orange.feature.imputation.ImputeClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Objects of this class are returned by
+<a class="reference internal" href="#Orange.feature.imputation.ImputeLearner" title="Orange.feature.imputation.ImputeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">ImputeLearner</span></tt></a> when given data.</p>
+<dl class="attribute">
+<dt id="Orange.feature.imputation.ImputeClassifier.base_classifier">
+<tt class="descname">base_classifier</tt><a class="headerlink" href="#Orange.feature.imputation.ImputeClassifier.base_classifier" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>A wrapped classifier.</p>
+<dl class="attribute">
+<dt id="Orange.feature.imputation.ImputeClassifier.imputer">
+<tt class="descname">imputer</tt><a class="headerlink" href="#Orange.feature.imputation.ImputeClassifier.imputer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>An imputer for imputation of unknown values.</p>
+<dl class="method">
+<dt id="Orange.feature.imputation.ImputeClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.feature.imputation.ImputeClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>This class&#8217;s constructor accepts and stores two arguments,
+the classifier and the imputer. The call operator for classification
+looks like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ex</span><span class="p">,</span> <span class="n">what</span><span class="o">=</span><span class="n">orange</span><span class="o">.</span><span class="n">GetValue</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_classifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imputer</span><span class="p">(</span><span class="n">ex</span><span class="p">),</span> <span class="n">what</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It imputes the missing values by calling the <a class="reference internal" href="#Orange.feature.imputation.ImputeClassifier.imputer" title="Orange.feature.imputation.ImputeClassifier.imputer"><tt class="xref py py-obj docutils literal"><span class="pre">imputer</span></tt></a> and passes the
+class to the base classifier.</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In this setup the imputer is trained on the training data. Even during
+cross validation, the imputer will be trained on the right data. In the
+classification phase, the imputer will be used to impute testing data.</p>
+</div>
+<p class="rubric">Code of ImputeLearner and ImputeClassifier</p>
+<p>The learner is called with
+<tt class="docutils literal"><span class="pre">Orange.feature.imputation.ImputeLearner(base_learner=&lt;someLearner&gt;,</span> <span class="pre">imputer=&lt;someImputerConstructor&gt;)</span></tt>.
+When given data table, it trains the imputer, imputes the data,
+induces a <tt class="xref py py-obj docutils literal"><span class="pre">base_classifier</span></tt> by the
+<tt class="xref py py-obj docutils literal"><span class="pre">base_learner</span></tt> and constructs
+<a class="reference internal" href="#Orange.feature.imputation.ImputeClassifier" title="Orange.feature.imputation.ImputeClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">ImputeClassifier</span></tt></a> that stores the
+<tt class="xref py py-obj docutils literal"><span class="pre">base_classifier</span></tt> and the <tt class="xref py py-obj docutils literal"><span class="pre">imputer</span></tt>. For classification, the missing
+values are imputed and the classifier&#8217;s prediction is returned.</p>
+<p>This is a slightly simplified code, where details on how to handle
+non-essential technical issues that are unrelated to imputation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ImputeLearner</span><span class="p">(</span><span class="n">orange</span><span class="o">.</span><span class="n">Learner</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">weightID</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">keyw</span><span class="p">):</span>
+        <span class="bp">self</span> <span class="o">=</span> <span class="n">orange</span><span class="o">.</span><span class="n">Learner</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">keyw</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">keyw</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">weightID</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">trained_imputer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imputer_constructor</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="n">imputed_data</span> <span class="o">=</span> <span class="n">trained_imputer</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="n">base_classifier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_learner</span><span class="p">(</span><span class="n">imputed_data</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ImputeClassifier</span><span class="p">(</span><span class="n">base_classifier</span><span class="p">,</span> <span class="n">trained_imputer</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">ImputeClassifier</span><span class="p">(</span><span class="n">orange</span><span class="o">.</span><span class="n">Classifier</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_classifier</span><span class="p">,</span> <span class="n">imputer</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_classifier</span> <span class="o">=</span> <span class="n">base_classifier</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imputer</span> <span class="o">=</span> <span class="n">imputer</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">what</span><span class="o">=</span><span class="n">orange</span><span class="o">.</span><span class="n">GetValue</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_classifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imputer</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">what</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="write-your-own-imputer">
+<h2>Write your own imputer<a class="headerlink" href="#write-your-own-imputer" title="Permalink to this headline">¶</a></h2>
+<p>Imputation classes provide the Python-callback functionality. The simples
+way to write custom imputation constructors or imputers is to write a Python
+function that behaves like the built-in Orange classes. For imputers it is
+enough to write a function that gets an instance as argument. Inputation for
+data tables will then use that function.</p>
+<p>Special imputation procedures or separate procedures for various attributes,
+as demonstrated in the description of
+<a class="reference internal" href="#Orange.feature.imputation.ModelConstructor" title="Orange.feature.imputation.ModelConstructor"><tt class="xref py py-obj docutils literal"><span class="pre">ModelConstructor</span></tt></a>,
+are achieved by encoding it in a constructor that accepts a data table and
+id of the weight meta-attribute, and returns the imputer. The benefit of
+implementing an imputer constructor is that you can use is as a component
+for learners (for example, in logistic regression) or wrappers, and that way
+properly use the classifier in testing procedures.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

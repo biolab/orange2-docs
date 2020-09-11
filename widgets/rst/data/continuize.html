@@ -1,0 +1,188 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Continuize &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Continuize</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="continuize">
+<span id="id1"></span><h1>Continuize<a class="headerlink" href="#continuize" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/Continuize.svg" /><p>Turns discrete attributes into continuous dummy variables.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Input data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Output data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Continuize widget receives a data set on the input and outputs the same data in
+which the discrete attributes (including binary attributes) are replaced with
+continuous using the methods specified by the user.</p>
+<img alt="../../../_images/Continuize.png" src="../../../_images/Continuize.png" />
+<p>The first box, <tt class="xref py py-obj docutils literal"><span class="pre">Multinominal</span> <span class="pre">attributes</span></tt>, defines the treatment of
+multivalued discrete attributes. Say that we have a discrete attribute status
+with values low, middle and high, listed in that order. Options for its
+transformation are</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Target</span> <span class="pre">or</span> <span class="pre">First</span> <span class="pre">value</span> <span class="pre">as</span> <span class="pre">base</span></tt>: the attribute will be transformed
+into two continuous attributes, status=middle with values 0 or 1
+signifying whether the original attribute had value middle on a
+particular example, and similarly, status=high. Hence, a three-valued
+attribute is transformed into two continuous attributes, corresponding to
+all except the first value of the attribute.</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Most</span> <span class="pre">frequent</span> <span class="pre">value</span> <span class="pre">as</span> <span class="pre">base</span></tt>: similar to the above, except that the
+data is analyzed and the most frequent value is used as a base. So, if
+most examples have the value middle, the two newly constructed continuous
+attributes will be status=low and status=high.</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">One</span> <span class="pre">attribute</span> <span class="pre">per</span> <span class="pre">value</span></tt>: this would construct three continuous
+attributes out of a three-valued discrete one.</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Ignore</span> <span class="pre">multinominal</span> <span class="pre">attributes</span></tt>: removes the multinominal attributes
+from the data.</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Treat</span> <span class="pre">as</span> <span class="pre">ordinal:</span></tt> converts the attribute into a continuous
+attribute with values 0, 1, and 2.</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Divide</span> <span class="pre">by</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">values:</span></tt> same as above, except that the values
+are normalized into range 0-1. So, our case would give values 0, 0.5 and
+1.</li>
+</ul>
+</div></blockquote>
+<p>Next box defines the treatment of continuous attributes. You will usually
+prefer <tt class="xref py py-obj docutils literal"><span class="pre">Leave</span> <span class="pre">as</span> <span class="pre">is</span></tt> option. The alternative is <tt class="xref py py-obj docutils literal"><span class="pre">Normalize</span> <span class="pre">by</span> <span class="pre">span</span></tt>
+which will subtract the lowest value found in the data and divide by the span,
+so all values will fit into [0, 1]. Finally, <tt class="xref py py-obj docutils literal"><span class="pre">Normalize</span> <span class="pre">by</span> <span class="pre">variance</span></tt>
+subtracts the average and divides by the variance.</p>
+<p>Finally, you can decide what happens with the class if it is discrete. Besides
+leaving it as it is, there are also the options which are available for
+multinominal attributes, except for those options which split the attribute
+into more than one attribute - this obviously cannot be supported since you
+cannot have more than one class attribute. Additionally, you can
+<tt class="xref py py-obj docutils literal"><span class="pre">specify</span> <span class="pre">a</span> <span class="pre">target</span> <span class="pre">value</span></tt>; this will transform the class into a continuous
+attribute with value 1 if the value of the original attribute equals the target
+and 0 otherwise.</p>
+<p>With <tt class="xref py py-obj docutils literal"><span class="pre">value</span> <span class="pre">range</span></tt>, you can define the values of the new attributes. In
+the above text we supposed the range <tt class="xref py py-obj docutils literal"><span class="pre">from</span> <span class="pre">0</span> <span class="pre">to</span> <span class="pre">1</span></tt>. You can change it to
+<tt class="xref py py-obj docutils literal"><span class="pre">from</span> <span class="pre">-1</span> <span class="pre">to</span> <span class="pre">1</span></tt>.</p>
+<p>If <tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">automatically</span></tt> is set, the data set is committed on any change.
+Otherwise, you have to press <tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">data</span></tt> after each change.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The schema below shows a typical use of this widget: in order to properly plot
+linear projection of the data, discrete attributes need to be converted to
+continuous, therefore we put the data through Continuize widget before drawing
+it. Attribute &#8220;chest pain&#8221; originally had four values and was transformed into
+three continuous attributes; similar happened to gender, which was transformed
+into a single attribute gender=female.</p>
+<img alt="../../../_images/Continuize-Schema.png" src="../../../_images/Continuize-Schema.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,240 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Point (owpoint) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Point (<tt class="docutils literal"><span class="pre">owpoint</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-OrangeWidgets.plot.owpoint"></span><div class="section" id="point-owpoint">
+<h1>Point (<tt class="docutils literal"><span class="pre">owpoint</span></tt>)<a class="headerlink" href="#point-owpoint" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owpoint.</tt><tt class="descname">OWPoint</tt><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a point on the plot, usually a part of a curve, or in a legend item.</p>
+<p>The point is identified with its symbol, color, size, label, and state, where the state can be ether unselected (default), 
+marker, or selected. All these attributes can be changed and retrieved after the point is constructed. 
+For example, color can be set with <a class="reference internal" href="#OrangeWidgets.plot.owpoint.OWPoint.set_color" title="OrangeWidgets.plot.owpoint.OWPoint.set_color"><tt class="xref py py-meth docutils literal"><span class="pre">set_color()</span></tt></a>, while the current color is returned by <a class="reference internal" href="#OrangeWidgets.plot.owpoint.OWPoint.color" title="OrangeWidgets.plot.owpoint.OWPoint.color"><tt class="xref py py-meth docutils literal"><span class="pre">color()</span></tt></a>. 
+There are similarily named function for the other attributes.</p>
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>symbol</em>, <em>color</em>, <em>size</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>symbol</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The point symbol.</li>
+<li><strong>color</strong> (<em>QColor</em>) &#8211; The point color.</li>
+<li><strong>size</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; The point size.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.set_color">
+<tt class="descname">set_color</tt><big>(</big><em>color</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.set_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the point&#8217;s color to <tt class="docutils literal"><span class="pre">color</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.color">
+<tt class="descname">color</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.color" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the point&#8217;s color</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.set_size">
+<tt class="descname">set_size</tt><big>(</big><em>size</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.set_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the point&#8217;s size to <tt class="docutils literal"><span class="pre">size</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.size">
+<tt class="descname">size</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.size" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the point&#8217;s size</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.set_symbol">
+<tt class="descname">set_symbol</tt><big>(</big><em>symbol</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.set_symbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the point&#8217;s symbol to <tt class="docutils literal"><span class="pre">symbol</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.symbol">
+<tt class="descname">symbol</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.symbol" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the point&#8217;s symbol</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.set_selected">
+<tt class="descname">set_selected</tt><big>(</big><em>selected</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.set_selected" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the point&#8217;s selected state to <tt class="docutils literal"><span class="pre">selected</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.is_selected">
+<tt class="descname">is_selected</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.is_selected" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">True</span></tt> if the point is selected, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.set_marked">
+<tt class="descname">set_marked</tt><big>(</big><em>marked</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.set_marked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the point&#8217;s marked state to <tt class="docutils literal"><span class="pre">marked</span></tt></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.is_marked">
+<tt class="descname">is_marked</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.is_marked" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><tt class="docutils literal"><span class="pre">True</span></tt> if the point is marked, <tt class="docutils literal"><span class="pre">False</span></tt> otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.set_label">
+<tt class="descname">set_label</tt><big>(</big><em>label</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.set_label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the point&#8217;s label to <tt class="docutils literal"><span class="pre">label</span></tt>. 
+The label is displayed under the symbol.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.owpoint.OWPoint.label">
+<tt class="descname">label</tt><big>(</big><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owpoint.OWPoint.label" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The point`s label, set with <a class="reference internal" href="#OrangeWidgets.plot.owpoint.OWPoint.set_label" title="OrangeWidgets.plot.owpoint.OWPoint.set_label"><tt class="xref py py-meth docutils literal"><span class="pre">set_label()</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

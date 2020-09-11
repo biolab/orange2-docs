@@ -1,0 +1,682 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Probability Estimation (estimate) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Probability Estimation (<tt class="docutils literal"><span class="pre">estimate</span></tt>)</a><ul>
+<li><a class="reference internal" href="#probability-estimation-constructors">Probability Estimation Constructors</a></li>
+<li><a class="reference internal" href="#base-classes">Base classes</a></li>
+<li><a class="reference internal" href="#common-components">Common Components</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.statistics.estimate"></span><div class="section" id="probability-estimation-estimate">
+<span id="index-0"></span><h1>Probability Estimation (<tt class="docutils literal"><span class="pre">estimate</span></tt>)<a class="headerlink" href="#probability-estimation-estimate" title="Permalink to this headline">¶</a></h1>
+<p>Probability estimators compute probabilities of values of class variable.
+They come in two flavours:</p>
+<ol class="arabic simple">
+<li>for unconditional probabilities (<span class="math">p(C=c)</span>, where <span class="math">c</span> is a
+class) and</li>
+<li>for conditional probabilities (<span class="math">p(C=c|V=v)</span>,
+where <span class="math">v</span> is a feature value).</li>
+</ol>
+<p>A duality much like the one between learners and classifiers exists between
+probability estimator constructors and probability estimators: when a
+probability estimator constructor is called with data, it constructs a
+probability estimator that can then be called with a value of class variable
+to obtain a probability of that value. This duality is mainly needed to
+enable probability estimation for continuous variables,
+where it is not possible to generate a list of probabilities of all possible
+values in advance.</p>
+<p>First, probability estimation constructors for common probability estimation
+techniques are enumerated. Base classes, knowledge of which is needed to
+develop new techniques, are described later in this document.</p>
+<div class="section" id="probability-estimation-constructors">
+<h2>Probability Estimation Constructors<a class="headerlink" href="#probability-estimation-constructors" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Orange.statistics.estimate.RelativeFrequency">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">RelativeFrequency</tt><a class="headerlink" href="#Orange.statistics.estimate.RelativeFrequency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.EstimatorConstructor" title="Orange.statistics.estimate.EstimatorConstructor"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorConstructor</span></tt></a></p>
+<p>Compute distribution using relative frequencies of classes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution" title="Orange.statistics.estimate.EstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorFromDistribution</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.Laplace">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">Laplace</tt><a class="headerlink" href="#Orange.statistics.estimate.Laplace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.EstimatorConstructor" title="Orange.statistics.estimate.EstimatorConstructor"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorConstructor</span></tt></a></p>
+<p>Use Laplace estimation to compute distribution from frequencies of classes:</p>
+<div class="math">
+<p><span class="math">p(c) = \\frac{Nc+1}{N+n}</span></p>
+</div><p>where <span class="math">Nc</span> is number of occurrences of an event (e.g. number of
+instances in class c), <span class="math">N</span> is the total number of events (instances)
+and <span class="math">n</span> is the number of different events (classes).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution" title="Orange.statistics.estimate.EstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorFromDistribution</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.M">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">M</tt><a class="headerlink" href="#Orange.statistics.estimate.M" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.EstimatorConstructor" title="Orange.statistics.estimate.EstimatorConstructor"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorConstructor</span></tt></a></p>
+<dl class="method">
+<dt id="Orange.statistics.estimate.M.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.M.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>m</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Parameter for m-estimation.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Use m-estimation to compute distribution from frequencies of classes:</p>
+<div class="math">
+<p><span class="math">p(c) = \\frac{Nc+m*ap(c)}{N+m}</span></p>
+</div><p>where <span class="math">Nc</span> is number of occurrences of an event (e.g. number of
+instances in class c), <span class="math">N</span> is the total number of events (instances)
+and <span class="math">ap(c)</span> is the prior probability of event (class) c.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution" title="Orange.statistics.estimate.EstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorFromDistribution</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.Kernel">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">Kernel</tt><a class="headerlink" href="#Orange.statistics.estimate.Kernel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.EstimatorConstructor" title="Orange.statistics.estimate.EstimatorConstructor"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorConstructor</span></tt></a></p>
+<dl class="method">
+<dt id="Orange.statistics.estimate.Kernel.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>min_impact</em>, <em>smoothing</em>, <em>n_points</em><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.Kernel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>min_impact</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; A requested minimal weight of a point (default:
+0.01); points with lower weights won&#8217;t be taken into account.</li>
+<li><strong>smoothing</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Smoothing factor (default: 1.144).</li>
+<li><strong>n_points</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of points for the interpolating curve. If
+negative, say -3 (default), 3 points will be inserted between each
+data points.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Compute probabilities for continuous variable for certain number of points
+using Gaussian kernels. The resulting point-wise continuous distribution is
+stored as <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-class docutils literal"><span class="pre">Continuous</span></tt></a>.</p>
+<p>Probabilities are always computed at all points that
+are present in the data (i.e. the existing values of the continuous
+feature). If <tt class="xref py py-obj docutils literal"><span class="pre">n_points</span></tt> is positive and greater than the
+number of existing data points, additional points are inserted
+between the existing points to achieve the required number of
+points. Approximately equal number of new points is inserted between
+each adjacent existing point each data points. If <tt class="xref py py-obj docutils literal"><span class="pre">n_points</span></tt> is
+negative, its absolute value determines the number of points to be added
+between each two data points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution" title="Orange.statistics.estimate.EstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorFromDistribution</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.Loess">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">Loess</tt><a class="headerlink" href="#Orange.statistics.estimate.Loess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.EstimatorConstructor" title="Orange.statistics.estimate.EstimatorConstructor"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorConstructor</span></tt></a></p>
+<dl class="method">
+<dt id="Orange.statistics.estimate.Loess.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>window_proportion</em>, <em>n_points</em><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.Loess.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>window_proportion</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; A proportion of points in a window.</li>
+<li><strong>n_points</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of points for the interpolating curve. If
+negative, say -3 (default), 3 points will be inserted between each
+data points.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Prepare a probability estimator that computes probability at point <tt class="docutils literal"><span class="pre">x</span></tt>
+as weighted local regression of probabilities for points in the window
+around this point.</p>
+<p>The window contains a prescribed proportion of original data points. The
+window is as symmetric as possible in the sense that the leftmost point in
+the window is approximately as far from <tt class="docutils literal"><span class="pre">x</span></tt> as the rightmost. The
+number of points to the left of <tt class="docutils literal"><span class="pre">x</span></tt> might thus differ from the number
+of points to the right.</p>
+<p>Points are weighted by bi-cubic weight function; a weight of point
+at <tt class="docutils literal"><span class="pre">x'</span></tt> is <span class="math">(1-|t|^3)^3</span>, where <span class="math">t</span> is
+<span class="math">(x-x'&gt;)/h</span> and <span class="math">h</span> is the distance to the farther
+of the two window edge points.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution" title="Orange.statistics.estimate.EstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorFromDistribution</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.ConditionalLoess">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">ConditionalLoess</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalLoess" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorConstructor" title="Orange.statistics.estimate.ConditionalEstimatorConstructor"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorConstructor</span></tt></a></p>
+<dl class="method">
+<dt id="Orange.statistics.estimate.ConditionalLoess.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>window_proportion</em>, <em>n_points</em><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.ConditionalLoess.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>window_proportion</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; A proportion of points in a window.</li>
+<li><strong>n_points</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of points for the interpolating curve. If
+negative, say -3 (default), 3 points will be inserted between each
+data points.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>Construct a conditional probability estimator, in other aspects
+similar to the one constructed by <a class="reference internal" href="#Orange.statistics.estimate.Loess" title="Orange.statistics.estimate.Loess"><tt class="xref py py-class docutils literal"><span class="pre">Loess</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorFromDistribution" title="Orange.statistics.estimate.ConditionalEstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorFromDistribution</span></tt></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="base-classes">
+<h2>Base classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h2>
+<p>All probability estimators are derived from two base classes: one for
+unconditional and the other for conditional probability estimation. The same
+is true for probability estimator constructors.</p>
+<dl class="class">
+<dt id="Orange.statistics.estimate.EstimatorConstructor">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">EstimatorConstructor</tt><a class="headerlink" href="#Orange.statistics.estimate.EstimatorConstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor of an unconditional probability estimator.</p>
+<dl class="method">
+<dt id="Orange.statistics.estimate.EstimatorConstructor.__call__">
+<tt class="descname">__call__</tt><big>(</big><span class="optional">[</span><em>distribution</em><span class="optional">[</span>, <em>prior</em><span class="optional">]</span><span class="optional">]</span><span class="optional">[</span>, <em>instances</em><span class="optional">[</span>, <em>weight_id</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.EstimatorConstructor.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>distribution</strong> (<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a>) &#8211; input distribution.</li>
+<li><strong>priori</strong> (<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a>) &#8211; prior distribution.</li>
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; input data.</li>
+<li><strong>weight_id</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; ID of the weight attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If distribution is given, it can be followed by prior class
+distribution. Similarly, instances can be followed by with
+the ID of meta attribute with instance weights. (Hint: to pass a
+prior distribution and instances, but no distribution,
+just pass <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a> for the latter.) When both,
+distribution and instances are given, it is up to constructor to
+decide what to use.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <cite>instances</cite> and <cite>weight_id</cite> argument are at the moment
+only used by <a class="reference internal" href="#Orange.statistics.estimate.ConditionalByRows" title="Orange.statistics.estimate.ConditionalByRows"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalByRows</span></tt></a>. The rest of the builtin
+constructors require that <cite>distribution</cite> is given.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.Estimator">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">Estimator</tt><a class="headerlink" href="#Orange.statistics.estimate.Estimator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.statistics.estimate.Estimator.supports_discrete">
+<tt class="descname">supports_discrete</tt><a class="headerlink" href="#Orange.statistics.estimate.Estimator.supports_discrete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells whether the estimator can handle discrete attributes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.estimate.Estimator.supports_continuous">
+<tt class="descname">supports_continuous</tt><a class="headerlink" href="#Orange.statistics.estimate.Estimator.supports_continuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells whether the estimator can handle continuous attributes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.estimate.Estimator.__call__">
+<tt class="descname">__call__</tt><big>(</big><span class="optional">[</span><em>value</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.Estimator.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>If value is given, return the probability of the value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+<p>If the value is omitted, an attempt is made
+to return a distribution of probabilities for all values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a>
+(usually <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Discrete" title="Orange.statistics.distribution.Discrete"><tt class="xref py py-class docutils literal"><span class="pre">Discrete</span></tt></a> for
+discrete and <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-class docutils literal"><span class="pre">Continuous</span></tt></a>
+for continuous) or <tt class="xref py py-obj docutils literal"><span class="pre">NoneType</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.ConditionalEstimatorConstructor">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">ConditionalEstimatorConstructor</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimatorConstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor of a conditional probability estimator.</p>
+<dl class="method">
+<dt id="Orange.statistics.estimate.ConditionalEstimatorConstructor.__call__">
+<tt class="descname">__call__</tt><big>(</big><span class="optional">[</span><em>table</em><span class="optional">[</span>, <em>prior</em><span class="optional">]</span><span class="optional">]</span><span class="optional">[</span>, <em>instances</em><span class="optional">[</span>, <em>weight_id</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimatorConstructor.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.Table" title="Orange.statistics.contingency.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.contingency.Table</span></tt></a>) &#8211; input distribution.</li>
+<li><strong>prior</strong> (<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a>) &#8211; prior distribution.</li>
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; input data.</li>
+<li><strong>weight_id</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; ID of the weight attribute.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If distribution is given, it can be followed by prior class
+distribution. Similarly, instances can be followed by with
+the ID of meta attribute with instance weights. (Hint: to pass a
+prior distribution and instances, but no distribution,
+just pass <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a> for the latter.) When both,
+distribution and instances are given, it is up to constructor to
+decide what to use.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <cite>instances</cite> and <cite>weight_id</cite> argument are at the moment
+only used by <a class="reference internal" href="#Orange.statistics.estimate.ConditionalByRows" title="Orange.statistics.estimate.ConditionalByRows"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalByRows</span></tt></a>. The rest of the builtin
+constructors require that <cite>table</cite> is given.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.ConditionalEstimator">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">ConditionalEstimator</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimator" title="Permalink to this definition">¶</a></dt>
+<dd><p>As a counterpart of <a class="reference internal" href="#Orange.statistics.estimate.Estimator" title="Orange.statistics.estimate.Estimator"><tt class="xref py py-class docutils literal"><span class="pre">Estimator</span></tt></a>, this estimator can return
+conditional probabilities.</p>
+<dl class="method">
+<dt id="Orange.statistics.estimate.ConditionalEstimator.__call__">
+<tt class="descname">__call__</tt><big>(</big><span class="optional">[</span><span class="optional">[</span><em>value</em><span class="optional">]</span>, <em>condition_value</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimator.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>When given two values, it returns a probability of <span class="math">p(value|condition)</span>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+<p>When given only one value, it is interpreted as condition; the estimator
+attempts to return a distribution of conditional probabilities for all
+values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a>
+(usually <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Discrete" title="Orange.statistics.distribution.Discrete"><tt class="xref py py-class docutils literal"><span class="pre">Discrete</span></tt></a> for
+discrete and <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-class docutils literal"><span class="pre">Continuous</span></tt></a>
+for continuous) or <tt class="xref py py-obj docutils literal"><span class="pre">NoneType</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>When called without arguments, it returns a
+matrix containing probabilities <span class="math">p(value|condition)</span> for each
+possible <span class="math">value</span> and <span class="math">condition</span> (a contingency table);
+condition is used as outer
+variable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.Table" title="Orange.statistics.contingency.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.contingency.Table</span></tt></a> or <tt class="xref py py-obj docutils literal"><span class="pre">NoneType</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>If estimator cannot return precomputed distributions and/or
+contingencies, it returns <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="common-components">
+<h2>Common Components<a class="headerlink" href="#common-components" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Orange.statistics.estimate.EstimatorFromDistribution">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">EstimatorFromDistribution</tt><a class="headerlink" href="#Orange.statistics.estimate.EstimatorFromDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.Estimator" title="Orange.statistics.estimate.Estimator"><tt class="xref py py-class docutils literal"><span class="pre">Estimator</span></tt></a></p>
+<p>Probability estimator constructors that compute probabilities for all
+values in advance return this estimator with calculated
+quantities in the <a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution.probabilities" title="Orange.statistics.estimate.EstimatorFromDistribution.probabilities"><tt class="xref py py-obj docutils literal"><span class="pre">probabilities</span></tt></a> attribute.</p>
+<dl class="attribute">
+<dt id="Orange.statistics.estimate.EstimatorFromDistribution.probabilities">
+<tt class="descname">probabilities</tt><a class="headerlink" href="#Orange.statistics.estimate.EstimatorFromDistribution.probabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>A precomputed list of probabilities.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.estimate.EstimatorFromDistribution.__call__">
+<tt class="descname">__call__</tt><big>(</big><span class="optional">[</span><em>value</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.EstimatorFromDistribution.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>If value is given, return the probability of the value. For discrete
+variables, every value has an entry in the <a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution.probabilities" title="Orange.statistics.estimate.EstimatorFromDistribution.probabilities"><tt class="xref py py-obj docutils literal"><span class="pre">probabilities</span></tt></a>
+attribute. For continuous variables, a linear interpolation between
+two nearest points is used to compute the probability.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+<p>If the value is omitted, a copy of <a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution.probabilities" title="Orange.statistics.estimate.EstimatorFromDistribution.probabilities"><tt class="xref py py-obj docutils literal"><span class="pre">probabilities</span></tt></a> is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a>
+(usually <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Discrete" title="Orange.statistics.distribution.Discrete"><tt class="xref py py-class docutils literal"><span class="pre">Discrete</span></tt></a> for
+discrete and <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-class docutils literal"><span class="pre">Continuous</span></tt></a>
+for continuous).</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.ConditionalEstimatorFromDistribution">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">ConditionalEstimatorFromDistribution</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimatorFromDistribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimator" title="Orange.statistics.estimate.ConditionalEstimator"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimator</span></tt></a></p>
+<p>Probability estimator constructors that compute the whole
+contingency table (<a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.Table" title="Orange.statistics.contingency.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.contingency.Table</span></tt></a>) of
+conditional probabilities in advance
+return this estimator with the table in the <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorFromDistribution.probabilities" title="Orange.statistics.estimate.ConditionalEstimatorFromDistribution.probabilities"><tt class="xref py py-obj docutils literal"><span class="pre">probabilities</span></tt></a> attribute.</p>
+<dl class="attribute">
+<dt id="Orange.statistics.estimate.ConditionalEstimatorFromDistribution.probabilities">
+<tt class="descname">probabilities</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimatorFromDistribution.probabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>A precomputed contingency table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.estimate.ConditionalEstimatorFromDistribution.__call__">
+<tt class="descname">__call__</tt><big>(</big><span class="optional">[</span><span class="optional">[</span><em>value</em><span class="optional">]</span>, <em>condition_value</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimatorFromDistribution.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>For detailed description of handling of different combinations of
+parameters, see the inherited <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimator.__call__" title="Orange.statistics.estimate.ConditionalEstimator.__call__"><tt class="xref py py-obj docutils literal"><span class="pre">ConditionalEstimator.__call__</span></tt></a>.
+For behaviour with continuous variable distributions,
+see the unconditional counterpart <a class="reference internal" href="#Orange.statistics.estimate.EstimatorFromDistribution.__call__" title="Orange.statistics.estimate.EstimatorFromDistribution.__call__"><tt class="xref py py-obj docutils literal"><span class="pre">EstimatorFromDistribution.__call__</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.ConditionalByRows">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">ConditionalByRows</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalByRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorConstructor" title="Orange.statistics.estimate.ConditionalEstimatorConstructor"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorConstructor</span></tt></a></p>
+<dl class="attribute">
+<dt id="Orange.statistics.estimate.ConditionalByRows.estimator_constructor">
+<tt class="descname">estimator_constructor</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalByRows.estimator_constructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>An unconditional probability estimator constructor.</p>
+</dd></dl>
+
+<p>Computes a conditional probability estimator using
+an unconditional probability estimator constructor. The result
+can be of type <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorFromDistribution" title="Orange.statistics.estimate.ConditionalEstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorFromDistribution</span></tt></a>
+or <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorByRows" title="Orange.statistics.estimate.ConditionalEstimatorByRows"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorByRows</span></tt></a>, depending on the type of
+constructor.</p>
+<dl class="method">
+<dt id="Orange.statistics.estimate.ConditionalByRows.__call__">
+<tt class="descname">__call__</tt><big>(</big><span class="optional">[</span><em>table</em><span class="optional">[</span>, <em>prior</em><span class="optional">]</span><span class="optional">]</span><span class="optional">[</span>, <em>instances</em><span class="optional">[</span>, <em>weight_id</em><span class="optional">]</span><span class="optional">]</span>, <em>estimator</em><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.ConditionalByRows.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.Table" title="Orange.statistics.contingency.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.contingency.Table</span></tt></a>) &#8211; input distribution.</li>
+<li><strong>prior</strong> (<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a>) &#8211; prior distribution.</li>
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; input data.</li>
+<li><strong>weight_id</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; ID of the weight attribute.</li>
+<li><strong>estimator</strong> (<a class="reference internal" href="#Orange.statistics.estimate.EstimatorConstructor" title="Orange.statistics.estimate.EstimatorConstructor"><tt class="xref py py-class docutils literal"><span class="pre">EstimatorConstructor</span></tt></a>) &#8211; unconditional probability estimator constructor.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Compute contingency matrix if it has not been computed already. Then
+call <a class="reference internal" href="#Orange.statistics.estimate.ConditionalByRows.estimator_constructor" title="Orange.statistics.estimate.ConditionalByRows.estimator_constructor"><tt class="xref py py-obj docutils literal"><span class="pre">estimator_constructor</span></tt></a> for each value of condition attribute.
+If all constructed estimators can return distribution of probabilities
+for all classes (usually either all or none can), the
+<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a> instances are put
+in a contingency table
+and <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorFromDistribution" title="Orange.statistics.estimate.ConditionalEstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorFromDistribution</span></tt></a>
+is constructed and returned. If constructed estimators are
+not capable of returning distribution of probabilities,
+a <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorByRows" title="Orange.statistics.estimate.ConditionalEstimatorByRows"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorByRows</span></tt></a> is constructed and the
+estimators are stored in its <tt class="xref py py-obj docutils literal"><span class="pre">estimator_list</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorFromDistribution" title="Orange.statistics.estimate.ConditionalEstimatorFromDistribution"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorFromDistribution</span></tt></a> or <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorByRows" title="Orange.statistics.estimate.ConditionalEstimatorByRows"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimatorByRows</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.estimate.ConditionalEstimatorByRows">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.estimate.</tt><tt class="descname">ConditionalEstimatorByRows</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimatorByRows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimator" title="Orange.statistics.estimate.ConditionalEstimator"><tt class="xref py py-class docutils literal"><span class="pre">ConditionalEstimator</span></tt></a></p>
+<p>A conditional probability estimator constructors that itself uses a series
+of estimators, one for each possible condition,
+stored in its <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorByRows.estimator_list" title="Orange.statistics.estimate.ConditionalEstimatorByRows.estimator_list"><tt class="xref py py-obj docutils literal"><span class="pre">estimator_list</span></tt></a> attribute.</p>
+<dl class="attribute">
+<dt id="Orange.statistics.estimate.ConditionalEstimatorByRows.estimator_list">
+<tt class="descname">estimator_list</tt><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimatorByRows.estimator_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of estimators; one for each value of <tt class="xref py py-obj docutils literal"><span class="pre">condition</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.estimate.ConditionalEstimatorByRows.__call__">
+<tt class="descname">__call__</tt><big>(</big><span class="optional">[</span><span class="optional">[</span><em>value</em><span class="optional">]</span>, <em>condition_value</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.estimate.ConditionalEstimatorByRows.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses estimators from <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimatorByRows.estimator_list" title="Orange.statistics.estimate.ConditionalEstimatorByRows.estimator_list"><tt class="xref py py-obj docutils literal"><span class="pre">estimator_list</span></tt></a>,
+depending on given <cite>condition_value</cite>.
+For detailed description of handling of different combinations of
+parameters, see the inherited <a class="reference internal" href="#Orange.statistics.estimate.ConditionalEstimator.__call__" title="Orange.statistics.estimate.ConditionalEstimator.__call__"><tt class="xref py py-obj docutils literal"><span class="pre">ConditionalEstimator.__call__</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># discrete class distribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">iris_dist</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">Distribution</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># m estimate constructor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mest_constructor</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">estimate</span><span class="o">.</span><span class="n">M</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># create the estimator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mest</span> <span class="o">=</span> <span class="n">mest_constructor</span><span class="p">(</span><span class="n">iris_dist</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;</span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">mest</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;iris&#39;</span><span class="p">])</span>
+<span class="go">0.33</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># petal length (continuous) distribution</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plength_dist</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">Distribution</span><span class="p">(</span><span class="s">&quot;petal length&quot;</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plength_dist</span><span class="o">.</span><span class="n">normalize</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># loess contructor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loess_est_constructor</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">estimate</span><span class="o">.</span><span class="n">Loess</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># create the loess estimator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loess_est</span> <span class="o">=</span> <span class="n">loess_est_constructor</span><span class="p">(</span><span class="n">plength_dist</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&quot;</span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">loess_est</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;petal length&#39;</span><span class="p">])</span>
+<span class="go">0.04</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># contingency matrix for the conditional estimator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">contingency</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">contingency</span><span class="o">.</span><span class="n">VarClass</span><span class="p">(</span><span class="s">&#39;petal length&#39;</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">conditional_loess_constructor</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">estimate</span><span class="o">.</span><span class="n">ConditionalLoess</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cloess_est</span> <span class="o">=</span> <span class="n">conditional_loess_constructor</span><span class="p">(</span><span class="n">contingency</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">cloess_est</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;petal length&#39;</span><span class="p">])</span>
+<span class="go">&lt;0.980, 0.008, 0.012&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

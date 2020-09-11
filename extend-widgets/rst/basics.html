@@ -1,0 +1,361 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Getting Started &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Getting Started</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#let-s-start">Let&#8217;s Start</a></li>
+<li><a class="reference internal" href="#testing-your-widget-outside-orange-canvas">Testing Your Widget Outside Orange Canvas</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="getting-started">
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>The tutorial on these pages is meant for those who are interested in
+developing widgets in Orange. Orange Widgets are components in
+Orange&#8217;s visual programming environment. They are wrappers around some
+data analysis code that provide graphical user interface
+(GUI). Widgets communicate, and pass tokens through communication
+channels to interact with other widgets. While simplest widgets
+consist of even less than 100 lines of code, those more complex that
+often implement some fancy graphical display of data and allow for
+some really nice interaction may be over 1000 lines long.</p>
+<p>On this page, we will start with some simple essentials, and then
+show how to build a simple widget that will be ready to run within
+Orange Canvas, our visual programming environment.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>Each Orange widget belongs to a category and within a
+category has an associated priority. Opening Orange Canvas, a visual
+programming environment that comes with Orange, widgets are listed in
+a toolbox on the left:</p>
+<img alt="../../_images/widgettoolbox.png" src="../../_images/widgettoolbox.png" />
+<p>The widgets and categories to which they belong are discovered at Orange
+Canvas startup leveraging setuptools/distribute and it&#8217;s <a class="reference external" href="http://pythonhosted.org/distribute/setuptools.html#dynamic-discovery-of-services-and-plugins">entry points</a>
+protocol. In particular Orange Canvas looks for widgets using a
+<cite>orange.widgets</cite> entry point.</p>
+<p>First we will examine an existing widget in Orange. The Test Learners
+widget which is implemented in <a class="reference external" href="http://orange.biolab.si/trac/browser/orange/Orange/OrangeWidgets/Evaluate/OWTestLearners.py">OWTestLearners.py</a>.</p>
+<p>Here is its header:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&lt;name&gt;Test Learners&lt;/name&gt;</span>
+<span class="sd">&lt;description&gt;Estimates the predictive performance of learners on a data set.&lt;/description&gt;</span>
+<span class="sd">&lt;icon&gt;icons/TestLearners1.svg&lt;/icon&gt;</span>
+<span class="sd">&lt;priority&gt;200&lt;/priority&gt;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</pre></div>
+</div>
+<p>OWTestLearners is a Python module, so the header information we
+show about lies within the comment block, with triple quote opening
+and closing the comment. Header defines the name of the widget, its
+description, the name of the picture file the widget will use for an
+icon, and a number expressing the priority of the widget. The name of
+the widget as given in the header will be the one that will be used
+throughout in Orange Canvas. The description of the widget is shown
+once mouse rests on an toolbox icon representing the widget. And for
+the priority: this determines the order in which widgets appear in the
+toolbox within a category.</p>
+<p>Widgets communicate. They use typed channels, and exchange
+tokens. Each widget would define its input and output channels in
+something like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Test Data Set&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">),</span>
+               <span class="p">(</span><span class="s">&quot;Learner&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">Learner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_learner</span><span class="p">)]</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Evaluation Results&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">ExperimentResults</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>We will go over the syntax of channel definitions later, but for
+now the following is important:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Widgets are defined in a Python files.</li>
+<li>Widgets are registered through entry points and are discovered at
+runtime.</li>
+<li>A python module implementing a widget starts with a header. This, given
+in sort of XMLish style, tells about the name, short description,
+location of an icon and priority of the widget.</li>
+<li>The sole role of priority is to specify the placement (order) of widgets
+in the Orange Canvas toolbox.</li>
+<li>Somewhere in the code (where we will learn later) there are two lines
+which tell which channels the widgets uses for communication. These,
+together with the header information, completely specify the widget as it
+is seen from the outside.</li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Orange caches widget descriptions to achieve a faster startup,
+but this cache is automatically refreshed at startup if any change
+is detected in widgets&#8217; file.</p>
+</div>
+</div>
+<div class="section" id="let-s-start">
+<h2>Let&#8217;s Start<a class="headerlink" href="#let-s-start" title="Permalink to this headline">¶</a></h2>
+<p>Now that we went through some of the more boring stuff, let us now
+have some fun and write a widget. We will start with a very simple
+one, that will receive a data set on the input and will output a data
+set with 10% of the data instances. We will call this widget
+<cite>OWDataSamplerA.py</cite> (OW for Orange Widget, DataSampler since this is what
+widget will be doing, and A since we prototype a number of this widgets
+in our tutorial).</p>
+<p>But first we must create a simple <a class="reference external" href="http://docs.python.org/2/distutils/examples.html#pure-python-distribution-by-package">python project</a> layout called <em>Demo</em>,
+that we will use in the rest of this tutorial.</p>
+<p>The layout should be:</p>
+<div class="highlight-python"><pre>Demo/
+      setup.py
+      orangedemo/
+                  __init__.py
+                  OWDataSamplerA.py</pre>
+</div>
+<p>and the <a class="reference download internal" href="../../_downloads/setup.py"><tt class="xref download docutils literal"><span class="pre">setup.py</span></tt></a> should contain</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">setup</span>
+
+<span class="n">setup</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;Demo&quot;</span><span class="p">,</span>
+      <span class="n">packages</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;orangedemo&quot;</span><span class="p">],</span>
+      <span class="c"># Declare orangedemo package to contain widgets for the &quot;Demo&quot; category</span>
+      <span class="n">entry_points</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;orange.widgets&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;Demo = orangedemo&quot;</span><span class="p">)},</span>
+      <span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that we declare our <em>orangedemo</em> package as containing widgets
+from an ad hoc defined category <em>Demo</em>.</p>
+<p>Following the previous example of OWTestLearners, our module defining
+the OWDataSamplerA widget starts with a following header:</p>
+<div class="highlight-python"><pre>&lt;name&gt;Data Sampler&lt;/name&gt;
+&lt;description&gt;Randomly selects a subset of instances from the data set&lt;/description&gt;
+&lt;icon&gt;icons/DataSamplerA.svg&lt;/icon&gt;
+&lt;priority&gt;10&lt;/priority&gt;</pre>
+</div>
+<p>This should all be clear now, perhaps just a remark on an icon. We
+can put any name here, and if Orange Canvas won&#8217;t find the
+corresponding file, it will use a file called Unknown.png (an icon
+with a question mark).</p>
+<p>Orange Widgets are all derived from the class OWWidget. The name of
+the class should match the file name, so the lines following the
+header in our Data Sampler widget should look something like</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="kn">from</span> <span class="nn">OWWidget</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">OWGUI</span>
+
+<span class="k">class</span> <span class="nc">OWDataSamplerA</span><span class="p">(</span><span class="n">OWWidget</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">signalManager</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">OWWidget</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">signalManager</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Data&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_data</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Sampled Data&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">)]</span>
+
+        <span class="c"># GUI</span>
+        <span class="n">box</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">widgetBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controlArea</span><span class="p">,</span> <span class="s">&quot;Info&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">infoa</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">widgetLabel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="s">&#39;No data on input yet, waiting to get something.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">infob</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">widgetLabel</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In initialization, the widget calls the <tt class="xref py py-func docutils literal"><span class="pre">__init__()</span></tt> method
+of a base class. Widget then defines inputs and outputs. For input,
+this is a <em>Data</em> channel, accepting tokens of the type
+<a class="reference internal" href="../../reference/rst/Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a> and specifying that <tt class="xref py py-func docutils literal"><span class="pre">set_data()</span></tt> method will
+be used to handle them. For now, we will use a single output channel
+called &#8220;Sampled Data&#8221;, which will be of the same type
+(<a class="reference internal" href="../../reference/rst/Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>).</p>
+<p>Notice that the types of the channels are specified by a class;
+you can use any class here, but if your widgets need to talk with
+other widgets in Orange, you will need to check which classes are
+used there. Luckily, and as one of the main design principles,
+there are just a few channel types that current Orange widgets are
+using.</p>
+<p>The next four lines specify the GUI of our widget. This will be
+simple, and will include only two lines of text of which, if nothing
+will happen, the first line will report on &#8220;no data yet&#8221;, and second
+line will be empty. By (another) design principles, in an interface
+Orange widgets are most often split to control and main area. Control
+area appears on the left and should include any controls for settings
+or options that your widget will use. Main area would most often
+include a graph, table or some drawing that will be based on the
+inputs to the widget and current options/setting in the control
+area. OWWidget make these two areas available through its attributes
+<tt class="xref py py-obj docutils literal"><span class="pre">self.controlArea</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">self.mainArea</span></tt>. Notice
+that while it would be nice for all widgets to have this common visual
+look, you can use these areas in any way you want to, even disregarding one
+and composing your widget completely unlike the others in Orange.</p>
+<p>As our widget won&#8217;t display anything apart from some info, we will
+place the two labels in the control area and surround it with the box
+&#8220;Info&#8221;.</p>
+<p>In order to complete our widget, we now need to define how will it
+handle the input data. This is done in a method called <tt class="xref py py-func docutils literal"><span class="pre">set_data()</span></tt>
+(remember, we did introduce this name in the specification of the
+input channel)</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">set_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infoa</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s"> instances in input data set&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndices2</span><span class="p">(</span><span class="n">p0</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="n">ind</span> <span class="o">=</span> <span class="n">indices</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+            <span class="n">sample</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infob</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s"> sampled instances&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">sample</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Sampled Data&quot;</span><span class="p">,</span> <span class="n">sample</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infoa</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;No data on input yet, waiting to get something.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infob</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Sampled Data&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <tt class="xref py py-obj docutils literal"><span class="pre">dataset</span></tt> argument is the token sent through the input
+channel which our method needs to handle.</p>
+<p>To handle the non-empty token, the widget updates the interface
+reporting on number of data items on the input, then does the data
+sampling using Orange&#8217;s routines for these, and updates the
+interface reporting on the number of sampled instances. Finally, the
+sampled data is sent as a token to the output channel with a name
+&#8220;Sampled Data&#8221;.</p>
+<p>Notice that the token can be empty (<tt class="docutils literal"><span class="pre">None</span></tt>), resulting from either
+the sending widget to which we have connected intentionally emptying
+the channel, or when the link between the two widgets is removed.
+In any case, it is important that we always write token handlers
+that appropriately handle the empty tokens. In our implementation,
+we took care of empty input data set by appropriately setting the
+GUI of a widget and sending an empty token to the output channel.</p>
+<p>Although our widget is now ready to test, for a final touch, let&#8217;s
+design an icon for our widget. As specified in the widget header, we
+will call it <a class="reference download internal" href="../../_downloads/DataSamplerA.svg"><tt class="xref download docutils literal"><span class="pre">DataSamplerA.svg</span></tt></a> and will
+put it in <cite>icons</cite> subdirectory of <cite>orangedemo</cite> directory.</p>
+<p>With this we cen now go ahead and install the orangedemo package. We
+will do this by running <tt class="docutils literal"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">develop</span></tt> command from
+the <cite>Demo</cite> directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Depending on your python installation you might need
+administrator/superuser privileges.</p>
+</div>
+<p>For a test, we now open Orange Canvas. There should be a new pane in a
+widget toolbox called Demo. If we click on this pane, it displays an
+icon of our widget. Try to hover on it to see if the header and channel
+info was processed correctly:</p>
+<img alt="../../_images/samplewidgetontoolbox.png" src="../../_images/samplewidgetontoolbox.png" />
+<p>Now for the real test. We put the File widget on the schema (from
+Data pane) and load the iris.tab data set. We also put our Data
+Sampler widget on the scheme and open it (double click on the icon,
+or right-click and choose Open):</p>
+<img alt="../../_images/datasamplerAempty.png" src="../../_images/datasamplerAempty.png" />
+<p>Now connect the File and Data Sampler widget (click on an output
+connector of the File widget, and drag the line to the input connector
+of the Data Sampler). If everything is ok, as soon as you release the
+mouse, the connection is established and, the token that was waiting
+on the output of the file widget was sent to the Data Sampler widget,
+which in turn updated its window:</p>
+<img alt="../../_images/datasamplerAupdated.png" src="../../_images/datasamplerAupdated.png" />
+<p>To see if the Data Sampler indeed sent some data to the output,
+connect it to the Data Table widget:</p>
+<img alt="../../_images/schemawithdatatable.png" src="../../_images/schemawithdatatable.png" />
+<p>Try opening different data files (the change should propagate
+through your widgets and with Data Table window open, you should
+immediately see the result of sampling). Try also removing the
+connection between File and Data Sampler (right click on the
+connection, choose Remove). What happens to the data displayed in the
+Data Table?</p>
+</div>
+<div class="section" id="testing-your-widget-outside-orange-canvas">
+<h2>Testing Your Widget Outside Orange Canvas<a class="headerlink" href="#testing-your-widget-outside-orange-canvas" title="Permalink to this headline">¶</a></h2>
+<p>When prototyping a single widget, for a fast test I often get
+bored of running Orange Canvas, setting the schema and clicking on
+icons to get widget windows. There are two options to bypass this. The
+first one is to add a testing script at the end of your widget. To do
+this, we finished Data Sampler with</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">appl</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">ow</span> <span class="o">=</span> <span class="n">OWDataSamplerA</span><span class="p">()</span>
+    <span class="n">ow</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&#39;iris.tab&#39;</span><span class="p">)</span>
+    <span class="n">ow</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+    <span class="n">appl</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>These are essentially some calls to Qt routines that run GUI for our
+widgets. Notice that we call the <tt class="xref py py-func docutils literal"><span class="pre">set_data()</span></tt> method directly.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

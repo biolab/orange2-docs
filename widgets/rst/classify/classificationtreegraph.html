@@ -1,0 +1,235 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Classification Tree Graph &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Classification Tree Graph</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#general-tab">General Tab</a></li>
+<li><a class="reference internal" href="#tree-tab">Tree Tab</a></li>
+<li><a class="reference internal" href="#node-tab">Node Tab</a></li>
+<li><a class="reference internal" href="#navigation">Navigation</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="classification-tree-graph">
+<span id="id1"></span><h1>Classification Tree Graph<a class="headerlink" href="#classification-tree-graph" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/ClassificationTreeGraph.svg" /><p>Visualization of classification tree.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Classification Tree (TreeClassifier)</dt>
+<dd><p class="first last">Classification tree.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Attribute-valued data set associated with a classification tree node
+selected by the user.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This is a versatile widget with 2-D visualization of classification
+tree that allows user to alter the appearance of the tree and
+associate tree-based data to graphical elements of the
+visualization. In addition, user can select a node, instructing the
+widget to commit the data associated to the node to its output channel,
+thus in combination with other widget obtaining interesting schemas
+for explorative data analysis.</p>
+<img alt="Classification Tree Graph" src="../../../_images/ClassificationTreeGraph-S.png" />
+</div>
+<div class="section" id="general-tab">
+<h2>General Tab<a class="headerlink" href="#general-tab" title="Permalink to this headline">¶</a></h2>
+<p>Several general parameters that affect the drawing size of the
+displayed tree may be set in the General tab. Here, user can set the
+zoom factor and define the vertical and horizontal spacing between the
+nodes. Node bubble information (like the one displayed in the snapshot
+above) may be turned off, and user may instruct the widget to truncate
+the text labels to fit provided space.</p>
+</div>
+<div class="section" id="tree-tab">
+<h2>Tree Tab<a class="headerlink" href="#tree-tab" title="Permalink to this headline">¶</a></h2>
+<img alt="Classification Tree Graph - Tree Tab" src="../../../_images/ClassificationTreeGraph-TreeTab.png" />
+<p>In this tab the user can define the depth to which the widget will
+display the tree (may be useful when very large trees are
+induced). The edges between the nodes in the tree graph are drawn
+according to the maximum width defined in this tab. All the edges will
+be of equal width if <tt class="xref py py-obj docutils literal"><span class="pre">No</span> <span class="pre">dependency</span></tt> is chosen in the
+<tt class="xref py py-obj docutils literal"><span class="pre">Reference</span> <span class="pre">for</span> <span class="pre">Edge</span> <span class="pre">Width</span></tt> box. When <tt class="xref py py-obj docutils literal"><span class="pre">Root</span> <span class="pre">node</span></tt> is selected
+instead, the width of the edge will correspond to the proportion of
+instances in the corresponding node with respect to all the instances
+in the training data set (that is, instances in the root node). That
+is, under this selection, the edge will get thinner and thinner when
+traversing toward the bottom of the tree. Selection of <tt class="xref py py-obj docutils literal"><span class="pre">Parent</span>
+<span class="pre">node</span></tt> makes the edge width correspond to proportion of instances in
+the nodes with respect to the instances in their parent node.</p>
+</div>
+<div class="section" id="node-tab">
+<h2>Node Tab<a class="headerlink" href="#node-tab" title="Permalink to this headline">¶</a></h2>
+<img alt="Classification Tree Graph" src="../../../_images/ClassificationTreeGraph-NodeTab-S.png" />
+<p>Parameters from the Node Tab govern the appearance of tree nodes
+and define what is displayed in the node box, of which the size can be
+set manually (<tt class="xref py py-obj docutils literal"><span class="pre">Node</span> <span class="pre">Width</span></tt>). Tree nodes can display two lines of
+information selected by the user (<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">Info</span></tt> box). In the
+snapshot the probability for the target class (republican) was
+reported in the first line in the node, and number of instances from
+the training set that reached this node in the second text
+line. Because of treatment of missing values, these numbers may not
+necessary be integers.</p>
+<p>The color of the node:</p>
+<blockquote>
+<div><ul class="simple">
+<li>may be uniform (<tt class="xref py py-obj docutils literal"><span class="pre">Node</span> <span class="pre">Color</span></tt> set to <tt class="xref py py-obj docutils literal"><span class="pre">Default</span></tt>),</li>
+<li>correspond to number of instances in the node with respect to the number
+of instances in the root node (<tt class="xref py py-obj docutils literal"><span class="pre">Instances</span> <span class="pre">in</span> <span class="pre">node</span></tt>),</li>
+<li>may report on the probability of the majority class
+(<tt class="xref py py-obj docutils literal"><span class="pre">Majority</span> <span class="pre">class</span> <span class="pre">probability</span></tt>) where one would expect that the color
+intensity would be higher towards the leaves of the node,</li>
+<li>may report on probability of the target class (<tt class="xref py py-obj docutils literal"><span class="pre">Target</span> <span class="pre">class</span>
+<span class="pre">probability</span></tt>), with more intense colors marking the nodes where instances
+of target class are more frequent, and</li>
+<li>may report on the distribution of instances with target class,
+where the intensity of node color corresponds to proportion of the
+target class instances in the node with respect to the target class
+instances in the root node (<tt class="xref py py-obj docutils literal"><span class="pre">Target</span> <span class="pre">class</span> <span class="pre">distribution</span></tt>).</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="navigation">
+<h2>Navigation<a class="headerlink" href="#navigation" title="Permalink to this headline">¶</a></h2>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Find</span> <span class="pre">Root</span></tt> aligns the position of the window such that the
+root node is displayed in the center. If user selects the node
+(left-click on the node), <tt class="xref py py-obj docutils literal"><span class="pre">Find</span> <span class="pre">Selected</span></tt> would bring the widow
+in position to display the selected node in the center. More advanced
+navigation is supported by a navigator window (click on the
+<tt class="xref py py-obj docutils literal"><span class="pre">Navigator</span></tt> button), which displays a complete tree with a box
+signifying the currently viewed part of the tree in the main
+window. This box can be moved around thus exposing different parts of
+the tree in the main window. The tree visualization in the navigator
+corresponds to the visualization parameters set in the main
+window. Navigator also supports bubble info box which is displayed
+when mousing over the node in the tree.</p>
+<img alt="Classification Tree Graph" src="../../../_images/ClassificationTreeGraph-Navigator-S.gif" />
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Following is a simple schema where we have read the data,
+constructed the classification tree and viewed it in our tree
+viewer. Notice that if both the viewer and the widget that constructs
+the classification tree are open, any run of tree induction algorithm
+will have an immediate effect in the visualization. You can thus use
+this combination to explore how are the changes in induction algorithm
+reflected in the structure of the resulting tree.</p>
+<img alt="Classification Tree Graph" src="../../../_images/ClassificationTreeGraph-SimpleSchema-S.gif" />
+<p>Any click on the node of the tree would place the related data
+instances on the widget&#8217;s output channel. This is explored in the
+schema below that shows this data in the data table and as a data
+subset in the scatterplot visualizer (for scatterplot to display the
+selected data properly, make sure that the tree data is passed as a
+data subset; this can simply be done by connecting scatterplot to the
+Data widget first, and connecting it to the tree visualization widget
+next).</p>
+<img alt="Classification Tree Graph - Interaction" src="../../../_images/ClassificationTreeGraph-Interaction.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

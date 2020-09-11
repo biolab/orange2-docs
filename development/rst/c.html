@@ -1,0 +1,1036 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Writing Orange Extensions in C++ &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Writing Orange Extensions in C++</a><ul>
+<li><a class="reference internal" href="#pyprops">pyprops</a></li>
+<li><a class="reference internal" href="#pyxtract">pyxtract</a><ul>
+<li><a class="reference internal" href="#class-declaration">Class declaration</a></li>
+<li><a class="reference internal" href="#special-methods">Special methods</a><ul>
+<li><a class="reference internal" href="#general-methods">General methods</a></li>
+<li><a class="reference internal" href="#numeric-protocol">Numeric protocol</a></li>
+<li><a class="reference internal" href="#sequence-protocol">Sequence protocol</a></li>
+<li><a class="reference internal" href="#mapping-protocol">Mapping protocol</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-and-setting-class-attributes">Getting and Setting Class Attributes</a></li>
+<li><a class="reference internal" href="#member-functions">Member functions</a></li>
+<li><a class="reference internal" href="#class-constants">Class constants</a></li>
+<li><a class="reference internal" href="#pickling">Pickling</a></li>
+<li><a class="reference internal" href="#non-member-functions-and-constants">Non-member functions and constants</a></li>
+<li><a class="reference internal" href="#how-does-it-all-fit-together">How does it all fit together</a><ul>
+<li><a class="reference internal" href="#file-specific-px-files">File specific px files</a></li>
+<li><a class="reference internal" href="#initialization-px">initialization.px</a></li>
+<li><a class="reference internal" href="#externs-px">externs.px</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-and-where-to-include">What and where to include?</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="writing-orange-extensions-in-c">
+<h1>Writing Orange Extensions in C++<a class="headerlink" href="#writing-orange-extensions-in-c" title="Permalink to this headline">¶</a></h1>
+<p>This page gives an introduction to extending Orange in C++ with emphasis on
+how to define interfaces to Python. Besides reading this page, we recommend
+studying some of existing extension modules like orangeom, and the Orange&#8217;s
+interface itself.</p>
+<p>We shall first present a general picture and then focus on specific parts of the
+interface.</p>
+<p>Instead of general tools for creating interfaces between C++ and Python
+(Swig, Sip, PyBoost...), Orange uses its own specific set of tools.</p>
+<p>To expose a C++ object to Python, we need to mark them as exportable, select a
+general constructor template to use or program a specific one, we have to mark
+the attributes to be exported, and provide the interfaces for C++ member
+functions. When we give the access to mostly C++ code as it is, the interface
+functions have only a few lines. When we want to make the exported function more
+friendly, eg. allow various types of arguments or fitting the default arguments
+according to the given ones, these functions are longer.</p>
+<p>To define a non-member function, we write the function itself as described in
+the Python&#8217;s manual (see the first chapter of &#8220;Extending and Embedding the
+Python Interpreter&#8221;) and then mark it with a specific keyword.
+Pyxtract will recognize the keyword and add it to the list of exported functions.</p>
+<p>To define a special method, one needs to provide a function with the appropriate
+name constructed from the class name and the special method&#8217;s name, which is the
+same as in Python&#8217;s PyTypeObjects.</p>
+<p>For instance, the elements of <tt class="docutils literal"><span class="pre">ExampleTable</span></tt> (examples) can be accessed
+through indexing because we defined a C function that gets an index (and the
+table, of course) and returns the corresponding example. Here is the function
+(with error detection removed for the sake of clarity).</p>
+<div class="highlight-python"><pre>PyObject *ExampleTable_getitem_sq(PyObject *self, int idx)
+{
+    CAST_TO(TExampleTable, table);
+    return Example_FromExampleRef((*table)[idx], EXAMPLE_LOCK(PyOrange_AsExampleTable(self)));
+}</pre>
+</div>
+<p>Also, <tt class="docutils literal"><span class="pre">ExampleTable</span></tt> has a non-special method <tt class="docutils literal"><span class="pre">sort([list-of-attributes])</span></tt>.
+This is implemented through a C function that gets a list of attributes and
+calls the C++ class&#8217; method
+<tt class="docutils literal"><span class="pre">TExampleTable::sort(const</span> <span class="pre">vector&lt;int&gt;</span> <span class="pre">order)</span></tt>. To illustrate, this is a
+slightly simplified function (we&#8217;ve removed some flexibility regarding the
+parameters and the exception handling).</p>
+<div class="highlight-python"><pre>PyObject *ExampleTable_sort(PyObject *self, PyObject *args) PYARGS(METH_VARARGS, "() -&gt; None")
+{
+    CAST_TO(TExampleTable, table);
+
+    if (!args || !PyTuple_Size(args)) {
+        table-&gt;sort();
+        RETURN_NONE;
+    }
+
+    TVarList attributes;
+    varListFromDomain(PyTuple_GET_ITEM(args, 0), table-&gt;domain, attributes, true, true);
+    vector&lt;int&gt; order;
+    for(TVarList::reverse_iterator vi(attributes.rbegin()), ve(attributes.rend()); vi!=ve; vi++) {
+        order.push_back(table-&gt;domain-&gt;getVarNum(*vi));
+    }
+    table-&gt;sort(order);
+    RETURN_NONE;
+}</pre>
+</div>
+<p>The function casts the <tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*</span></tt> into the
+corresponding C++ object, reads the arguments, calls the C++
+functions and returns the result (<tt class="docutils literal"><span class="pre">None</span></tt>, in this case).</p>
+<p>Interfacing with Python requires a lot of manual work, but this gives a
+programmer the opportunity to provide a function which accepts many different
+forms of arguments. The above function, for instance, accepts a list in
+which attributes are specified by indices, names or descriptors, all
+corresponding to the <tt class="docutils literal"><span class="pre">ExampleTable</span></tt> which is being sorted. Inheritance of
+methods, on the other hand, ensures that only the methods that are truly
+specific for a class need to be coded.</p>
+<p>The part of the interface that is built automatically is taken care of by
+two scripts. <tt class="docutils literal"><span class="pre">pyprops</span></tt> parses all Orange&#8217;s header files and extracts all
+the class built-in properties. The second is <tt class="docutils literal"><span class="pre">pyxtract</span></tt>, which goes
+through the C++ files that contain the interface functions such as those above.
+It recognizes the functions that implement special or member methods and
+constructs the corresponding <a href="#id1"><span class="problematic" id="id2">``</span></a>PyTypeObject``s.</p>
+<div class="section" id="pyprops">
+<h2>pyprops<a class="headerlink" href="#pyprops" title="Permalink to this headline">¶</a></h2>
+<p>Pyprops scans each hpp file for classes we want to export to Python). Properties
+can be <tt class="docutils literal"><span class="pre">bool</span></tt>, <tt class="docutils literal"><span class="pre">int</span></tt>, <tt class="docutils literal"><span class="pre">float</span></tt>, <tt class="docutils literal"><span class="pre">string</span></tt>, <tt class="docutils literal"><span class="pre">TValue</span></tt> or a wrapped Orange
+type.</p>
+<p>Class definition needs to look as follows.</p>
+<div class="highlight-python"><pre>class [ORANGE_API] &lt;classname&gt;; [: public &lt;parentclass&gt; ]</pre>
+</div>
+<p>This should be in a single line. To mark the class for export, this should be
+followed by <tt class="docutils literal"><span class="pre">__REGISTER_CLASS</span></tt> or <tt class="docutils literal"><span class="pre">__REGISTER_ABSTRACT_CLASS</span></tt> before any
+properties or components are defined. The difference between the two, as far as
+pyprops is concerned, is that abstract classes do not define the <tt class="docutils literal"><span class="pre">clone</span></tt>
+method.</p>
+<p>To export a property, it should be defined like this.</p>
+<div class="highlight-python"><pre>&lt;type&gt; &lt;name&gt; //P[R|O] [&gt;|+&lt;alias&gt;] &lt;description&gt;</pre>
+</div>
+<p>Pyprops doesn&#8217;t check the type and won&#8217;t object if you use other types than
+those listed above. The error will be discovered later, during linking. <tt class="docutils literal"><span class="pre">//P</span></tt>
+signals that we want to export the property. If followed by <tt class="docutils literal"><span class="pre">R</span></tt> or <tt class="docutils literal"><span class="pre">O</span></tt>, the
+property is read-only or obsolete. The property can also have an alias name;
+<tt class="docutils literal"><span class="pre">&gt;</span></tt> renames it and <tt class="docutils literal"><span class="pre">+</span></tt> adds an alias.</p>
+<p>Each property needs to be declared in a separate line, e.g.</p>
+<div class="highlight-python"><pre>int x; //P;
+int y; //P;</pre>
+</div>
+<p>If we don&#8217;t want to export a certain property, we omit the <tt class="docutils literal"><span class="pre">//P</span></tt> mark. An
+exception to this are wrapped Orange objects: for instance, if a class has a
+(wrapped) pointer to the domain, <tt class="docutils literal"><span class="pre">PDomain</span></tt> and it doesn&#8217;t export it, pyxtract
+should still know about them because for the purpose of garbage collection. You
+should mark them by <tt class="docutils literal"><span class="pre">//C</span></tt> so that they are put into the list of objects that
+need to be counted. Failing to do so would cause a memory leak.</p>
+<p>If a class directly or indirectly holds references to any wrapped objects that
+are neither properties nor components, it needs to declare <tt class="docutils literal"><span class="pre">traverse</span></tt> and
+<tt class="docutils literal"><span class="pre">clear</span></tt> as described in Python documentation.</p>
+<p>Pyprops creates a ppp file for each hpp, which includes the extracted
+information in form of C++ structures that compile into the interface.
+The ppp file needs to be included in the corresponding cpp file. For
+instance, domain.ppp is included in domain.cpp.</p>
+</div>
+<div class="section" id="pyxtract">
+<h2>pyxtract<a class="headerlink" href="#pyxtract" title="Permalink to this headline">¶</a></h2>
+<p>Pyxtract&#8217;s job is to detect the functions that define special methods (such as
+printing, conversion, sequence and arithmetic related operations...) and member
+functions. Based on what it finds for each specific class, it constructs the
+corresponding <a href="#id3"><span class="problematic" id="id4">``</span></a>PyTypeObject``s. For the functions to be recognized, they must
+follow a specific syntax.</p>
+<p>There are two basic mechanisms for marking the functions to export. Special
+functions are recognized by their definition (they need to return
+<tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*</span></tt>, <tt class="docutils literal"><span class="pre">void</span></tt> or <tt class="docutils literal"><span class="pre">int</span></tt> and their name must be of form
+&lt;classname&gt;_&lt;functionname&gt;). Member functions,
+inheritance relations, constants etc. are marked by macros such as <tt class="docutils literal"><span class="pre">PYARGS</span></tt>
+in the above definition of <tt class="docutils literal"><span class="pre">ExampleTable_sort</span></tt>. Most of these macros don&#8217;t do
+anything except for marking stuff for pyxtract.</p>
+<div class="section" id="class-declaration">
+<h3>Class declaration<a class="headerlink" href="#class-declaration" title="Permalink to this headline">¶</a></h3>
+<p>Each class needs to be declared as exportable. If it&#8217;s a base class, pyxtract
+needs to know the data structure for the instances of this class. As for all
+Python objects the structure must be &#8220;derived&#8221; from <tt class="docutils literal"><span class="pre">PyObject</span></tt> (Python is
+written in C, so the subclasses are not derived in the C++ sense but extend the
+C structure instead). Most objects are derived from Orange; the only exceptions
+are <tt class="docutils literal"><span class="pre">orange.Example</span></tt>, <tt class="docutils literal"><span class="pre">orange.Value</span></tt> and <tt class="docutils literal"><span class="pre">orange.DomainDepot</span></tt>.</p>
+<p>Pyxtract should also know how the class is constructed - it can have a specific
+constructor, one of the general constructors or no constructor at all.</p>
+<p>The class is declared in one of the following ways (here are some examples from
+actual Orange code).</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">BASED_ON(EFMDataDescription,</span> <span class="pre">Orange)</span></tt></dt>
+<dd>This tells pyxtract that <tt class="docutils literal"><span class="pre">EFMDataDescription</span></tt> is an abstract class derived from <tt class="docutils literal"><span class="pre">Orange</span></tt>: there is no constructor for this class in Python, but the C++ class itself is not abstract and can appear and be used in Python. For example, when we construct an instance of <tt class="docutils literal"><span class="pre">ClassifierByLookupTable</span></tt> with more than three attributes, an instance of <tt class="docutils literal"><span class="pre">EFMDataDescription</span></tt> will appear in one of its fields.</dd>
+<dt><tt class="docutils literal"><span class="pre">ABSTRACT(ClassifierFD,</span> <span class="pre">Classifier)</span></tt></dt>
+<dd>This defines an abstract class, which will never be constructed in the C++ code. The only difference between this <tt class="docutils literal"><span class="pre">BASED_ON</span></tt> and <tt class="docutils literal"><span class="pre">ABSTRACT</span></tt> is that the former can have pickle interface, while the latter don&#8217;t need one.</dd>
+</dl>
+<p>Abstract C++ classes are not necessarily defined as <tt class="docutils literal"><span class="pre">ABSTRACT</span></tt> in the Python
+interface. For example, <tt class="docutils literal"><span class="pre">TClassifier</span></tt> is an abstract C++ class, but you can
+seemingly construct an instance of <tt class="docutils literal"><span class="pre">Classifier</span></tt> in Python. What happens is
+that there is an additional C++ class <tt class="docutils literal"><span class="pre">TClassifierPython</span></tt>, which poses as
+Python&#8217;s class <tt class="docutils literal"><span class="pre">Classifier</span></tt>. So the Python class <tt class="docutils literal"><span class="pre">Classifier</span></tt> is not defined
+as <tt class="docutils literal"><span class="pre">ABSTRACT</span></tt> or <tt class="docutils literal"><span class="pre">BASED_ON</span></tt> but using the <tt class="docutils literal"><span class="pre">Classifier_new</span></tt> function, as
+described below.</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">C_NAMED(EnumVariable,</span> <span class="pre">Variable,</span> <span class="pre">&quot;([name=,</span> <span class="pre">values=,</span> <span class="pre">autoValues=,</span> <span class="pre">distributed=,</span> <span class="pre">getValueFrom=])&quot;)</span></tt></dt>
+<dd><tt class="docutils literal"><span class="pre">EnumVariable</span></tt> is derived from <tt class="docutils literal"><span class="pre">Variable</span></tt>. Pyxtract will also create a constructor which will accept the object&#8217;s name as an optional argument. The third argument is a string that describes the constructor, eg. gives a list of arguments. IDEs for Python, such as PythonWin, will show this string in a balloon help while the programmer is typing.</dd>
+<dt><tt class="docutils literal"><span class="pre">C_UNNAMED(RandomGenerator,</span> <span class="pre">Orange,</span> <span class="pre">&quot;()</span> <span class="pre">-&gt;</span> <span class="pre">RandomGenerator&quot;)</span></tt></dt>
+<dd>This is similar as <tt class="docutils literal"><span class="pre">C_NAMED</span></tt>, except that the constructor accepts no name. This form is rather rare since all Orange objects can be named.</dd>
+<dt><tt class="docutils literal"><span class="pre">C_CALL(BayesLearner,</span> <span class="pre">Learner,</span> <span class="pre">&quot;([examples],</span> <span class="pre">[weight=,</span> <span class="pre">estimate=]</span> <span class="pre">-/-&gt;</span> <span class="pre">Classifier&quot;)</span></tt></dt>
+<dd><tt class="docutils literal"><span class="pre">BayesLearner</span></tt> is derived from <tt class="docutils literal"><span class="pre">Learner</span></tt>. It will have a peculiar constructor. It will, as usual, first construct an instance of <tt class="docutils literal"><span class="pre">BayesLearner</span></tt>. If no arguments are given (except for, possibly, keyword arguments), it will return the constructed instance. Otherwise, it will call the <tt class="docutils literal"><span class="pre">Learner</span></tt>&#8216;s call operator and return its result instead of <tt class="docutils literal"><span class="pre">BayesLearner</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">C_CALL3(MakeRandomIndices2,</span> <span class="pre">MakeRandomIndices2,</span> <span class="pre">MakeRandomIndices,</span> <span class="pre">&quot;[n</span> <span class="pre">|</span> <span class="pre">gen</span> <span class="pre">[,</span> <span class="pre">p0]],</span> <span class="pre">[p0=,</span> <span class="pre">stratified=,</span> <span class="pre">randseed=]</span> <span class="pre">-/-&gt;</span> <span class="pre">[int]&quot;)</span></tt></dt>
+<dd><tt class="docutils literal"><span class="pre">MakeRandomIndices2</span></tt> is derived from <tt class="docutils literal"><span class="pre">MakeRandomIndices</span></tt> (the third argument). For a contrast from the <tt class="docutils literal"><span class="pre">C_CALL</span></tt> above, the corresponding constructor won&#8217;t call <tt class="docutils literal"><span class="pre">MakeRandomIndices</span></tt> call operator, but the call operator of <tt class="docutils literal"><span class="pre">MakeRandomIndices2</span></tt> (the second argument). This constructor is often used when the parent class doesn&#8217;t provide a suitable call operator.</dd>
+<dt><tt class="docutils literal"><span class="pre">HIDDEN(TreeStopCriteria_Python,</span> <span class="pre">TreeStopCriteria)</span></tt></dt>
+<dd><tt class="docutils literal"><span class="pre">TreeStopCriteria_Python</span></tt> is derived from <tt class="docutils literal"><span class="pre">TreeStopCriteria</span></tt>, but we would like to hide this class from the user. We use this definition when it is elegant for us to have some intermediate class or a class that implements some specific functionality, but don&#8217;t want to bother the user with it. The class is not completely hidden - the user can reach it through the <tt class="docutils literal"><span class="pre">type</span></tt> operator on an instance of it. This is thus very similar to a <tt class="docutils literal"><span class="pre">BASED_ON</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">DATASTRUCTURE(Orange,</span> <span class="pre">TPyOrange,</span> <span class="pre">orange_dict)</span></tt></dt>
+<dd>This is for the base classes. <tt class="docutils literal"><span class="pre">Orange</span></tt> has no parent class. The C++ structure that stores it is <tt class="docutils literal"><span class="pre">TPyOrange</span></tt>; <tt class="docutils literal"><span class="pre">TPyOrange</span></tt> is essentially <tt class="docutils literal"><span class="pre">PyObject</span></tt> (again, the structure always has to be based on <tt class="docutils literal"><span class="pre">PyObject</span></tt>) but with several additional fields, among them a pointer to an instance of <tt class="docutils literal"><span class="pre">TOrange</span></tt> (the C++ base class for all Orange&#8217;s classes). <tt class="docutils literal"><span class="pre">orange_dict</span></tt> is a name of <tt class="docutils literal"><span class="pre">TPyOrange</span></tt>&#8216;s field that points to a Python dictionary; when you have an instance <tt class="docutils literal"><span class="pre">bayesClassifier</span></tt> and you type, in Python, <tt class="docutils literal"><span class="pre">bayesClassifier.someMyData=15</span></tt>, this gets stored in <tt class="docutils literal"><span class="pre">orange_dict</span></tt>. The actual mechanism behind this is rather complicated and you most probably won&#8217;t need to use it. If you happen to need to define a class with <tt class="docutils literal"><span class="pre">DATASTRUCTURE</span></tt>, you can simply omit the last argument and give a 0 instead.</dd>
+</dl>
+<p>Even if the class is defined by <tt class="docutils literal"><span class="pre">DATASTRUCTURE</span></tt>, you can still specify a
+different constructor, most probably the last form of it (the <tt class="docutils literal"><span class="pre">_new</span></tt>
+function). In this case, specify a keyword <tt class="docutils literal"><span class="pre">ROOT</span></tt> as a parent and pyxtract
+will understand that this is the base class.</p>
+<p>Object construction in Python is divided between two methods. The constructors
+we discussed above construct the essential part of the object - they allocate
+the necessary memory and initialize the fields far enough that the object is
+valid to enter the garbage collection. The second part is handled by the
+<tt class="docutils literal"><span class="pre">init</span></tt> method. It is, however, not forbidden to organize the things so that
+<tt class="docutils literal"><span class="pre">new</span></tt> does all the job. This is also the case in Orange. The only task left
+for <tt class="docutils literal"><span class="pre">init</span></tt> is to set any attributes that user gave as the keyword arguments to
+the constructor.</p>
+<p>For instance, Python&#8217;s statement
+<tt class="docutils literal"><span class="pre">orange.EnumVariable(&quot;a&quot;,</span> <span class="pre">values=[&quot;a&quot;,</span> <span class="pre">&quot;b&quot;,</span> <span class="pre">&quot;c&quot;])</span></tt> is executed so that <tt class="docutils literal"><span class="pre">new</span></tt>
+constructs the variable and gives it the name, while <tt class="docutils literal"><span class="pre">init</span></tt> sets the
+<tt class="docutils literal"><span class="pre">values</span></tt> field.</p>
+<p>The <tt class="docutils literal"><span class="pre">new</span></tt> operator can also accept keyword arguments. For
+instance, when constructing an <tt class="docutils literal"><span class="pre">ExampleTable</span></tt> by reading the data from a file,
+you can specify a domain (using keyword argument <tt class="docutils literal"><span class="pre">domain</span></tt>), a list of
+attributes to reuse if possible (<tt class="docutils literal"><span class="pre">use</span></tt>), you can tell it not to reuse the
+stored domain or not to store the newly constructed domain (<tt class="docutils literal"><span class="pre">dontCheckStored</span></tt>,
+<tt class="docutils literal"><span class="pre">dontStore</span></tt>). After the <tt class="docutils literal"><span class="pre">ExampleTable</span></tt> is constructed, <tt class="docutils literal"><span class="pre">init</span></tt> is called to
+set the attributes. To tell it to ignore the keyword arguments that the
+constructor might (or had) used, we write the following.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">CONSTRUCTOR_KEYWORDS</span><span class="p">(</span><span class="n">ExampleTable</span><span class="p">,</span> <span class="s">&quot;domain use useMetas dontCheckStored dontStore filterMetas&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There&#8217;s another macro related to attributes. Let <tt class="docutils literal"><span class="pre">ba</span></tt> be an orange object, say
+an instance of <tt class="docutils literal"><span class="pre">orange.BayesLearner</span></tt>. If you assign new attributes as usual
+directly, eg. <tt class="docutils literal"><span class="pre">ba.myAttribute</span> <span class="pre">=</span> <span class="pre">12</span></tt>, you will get a warning (you should use
+the object&#8217;s method <tt class="docutils literal"><span class="pre">setattr(name,</span> <span class="pre">value)</span></tt> to avoid it). Some objects have
+some attributes that cannot be implemented in C++ code, yet they are usual and
+useful. For instance, <tt class="docutils literal"><span class="pre">Graph</span></tt> can use attributes <tt class="docutils literal"><span class="pre">objects</span></tt>, <tt class="docutils literal"><span class="pre">forceMapping</span></tt>
+and <tt class="docutils literal"><span class="pre">returnIndices</span></tt>, which can only be set from Python (if you take a look at
+the documentation on <tt class="docutils literal"><span class="pre">Graph</span></tt> you will see why these cannot be implemented in
+C++). Yet, since user are allowed to set these attributes and will do so often,
+we don&#8217;t want to give warnings. We achieve this by</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RECOGNIZED_ATTRIBUTES</span><span class="p">(</span><span class="n">Graph</span><span class="p">,</span> <span class="s">&quot;objects forceMapping returnIndices&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="special-methods">
+<h3>Special methods<a class="headerlink" href="#special-methods" title="Permalink to this headline">¶</a></h3>
+<p>Special methods act as the class built-in methods. They define what the type can
+do: if it, for instance, supports multiplication, it should define the operator
+that gets the object itself and another object and return the product (or throw
+an exception). If it allows for indexing, it defines an operator that gets the
+object itself and the index, and returns the element. These operators are
+low-level; most can be called from Python scripts but they are also internally
+by Python. For instance, if <tt class="docutils literal"><span class="pre">table</span></tt> is an <tt class="docutils literal"><span class="pre">ExampleTable</span></tt>, then
+<tt class="docutils literal"><span class="pre">for</span> <span class="pre">e</span> <span class="pre">in</span> <span class="pre">table:</span></tt> or <tt class="docutils literal"><span class="pre">reduce(f,</span> <span class="pre">table)</span></tt> will both work by calling the
+indexing operator for each table&#8217;s element.
+For more details, consider the Python manual, chapter &#8220;Extending and
+Embedding the Python Interpreter&#8221; section &#8220;Defining New Types&#8221;.</p>
+<p>To define a method for Orange class, you need to define a function named,
+<tt class="docutils literal"><span class="pre">&lt;classname&gt;_&lt;methodname&gt;</span></tt>; the function should return either
+<tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*</span></tt>, <tt class="docutils literal"><span class="pre">int</span></tt> or <tt class="docutils literal"><span class="pre">void</span></tt>. The function&#8217;s head has to be written in a
+single line. Regarding the arguments and the result, it should conform to
+Python&#8217;s specifications. Pyxtract will detect the methods and set the pointers
+in <tt class="docutils literal"><span class="pre">PyTypeObject</span></tt> correspondingly.</p>
+<p>Here is a list of methods: the left column represents a method name that
+triggers pyxtract (these names generally correspond to special method names of
+Python classes as a programmer in Python sees them) and the second is the
+name of the field in <tt class="docutils literal"><span class="pre">PyTypeObject</span></tt> or subjugated structures. See Python
+documentation for description of functions&#8217; arguments and results. Not all
+methods can be directly defined; for those that can&#8217;t, it is because we either
+use an alternative method (eg. <tt class="docutils literal"><span class="pre">setattro</span></tt> instead of <tt class="docutils literal"><span class="pre">setattr</span></tt>) or pyxtract
+gets or computes the data for this field in some other way.</p>
+<div class="section" id="general-methods">
+<h4>General methods<a class="headerlink" href="#general-methods" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="24%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">pyxtract</th>
+<th class="head">PyTypeObject</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">dealloc</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_dealloc</span></tt></td>
+<td>Frees the memory occupied by the object. You will need to
+define this for the classes with a new <tt class="docutils literal"><span class="pre">DATASTRUCTURE</span></tt>;
+if you only derive a class from some Orange class, this
+has been taken care of. If you have a brand new object,
+copy the code of one of Orange&#8217;s deallocators.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_getattr</span></tt></td>
+<td>Can&#8217;t be redefined since we use <tt class="docutils literal"><span class="pre">tp_getattro</span></tt> instead.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_setattr</span></tt></td>
+<td>Can&#8217;t be redefined since we use <tt class="docutils literal"><span class="pre">tp_setattro</span></tt> instead.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">cmp</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_compare</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">repr</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_repr</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">as_number</span></tt></td>
+<td>(pyxtract will initialize this field if you give any of
+the methods from the number protocol; you needn&#8217;t care
+about this field)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">as_sequence</span></tt></td>
+<td>(pyxtract will initialize this field if you give any of
+the methods from the sequence protocol)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">as_mapping</span></tt></td>
+<td>(pyxtract will initialize this field if you give any of
+the methods from the mapping protocol)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">hash</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_hash</span></tt></td>
+<td>Class <tt class="docutils literal"><span class="pre">Orange</span></tt> computes a hash value from the pointer;
+you don&#8217;t need to overload it if your object inherits the
+function. If you write an independent class, just copy the
+code.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">call</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_call</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">call</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_call</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">str</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_str</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">getattr</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_getattro</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">setattr</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_setattro</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_as_buffer</span></tt></td>
+<td>Pyxtract doesn&#8217;t support the buffer protocol.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_flags</span></tt></td>
+<td>Flags are set by pyxtract.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_doc</span></tt></td>
+<td>Documentation is read from the constructor definition
+(see above).</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">traverse</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_traverse</span></tt></td>
+<td>Traverse is tricky (as is garbage collection in general).
+There&#8217;s something on it in a comment in root.hpp; besides
+that, study the examples. In general, if a wrapped member
+is exported to Python (just as, for instance,
+<tt class="docutils literal"><span class="pre">Classifier</span></tt> contains a <tt class="docutils literal"><span class="pre">Variable</span></tt> named
+<tt class="docutils literal"><span class="pre">classVar</span></tt>), you don&#8217;t need to care about it. You should
+manually take care of any wrapped objects not exported to
+Python. You probably won&#8217;t come across such cases.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">clear</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_clear</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">richcmp</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_richcmp</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_weaklistoffset</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">iter</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_iter</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">iternext</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_iternext</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_methods</span></tt></td>
+<td>Set by pyxtract if any methods are given.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_members</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">getset</span></tt></td>
+<td>Pyxtract initializes this by a pointer to manually
+written getters/setters (see below).</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_base</span></tt></td>
+<td>Set by pyxtract to a class specified in constructor
+(see above).</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_dict</span></tt></td>
+<td>Used for class constants (eg. <tt class="docutils literal"><span class="pre">Classifier.GetBoth</span></tt>)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_descrget</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_descrset</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_dictoffset</span></tt></td>
+<td>Set by pyxtract to the field given in <tt class="docutils literal"><span class="pre">DATASTRUCTURE</span></tt>
+(if there is any).</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">init</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_init</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_alloc</span></tt></td>
+<td>Set to <tt class="docutils literal"><span class="pre">PyType_GenericAlloc</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">new</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_new</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_free</span></tt></td>
+<td>Set to <tt class="docutils literal"><span class="pre">_PyObject_GC_Del</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_is_gc</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_bases</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_mro</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_cache</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_subclasses</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">.</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">tp_weaklist</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="numeric-protocol">
+<h4>Numeric protocol<a class="headerlink" href="#numeric-protocol" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="16%" />
+<col width="12%" />
+<col width="15%" />
+<col width="11%" />
+<col width="13%" />
+<col width="10%" />
+<col width="13%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">add</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_add</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">pow</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_power</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">lshift</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_lshift</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">int</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_int</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">sub</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_subtract</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">neg</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_negative</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">rshift</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_rshift</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">long</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_long</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">mul</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_multiply</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">pos</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_positive</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">and</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_and</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">float</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_float</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">div</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_divide</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">abs</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_absolute</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">or</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_or</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">oct</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_oct</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">mod</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_remainder</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nonzero</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_nonzero</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">coerce</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_coerce</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">hex</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_hex</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">divmod</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_divmod</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">inv</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">nb_invert</span></tt></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="sequence-protocol">
+<h4>Sequence protocol<a class="headerlink" href="#sequence-protocol" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="23%" />
+<col width="25%" />
+<col width="28%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">len_sq</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">sq_length</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">getslice</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">sq_slice</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">concat</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">sq_concat</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">setitem_sq</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">sq_ass_item</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">repeat</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">sq_slice</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">setslice</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">sq_ass_slice</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">getitem_sq</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">sq_item</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">contains</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">sq_contains</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="mapping-protocol">
+<h4>Mapping protocol<a class="headerlink" href="#mapping-protocol" title="Permalink to this headline">¶</a></h4>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">len</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">mp_length</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">getitem</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">mp_subscript</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">setitem</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">mp_ass_subscript</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>For example, here is what gets called when you want to know the length of an
+example table.</p>
+<div class="highlight-python"><pre>int ExampleTable_len_sq(PyObject *self)
+{
+    PyTRY
+        return SELF_AS(TExampleGenerator).numberOfExamples();
+    PyCATCH_1
+}</pre>
+</div>
+<p><tt class="docutils literal"><span class="pre">PyTRY</span></tt> and <tt class="docutils literal"><span class="pre">PyCATCH</span></tt> take care of C++ exceptions. <tt class="docutils literal"><span class="pre">SELF_AS</span></tt> is a macro
+for casting, ie unwrapping the points (this is an alternative to <tt class="docutils literal"><span class="pre">CAST_TO</span></tt>).</p>
+</div>
+</div>
+<div class="section" id="getting-and-setting-class-attributes">
+<h3>Getting and Setting Class Attributes<a class="headerlink" href="#getting-and-setting-class-attributes" title="Permalink to this headline">¶</a></h3>
+<p>Exporting of most of C++ class fields is already taken care by the lists that
+are compiled by pyprops. There are only a few cases in the entire Orange where
+we needed to manually write specific handlers for setting and getting the
+attributes. This needs to be done if setting needs some special processing or
+when simulating an attribute that does not exist in the underlying C++ class.</p>
+<p>An example for this is class <tt class="docutils literal"><span class="pre">HierarchicalCluster</span></tt>. It contains results of a
+general, not necessarily binary clustering, so each node in the tree has a list
+<tt class="docutils literal"><span class="pre">branches</span></tt> with all the node&#8217;s children. Yet, as the usual clustering is
+binary, it would be nice if the node would also support attributes <tt class="docutils literal"><span class="pre">left</span></tt> and
+<tt class="docutils literal"><span class="pre">right</span></tt>. They are not present in C++, but we can write a function that check
+the number of branches; if there are none, it returns <tt class="docutils literal"><span class="pre">None</span></tt>, if there are
+more than two, it complains, while otherwise it returns the first branch.</p>
+<div class="highlight-python"><pre>PyObject *HierarchicalCluster_get_left(PyObject *self)
+{
+    PyTRY
+        CAST_TO(THierarchicalCluster, cluster);
+
+        if (!cluster-&gt;branches)
+            RETURN_NONE
+
+        if (cluster-&gt;branches-&gt;size() &gt; 2)
+            PYERROR(PyExc_AttributeError,
+                    "'left' not defined (cluster has more than two subclusters)",
+                    NULL);
+
+        return WrapOrange(cluster-&gt;branches-&gt;front());
+    PyCATCH
+}</pre>
+</div>
+<p>As you can see from the example, the function needs to accept a <tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*</span></tt>
+(the object it``self``) and return a <tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*</span></tt> (the attribute value). The
+function name needs to be <tt class="docutils literal"><span class="pre">&lt;classname&gt;_get_&lt;attributename&gt;</span></tt>.
+Setting an attribute is similar; function name should be
+<tt class="docutils literal"><span class="pre">&lt;classname&gt;_set_&lt;attributename&gt;</span></tt>, it should accept two Python
+objects (the object and the attribute value) and return an <tt class="docutils literal"><span class="pre">int</span></tt>, where 0
+signifies success and -1 a failure.</p>
+<p>If you define only one of the two handlers, you&#8217;ll get a read-only or write-only
+attribute.</p>
+</div>
+<div class="section" id="member-functions">
+<h3>Member functions<a class="headerlink" href="#member-functions" title="Permalink to this headline">¶</a></h3>
+<p>We have already shown an example of a member function - the <tt class="docutils literal"><span class="pre">ExampleTable</span></tt>&#8216;s
+method <tt class="docutils literal"><span class="pre">sort</span></tt>. The general template is
+<tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*&lt;classname&gt;_&lt;methodname&gt;(&lt;arguments&gt;)</span> <span class="pre">PYARGS(&lt;arguments-keyword&gt;,</span> <span class="pre">&lt;documentation-string&gt;)</span></tt>.
+In the case of the <tt class="docutils literal"><span class="pre">ExampleTable</span></tt>&#8216;s <tt class="docutils literal"><span class="pre">sort</span></tt>, this looks like this.</p>
+<div class="highlight-python"><pre>PyObject *ExampleTable_sort(PyObject *self, PyObject *args) PYARGS(METH_VARARGS, "() -&gt; None")</pre>
+</div>
+<p>Argument type can be any of the usual Python constants stating the number and
+the kind of arguments, such as <tt class="docutils literal"><span class="pre">METH_VARARGS</span></tt> or <tt class="docutils literal"><span class="pre">METH_O</span></tt> - this constant
+gets copied to the corresponding list (browse Python documentation for
+<tt class="docutils literal"><span class="pre">PyMethodDef</span></tt>).</p>
+</div>
+<div class="section" id="class-constants">
+<h3>Class constants<a class="headerlink" href="#class-constants" title="Permalink to this headline">¶</a></h3>
+<p>Orange classes, as seen from Python, can also have constants, such as
+<tt class="docutils literal"><span class="pre">orange.Classifier.GetBoth</span></tt>. Classifier&#8217;s <tt class="docutils literal"><span class="pre">GetBoth</span></tt> is visible as a member
+of the class, the derived classes and all their instances (eg.
+<tt class="docutils literal"><span class="pre">BayesClassifier.GetBoth</span></tt> and <tt class="docutils literal"><span class="pre">bayes.GetBoth</span></tt>).</p>
+<p>There are several ways to define such constants. If they are simple integers or
+floats, you can use <tt class="docutils literal"><span class="pre">PYCLASSCONSTANT_INT</span></tt> or <tt class="docutils literal"><span class="pre">PYCLASSCONSTANT_FLOAT</span></tt>, like
+in</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">PYCLASSCONSTANT_INT</span><span class="p">(</span><span class="n">Classifier</span><span class="p">,</span> <span class="n">GetBoth</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also use the enums from the class, like</p>
+<div class="highlight-python"><pre>PYCLASSCONSTANT_INT(C45TreeNode, Leaf, TC45TreeNode::Leaf)</pre>
+</div>
+<p>Pyxtract will convert the given constant to a Python object (using
+<tt class="docutils literal"><span class="pre">PyInt_FromLong</span></tt> or <tt class="docutils literal"><span class="pre">PyFloat_FromDouble&gt;</span></tt>).</p>
+<p>When the constant is an object of some other type, use <tt class="docutils literal"><span class="pre">PYCLASSCONSTANT</span></tt>. In
+this form (not used in Orange so far), the third argument can be either an
+instance of <tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*</span></tt> or a function call. In either case, the object or
+function must be known at the point where the pyxtract generated file is
+included.</p>
+</div>
+<div class="section" id="pickling">
+<h3>Pickling<a class="headerlink" href="#pickling" title="Permalink to this headline">¶</a></h3>
+<p>Pickling is taken care of automatically if the class provides a Python
+constructor that can construct the object without arguments (it may <em>accept</em>
+arguments, but should be able to do without them. If there is no such
+constructor, the class should provide a <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method or it should
+explicitly declare that it cannot be pickled. If it doesn&#8217;t pyxtract will issue
+a warning that the class will not be picklable.</p>
+<p>Here are the rules:</p>
+<ul>
+<li><p class="first">Classes that provide a <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method (details follow below) are pickled through that method.</p>
+</li>
+<li><p class="first">Class <tt class="docutils literal"><span class="pre">Orange</span></tt>, the base class, already provides a <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method, which is only useful if the constructor accepts empty arguments. So, if the constructor is declared as <tt class="docutils literal"><span class="pre">C_NAMED</span></tt>, <tt class="docutils literal"><span class="pre">C_UNNAMED</span></tt>, <tt class="docutils literal"><span class="pre">C_CALL</span></tt> or <tt class="docutils literal"><span class="pre">C_CALL3</span></tt>, the class is the class will be picklable. See the warning below.</p>
+</li>
+<li><p class="first">If the constructor is defined by <tt class="docutils literal"><span class="pre">_new</span></tt> method, and the <tt class="docutils literal"><span class="pre">BASED_ON</span></tt> definition is followed be <tt class="docutils literal"><span class="pre">ALLOWS_EMPTY</span></tt>, this signifies that it accepts empty arguments, so it will be picklable just as in the above point. For example, the constructor for the class <tt class="docutils literal"><span class="pre">DefaultClassifier</span></tt> is defined like this</p>
+<div class="highlight-python"><pre>PyObject *DefaultClassifier_new(PyTypeObject *tpe, PyObject *args)
+    BASED_ON(Classifier, "([defaultVal])") ALLOWS_EMPTY</pre>
+</div>
+</li>
+</ul>
+<p>and is picklable through code <tt class="docutils literal"><span class="pre">Orange.__reduce__</span></tt>. But again, see the warning
+below.</p>
+<ul>
+<li><p class="first">If the constructor is defined as <tt class="docutils literal"><span class="pre">ABSTRACT</span></tt>, there cannot be any instances of this class, so pyxtract will give no warning that it is not picklable.</p>
+</li>
+<li><p class="first">The class can be explicitly defined as not picklable by <tt class="docutils literal"><span class="pre">NO_PICKLE</span></tt> macro, as in</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">NO_PICKLE</span><span class="p">(</span><span class="n">TabDelimExampleGenerator</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Such classes won&#8217;t be picklable even if they define the appropriate
+constructors. This effectively defined a <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method which yields an
+exception; if you manually provide a <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method for such a class,
+pyxtract will detect that the method is multiply defined.</p>
+</li>
+<li><p class="first">If there are no suitable constructors, no <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method and no
+<tt class="docutils literal"><span class="pre">ABSTRACT</span></tt> or <tt class="docutils literal"><span class="pre">NO_PICKLE</span></tt> flag, pyxtract gives a warning about that.</p>
+</li>
+</ul>
+<p>When the constructor is used, as in points 2 and 3, pickling will only work if
+all fields of the C++ class can be set &#8220;manually&#8221; from Python, are set through
+the constructor, or are set when assigning other fields. In other words, if
+there are fields that are not
+marked as <tt class="docutils literal"><span class="pre">//P</span></tt> for pyprops, you will most probably need to manually define
+a <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method, as in point 1.</p>
+<p>The details of what the <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method must do are described in the
+Python documentation. In our circumstances, it can be implemented in two ways
+which differ in what function is used for unpickling: it can either use the
+class&#8217; constructor or we can define a special method for unpickling.</p>
+<p>The former usually happens when the class has a read-only property (<tt class="docutils literal"><span class="pre">//PR</span></tt>),
+which is set by the constructor. For instance, <tt class="docutils literal"><span class="pre">AssociationRule</span></tt> has read-only
+fields <tt class="docutils literal"><span class="pre">left</span></tt> and <tt class="docutils literal"><span class="pre">right</span></tt>, which are needs to be given to the constructor.
+This is the <tt class="docutils literal"><span class="pre">__reduce__</span></tt> method for the class.</p>
+<div class="highlight-python"><pre>PyObject *AssociationRule__reduce__(PyObject *self)
+{
+    PyTRY
+        CAST_TO(TAssociationRule, arule);
+        return Py_BuildValue("O(NN)N", self-&gt;ob_type,
+                                   Example_FromWrappedExample(arule-&gt;left),
+                                   Example_FromWrappedExample(arule-&gt;right),
+                                   packOrangeDictionary(self));
+    PyCATCH
+}</pre>
+</div>
+<p>As described in the Python documentation, the <tt class="docutils literal"><span class="pre">__reduce__</span></tt> should return a
+tuple in which the first element is the function that will do the unpickling,
+and the second argument are the arguments for that function. Our unpickling
+function is simply the classes&#8217; type (calling a type corresponds to calling a
+constructor) and the arguments for the constructor are the left- and right-hand
+side of the rule. The third element of the tuple is classes&#8217; dictionary.</p>
+<p>When unpickling is more complicated - usually when the class has no constructor
+and contains fields of type <tt class="docutils literal"><span class="pre">float</span> <span class="pre">*</span></tt> or similar - we need a special
+unpickling function. The function needs to be directly in the modules&#8217; namespace
+(it cannot be a static method of a class), so we named them
+<tt class="docutils literal"><span class="pre">__pickleLoader&lt;classname&gt;</span></tt>. Search for examples of such functions in
+the source code; note that the instance&#8217;s true class need to be pickled, too.
+Also, check how we use <tt class="docutils literal"><span class="pre">TCharBuffer</span></tt> throughout the code to store and pickle
+binary data as Python strings.</p>
+<p>Be careful when manually writing the unpickler: if a C++ class derived from that
+class inherits its <tt class="docutils literal"><span class="pre">__reduce__</span></tt>, the corresponding unpickler will construct an
+instance of a wrong class (unless the unpickler functions through Python&#8217;s
+constructor, <tt class="docutils literal"><span class="pre">ob_type-&gt;tp_new</span></tt>). Hence, classes derived from a class which
+defines an unpickler have to define their own <tt class="docutils literal"><span class="pre">__reduce__</span></tt>, too.</p>
+</div>
+<div class="section" id="non-member-functions-and-constants">
+<h3>Non-member functions and constants<a class="headerlink" href="#non-member-functions-and-constants" title="Permalink to this headline">¶</a></h3>
+<p>Non-member functions are defined in the same way as member functions except
+that their names do not start with the class name. Here is how the <tt class="docutils literal"><span class="pre">newmetaid</span></tt>
+is implemented</p>
+<div class="highlight-python"><pre>PyObject *newmetaid(PyObject *, PyObject *) PYARGS(0,"() -&gt; int")
+{
+    PyTRY
+        return PyInt_FromLong(getMetaID());
+    PyCATCH
+}</pre>
+</div>
+<p>Orange also defines some non-member constants. These are defined in a similar
+fashion as the class constants.
+<tt class="docutils literal"><span class="pre">PYCONSTANT_INT(&lt;constant-name&gt;,</span> <span class="pre">&lt;integer&gt;)</span></tt> defines an integer
+constant and <tt class="docutils literal"><span class="pre">PYCONSTANT_FLOAT</span></tt> would be used for a continuous one.
+<tt class="docutils literal"><span class="pre">PYCONSTANT</span></tt> is used for objects of other types, as the below example that
+defines an (obsolete) constant <tt class="docutils literal"><span class="pre">MeasureAttribute_splitGain</span></tt> shows.</p>
+<div class="highlight-python"><pre>PYCONSTANT(MeasureAttribute_splitGain, (PyObject *)&amp;PyOrMeasureAttribute_gainRatio_Type)</pre>
+</div>
+<p>Class constants from the previous section are put in a pyxtract generated file
+that is included at the end of the file in which the constant definitions and
+the corresponding classes are. Global constant modules are included in another
+file, far away from their actual definitions. For this reason, <tt class="docutils literal"><span class="pre">PYCONSTANT</span></tt>
+cannot refer to any functions (the above example is an exception - all class
+types are declared in this same file and are thus available at the moment the
+above code is used). Therefore, if the constant is defined by a function call,
+you need to use another keyword, <tt class="docutils literal"><span class="pre">PYCONSTANTFUNC</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">PYCONSTANTFUNC</span><span class="p">(</span><span class="n">globalRandom</span><span class="p">,</span> <span class="n">stdRandomGenerator</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Pyxtract will generate a code which will, prior to calling
+<tt class="docutils literal"><span class="pre">stdRandomGenerator</span></tt>, declare it as a function with no arguments that returns
+<tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*</span></tt>. Of course, you will have to define the function somewhere in
+your code, like this:</p>
+<div class="highlight-python"><pre>PyObject *stdRandomGenerator()
+{
+    return WrapOrange(globalRandom);
+}</pre>
+</div>
+<p>Another example are <tt class="docutils literal"><span class="pre">VarTypes</span></tt>. <tt class="docutils literal"><span class="pre">VarTypes</span></tt> is a tiny module inside Orange
+that contains nothing but five constants, representing various attribute types.
+From pyxtract perspective, <tt class="docutils literal"><span class="pre">VarTypes</span></tt> is a constant. This is the complete
+definition.</p>
+<div class="highlight-python"><pre>PyObject *VarTypes()
+{
+    PyObject *vartypes=PyModule_New("VarTypes");
+    PyModule_AddIntConstant(vartypes, "None", (int)TValue::NONE);
+    PyModule_AddIntConstant(vartypes, "Discrete", (int)TValue::INTVAR);
+    PyModule_AddIntConstant(vartypes, "Continuous", (int)TValue::FLOATVAR);
+    PyModule_AddIntConstant(vartypes, "Other", (int)TValue::FLOATVAR+1);
+    PyModule_AddIntConstant(vartypes, "String", (int)STRINGVAR);
+    return vartypes;
+}
+
+PYCONSTANTFUNC(VarTypes, VarTypes)</pre>
+</div>
+<p>If you want to understand the constants completely, check the Orange&#8217;s pyxtract
+generated file initialization.px.</p>
+</div>
+<div class="section" id="how-does-it-all-fit-together">
+<h3>How does it all fit together<a class="headerlink" href="#how-does-it-all-fit-together" title="Permalink to this headline">¶</a></h3>
+<p>We will finish the section with a description of the files generated by the two
+scripts. Understanding these may be needed for debugging purposes.</p>
+<div class="section" id="file-specific-px-files">
+<h4>File specific px files<a class="headerlink" href="#file-specific-px-files" title="Permalink to this headline">¶</a></h4>
+<p>For each compiled cpp file, pyxtract creates a px file with the same name. The
+file starts with externs declaring the base classes for the classes whose types
+are defined later on. Then follow class type definitions:</p>
+<ul>
+<li><p class="first">Method definitions (<tt class="docutils literal"><span class="pre">PyMethodDef</span></tt>). Nothing exotic here, just a table with
+the member functions that is pointed to by <tt class="docutils literal"><span class="pre">tp_methods</span></tt> of the
+<tt class="docutils literal"><span class="pre">PyTypeObject</span></tt>.</p>
+</li>
+<li><p class="first">GetSet definitions (<tt class="docutils literal"><span class="pre">PyGetSetDef</span></tt>). Similar to methods, a list to be pointed
+to by <tt class="docutils literal"><span class="pre">tp_getset</span></tt>, which includes the attributes for which special handlers
+were written.</p>
+</li>
+<li><p class="first">Definitions of doc strings for call operator and constructor.</p>
+</li>
+<li><p class="first">Constants. If the class has any constants, there will be a function named
+<tt class="docutils literal"><span class="pre">void</span> <span class="pre">&lt;class-name&gt;_addConstants()</span></tt>. The function will create a class
+dictionary in the type&#8217;s <tt class="docutils literal"><span class="pre">tp_dict</span></tt>, if there is none yet. Then it will store
+the constants in it. The functions is called at the module initialization,
+file initialization.px.</p>
+</li>
+<li><p class="first">Constructors. If the class uses generic constructors (ie, if it&#8217;s defined by
+<tt class="docutils literal"><span class="pre">C_UNNAMED</span></tt>, <tt class="docutils literal"><span class="pre">C_NAMED</span></tt>, <tt class="docutils literal"><span class="pre">C_CALL</span></tt> or <tt class="docutils literal"><span class="pre">C_CALL3</span></tt>), they will need to call
+a default object constructor, like the below one for <tt class="docutils literal"><span class="pre">FloatVariable</span></tt>.
+(This supposes the object is derived from <tt class="docutils literal"><span class="pre">TOrange</span></tt>! We will need to get rid
+of this we want pyxtract to be more general. Maybe an additional argument in
+<tt class="docutils literal"><span class="pre">DATASTRUCTURE</span></tt>?)</p>
+<div class="highlight-python"><pre>POrange FloatVariable_default_constructor(PyTypeObject *type)
+{
+    return POrange(mlnew TFloatVariable(), type);
+}</pre>
+</div>
+<p>If the class is abstract, pyxtract defines a constructor that will call
+<tt class="docutils literal"><span class="pre">PyOrType_GenericAbstract</span></tt>. <tt class="docutils literal"><span class="pre">PyOrType_GenericAbstract</span></tt> checks the type
+that the caller wishes to construct; if it is a type derived from this type,
+it permits it, otherwise it complains that the class is abstract.</p>
+</li>
+<li><p class="first">Aliases. A list of renamed attributes.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">PyTypeObject</span></tt> and the numeric, sequence and mapping protocols.
+<tt class="docutils literal"><span class="pre">PyTypeObject</span></tt> is named <tt class="docutils literal"><span class="pre">PyOr&lt;classname&gt;_Type_inh</span></tt>.</p>
+</li>
+<li><p class="first">Definition of conversion functions. This is done by macro
+<tt class="docutils literal"><span class="pre">DEFINE_cc(&lt;classname&gt;)</span></tt> which defines
+<tt class="docutils literal"><span class="pre">int</span> <span class="pre">ccn_&lt;classname&gt;(PyObject</span> <span class="pre">*obj,</span> <span class="pre">void</span> <span class="pre">*ptr)</span></tt> - functions that can
+be used in <tt class="docutils literal"><span class="pre">PyArg_ParseTuple</span></tt> for converting an argument (given as
+<tt class="docutils literal"><span class="pre">PyObject</span> <span class="pre">*</span></tt> to an instance of <tt class="docutils literal"><span class="pre">&lt;classname&gt;</span></tt>. Nothing needs to be
+programmed for the conversion, it is just a
+cast: <tt class="docutils literal"><span class="pre">*(GCPtr&lt;</span> <span class="pre">T##type</span> <span class="pre">&gt;</span> <span class="pre">*)(ptr)</span> <span class="pre">=</span> <span class="pre">PyOrange_As##type(obj);</span></tt>). The
+difference between <tt class="docutils literal"><span class="pre">cc</span></tt> and <tt class="docutils literal"><span class="pre">ccn</span></tt> is that the latter accepts null
+pointers.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">TOrangeType</span></tt> that (essentially) inherits <tt class="docutils literal"><span class="pre">PyTypeObject</span></tt>. The new
+definition also includes the RTTI used for wrapping (this way Orange knows
+which C++ class corresponds to which Python class), a pointer to the default
+constructor (used by generic constructors), a pointer to list of constructor
+keywords (<tt class="docutils literal"><span class="pre">CONSTRUCTOR_KEYWORDS</span></tt>, keyword arguments that should be ignored
+in a later call to <tt class="docutils literal"><span class="pre">init</span></tt>) and recognized attributes
+(<tt class="docutils literal"><span class="pre">RECOGNIZED_ATTRIBUTES</span></tt>, attributes that don&#8217;t yield warnings when set), a
+list of aliases, and pointers to <tt class="docutils literal"><span class="pre">cc_</span></tt> and <tt class="docutils literal"><span class="pre">ccn_</span></tt> functions. The latter
+are not used by Orange, since it can call the converters directly. They are
+here because <tt class="docutils literal"><span class="pre">TOrangeType</span></tt> is exported in a DLL while <tt class="docutils literal"><span class="pre">cc_</span></tt> and <tt class="docutils literal"><span class="pre">ccn_</span></tt>
+are not (for the sake of limiting the number of exported symbols).</p>
+</li>
+</ul>
+</div>
+<div class="section" id="initialization-px">
+<h4>initialization.px<a class="headerlink" href="#initialization-px" title="Permalink to this headline">¶</a></h4>
+<p>Initialization.px defines the global module stuff.</p>
+<p>First, here is a list of all <tt class="docutils literal"><span class="pre">TOrangeTypes</span></tt>. The list is used for checking
+whether some Python object is of Orange&#8217;s type or derived from one, for finding
+a Python class corresponding to a C++ class (based on C++&#8217;s RTTI). Orange also
+exports the list as <tt class="docutils literal"><span class="pre">orange._orangeClasses</span></tt>; this is a <tt class="docutils literal"><span class="pre">PyCObject</span></tt> so it can
+only be used by other Python extensions written in C.</p>
+<p>Then come declarations of all non-member functions, followed by a
+<tt class="docutils literal"><span class="pre">PyMethodDef</span></tt> structure with them.</p>
+<p>Finally, here are declarations of functions that return manually constructed
+constants (eg <tt class="docutils literal"><span class="pre">VarTypes</span></tt>) and declarations of functions that add class
+constants (eg <tt class="docutils literal"><span class="pre">Classifier_addConstants</span></tt>). The latter functions were generated
+by pyxtract and reside in the individual px files. Then follows a function that
+calls all the constant related functions declared above. This function also adds
+all class types to the Orange module.</p>
+<p>The main module now only needs to call <tt class="docutils literal"><span class="pre">addConstants</span></tt>.</p>
+</div>
+<div class="section" id="externs-px">
+<h4>externs.px<a class="headerlink" href="#externs-px" title="Permalink to this headline">¶</a></h4>
+<p>Externs.px declares symbols for all Orange classes, for instance</p>
+<div class="highlight-python"><pre>extern ORANGE_API TOrangeType PyOrDomain_Type;
+#define PyOrDomain_Check(op) PyObject_TypeCheck(op, (PyTypeObject *)&amp;PyOrDomain_Type)
+int cc_Domain(PyObject *, void *);
+int ccn_Domain(PyObject *, void *);
+#define PyOrange_AsDomain(op) (GCPtr&lt; TDomain &gt;(PyOrange_AS_Orange(op)))</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="what-and-where-to-include">
+<h2>What and where to include?<a class="headerlink" href="#what-and-where-to-include" title="Permalink to this headline">¶</a></h2>
+<p>As already mentioned, ppp files should be included (at the beginning) of the
+corresponding cpp files, instead of the hpp file. For instance, domain.ppp is
+included in domain.cpp. Each ppp should be compiled only once, all other files
+needing the definition of <tt class="docutils literal"><span class="pre">TDomain</span></tt> should still include domain.hpp as usual.</p>
+<p>File-specific px files are included in the corresponding cpp files.
+lib_kernel.px is included at the end of lib_kernel.cpp, from which it was
+generated. initialization.px should preferably be included in the file that
+initializes the module (function <tt class="docutils literal"><span class="pre">initorange</span></tt> needs to call <tt class="docutils literal"><span class="pre">addConstants</span></tt>,
+which is declared in initialization.px. These px files contain definitions and
+must be compiled only once. externs.px contains declarations and can be included
+wherever needed.</p>
+<p>For Microsoft Visual Studio, create a new, blank workspace. Specify the
+directory with orange sources as &#8220;Location&#8221;. Add a new project of type &#8220;Win 32
+Dynamic-Link Library&#8221;; change the
+location back to d:aiorangesource. Make it an empty DLL project.</p>
+<p>Whatever names you give your module, make sure that the .cpp and .hpp files you
+create as you go on are in orangesourcesomething (replace &#8220;something&#8221; with
+something), since the further instructions will suppose it.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

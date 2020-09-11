@@ -1,0 +1,787 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Ensemble algorithms (ensemble) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Ensemble algorithms (<tt class="docutils literal"><span class="pre">ensemble</span></tt>)</a><ul>
+<li><a class="reference internal" href="#bagging">Bagging</a></li>
+<li><a class="reference internal" href="#boosting">Boosting</a><ul>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stacking">Stacking</a><ul>
+<li><a class="reference internal" href="#id1">Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#random-forest">Random Forest</a><ul>
+<li><a class="reference internal" href="#id2">Example</a></li>
+<li><a class="reference internal" href="#feature-scoring">Feature scoring</a><ul>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="ensemble-algorithms-ensemble">
+<h1>Ensemble algorithms (<tt class="docutils literal"><span class="pre">ensemble</span></tt>)<a class="headerlink" href="#ensemble-algorithms-ensemble" title="Permalink to this headline">¶</a></h1>
+<p id="index-0"><a class="reference external" href="http://en.wikipedia.org/wiki/Ensemble_learning">Ensembles</a> use
+multiple models to improve prediction performance. The module
+implements a number of popular approaches, including bagging,
+boosting, stacking and forest trees. Most of these are available both
+for classification and regression with exception of stacking, which
+with present implementation supports classification only.</p>
+<div class="section" id="bagging">
+<h2>Bagging<a class="headerlink" href="#bagging" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="index-1"></span><span class="target" id="index-2"></span><dl class="class">
+<dt id="Orange.ensemble.bagging.BaggedLearner">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.bagging.</tt><tt class="descname">BaggedLearner</tt><big>(</big><em>learner</em>, <em>t=10</em>, <em>name=Bagging</em><big>)</big><a class="headerlink" href="#Orange.ensemble.bagging.BaggedLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a></p>
+<p>BaggedLearner takes a learner and returns a bagged learner, which is
+essentially a wrapper around the learner passed as an argument. If
+instances are passed in arguments, BaggedLearner returns a bagged
+classifier. Both learner and classifier then behave just like any
+other learner and classifier in Orange.</p>
+<p>Bagging, in essence, takes training data and a learner, and builds <em>t</em>
+classifiers, each time presenting a learner a bootstrap sample from the
+training data. When given a test instance, classifiers vote on class,
+and a bagged classifier returns a class with the highest number of votes.
+As implemented in Orange, when class probabilities are requested, these
+are proportional to the number of votes for a particular class.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learner</strong> (<tt class="xref py py-class docutils literal"><span class="pre">Orange.core.Learner</span></tt>) &#8211; learner to be bagged.</li>
+<li><strong>t</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of bagged classifiers, that is, classifiers created
+when instances are passed to bagged learner.</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of the resulting learner.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.ensemble.bagging.BaggedClassifier" title="Orange.ensemble.bagging.BaggedClassifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.bagging.BaggedClassifier</span></tt></a> or
+<a class="reference internal" href="#Orange.ensemble.bagging.BaggedLearner" title="Orange.ensemble.bagging.BaggedLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.bagging.BaggedLearner</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.ensemble.bagging.BaggedLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instances</em>, <em>weight=0</em><big>)</big><a class="headerlink" href="#Orange.ensemble.bagging.BaggedLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn from the given table of data instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; data instances to learn from.</li>
+<li><strong>weight</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; ID of meta feature with weights of instances</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.ensemble.bagging.BaggedClassifier" title="Orange.ensemble.bagging.BaggedClassifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.bagging.BaggedClassifier</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.ensemble.bagging.BaggedClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.bagging.</tt><tt class="descname">BaggedClassifier</tt><big>(</big><em>classifiers</em>, <em>name</em>, <em>class_var</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.ensemble.bagging.BaggedClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier</span></tt></a></p>
+<p>A classifier that uses a bagging technique. Usually the learner
+(<a class="reference internal" href="#Orange.ensemble.bagging.BaggedLearner" title="Orange.ensemble.bagging.BaggedLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.bagging.BaggedLearner</span></tt></a>) is used to construct the
+classifier.</p>
+<p>When constructing the classifier manually, the following parameters can
+be passed:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>classifiers</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of boosted classifiers.</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of the resulting classifier.</li>
+<li><strong>class_var</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>) &#8211; the class feature.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.ensemble.bagging.BaggedClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.ensemble.bagging.BaggedClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Instance</span></tt></a>) &#8211; instance to be classified.</li>
+<li><strong>result_type</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetValue</span></tt>
+or <tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetProbabilities</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetBoth</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Value</span></tt></a>,
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.Distribution</span></tt> or a tuple with both</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="boosting">
+<h2>Boosting<a class="headerlink" href="#boosting" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="index-3"></span><span class="target" id="index-4"></span><dl class="class">
+<dt id="Orange.ensemble.boosting.BoostedLearner">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.boosting.</tt><tt class="descname">BoostedLearner</tt><big>(</big><em>learner</em>, <em>t=10</em>, <em>name=AdaBoost.M1</em><big>)</big><a class="headerlink" href="#Orange.ensemble.boosting.BoostedLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a></p>
+<p>Instead of drawing a series of bootstrap samples from the training set,
+bootstrap maintains a weight for each instance. When a classifier is 
+trained from the training set, the weights for misclassified instances 
+are increased. Just like in a bagged learner, the class is decided based 
+on voting of classifiers, but in boosting votes are weighted by accuracy 
+obtained on training set.</p>
+<p>BoostedLearner is an implementation of AdaBoost.M1 (Freund and Shapire, 
+1996). From user&#8217;s viewpoint, the use of the BoostedLearner is similar to 
+that of BaggedLearner. The learner passed as an argument needs to deal 
+with instance weights.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learner</strong> (<tt class="xref py py-class docutils literal"><span class="pre">Orange.core.Learner</span></tt>) &#8211; learner to be boosted.</li>
+<li><strong>t</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of boosted classifiers created from the instance set.</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of the resulting learner.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.ensemble.boosting.BoostedClassifier" title="Orange.ensemble.boosting.BoostedClassifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.boosting.BoostedClassifier</span></tt></a> or 
+<a class="reference internal" href="#Orange.ensemble.boosting.BoostedLearner" title="Orange.ensemble.boosting.BoostedLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.boosting.BoostedLearner</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.ensemble.boosting.BoostedLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instances</em>, <em>orig_weight=0</em><big>)</big><a class="headerlink" href="#Orange.ensemble.boosting.BoostedLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn from the given table of data instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; data instances to learn from.</li>
+<li><strong>orig_weight</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; weight.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.ensemble.boosting.BoostedClassifier" title="Orange.ensemble.boosting.BoostedClassifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.boosting.BoostedClassifier</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.ensemble.boosting.BoostedClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.boosting.</tt><tt class="descname">BoostedClassifier</tt><big>(</big><em>classifiers</em>, <em>name</em>, <em>class_var</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.ensemble.boosting.BoostedClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier</span></tt></a></p>
+<p>A classifier that uses a boosting technique. Usually the learner
+(<a class="reference internal" href="#Orange.ensemble.boosting.BoostedLearner" title="Orange.ensemble.boosting.BoostedLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.boosting.BoostedLearner</span></tt></a>) is used to construct the
+classifier.</p>
+<p>When constructing the classifier manually, the following parameters can
+be passed:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>classifiers</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of boosted classifiers.</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of the resulting classifier.</li>
+<li><strong>class_var</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>) &#8211; the class feature.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.ensemble.boosting.BoostedClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.ensemble.boosting.BoostedClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Instance</span></tt></a>) &#8211; instance to be classified.</li>
+<li><strong>result_type</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetValue</span></tt> or               <tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetProbabilities</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetBoth</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, 
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.Distribution</span></tt> or a tuple with both</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>The following script fits classification models by boosting and
+bagging on Lymphography data set with TreeLearner and post-pruning as
+a base learner. Classification accuracy of the methods is estimated by
+10-fold cross validation (<a class="reference download internal" href="../../_downloads/ensemble.py"><tt class="xref download docutils literal"><span class="pre">ensemble.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">m_pruning</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;tree&quot;</span><span class="p">)</span>
+<span class="n">bs</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">boosting</span><span class="o">.</span><span class="n">BoostedLearner</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;boosted tree&quot;</span><span class="p">)</span>
+<span class="n">bg</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">bagging</span><span class="o">.</span><span class="n">BaggedLearner</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;bagged tree&quot;</span><span class="p">)</span>
+
+<span class="n">lymphography</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lymphography.tab&quot;</span><span class="p">)</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">tree</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">bg</span><span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">lymphography</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Classification Accuracy:&quot;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">learners</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">&quot;</span><span class="si">%15s</span><span class="s">: </span><span class="si">%5.3f</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="n">learners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Running this script demonstrates some benefit of boosting and bagging
+over the baseline learner:</p>
+<div class="highlight-python"><pre>Classification Accuracy:
+           tree: 0.764
+   boosted tree: 0.770
+    bagged tree: 0.790</pre>
+</div>
+</div>
+</div>
+<div class="section" id="stacking">
+<h2>Stacking<a class="headerlink" href="#stacking" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="index-5"></span><span class="target" id="index-6"></span><dl class="class">
+<dt id="Orange.ensemble.stacking.StackedClassificationLearner">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.stacking.</tt><tt class="descname">StackedClassificationLearner</tt><big>(</big><em>learners</em>, <em>meta_learner=NaiveLearner 'naive'</em>, <em>folds=10</em>, <em>name=stacking</em><big>)</big><a class="headerlink" href="#Orange.ensemble.stacking.StackedClassificationLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a></p>
+<p>Stacking by inference of meta classifier from class probability estimates
+on cross-validation held-out data for level-0 classifiers developed on held-in data sets.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>learners</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; level-0 learners.</li>
+<li><strong>meta_learner</strong> (<a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Learner</span></tt></a>) &#8211; meta learner (default: <a class="reference internal" href="Orange.classification.bayes.html#Orange.classification.bayes.NaiveLearner" title="Orange.classification.bayes.NaiveLearner"><tt class="xref py py-class docutils literal"><span class="pre">NaiveLearner</span></tt></a>).</li>
+<li><strong>folds</strong> &#8211; number of iterations (folds) of cross-validation to assemble class probability data for meta learner.</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; learner name (default: stacking).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.ensemble.stacking.StackedClassificationLearner" title="Orange.ensemble.stacking.StackedClassificationLearner"><tt class="xref py py-class docutils literal"><span class="pre">StackedClassificationLearner</span></tt></a> or
+<a class="reference internal" href="#Orange.ensemble.stacking.StackedClassifier" title="Orange.ensemble.stacking.StackedClassifier"><tt class="xref py py-class docutils literal"><span class="pre">StackedClassifier</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.ensemble.stacking.StackedClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.stacking.</tt><tt class="descname">StackedClassifier</tt><big>(</big><em>classifiers</em>, <em>meta_classifier</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.ensemble.stacking.StackedClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>A classifier for stacking. Uses a set of level-0 classifiers to induce class probabilities, which
+are an input to a meta-classifier to predict class probability for a given data instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>classifiers</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of level-0 classifiers.</li>
+<li><strong>meta_classifier</strong> (<a class="reference internal" href="Orange.classification.html#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-class docutils literal"><span class="pre">Classifier</span></tt></a>) &#8211; meta-classifier.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="id1">
+<h3>Example<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Stacking often produces classifiers that are more predictive than
+individual classifiers in the ensemble. This effect is illustrated by
+a script that combines four different classification
+algorithms (<a class="reference download internal" href="../../_downloads/ensemble-stacking.py"><tt class="xref download docutils literal"><span class="pre">ensemble-stacking.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;promoters&quot;</span><span class="p">)</span>
+
+<span class="n">bayes</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;bayes&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">SimpleTreeLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;tree&quot;</span><span class="p">)</span>
+<span class="n">lin</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">svm</span><span class="o">.</span><span class="n">LinearLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;lr&quot;</span><span class="p">)</span>
+<span class="n">knn</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">kNNLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;knn&quot;</span><span class="p">)</span>
+
+<span class="n">base_learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">bayes</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">lin</span><span class="p">,</span> <span class="n">knn</span><span class="p">]</span>
+<span class="n">stack</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">stacking</span><span class="o">.</span><span class="n">StackedClassificationLearner</span><span class="p">(</span><span class="n">base_learners</span><span class="p">)</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">stack</span><span class="p">,</span> <span class="n">bayes</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">lin</span><span class="p">,</span> <span class="n">knn</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="si">%8s</span><span class="s">: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">res</span><span class="p">),</span> <span class="n">learners</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>The benefits of stacking on this particular data set are
+substantial (numbers show classification accuracy):</p>
+<div class="highlight-python"><pre>stacking: 0.915
+   bayes: 0.858
+    tree: 0.688
+      lr: 0.868
+     knn: 0.839</pre>
+</div>
+</div>
+</div>
+<div class="section" id="random-forest">
+<h2>Random Forest<a class="headerlink" href="#random-forest" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="index-7"></span><span class="target" id="index-8"></span><dl class="class">
+<dt id="Orange.ensemble.forest.RandomForestLearner">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.forest.</tt><tt class="descname">RandomForestLearner</tt><big>(</big><em>trees=100</em>, <em>attributes=None</em>, <em>name=Random Forest</em>, <em>rand=None</em>, <em>callback=None</em>, <em>base_learner=None</em>, <em>learner=None</em><big>)</big><a class="headerlink" href="#Orange.ensemble.forest.RandomForestLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a></p>
+<p>Trains an ensemble predictor consisting of trees trained
+on bootstrap
+samples of training data. To increase
+randomness, the tree learner considers only a subset of
+candidate features at each node. The algorithm closely follows
+the original procedure (Brieman, 2001) both in implementation and parameter
+defaults.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>trees</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of trees in the forest.</li>
+<li><strong>attributes</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of randomly drawn features among
+which to select the best one to split the data sets
+in tree nodes. The default, None, means the square root of
+the number of features in the training data. Ignored if
+<tt class="xref py py-obj docutils literal"><span class="pre">learner</span></tt> is specified.</li>
+<li><strong>base_learner</strong> (None or
+<a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.TreeLearner" title="Orange.classification.tree.TreeLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.tree.TreeLearner</span></tt></a> or
+<a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.SimpleTreeLearner" title="Orange.classification.tree.SimpleTreeLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.tree.SimpleTreeLearner</span></tt></a>) &#8211; A base tree learner. The base learner will be
+randomized with Random Forest&#8217;s random
+feature subset selection.  If None (default),
+<a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.SimpleTreeLearner" title="Orange.classification.tree.SimpleTreeLearner"><tt class="xref py py-class docutils literal"><span class="pre">SimpleTreeLearner</span></tt></a> and it
+will not split nodes with less than 5 data instances.</li>
+<li><strong>rand</strong> &#8211; random generator used in bootstrap sampling. If None (default), 
+then <tt class="docutils literal"><span class="pre">random.Random(0)</span></tt> is used.</li>
+<li><strong>learner</strong> (None or <tt class="xref py py-class docutils literal"><span class="pre">Orange.core.Learner</span></tt>) &#8211; Tree induction learner. If <cite>None</cite> (default), 
+the <tt class="xref py py-obj docutils literal"><span class="pre">base_learner</span></tt> will be used (and randomized). If
+<tt class="xref py py-obj docutils literal"><span class="pre">learner</span></tt> is specified, it will be used as such
+with no additional transformations.</li>
+<li><strong>callback</strong> &#8211; a function to be called after every iteration of
+induction of classifier. The call includes a parameter
+(from 0.0 to 1.0) that provides an estimate
+of completion of the learning progress.</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; learner name.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.ensemble.forest.RandomForestClassifier" title="Orange.ensemble.forest.RandomForestClassifier"><tt class="xref py py-class docutils literal"><span class="pre">RandomForestClassifier</span></tt></a> or 
+<a class="reference internal" href="#Orange.ensemble.forest.RandomForestLearner" title="Orange.ensemble.forest.RandomForestLearner"><tt class="xref py py-class docutils literal"><span class="pre">RandomForestLearner</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.ensemble.forest.RandomForestLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instances</em>, <em>weight=0</em><big>)</big><a class="headerlink" href="#Orange.ensemble.forest.RandomForestLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn from the given table of data instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instances</strong> (class:<cite>Orange.data.Table</cite>) &#8211; learning data.</li>
+<li><strong>weight</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; weight.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.ensemble.forest.RandomForestClassifier" title="Orange.ensemble.forest.RandomForestClassifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.ensemble.forest.RandomForestClassifier</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.ensemble.forest.RandomForestClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.forest.</tt><tt class="descname">RandomForestClassifier</tt><big>(</big><em>classifiers</em>, <em>name</em>, <em>domain</em>, <em>class_var</em>, <em>class_vars</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.ensemble.forest.RandomForestClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier</span></tt></a></p>
+<p>Uses the trees induced by the <tt class="xref py py-obj docutils literal"><span class="pre">RandomForestLearner</span></tt>. An input
+instance is classified into the class with the most frequent vote.
+However, this implementation returns the averaged probabilities from
+each of the trees if class probability is requested.</p>
+<p>When constructed manually, the following parameters have to
+be passed:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>classifiers</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list of classifiers to be used.</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of the resulting classifier.</li>
+<li><strong>domain</strong> (<a class="reference internal" href="Orange.data.domain.html#Orange.data.Domain" title="Orange.data.Domain"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Domain</span></tt></a>) &#8211; the domain of the learning set.</li>
+<li><strong>class_var</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>) &#8211; the class feature.</li>
+<li><strong>class_vars</strong> (list of <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>) &#8211; the multi-target class features.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.ensemble.forest.RandomForestClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.ensemble.forest.RandomForestClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Instance</span></tt></a>) &#8211; instance to be classified.</li>
+<li><strong>result_type</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetValue</span></tt> or               <tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetProbabilities</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetBoth</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, 
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.Distribution</span></tt> or a tuple with both</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="id2">
+<h3>Example<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>The following script assembles a random forest learner and compares it
+to a tree learner on a liver disorder (bupa) and housing data sets.</p>
+<p><a class="reference download internal" href="../../_downloads/ensemble-forest.py"><tt class="xref download docutils literal"><span class="pre">ensemble-forest.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">forest</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">forest</span><span class="o">.</span><span class="n">RandomForestLearner</span><span class="p">(</span><span class="n">trees</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;forest&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">min_instances</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">m_pruning</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> \
+                            <span class="n">same_majority_pruning</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;tree&#39;</span><span class="p">)</span>
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">tree</span><span class="p">,</span> <span class="n">forest</span><span class="p">]</span>
+
+<span class="k">print</span> <span class="s">&quot;Classification: bupa.tab&quot;</span>
+<span class="n">bupa</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bupa.tab&quot;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">bupa</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Learner  CA     Brier  AUC&quot;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">learners</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-8s</span><span class="s"> </span><span class="si">%5.3f</span><span class="s">  </span><span class="si">%5.3f</span><span class="s">  </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">learners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> \
+        <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Brier_score</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="k">print</span> <span class="s">&quot;Regression: housing.tab&quot;</span>
+<span class="n">bupa</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing.tab&quot;</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">bupa</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Learner  MSE    RSE    R2&quot;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">learners</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-8s</span><span class="s"> </span><span class="si">%5.3f</span><span class="s">  </span><span class="si">%5.3f</span><span class="s">  </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">learners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> \
+        <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">MSE</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">RSE</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">R2</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">],)</span>
+</pre></div>
+</div>
+<p>Notice that our forest contains 50 trees. Learners are compared through
+3-fold cross validation:</p>
+<div class="highlight-python"><pre>Classification: bupa.tab
+Learner  CA     Brier  AUC
+tree     0.586  0.829  0.575
+forest   0.710  0.392  0.752
+Regression: housing.tab
+Learner  MSE    RSE    R2
+tree     23.708  0.281  0.719
+forest   11.988  0.142  0.858</pre>
+</div>
+<p>Perhaps the sole purpose of the following example is to show how to
+access the individual classifiers once they are assembled into the
+forest, and to show how we can assemble a tree learner to be used in
+random forests. In the following example the best feature for decision
+nodes is selected among three randomly chosen features, and maxDepth
+and minExamples are both set to 5.</p>
+<p><a class="reference download internal" href="../../_downloads/ensemble-forest2.py"><tt class="xref download docutils literal"><span class="pre">ensemble-forest2.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">bupa</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&#39;bupa.tab&#39;</span><span class="p">)</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">()</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">min_instances</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">max_depth</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="n">forest_learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">forest</span><span class="o">.</span><span class="n">RandomForestLearner</span><span class="p">(</span><span class="n">base_learner</span><span class="o">=</span><span class="n">tree</span><span class="p">,</span> <span class="n">trees</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">attributes</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">forest_learner</span><span class="p">(</span><span class="n">bupa</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">forest</span><span class="o">.</span><span class="n">classifiers</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">countNodes</span><span class="p">(),</span>
+<span class="k">print</span>
+</pre></div>
+</div>
+<p>Running the above code would report on sizes (number of nodes) of the tree
+in a constructed random forest.</p>
+</div>
+<div class="section" id="feature-scoring">
+<h3>Feature scoring<a class="headerlink" href="#feature-scoring" title="Permalink to this headline">¶</a></h3>
+<p>L. Breiman (2001) suggested the possibility of using random forests as a
+non-myopic measure of feature importance.</p>
+<p>The assessment of feature relevance with random forests is based on the
+idea that randomly changing the value of an important feature greatly
+affects instance&#8217;s classification, while changing the value of an
+unimportant feature does not affect it much. Implemented algorithm
+accumulates feature scores over given number of trees. Importance of
+all features for a single tree are computed as: correctly classified
+OOB instances minus correctly classified OOB instances when the feature is
+randomly shuffled. The accumulated feature scores are divided by the
+number of used trees and multiplied by 100 before they are returned.</p>
+<dl class="class">
+<dt id="Orange.ensemble.forest.ScoreFeature">
+<em class="property">class </em><tt class="descclassname">Orange.ensemble.forest.</tt><tt class="descname">ScoreFeature</tt><big>(</big><em>trees=100</em>, <em>attributes=None</em>, <em>rand=None</em>, <em>base_learner=None</em>, <em>learner=None</em><big>)</big><a class="headerlink" href="#Orange.ensemble.forest.ScoreFeature" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>trees</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of trees in the forest.</li>
+<li><strong>attributes</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of randomly drawn features among
+which to select the best to split the nodes in tree
+induction. The default, None, means the square root of
+the number of features in the training data. Ignored if
+<tt class="xref py py-obj docutils literal"><span class="pre">learner</span></tt> is specified.</li>
+<li><strong>base_learner</strong> (None or
+<a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.TreeLearner" title="Orange.classification.tree.TreeLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.tree.TreeLearner</span></tt></a> or
+<a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.SimpleTreeLearner" title="Orange.classification.tree.SimpleTreeLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.tree.SimpleTreeLearner</span></tt></a>) &#8211; A base tree learner. The base learner will be
+randomized with Random Forest&#8217;s random
+feature subset selection.  If None (default),
+<a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.SimpleTreeLearner" title="Orange.classification.tree.SimpleTreeLearner"><tt class="xref py py-class docutils literal"><span class="pre">SimpleTreeLearner</span></tt></a> and it
+will not split nodes with less than 5 data instances.</li>
+<li><strong>rand</strong> &#8211; random generator used in bootstrap sampling. If None (default), 
+then <tt class="docutils literal"><span class="pre">random.Random(0)</span></tt> is used.</li>
+<li><strong>learner</strong> (None or <tt class="xref py py-class docutils literal"><span class="pre">Orange.core.Learner</span></tt>) &#8211; Tree induction learner. If <cite>None</cite> (default), 
+the <tt class="xref py py-obj docutils literal"><span class="pre">base_learner</span></tt> will be used (and randomized). If
+<tt class="xref py py-obj docutils literal"><span class="pre">learner</span></tt> is specified, it will be used as such
+with no additional transformations.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.ensemble.forest.ScoreFeature.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>feature</em>, <em>instances</em>, <em>aprior_class=None</em><big>)</big><a class="headerlink" href="#Orange.ensemble.forest.ScoreFeature.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return importance of a given feature.
+Only the first call on a given data set is computationally expensive.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>feature</strong> (int, str or <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>.) &#8211; feature to evaluate (by index, name or
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a> object).</li>
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; data instances to use for importance evaluation.</li>
+<li><strong>aprior_class</strong> &#8211; not used!</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.ensemble.forest.ScoreFeature.importances">
+<tt class="descname">importances</tt><big>(</big><em>table</em><big>)</big><a class="headerlink" href="#Orange.ensemble.forest.ScoreFeature.importances" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED. Return importance of all features in the dataset as a list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; dataset of which the features&#8217; importance needs to be
+measured.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p>Computation of feature importance with random forests is rather slow
+and importances for all features need to be computes
+simultaneously. When it is called to compute a quality of certain
+feature, it computes qualities for all features in the dataset. When
+called again, it uses the stored results if the domain is still the
+same and the data table has not changed (this is done by checking the
+data table&#8217;s version and is not foolproof; it will not detect if you
+change values of existing instances, but will notice adding and
+removing instances; see the page on <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a> for
+details).</p>
+<p><a class="reference download internal" href="../../_downloads/ensemble-forest-measure.py"><tt class="xref download docutils literal"><span class="pre">ensemble-forest-measure.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="p">[</span> <span class="s">&quot;iris.tab&quot;</span> <span class="p">]</span>
+
+<span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">DATA:&quot;</span> <span class="o">+</span> <span class="n">fn</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+    <span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+    <span class="n">measure</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">forest</span><span class="o">.</span><span class="n">ScoreFeature</span><span class="p">(</span><span class="n">trees</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+    <span class="c">#call by attribute index</span>
+    <span class="n">imp0</span> <span class="o">=</span> <span class="n">measure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span> 
+    <span class="c">#call with a Descriptor</span>
+    <span class="n">imp1</span> <span class="o">=</span> <span class="n">measure</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">iris</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;first: </span><span class="si">%0.2f</span><span class="s">, second: </span><span class="si">%0.2f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">imp0</span><span class="p">,</span> <span class="n">imp1</span><span class="p">)</span>
+
+    <span class="k">print</span> <span class="s">&quot;different random seed&quot;</span>
+    <span class="n">measure</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">forest</span><span class="o">.</span><span class="n">ScoreFeature</span><span class="p">(</span><span class="n">trees</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> 
+            <span class="n">rand</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+    <span class="n">imp0</span> <span class="o">=</span> <span class="n">measure</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span>
+    <span class="n">imp1</span> <span class="o">=</span> <span class="n">measure</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">iris</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;first: </span><span class="si">%0.2f</span><span class="s">, second: </span><span class="si">%0.2f</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">imp0</span><span class="p">,</span> <span class="n">imp1</span><span class="p">)</span>
+
+    <span class="k">print</span> <span class="s">&quot;All importances:&quot;</span>
+    <span class="k">for</span> <span class="n">at</span> <span class="ow">in</span> <span class="n">iris</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%15s</span><span class="s">: </span><span class="si">%6.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">at</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">measure</span><span class="p">(</span><span class="n">at</span><span class="p">,</span> <span class="n">iris</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The output of the above script is:</p>
+<div class="highlight-python"><pre>DATA:iris.tab
+
+first: 3.91, second: 0.38
+
+different random seed
+first: 3.39, second: 0.46
+
+All importances:
+   sepal length:   3.39
+    sepal width:   0.46
+   petal length:  30.15
+    petal width:  31.98</pre>
+</div>
+<div class="section" id="references">
+<h4>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>L Breiman. Bagging Predictors. <a class="reference external" href="http://www.stat.berkeley.edu/tech-reports/421.ps.Z">Technical report No. 421</a>. University
+of California, Berkeley, 1994.</li>
+<li>Y Freund, RE Schapire. <a class="reference external" href="http://citeseer.ist.psu.edu/freund96experiments.html">Experiments with a New Boosting Algorithm</a>. Machine
+Learning: Proceedings of the Thirteenth International Conference
+(ICML&#8216;96), 1996.</li>
+<li>JR Quinlan. <a class="reference external" href="http://www.rulequest.com/Personal/q.aaai96.ps">Boosting, bagging, and C4.5</a> . In Proc. of 13th
+National Conference on Artificial Intelligence
+(AAAI&#8216;96). pp. 725-730, 1996.</li>
+<li>L Brieman. <a class="reference external" href="http://www.springerlink.com/content/u0p06167n6173512/">Random Forests</a>. Machine
+Learning, 45, 5-32, 2001.</li>
+<li>M Robnik-Sikonja. <a class="reference external" href="http://lkm.fri.uni-lj.si/rmarko/papers/robnik04-ecml.pdf">Improving Random Forests</a>. In
+Proc. of European Conference on Machine Learning (ECML 2004),
+pp. 359-370, 2004.</li>
+</ul>
+<span class="target" id="module-Orange.ensemble"></span></div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

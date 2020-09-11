@@ -1,0 +1,322 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Channels and Tokens &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Channels and Tokens</a><ul>
+<li><a class="reference internal" href="#multi-input-channels">Multi-Input Channels</a></li>
+<li><a class="reference internal" href="#using-several-output-channels">Using Several Output Channels</a></li>
+<li><a class="reference internal" href="#default-channels-when-using-input-channels-of-the-same-type">Default Channels (When Using Input Channels of the Same Type)</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="channels-and-tokens">
+<h1>Channels and Tokens<a class="headerlink" href="#channels-and-tokens" title="Permalink to this headline">¶</a></h1>
+<p>Our data sampler widget was, regarding the channels, rather simple
+and linear: the widget was designed to receive the token from one
+widget, and send an output token to another widget. Just like in an
+example schema below:</p>
+<img alt="../../_images/schemawithdatasamplerB.png" src="../../_images/schemawithdatasamplerB.png" />
+<p>There&#8217;s quite a bit more to channels and management of tokens, and
+we will overview most of the stuff you need to know to make your more
+complex widgets in this section.</p>
+<div class="section" id="multi-input-channels">
+<h2>Multi-Input Channels<a class="headerlink" href="#multi-input-channels" title="Permalink to this headline">¶</a></h2>
+<p>In essence, the basic idea about &#8220;multi-input&#8221; channels is that they can
+be used to connect them with several output channels. That is, if a
+widget supports such a channel, several widgets can feed their input
+to that widget simultaneously.</p>
+<p>Say we want to build a widget that takes a data set and test
+various predictive modeling techniques on it. A widget has to have an
+input data channel, and this we know how to deal with from our
+<a class="reference internal" href="settings.html"><em>previous</em></a> lesson. But, somehow differently, we
+want to connect any number of widgets which define learners to our
+testing widget. Just like in a schema below, where three different
+learners are used:</p>
+<img alt="../../_images/learningcurve.png" src="../../_images/learningcurve.png" />
+<p>We will here take a look at how we define the channels for a learning
+curve widget, and how we manage its input tokens. But before we do it,
+just in brief: learning curve is something that you can use to test
+some machine learning algorithm in trying to see how its performance
+depends on the size of the training set size. For this, one can draw a
+smaller subset of data, learn the classifier, and test it on remaining
+data set. To do this in a just way (by Salzberg, 1997), we perform
+k-fold cross validation but use only a proportion of the data for
+training. The output of the widget should then look something
+like:</p>
+<img alt="../../_images/learningcurve-output.png" src="../../_images/learningcurve-output.png" />
+<p>Now back to channels and tokens. Input and output channels for our
+widget are defined by</p>
+<div class="highlight-python"><div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Data&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_dataset</span><span class="p">),</span>
+                       <span class="p">(</span><span class="s">&quot;Learner&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">Learner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_learner</span><span class="p">,</span>
+                        <span class="n">Multiple</span> <span class="o">+</span> <span class="n">Default</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Notice that everything is pretty much the same as it was with
+widgets from previous lessons, the only difference being
+<tt class="docutils literal"><span class="pre">Multiple</span> <span class="pre">+</span> <span class="pre">Default</span></tt> (importable from  the OWWidget namespace)
+as the last value in the list that defines the <tt class="xref py py-obj docutils literal"><span class="pre">Learner</span></tt>
+channel. This <tt class="docutils literal"><span class="pre">Multiple</span> <span class="pre">+</span> <span class="pre">Default</span></tt> says that this
+is a multi-input channel and is the default input for its type.
+If it would be unspecified then by default value of
+<tt class="docutils literal"><span class="pre">Single</span> <span class="pre">+</span> <span class="pre">NonDefault</span></tt> would be used. That would mean that the
+widget can receive the input only from one widget and is not the default input
+channel for its type (more on default channels later).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="xref py py-obj docutils literal"><span class="pre">Default</span></tt> flag here is used for illustration. Since <em>&#8220;Learner&#8221;</em>
+channel is the only channel for a <a class="reference internal" href="../../reference/rst/Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a>
+type it is also the default.</p>
+</div>
+<p>How does the widget know from which widget did the token come from?
+In Orange, tokens are sent around with an id of a widget that is
+sending the token, and having a multi-input channel only tells Orange to
+send a token together with sending widget id, the two arguments with
+which the receiving function is called. For our <em>&#8220;Learner&#8221;</em>
+channel the receiving function is <tt class="xref py py-func docutils literal"><span class="pre">set_learner()</span></tt>, and this looks
+like the following</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">set_learner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learner</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">learner</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c"># remove a learner and corresponding results</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ids</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+                <span class="k">return</span> <span class="c"># no such learner, removed before</span>
+            <span class="n">indx</span> <span class="o">=</span> <span class="n">ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">curves</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">indx</span><span class="p">)</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateTable</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ids</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span> <span class="c"># update (already seen a learner from this source)</span>
+                <span class="n">indx</span> <span class="o">=</span> <span class="n">ids</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">learner</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                    <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLearningCurve</span><span class="p">([</span><span class="n">learner</span><span class="p">])</span>
+                    <span class="n">score</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scoring</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scoringF</span><span class="p">][</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">curve</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="p">[</span><span class="n">indx</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">curves</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">curve</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="n">indx</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span> <span class="c"># add new learner</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span> <span class="n">learner</span><span class="p">))</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+                    <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLearningCurve</span><span class="p">([</span><span class="n">learner</span><span class="p">])</span>
+                    <span class="n">score</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scoring</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">scoringF</span><span class="p">][</span><span class="mi">1</span><span class="p">](</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">curve</span><span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">curves</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">):</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">curves</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">curve</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">curves</span> <span class="o">=</span> <span class="n">curve</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infob</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s"> learners on input.&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infob</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&quot;No learners.&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">commitBtn</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateTable</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>OK, this looks like one long and complicated function. But be
+patient! Learning curve is not the simplest widget there is, so
+there&#8217;s some extra code in the function above to manage the
+information it handles in the appropriate way. To understand the
+signals, though, you should only understand the following. We store
+the learners (objects that learn from data) in the list
+<tt class="xref py py-obj docutils literal"><span class="pre">self.learners</span></tt>. The list contains tuples with an id of the
+widget that has sent the learner, and the learner itself. We could
+store such information in a dictionary as well, but for this
+particular widget the order of learners is important, and we thought
+that list is a more appropriate structure.</p>
+<p>The function above first checks if the learner sent is empty
+(<a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>). Remember that sending an empty learner
+essentially means that the link with the sending widget was removed,
+hence we need to remove such learner from our list. If a non-empty
+learner was sent, then it is either a new learner (say, from a widget
+we have just linked to our learning curve widget), or an update
+version of the previously sent learner. If the later is the case, then
+there is an ID which we already have in the learners list, and we
+need to replace previous information on that learner. If a new learner
+was sent, the case is somehow simpler, and we just add this learner
+and its learning curve to the corresponding variables that hold this
+information.</p>
+<p>The function that handles <tt class="xref py py-obj docutils literal"><span class="pre">learners</span></tt> as shown above is
+the most complicated function in our learning curve widget. In fact,
+the rest of the widget does some simple GUI management, and calls
+learning curve routines from testing and performance
+scoring functions from stats. I rather like
+the easy by which new scoring functions are added to the widget, since
+all that is needed is the augmenting the list</p>
+<div class="highlight-python"><div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">scoring</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Classification Accuracy&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">&quot;AUC&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">&quot;BrierScore&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Brier_score</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">&quot;Information Score&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">IS</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">&quot;Sensitivity&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Sensitivity</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">&quot;Specificity&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Specificity</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>which is defined in the initialization part of the widget. The
+other useful trick in this widget is that evaluation (k-fold cross
+validation) is carried out just once given the learner, data set and
+evaluation parameters, and scores are then derived from class
+probability estimates as obtained from the evaluation procedure. Which
+essentially means that switching from one to another scoring function
+(and displaying the result in the table) takes only a split of a
+second. To see the rest of the widget, check out
+<a class="reference download internal" href="../../_downloads/OWLearningCurveA.py"><tt class="xref download docutils literal"><span class="pre">its</span> <span class="pre">code</span></tt></a>.</p>
+</div>
+<div class="section" id="using-several-output-channels">
+<h2>Using Several Output Channels<a class="headerlink" href="#using-several-output-channels" title="Permalink to this headline">¶</a></h2>
+<p>There&#8217;s nothing new here, only that we need a widget that has
+several output channels of the same type to illustrate the idea of the
+default channels in the next section. For this purpose, we will modify
+our sampling widget as defined in previous lessons such that it will
+send out the sampled data to one channel, and all other data to
+another channel. The corresponding channel definition of this widget
+is</p>
+<div class="highlight-python"><div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Sampled Data&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">),</span>
+                        <span class="p">(</span><span class="s">&quot;Other Data&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>We used this in the third incarnation of <a class="reference download internal" href="../../_downloads/OWDataSamplerC.py"><tt class="xref download docutils literal"><span class="pre">data</span> <span class="pre">sampler</span> <span class="pre">widget</span></tt></a>,
+with essentially the only other change in the code in the <tt class="xref py py-func docutils literal"><span class="pre">selection()</span></tt> and
+<tt class="xref py py-func docutils literal"><span class="pre">commit()</span></tt> functions</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">selection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndices2</span><span class="p">(</span><span class="n">p0</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">proportion</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span>
+        <span class="n">ind</span> <span class="o">=</span> <span class="n">indices</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">infob</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s"> sampled instances&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">commit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Sampled Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Other Data&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">otherdata</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If a widget that has multiple channels of the same type is
+connected to a widget that accepts such tokens, Orange Canvas opens a
+window asking the user to confirm which channels to connect. Hence,
+if we have just connected <em>Data Sampler (C)</em> widget to a Data Table
+widget in a schema below:</p>
+<img alt="../../_images/datasampler-totable.png" src="../../_images/datasampler-totable.png" />
+<p>we would get a following window querying users for information on
+which channels to connect:</p>
+<img alt="../../_images/datasampler-channelquerry.png" src="../../_images/datasampler-channelquerry.png" />
+</div>
+<div class="section" id="default-channels-when-using-input-channels-of-the-same-type">
+<h2>Default Channels (When Using Input Channels of the Same Type)<a class="headerlink" href="#default-channels-when-using-input-channels-of-the-same-type" title="Permalink to this headline">¶</a></h2>
+<p>Now, let&#8217;s say we want to extend our learning curve widget such
+that it does the learning the same way as it used to, but can -
+provided that such data set is defined - test the
+learners (always) on the same, external data set. That is, besides the
+training data set, we need another channel of the same type but used
+for training data set. Notice, however, that most often we will only
+provide the training data set, so we would not like to be bothered (in
+Orange Canvas) with the dialog which channel to connect to, as the
+training data set channel will be the default one.</p>
+<p>When enlisting the input channel of the same type, the default
+channels have a special flag in the channel specification list. So for
+our new <a class="reference download internal" href="../../_downloads/OWLearningCurveB.py"><tt class="xref download docutils literal"><span class="pre">learning</span> <span class="pre">curve</span></tt></a> widget, the
+channel specification is</p>
+<div class="highlight-python"><div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Train Data&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainset</span><span class="p">,</span> <span class="n">Default</span><span class="p">),</span>
+                       <span class="p">(</span><span class="s">&quot;Test Data&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">testset</span><span class="p">),</span>
+                       <span class="p">(</span><span class="s">&quot;Learner&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">Learner</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">learner</span><span class="p">,</span> <span class="n">Multiple</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>That is, the <tt class="xref py py-obj docutils literal"><span class="pre">Train</span> <span class="pre">Data</span></tt> channel is a single-token
+channel which is a default one (third parameter). Note that the flags can
+be added (or OR-d) together so <tt class="docutils literal"><span class="pre">Default</span> <span class="pre">+</span> <span class="pre">Multiple</span></tt> is a valid flag.
+To test how this works, connect a file widget to a learning curve widget and
+- nothing will really happen:</p>
+<img alt="../../_images/file-to-learningcurveb.png" src="../../_images/file-to-learningcurveb.png" />
+<p>That is, no window with a query on which channels to connect to will
+open, as the default <em>&#8220;Train Data&#8221;</em> was selected.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

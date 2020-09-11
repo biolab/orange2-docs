@@ -1,0 +1,158 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Constant Classifier &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Constant Classifier</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="constant-classifier">
+<h1>Constant Classifier<a class="headerlink" href="#constant-classifier" title="Permalink to this headline">¶</a></h1>
+<p>Constant classifier always predicts the same value. It is constructed
+by various learners such as
+<a class="reference internal" href="Orange.classification.majority.html#Orange.classification.majority.MajorityLearner" title="Orange.classification.majority.MajorityLearner"><tt class="xref py py-obj docutils literal"><span class="pre">MajorityLearner</span></tt></a>, and also used
+in other places.</p>
+<dl class="class">
+<dt id="Orange.classification.ConstantClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.classification.</tt><tt class="descname">ConstantClassifier</tt><a class="headerlink" href="#Orange.classification.ConstantClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Always predict the specified <tt class="docutils literal"><span class="pre">default_val</span></tt> or
+<tt class="docutils literal"><span class="pre">default_distribution</span></tt>, disregarding the instance.</p>
+<dl class="attribute">
+<dt id="Orange.classification.ConstantClassifier.class_var">
+<tt class="descname">class_var</tt><a class="headerlink" href="#Orange.classification.ConstantClassifier.class_var" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class variable that the classifier predicts.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.ConstantClassifier.default_val">
+<tt class="descname">default_val</tt><a class="headerlink" href="#Orange.classification.ConstantClassifier.default_val" title="Permalink to this definition">¶</a></dt>
+<dd><p>The value returned by the classifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.ConstantClassifier.default_distribution">
+<tt class="descname">default_distribution</tt><a class="headerlink" href="#Orange.classification.ConstantClassifier.default_distribution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class probabilities returned by the classifier.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.ConstantClassifier.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>variable</em>, <em>value</em>, <em>distribution</em><big>)</big><a class="headerlink" href="#Orange.classification.ConstantClassifier.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructor can be called without arguments, with a
+variable, value or both. If the value is given and is of type
+<a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, its attribute
+<a class="reference internal" href="Orange.data.value.html#Orange.data.Value.variable" title="Orange.data.Value.variable"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value.variable</span></tt></a> will either be used for
+initializing
+<tt class="xref py py-obj docutils literal"><span class="pre">variable</span></tt> or
+checked against it, if <tt class="xref py py-obj docutils literal"><span class="pre">variable</span></tt> is given as an
+argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>variable</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>) &#8211; Class variable that the classifier predicts.</li>
+<li><strong>value</strong> (<a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value</span></tt></a> or int (index) or float) &#8211; Value returned by the classifier.</li>
+<li><strong>distribution</strong> &#8211; Class probabilities returned by the classifier.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.ConstantClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>return_type</em><big>)</big><a class="headerlink" href="#Orange.classification.ConstantClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <a class="reference internal" href="#Orange.classification.ConstantClassifier.default_val" title="Orange.classification.ConstantClassifier.default_val"><tt class="xref py py-obj docutils literal"><span class="pre">default_val</span></tt></a> and/or <a class="reference internal" href="#Orange.classification.ConstantClassifier.default_distribution" title="Orange.classification.ConstantClassifier.default_distribution"><tt class="xref py py-obj docutils literal"><span class="pre">default_distribution</span></tt></a>
+(depending upon <tt class="xref py py-obj docutils literal"><span class="pre">return_type</span></tt>) disregarding the
+<tt class="xref py py-obj docutils literal"><span class="pre">instance</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

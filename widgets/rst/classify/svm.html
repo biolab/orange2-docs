@@ -1,0 +1,208 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SVM Learner &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">SVM Learner</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="svm-learner">
+<span id="svm"></span><h1>SVM Learner<a class="headerlink" href="#svm-learner" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/SVM.svg" /><p>Support vector machine learner (classification)</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples</dt>
+<dd><p class="first last">A table with training examples</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Learner</dt>
+<dd><p class="first last">The support vector machine learning algorithm with settings as specified
+in the dialog.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Classifier</dt>
+<dd><p class="first last">Trained SVM classifier</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Support Vectors</dt>
+<dd><p class="first last">A subset of data instances from the training set that were used as
+support vectors in the trained classifier</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Support vector machines (SVM) is a popular classification technique that will
+construct a separating hyperplane in the attribute space which maximizes the
+margin between the instances of different classes. The technique often yields
+supreme predictive performance results. Orange embeds a popular implementation
+of SVM in <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a> package, and this widget provides for a graphical user
+interface to its functionality. It also behaves like a typical Orange
+learner widget: on its output, it presents an object that can learn and is
+initialized with the setting specified in the widget, or, given the input
+data set, also a classifier that can be used to predict classes and class
+probabilities given a set of new examples.</p>
+<img alt="Support vector machines widget" src="../../../_images/SVM.png" />
+<p>Learner can be given a name under which it will appear in other widgets that
+use its output, say, in <a class="reference internal" href="../evaluate/testlearners.html#test-learners"><em>Test Learners</em></a>. The default name is simply &#8220;SVM&#8221;.</p>
+<p>The next block of options deals with kernel, that is, a function that
+transforms attribute space to a new feature space to fit the maximum-margin
+hyperplane, thus allowing the algorithm to create non-linear classifiers.
+The first kernel in the list, however, is a <tt class="xref py py-obj docutils literal"><span class="pre">Linear</span></tt> kernel that does
+not require this trick, but all the others (<tt class="xref py py-obj docutils literal"><span class="pre">Polynomial</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">RBF</span></tt>
+and <tt class="xref py py-obj docutils literal"><span class="pre">Sigmoid</span></tt>) do. Specific functions that specify the kernel are
+presented besides their names, and the constants involved:</p>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">g</span></tt> for the gamma constant in kernel function (the recommended value
+is 1/k, where k is the number of the attributes, but since there may be no
+training set given to the widget the default is 0 and the user has to set
+this option manually), <tt class="xref py py-obj docutils literal"><span class="pre">d</span></tt>) for the degree of the kernel (default 3),
+and <tt class="xref py py-obj docutils literal"><span class="pre">c</span></tt> for the constant c0 in the kernel function (default 0).</p>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Options</span></tt> control other aspects of the SVM learner.
+<tt class="xref py py-obj docutils literal"><span class="pre">Model</span> <span class="pre">complexity</span> <span class="pre">(C)</span></tt> (penalty parameter), <tt class="xref py py-obj docutils literal"><span class="pre">Tolerance</span> <span class="pre">(p)</span></tt> and
+<tt class="xref py py-obj docutils literal"><span class="pre">Numeric</span> <span class="pre">precision</span> <span class="pre">(eps)</span></tt> are options that define the optimization
+function; see <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a> for further details. The other three options are used
+to instruct the learner to prepare the classifier such that it would estimate
+the class probability values (<tt class="xref py py-obj docutils literal"><span class="pre">Estimate</span> <span class="pre">class</span> <span class="pre">probabilities</span></tt>), constrain
+the number of the support vectors which define the maximum-margin hyperplane
+(<tt class="xref py py-obj docutils literal"><span class="pre">Limit</span> <span class="pre">the</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">support</span> <span class="pre">vectors</span></tt>) and normalize the training and
+later the test data (<tt class="xref py py-obj docutils literal"><span class="pre">Normalize</span> <span class="pre">data</span></tt>). The later somehow slows down the
+learner, but may be essential in achieving better classification performance.</p>
+<p>The last button in the SVM dialog is <tt class="xref py py-obj docutils literal"><span class="pre">Automatic</span> <span class="pre">parameter</span> <span class="pre">search</span></tt>. This
+is enabled when the widget is given a data set, and uses <a class="reference external" href="http://www.csie.ntu.edu.tw/~cjlin/libsvm/">LIBSVM</a>&#8216;s procedures
+to search for the optimal value of learning parameters. Upon completion, the
+values of the parameters in the SVM dialog box are set to the parameters found
+by the procedure.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>There are two typical uses of this widget, one that uses it as a classifier
+and the other one that uses it to construct an object for learning. For the
+first one, we have split the data set to two data sets (<tt class="xref py py-obj docutils literal"><span class="pre">Sample</span></tt> and
+<tt class="xref py py-obj docutils literal"><span class="pre">Remaining</span> <span class="pre">Examples</span></tt>). The sample was sent to <tt class="xref py py-obj docutils literal"><span class="pre">SVM</span></tt> which produced
+a <tt class="xref py py-obj docutils literal"><span class="pre">Classifier</span></tt>, that was then used in <a class="reference internal" href="../evaluate/predictions.html#predictions"><em>Predictions</em></a> widget to
+classify the data in <tt class="xref py py-obj docutils literal"><span class="pre">Remaning</span> <span class="pre">Examples</span></tt>. A similar schema can be
+used if the data would be already separated in two different files; in
+this case, two <a class="reference internal" href="../data/file.html#file"><em>File</em></a> widgets would be used instead of the
+<a class="reference internal" href="../data/file.html#file"><em>File</em></a> - <a class="reference internal" href="../data/datasampler.html#data-sampler"><em>Data Sampler</em></a> combination.</p>
+<img alt="SVM - a schema with a classifier" src="../../../_images/SVM-Predictions.png" />
+<p>The second schema shows how to use the <tt class="xref py py-obj docutils literal"><span class="pre">SVM</span></tt> widget to construct the
+learner and compare it in cross-validation with <a class="reference internal" href="majority.html#majority"><em>Majority Learner</em></a> and
+<a class="reference internal" href="knearestneighbours.html#k-nearest-neighbours"><em>k-Nearest Neighbours Learner</em></a> learners.</p>
+<img alt="SVM and other learners compared by cross-validation" src="../../../_images/SVM-Evaluation.png" />
+<p>The following schema observes a set of support vectors in a <a class="reference internal" href="../visualize/scatterplot.html#scatter-plot"><em>Scatter Plot</em></a>
+visualization.</p>
+<img alt="Visualization of support vectors" src="../../../_images/SVM-SupportVectors.png" />
+<p>For the above schema to work correctly, the channel between <a class="reference internal" href="#svm"><em>SVM Learner</em></a>
+and <a class="reference internal" href="../visualize/scatterplot.html#scatter-plot"><em>Scatter Plot</em></a> widget has to be set appropriately. Set the channel
+between these two widgets by double-clinking on the green edge between the
+widgets, and use the settings as displayed in the dialog below.</p>
+<img alt="Channel setting for communication of support vectors" src="../../../_images/SVM-SupportVectorsOutput.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

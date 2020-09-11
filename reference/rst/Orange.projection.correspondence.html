@@ -1,0 +1,449 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Correspondence Analysis (correspondence) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Correspondence Analysis (<tt class="docutils literal"><span class="pre">correspondence</span></tt>)</a><ul>
+<li><a class="reference internal" href="#example">Example</a><ul>
+<li><a class="reference internal" href="#multi-correspondence-analysis">Multi-Correspondence Analysis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#utility-functions">Utility Functions</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.projection.correspondence"></span><div class="section" id="correspondence-analysis-correspondence">
+<h1>Correspondence Analysis (<tt class="docutils literal"><span class="pre">correspondence</span></tt>)<a class="headerlink" href="#correspondence-analysis-correspondence" title="Permalink to this headline">¶</a></h1>
+<p>Correspondence analysis is a descriptive/exploratory technique designed
+to analyze simple two-way and multi-way tables containing some measure
+of correspondence between the rows and columns. It does this by mapping
+the rows and columns into two sets of factor scores respectively while
+preserving the similarity structure of the table&#8217;s rows and columns.</p>
+<p>It is similar in nature to PCA but is used for analysis of
+quantitative data.</p>
+<dl class="class">
+<dt id="Orange.projection.correspondence.CA">
+<em class="property">class </em><tt class="descclassname">Orange.projection.correspondence.</tt><tt class="descname">CA</tt><big>(</big><em>contingency_table</em>, <em>row_labels=</em><span class="optional">[</span><span class="optional">]</span>, <em>col_labels=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main class used for computation of correspondence analysis.</p>
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>contingency_table</em>, <em>row_labels=</em><span class="optional">[</span><span class="optional">]</span>, <em>col_labels=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the CA instance</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>contingency_table</strong> &#8211; A contingency table (can be
+<a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.Table" title="Orange.statistics.contingency.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.contingency.Table</span></tt></a> or
+<tt class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></tt> or list-of-lists)</li>
+<li><strong>row_labels</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; An optional list of row labels</li>
+<li><strong>col_labels</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; An optional list of column labels</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.column_factors">
+<tt class="descname">column_factors</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.column_factors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a <tt class="xref py py-obj docutils literal"><span class="pre">numpy.matrix</span></tt> of factor scores (coordinates)
+for columns of the input matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.column_inertia">
+<tt class="descname">column_inertia</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.column_inertia" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the contribution of columns to the inertia across principal axes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.correspondence.CA.column_principal_axes">
+<tt class="descname">column_principal_axes</tt><a class="headerlink" href="#Orange.projection.correspondence.CA.column_principal_axes" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <tt class="xref py py-obj docutils literal"><span class="pre">numpy.matrix</span></tt> of principal axes (in columns)
+of the column points.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.column_profiles">
+<tt class="descname">column_profiles</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.column_profiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a <tt class="xref py py-obj docutils literal"><span class="pre">numpy.matrix</span></tt> of column profiles, i.e. rows of the
+<tt class="docutils literal"><span class="pre">data_matrix</span></tt> normalized by the column sums.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.correspondence.CA.data_matrix">
+<tt class="descname">data_matrix</tt><a class="headerlink" href="#Orange.projection.correspondence.CA.data_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <tt class="xref py py-obj docutils literal"><span class="pre">numpy.matrix</span></tt> object that is representation of
+input contingency table.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.inertia_of_axes">
+<tt class="descname">inertia_of_axes</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.inertia_of_axes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="xref py py-obj docutils literal"><span class="pre">numpy.ndarray</span></tt> whose elements are inertias of principal axes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.ordered_column_indices">
+<tt class="descname">ordered_column_indices</tt><big>(</big><em>axes=None</em><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.ordered_column_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return indices of rows with most inertia. If <tt class="docutils literal"><span class="pre">axes</span></tt> is given
+take only inertia in those principal axes into account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> &#8211; Axes to take into account.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.ordered_row_indices">
+<tt class="descname">ordered_row_indices</tt><big>(</big><em>axes=None</em><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.ordered_row_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return indices of rows with most inertia. If <tt class="docutils literal"><span class="pre">axes</span></tt> is given
+take only inertia in those those principal axes into account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>axes</strong> &#8211; Axes to take into account.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.plot_scree_diagram">
+<tt class="descname">plot_scree_diagram</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.plot_scree_diagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a scree diagram of the inertia.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.row_factors">
+<tt class="descname">row_factors</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.row_factors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a <tt class="xref py py-obj docutils literal"><span class="pre">numpy.matrix</span></tt> of factor scores (coordinates)
+for rows of the input matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.row_inertia">
+<tt class="descname">row_inertia</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.row_inertia" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the contribution of rows to the inertia across principal axes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.correspondence.CA.row_principal_axes">
+<tt class="descname">row_principal_axes</tt><a class="headerlink" href="#Orange.projection.correspondence.CA.row_principal_axes" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <tt class="xref py py-obj docutils literal"><span class="pre">numpy.matrix</span></tt> of principal axes (in columns)
+of the row points.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.correspondence.CA.row_profiles">
+<tt class="descname">row_profiles</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.CA.row_profiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a <tt class="xref py py-obj docutils literal"><span class="pre">numpy.matrix</span></tt> of row profiles, i.e. rows of the
+<tt class="docutils literal"><span class="pre">data</span> <span class="pre">matrix</span></tt> normalized by the row sums.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Data table given below represents smoking habits of different employees
+in a company (computed from <cite>smokers_ct.tab</cite>).</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="9%" />
+<col width="11%" />
+<col width="13%" />
+<col width="11%" />
+<col width="22%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head" colspan="4">&nbsp;</th>
+<th class="head">&nbsp;</th>
+</tr>
+<tr class="row-even"><th class="head">Staff group</th>
+<th class="head">None</th>
+<th class="head">Light</th>
+<th class="head">Medium</th>
+<th class="head">Heavy</th>
+<th class="head">Row totals</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-odd"><td>Senior managers</td>
+<td>4</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>11</td>
+</tr>
+<tr class="row-even"><td>Junior managers</td>
+<td>4</td>
+<td>3</td>
+<td>7</td>
+<td>4</td>
+<td>18</td>
+</tr>
+<tr class="row-odd"><td>Senior employees</td>
+<td>25</td>
+<td>10</td>
+<td>12</td>
+<td>2</td>
+<td>51</td>
+</tr>
+<tr class="row-even"><td>Junior employees</td>
+<td>18</td>
+<td>24</td>
+<td>33</td>
+<td>12</td>
+<td>88</td>
+</tr>
+<tr class="row-odd"><td>Secretaries</td>
+<td>10</td>
+<td>6</td>
+<td>7</td>
+<td>2</td>
+<td>25</td>
+</tr>
+<tr class="row-even"><td>Column totals</td>
+<td>61</td>
+<td>45</td>
+<td>62</td>
+<td>25</td>
+<td>193</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>The 4 column values in each row of the table can be viewed as coordinates
+in a 4-dimensional space, and the (Euclidean) distances could be computed
+between the 5 row points in the 4-dimensional space. The distances
+between the points in the 4-dimensional space summarize all information
+about the similarities between the rows in the table above.
+Correspondence analysis module can be used to find a
+lower-dimensional space, in which the row points are positioned in a
+manner that retains all, or almost all, of the information about the
+differences between the rows. All information about the similarities
+between the rows (types of employees in this case) can be presented in a
+simple 2-dimensional graph. While this may not appear to be particularly
+useful for small tables like the one shown above, the presentation and
+interpretation of very large tables (e.g., differential preference for
+10 consumer items among 100 groups of respondents in a consumer survey)
+could greatly benefit from the simplification that can be achieved via
+correspondence analysis (e.g., represent the 10 consumer items in a
+2-dimensional space). This analysis can be similarly performed on columns
+of the table.</p>
+<p>So lets load the data, compute the contingency and do the analysis
+(<a class="reference download internal" href="../../_downloads/correspondence.py"><tt class="xref download docutils literal"><span class="pre">correspondence.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Orange.projection</span> <span class="kn">import</span> <span class="n">correspondence</span>
+<span class="kn">from</span> <span class="nn">Orange.statistics</span> <span class="kn">import</span> <span class="n">contingency</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;smokers_ct.tab&quot;</span><span class="p">)</span>
+<span class="n">staff</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;Staff group&quot;</span><span class="p">]</span>
+<span class="n">smoking</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;Smoking category&quot;</span><span class="p">]</span>
+
+<span class="c"># Compute the contingency</span>
+<span class="n">cont</span> <span class="o">=</span> <span class="n">contingency</span><span class="o">.</span><span class="n">VarVar</span><span class="p">(</span><span class="n">staff</span><span class="p">,</span> <span class="n">smoking</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> 
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">correspondence</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">cont</span><span class="p">,</span> <span class="n">staff</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">smoking</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Row profiles&quot;</span>
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">row_profiles</span><span class="p">()</span>
+<span class="k">print</span> 
+<span class="k">print</span> <span class="s">&quot;Column profiles&quot;</span>
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">column_profiles</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>which produces matrices of relative frequencies (normalized across rows
+and columns respectively)</p>
+<div class="highlight-python"><pre>Column profiles:
+[[ 0.06557377  0.06557377  0.40983607  0.29508197  0.16393443]
+ [ 0.04444444  0.06666667  0.22222222  0.53333333  0.13333333]
+ [ 0.0483871   0.11290323  0.19354839  0.53225806  0.11290323]
+ [ 0.08        0.16        0.16        0.52        0.08      ]]
+
+Row profiles:
+[[ 0.36363636  0.18181818  0.27272727  0.18181818]
+ [ 0.22222222  0.16666667  0.38888889  0.22222222]
+ [ 0.49019608  0.19607843  0.23529412  0.07843137]
+ [ 0.20454545  0.27272727  0.375       0.14772727]
+ [ 0.4         0.24        0.28        0.08      ]]</pre>
+</div>
+<p>The points in the two-dimensional correspondence analysis display that are
+close to each other are similar with regard to the pattern of relative
+frequencies across the columns, i.e. they have similar row profiles.
+After producing the plot it can be noticed that along the most important
+first axis in the plot, the Senior employees and Secretaries are relatively
+close together. This can be also seen by examining row profile, these two
+groups of employees show very similar patterns of relative frequencies
+across the categories of smoking intensity.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">c</span><span class="o">.</span><span class="n">plot_biplot</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/correspondence-biplot.png" src="../../_images/correspondence-biplot.png" />
+<p>Lines 26-29 print out singular values , eigenvalues, percentages of
+inertia explained. These are important values to decide how many axes
+are needed to represent the data. The dimensions are &#8220;extracted&#8221; to
+maximize the distances between the row or column points, and successive
+dimensions will &#8220;explain&#8221; less and less of the overall inertia.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Singular values: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">D</span><span class="p">))</span>
+<span class="k">print</span> <span class="s">&quot;Eigen values: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="n">diag</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">D</span><span class="p">)))</span>
+<span class="k">print</span> <span class="s">&quot;Percentage of Inertia:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">inertia_of_axes</span><span class="p">()</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">inertia_of_axes</span><span class="p">())</span> <span class="o">*</span> <span class="mf">100.0</span><span class="p">)</span>
+<span class="k">print</span>
+</pre></div>
+</div>
+<p>which outputs:</p>
+<div class="highlight-python"><pre>Singular values: 
+[  2.73421115e-01   1.00085866e-01   2.03365208e-02   1.20036007e-16]
+Eigen values: 
+[  7.47591059e-02   1.00171805e-02   4.13574080e-04   1.44086430e-32]
+Percentage of Inertia:
+[  8.78492893e+01   1.16387938e+01   5.11916964e-01   1.78671526e-29]</pre>
+</div>
+<p>Lines 31-35 print out principal row coordinates with respect to first
+two axes. And lines 24-25 show decomposition of inertia.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Principal row coordinates:&quot;</span>
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">row_factors</span><span class="p">()</span>
+<span class="k">print</span> 
+<span class="k">print</span> <span class="s">&quot;Decomposition Of Inertia:&quot;</span>
+<span class="k">print</span> <span class="n">c</span><span class="o">.</span><span class="n">column_inertia</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Lets also plot the scree diagram. Scree diagram is a plot of the
+amount of inertia accounted for by successive dimensions, i.e.
+it is a plot of the percentage of inertia against the components,
+plotted in order of magnitude from largest to smallest. This plot is
+usually used to identify components with the highest contribution of
+inertia, which are selected, and then look for a change in slope in
+the diagram, where the remaining factors seem simply to be debris at
+the bottom of the slope and they are discarded.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">c</span><span class="o">.</span><span class="n">plot_scree_diagram</span><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/correspondence-scree-plot.png" src="../../_images/correspondence-scree-plot.png" />
+<div class="section" id="multi-correspondence-analysis">
+<h3>Multi-Correspondence Analysis<a class="headerlink" href="#multi-correspondence-analysis" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="utility-functions">
+<h2>Utility Functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="Orange.projection.correspondence.burt_table">
+<tt class="descclassname">Orange.projection.correspondence.</tt><tt class="descname">burt_table</tt><big>(</big><em>data</em>, <em>attributes</em><big>)</big><a class="headerlink" href="#Orange.projection.correspondence.burt_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a Burt table (all values cross-tabulation) from data for attributes.</p>
+<p>Return and ordered list of (attribute, value) pairs and a numpy.ndarray with the tabulations.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; Data table.</li>
+<li><strong>attributes</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; List of attributes (must be Discrete).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;smokers_ct&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">items</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">burt_table</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;Staff group&quot;</span><span class="p">],</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;Smoking category&quot;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

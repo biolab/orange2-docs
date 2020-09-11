@@ -1,0 +1,257 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Graphing and Orange Widgets &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Graphing and Orange Widgets</a><ul>
+<li><a class="reference internal" href="#plots">Plots</a></li>
+<li><a class="reference internal" href="#colors-in-orange-widgets">Colors in Orange Widgets</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="graphing-and-orange-widgets">
+<h1>Graphing and Orange Widgets<a class="headerlink" href="#graphing-and-orange-widgets" title="Permalink to this headline">¶</a></h1>
+<p>The most fun widgets are of course those that include graphics. For
+this we either use Qt&#8217;s <tt class="xref py py-class docutils literal"><span class="pre">QGraphicsScene</span></tt> (widgets for tree and
+heat map visualizations, for instance, use this), or use a special
+control for drawing data plots as provided in Qwt library and <tt class="xref py py-mod docutils literal"><span class="pre">PyQwt</span></tt>
+interface. Here we look at the latter, and extend our learning curve
+widget with a control that plots the curve.</p>
+<div class="section" id="plots">
+<h2>Plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h2>
+<p>Let us construct a widget with a following appearance:</p>
+<img alt="../../_images/learningcurve-plot.png" src="../../_images/learningcurve-plot.png" />
+<p>There are two new elements from our previous incarnation of
+a learning curve widget: a control with a list of classifiers, and a
+graph with a plot of learning curves. From a list of classifiers we
+can select those to be displayed in the plot.</p>
+<p>The widget still provides learning curve table, but this is now
+offered in a tabbed pane together with a graph. The code for
+definition of the tabbed pane, and initialization of the graph is</p>
+<div class="highlight-python"><div class="highlight"><pre>        <span class="c"># start of content (right) area</span>
+        <span class="n">tabs</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">tabWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainArea</span><span class="p">)</span>
+
+        <span class="c"># graph tab</span>
+        <span class="n">tab</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">createTabPage</span><span class="p">(</span><span class="n">tabs</span><span class="p">,</span> <span class="s">&quot;Graph&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">OWGraph</span><span class="p">(</span><span class="n">tab</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">setAxisAutoScale</span><span class="p">(</span><span class="n">QwtPlot</span><span class="o">.</span><span class="n">xBottom</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">setAxisAutoScale</span><span class="p">(</span><span class="n">QwtPlot</span><span class="o">.</span><span class="n">yLeft</span><span class="p">)</span>
+        <span class="n">tab</span><span class="o">.</span><span class="n">layout</span><span class="p">()</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setGraphGrid</span><span class="p">()</span>
+
+        <span class="c"># table tab</span>
+        <span class="n">tab</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">createTabPage</span><span class="p">(</span><span class="n">tabs</span><span class="p">,</span> <span class="s">&quot;Table&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">tab</span><span class="p">,</span> <span class="n">selectionMode</span><span class="o">=</span><span class="n">QTableWidget</span><span class="o">.</span><span class="n">NoSelection</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><tt class="xref py py-class docutils literal"><span class="pre">OWGrap</span></tt> is a convenience subclass of <tt class="xref py py-class docutils literal"><span class="pre">QwtPlot</span></tt>
+and is imported from OWGraph module. For the graph, we use
+<tt class="xref py py-func docutils literal"><span class="pre">setAxisAutoScale()</span></tt> to request that the axis are automatically
+set in regard to the data that is plotted in the graph. We plot
+the graph in using the following code</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">drawLearningCurve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learner</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">addCurve</span><span class="p">(</span>
+            <span class="n">learner</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">xData</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">curvePoints</span><span class="p">,</span>
+            <span class="n">yData</span><span class="o">=</span><span class="n">learner</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+            <span class="n">autoScale</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        
+        <span class="n">learner</span><span class="o">.</span><span class="n">curve</span> <span class="o">=</span> <span class="n">curve</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setGraphStyle</span><span class="p">(</span><span class="n">learner</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This is simple. We store the curve returned from <tt class="xref py py-obj docutils literal"><span class="pre">addCurve</span></tt> with a
+learner.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This is a very bad design. Please do <strong>not</strong> store widget specific
+data in the input objects.</p>
+</div>
+<p>In this way, each learner also stores the current scores, which is a
+list of numbers to be plotted in Qwt graph. The details on how the
+plot is set are dealt with in <tt class="xref py py-obj docutils literal"><span class="pre">setGraphStyle</span></tt> function:</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">setGraphStyle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learner</span><span class="p">):</span>
+        <span class="n">curve</span> <span class="o">=</span> <span class="n">learner</span><span class="o">.</span><span class="n">curve</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">graphDrawLines</span><span class="p">:</span>
+            <span class="n">curve</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">QwtPlotCurve</span><span class="o">.</span><span class="n">Lines</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">curve</span><span class="o">.</span><span class="n">setStyle</span><span class="p">(</span><span class="n">QwtPlotCurve</span><span class="o">.</span><span class="n">NoCurve</span><span class="p">)</span>
+
+        <span class="n">curve</span><span class="o">.</span><span class="n">setSymbol</span><span class="p">(</span>
+            <span class="n">QwtSymbol</span><span class="p">(</span><span class="n">QwtSymbol</span><span class="o">.</span><span class="n">Ellipse</span><span class="p">,</span>
+                      <span class="n">QBrush</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span> <span class="n">QPen</span><span class="p">(</span><span class="n">QColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)),</span>
+                      <span class="n">QSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graphPointSize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">graphPointSize</span><span class="p">)))</span>
+
+        <span class="n">curve</span><span class="o">.</span><span class="n">setPen</span><span class="p">(</span><span class="n">QPen</span><span class="p">(</span><span class="n">learner</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Notice that the color of the plot line that is specific to the
+learner is stored in its attribute <tt class="xref py py-obj docutils literal"><span class="pre">color</span></tt>
+(<tt class="xref py py-obj docutils literal"><span class="pre">learner.color</span></tt>). Who sets it and how? This we discuss in
+the following subsection.</p>
+</div>
+<div class="section" id="colors-in-orange-widgets">
+<h2>Colors in Orange Widgets<a class="headerlink" href="#colors-in-orange-widgets" title="Permalink to this headline">¶</a></h2>
+<p>Uniform assignment of colors across different widget is an
+important issue. When we plot the same data in different widgets, we
+expect that the color we used in a consistent way; for instance data
+instances of one class should be plotted in scatter plot and parallel
+axis plot using the same color. Developers are thus advised to use
+<tt class="xref py py-obj docutils literal"><span class="pre">ColorPaletteHSV</span></tt>, which can be imported from <tt class="xref py py-mod docutils literal"><span class="pre">OWWidget</span></tt>
+module. <tt class="xref py py-obj docutils literal"><span class="pre">ColorPaletteHSV</span></tt> takes an
+integer as an parameter, and returns a list of corresponding number of
+colors. In our learning curve widget, we use it within a function that
+sets the list box with learners</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">updatellb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockSelectionChanges</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">llb</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="n">ColorPaletteHSV</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">))</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">lt</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">):</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">lt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">(</span><span class="n">ColorPixmap</span><span class="p">(</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">l</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">llb</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setSelected</span><span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">isSelected</span><span class="p">)</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockSelectionChanges</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>The code above sets the items of the list box, where each item
+includes a learner and a small box in learner&#8217;s color, which is in
+this widget also used as a sort of a legend for the graph. This box is
+returned by <tt class="xref py py-obj docutils literal"><span class="pre">ColorPixmap</span></tt> function defined in
+<tt class="xref py py-obj docutils literal"><span class="pre">OWColorPalette.py</span></tt>. Else, the classifier&#8217;s list box control is
+defined in the initialization of the widget using</p>
+<div class="highlight-python"><div class="highlight"><pre>        <span class="bp">self</span><span class="o">.</span><span class="n">cbox</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">widgetBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">controlArea</span><span class="p">,</span> <span class="s">&quot;Learners&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">llb</span> <span class="o">=</span> <span class="n">OWGUI</span><span class="o">.</span><span class="n">listBox</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cbox</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&quot;selectedLearners&quot;</span><span class="p">,</span>
+                                 <span class="n">selectionMode</span><span class="o">=</span><span class="n">QListWidget</span><span class="o">.</span><span class="n">MultiSelection</span><span class="p">,</span>
+                                 <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learnerSelectionChanged</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">llb</span><span class="o">.</span><span class="n">setMinimumHeight</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blockSelectionChanges</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Now, what is this <tt class="xref py py-obj docutils literal"><span class="pre">blockSelectionChanges</span></tt>? Any time
+user makes a selection change in list box of classifiers, we want to
+invoke the procedure called
+<tt class="xref py py-func docutils literal"><span class="pre">learnerSelectionChanged()</span></tt>. But we want to perform
+actions there when changes in the list box are invoked from clicking
+by a user, and not by changing list box items from a program. This is
+why, every time we want <tt class="xref py py-func docutils literal"><span class="pre">learnerSelectionChanged()</span></tt> not to
+perform its function, we set <tt class="xref py py-obj docutils literal"><span class="pre">self.blockSelectionChanges</span></tt>
+to 1.</p>
+<p>In our widget, <tt class="xref py py-func docutils literal"><span class="pre">learnerSelectionChanged()</span></tt> figures out
+if any curve should be removed from the graph (the user has just
+deselected the corresponding item in the list box) or added to the
+graph (the user just selected a learner)</p>
+<div class="highlight-python"><div class="highlight"><pre>    <span class="k">def</span> <span class="nf">learnerSelectionChanged</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blockSelectionChanges</span><span class="p">:</span> <span class="k">return</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">lt</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">learners</span><span class="p">):</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">lt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">isSelected</span> <span class="o">!=</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedLearners</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">isSelected</span><span class="p">:</span> <span class="c"># learner was deselected</span>
+                    <span class="n">l</span><span class="o">.</span><span class="n">curve</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span> <span class="c"># learner was selected</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">drawLearningCurve</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
+            <span class="n">l</span><span class="o">.</span><span class="n">isSelected</span> <span class="o">=</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedLearners</span>
+
+    <span class="c"># Graph specific methods</span>
+</pre></div>
+</div>
+<p>The complete code of this widget is available <a class="reference download internal" href="../../_downloads/OWLearningCurveC.py"><tt class="xref download docutils literal"><span class="pre">here</span></tt></a>.
+This is almost like a typical
+widget that is include in a standard Orange distribution, with a
+typical size just under 300 lines. Just some final cosmetics is needed
+to make this widget a standard one, including setting some graph
+properties (like line and point sizes, grid line control, etc.) and
+saving the graph to an output file.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

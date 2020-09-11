@@ -1,0 +1,486 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Selection (selection) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Selection (<tt class="docutils literal"><span class="pre">selection</span></tt>)</a><ul>
+<li><a class="reference internal" href="#functions-for-feature-subset-selection">Functions for feature subset selection</a></li>
+<li><a class="reference internal" href="#learning-with-feature-subset-selection">Learning with feature subset selection</a></li>
+<li><a class="reference internal" href="#class-wrappers-for-selection-functions">Class wrappers for selection functions</a><ul>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="selection-selection">
+<h1>Selection (<tt class="docutils literal"><span class="pre">selection</span></tt>)<a class="headerlink" href="#selection-selection" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><p id="index-1">Feature selection module contains several utility functions for selecting features based on they scores normally
+obtained in classification or regression problems. A typical example is the function <a class="reference external" href="http://docs.python.org/library/select.html#module-select" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">select</span></tt></a>
+that returns a subsets of highest-scored features features:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">voting</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting&quot;</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">ma</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">score_all</span><span class="p">(</span><span class="n">voting</span><span class="p">)</span>
+<span class="n">best</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">top_rated</span><span class="p">(</span><span class="n">ma</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&#39;Best </span><span class="si">%d</span><span class="s"> features:&#39;</span> <span class="o">%</span> <span class="n">n</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">best</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">s</span>
+</pre></div>
+</div>
+<p>The script outputs:</p>
+<div class="highlight-python"><pre>Best 3 features:
+physician-fee-freeze
+el-salvador-aid
+synfuels-corporation-cutback</pre>
+</div>
+<p>The module also includes a learner that incorporates feature subset
+selection.</p>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.7.1: </span><cite>select</cite>, <cite>select_above_threshold</cite> and <cite>select_relief</cite> now preserve
+the domain&#8217;s meta attributes and <cite>class_vars</cite>.</p>
+<div class="section" id="functions-for-feature-subset-selection">
+<h2>Functions for feature subset selection<a class="headerlink" href="#functions-for-feature-subset-selection" title="Permalink to this headline">¶</a></h2>
+<dl class="staticmethod">
+<dt id="Orange.feature.selection.top_rated">
+<em class="property">static </em><tt class="descclassname">selection.</tt><tt class="descname">top_rated</tt><big>(</big><em>scores</em>, <em>n</em>, <em>highest_best=True</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.top_rated" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return n top-rated features from the list of scores.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>scores</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list such as the one returned by <a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.score_all" title="Orange.feature.scoring.score_all"><tt class="xref py py-func docutils literal"><span class="pre">score_all()</span></tt></a></li>
+<li><strong>n</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of features to select.</li>
+<li><strong>highest_best</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If true, the features that are scored higher are preferred.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Orange.feature.selection.above_threshold">
+<em class="property">static </em><tt class="descclassname">selection.</tt><tt class="descname">above_threshold</tt><big>(</big><em>scores</em>, <em>threshold=0.0</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.above_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return features (without scores) with scores above or
+equal to a specified threshold.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>scores</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; A list such as one returned by <a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.score_all" title="Orange.feature.scoring.score_all"><tt class="xref py py-func docutils literal"><span class="pre">score_all()</span></tt></a></li>
+<li><strong>threshold</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Threshold for selection.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Orange.feature.selection.select">
+<em class="property">static </em><tt class="descclassname">selection.</tt><tt class="descname">select</tt><big>(</big><em>data</em>, <em>scores</em>, <em>n</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct and return a new data table that includes a
+class and only the best features from a list scores.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; a data table</li>
+<li><strong>scores</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list such as the one returned by
+<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.score_all" title="Orange.feature.scoring.score_all"><tt class="xref py py-obj docutils literal"><span class="pre">score_all</span></tt></a></li>
+<li><strong>n</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of features to select</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Orange.feature.selection.select_above_threshold">
+<em class="property">static </em><tt class="descclassname">selection.</tt><tt class="descname">select_above_threshold</tt><big>(</big><em>data</em>, <em>scores</em>, <em>threshold=0.0</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.select_above_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct and return a new data table that includes a class and
+features from the list returned by
+<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.score_all" title="Orange.feature.scoring.score_all"><tt class="xref py py-obj docutils literal"><span class="pre">score_all</span></tt></a> with higher or equal score
+to a given threshold.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; a data table</li>
+<li><strong>scores</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; a list such as the one returned by
+<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.score_all" title="Orange.feature.scoring.score_all"><tt class="xref py py-obj docutils literal"><span class="pre">score_all</span></tt></a></li>
+<li><strong>threshold</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; threshold for selection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="Orange.feature.selection.select_relief">
+<em class="property">static </em><tt class="descclassname">selection.</tt><tt class="descname">select_relief</tt><big>(</big><em>data</em>, <em>measure=Orange.feature.scoring.Relief(k=20</em>, <em>m=10)</em>, <em>margin=0</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.select_relief" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iteratively remove the worst scored feature until no feature
+has a score below the margin. The filter procedure was originally
+designed for measures such as Relief, which are context dependent,
+i.e., removal of features may change the scores of other remaining
+features. The score is thus recomputed in each iteration.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; a data table</li>
+<li><strong>measure</strong> (<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.scoring.Score</span></tt></a>) &#8211; a feature scorer</li>
+<li><strong>margin</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; margin for removal</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="learning-with-feature-subset-selection">
+<h2>Learning with feature subset selection<a class="headerlink" href="#learning-with-feature-subset-selection" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Orange.feature.selection.FilteredLearner">
+<em class="property">class </em><tt class="descclassname">Orange.feature.selection.</tt><tt class="descname">FilteredLearner</tt><big>(</big><em>base_learner</em>, <em>filter=FilterAboveThreshold()</em>, <em>name=filtered</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.FilteredLearner" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>A feature selection wrapper around base learner. When provided data,</dt>
+<dd>this learner applies a given feature selection method and then calls
+the base learner.</dd>
+</dl>
+<p>Here is an example of how to build a wrapper around naive Bayesian learner
+and use it on a data set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nb</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveBayesLearner</span><span class="p">()</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilteredLearner</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span>
+    <span class="nb">filter</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilterBestN</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;filtered&#39;</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.selection.FilteredClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.feature.selection.</tt><tt class="descname">FilteredClassifier</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.FilteredClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>A classifier returned by FilteredLearner.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="class-wrappers-for-selection-functions">
+<h2>Class wrappers for selection functions<a class="headerlink" href="#class-wrappers-for-selection-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Orange.feature.selection.FilterAboveThreshold">
+<em class="property">class </em><tt class="descclassname">Orange.feature.selection.</tt><tt class="descname">FilterAboveThreshold</tt><big>(</big><em>data=None</em>, <em>measure=Orange.feature.scoring.Relief(k=20</em>, <em>m=50)</em>, <em>threshold=0.0</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.FilterAboveThreshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper around <tt class="xref py py-obj docutils literal"><span class="pre">select_above_threshold</span></tt>; the
+constructor stores the parameters of the feature selection
+procedure that are then applied when the the selection
+is called with the actual data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>measure</strong> (<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.scoring.Score</span></tt></a>) &#8211; a feature scorer</li>
+<li><strong>threshold</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; threshold for selection. Defaults to 0.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.feature.selection.FilterAboveThreshold.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.FilterAboveThreshold.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return data table features that have scores above given
+threshold.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; data table</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<p>Below are few examples of utility of this class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">filter</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilterAboveThreshold</span><span class="p">(</span><span class="n">threshold</span><span class="o">=.</span><span class="mi">15</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_data</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilterAboveThreshold</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilterAboveThreshold</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=.</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilterAboveThreshold</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=.</span><span class="mi">1</span><span class="p">,</span> \
+<span class="go">    measure=Orange.feature.scoring.Gini())</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.feature.selection.FilterBestN">
+<em class="property">class </em><tt class="descclassname">Orange.feature.selection.</tt><tt class="descname">FilterBestN</tt><big>(</big><em>data=None</em>, <em>measure=Orange.feature.scoring.Relief(k=20</em>, <em>m=50)</em>, <em>n=5</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.FilterBestN" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper around <a class="reference external" href="http://docs.python.org/library/select.html#module-select" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">select</span></tt></a>; the
+constructor stores the filter parameters that are applied when the
+function is called.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>measure</strong> (<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.scoring.Score</span></tt></a>) &#8211; a feature scorer</li>
+<li><strong>n</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of features to select</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.selection.FilterRelief">
+<em class="property">class </em><tt class="descclassname">Orange.feature.selection.</tt><tt class="descname">FilterRelief</tt><big>(</big><em>data=None</em>, <em>measure=Orange.feature.scoring.Relief(k=20</em>, <em>m=50)</em>, <em>margin=0</em><big>)</big><a class="headerlink" href="#Orange.feature.selection.FilterRelief" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class wrapper around <tt class="xref py py-obj docutils literal"><span class="pre">select_best_n</span></tt>; the
+constructor stores the filter parameters that are applied when the
+function is called.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>measure</strong> (<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.scoring.Score</span></tt></a>) &#8211; a feature scorer</li>
+<li><strong>margin</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; margin for Relief scoring</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<p>The following script defines a new Naive Bayes classifier, that
+selects five best features from the data set before learning.
+The new classifier is wrapped-up in a special class (see
+<a class="reference internal" href="../../tutorial/rst/python-learners.html"><em>Learners in Python</em></a> lesson in
+<a class="reference internal" href="../../tutorial/rst/index.html"><em>Orange Tutorial</em></a>). Th script compares this filtered learner with
+one that uses a complete set of features.</p>
+<p><a class="reference download internal" href="../../_downloads/selection-bayes.py"><tt class="xref download docutils literal"><span class="pre">selection-bayes.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+
+<span class="k">class</span> <span class="nc">BayesFSS</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">examples</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">learner</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">examples</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">learner</span><span class="p">(</span><span class="n">examples</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">learner</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Naive Bayes with FSS&#39;</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span> <span class="o">=</span> <span class="mi">5</span>
+      
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">ma</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">score_all</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">filtered</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">selectBestNAtts</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">ma</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">filtered</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">BayesFSS_Classifier</span><span class="p">(</span><span class="n">classifier</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">BayesFSS_Classifier</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">example</span><span class="p">,</span> <span class="n">resultType</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">Classifier</span><span class="o">.</span><span class="n">GetValue</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">example</span><span class="p">,</span> <span class="n">resultType</span><span class="p">)</span>
+
+
+<span class="c"># test above wraper on a data set</span>
+<span class="n">voting</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting&quot;</span><span class="p">)</span>
+<span class="n">learners</span> <span class="o">=</span> <span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;Naive Bayes&#39;</span><span class="p">),</span>
+            <span class="n">BayesFSS</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;with FSS&quot;</span><span class="p">))</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">voting</span><span class="p">)</span>
+
+<span class="c"># output the results</span>
+<span class="k">print</span> <span class="s">&quot;Learner      CA&quot;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">learners</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-12s</span><span class="s"> </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">learners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">results</span><span class="p">)[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Interestingly, and somehow expected, feature subset selection
+helps. This is the output that we get:</p>
+<div class="highlight-python"><pre>Learner      CA
+Naive Bayes  0.903
+with FSS     0.940</pre>
+</div>
+<p>We can do all of  he above by wrapping the learner using
+<a class="reference internal" href="#Orange.feature.selection.FilteredLearner" title="Orange.feature.selection.FilteredLearner"><tt class="xref py py-class docutils literal"><span class="pre">FilteredLearner</span></tt></a>, thus
+creating an object that is assembled from data filter and a base learner. When
+given a data table, this learner uses attribute filter to construct a new
+data set and base learner to construct a corresponding
+classifier. Attribute filters should be of the type like
+<a class="reference internal" href="#Orange.feature.selection.FilterAboveThreshold" title="Orange.feature.selection.FilterAboveThreshold"><tt class="xref py py-class docutils literal"><span class="pre">FilterAboveThreshold</span></tt></a> or
+<a class="reference internal" href="#Orange.feature.selection.FilterBestN" title="Orange.feature.selection.FilterBestN"><tt class="xref py py-class docutils literal"><span class="pre">FilterBestN</span></tt></a> that can be initialized with
+the arguments and later presented with a data, returning new reduced data
+set.</p>
+<p>The following code fragment replaces the bulk of code
+from previous example, and compares naive Bayesian classifier to the
+same classifier when only a single most important attribute is
+used.</p>
+<p><a class="reference download internal" href="../../_downloads/selection-filtered-learner.py"><tt class="xref download docutils literal"><span class="pre">selection-filtered-learner.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">nb</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">()</span>
+<span class="n">fl</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilteredLearner</span><span class="p">(</span><span class="n">nb</span><span class="p">,</span>
+     <span class="nb">filter</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">selection</span><span class="o">.</span><span class="n">FilterBestNAtts</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;filtered&#39;</span><span class="p">)</span>
+<span class="n">learners</span> <span class="o">=</span> <span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&#39;bayes&#39;</span><span class="p">),</span> <span class="n">fl</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now, let&#8217;s decide to retain three features and observe how many times
+an attribute was used. Remember, 10-fold cross validation constructs
+ten instances for each classifier, and each time we run
+<a class="reference internal" href="#Orange.feature.selection.FilteredLearner" title="Orange.feature.selection.FilteredLearner"><tt class="xref py py-class docutils literal"><span class="pre">FilteredLearner</span></tt></a> a different set of features may be
+selected. <tt class="docutils literal"><span class="pre">Orange.evaluation.testing.cross_validation</span></tt> stores classifiers in
+<tt class="docutils literal"><span class="pre">results</span></tt> variable, and <a class="reference internal" href="#Orange.feature.selection.FilteredLearner" title="Orange.feature.selection.FilteredLearner"><tt class="xref py py-class docutils literal"><span class="pre">FilteredLearner</span></tt></a>
+returns a classifier that can tell which features it used, so the code
+to do all this is quite short.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Number of times attributes were used in cross-validation:&quot;</span>
+<span class="n">attsUsed</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">classifiers</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">atts</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">attsUsed</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">attsUsed</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">attsUsed</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">attsUsed</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%2d</span><span class="s"> x </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attsUsed</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">k</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Running <a class="reference download internal" href="../../_downloads/selection-filtered-learner.py"><tt class="xref download docutils literal"><span class="pre">selection-filtered-learner.py</span></tt></a>
+with three features selected each time a learner is run gives the
+following result:</p>
+<div class="highlight-python"><pre>Learner      CA
+bayes        0.903
+filtered     0.956
+
+Number of times features were used in cross-validation:
+ 3 x el-salvador-aid
+ 6 x synfuels-corporation-cutback
+ 7 x adoption-of-the-budget-resolution
+10 x physician-fee-freeze
+ 4 x crime</pre>
+</div>
+<div class="section" id="references">
+<h3>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>K. Kira and L. Rendell. A practical approach to feature selection. In
+D. Sleeman and P. Edwards, editors, Proc. 9th Int&#8217;l Conf. on Machine
+Learning, pages 249{256, Aberdeen, 1992. Morgan Kaufmann Publishers.</li>
+<li>I. Kononenko. Estimating attributes: Analysis and extensions of RELIEF.
+In F. Bergadano and L. De Raedt, editors, Proc. European Conf. on Machine
+Learning (ECML-94), pages  171-182. Springer-Verlag, 1994.</li>
+<li>R. Kohavi, G. John: Wrappers for Feature Subset Selection, Artificial
+Intelligence, 97 (1-2), pages 273-324, 1997</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

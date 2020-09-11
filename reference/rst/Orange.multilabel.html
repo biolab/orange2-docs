@@ -1,0 +1,535 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Multi-label classification (multilabel) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Multi-label classification (<tt class="docutils literal"><span class="pre">multilabel</span></tt>)</a><ul>
+<li><a class="reference internal" href="#binary-relevance-learner">Binary Relevance Learner</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#labelpowerset-learner">LabelPowerset Learner</a><ul>
+<li><a class="reference internal" href="#id2">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multiknn-learner">MultikNN Learner</a></li>
+<li><a class="reference internal" href="#ml-knn-learner">ML-kNN Learner</a><ul>
+<li><a class="reference internal" href="#id3">Examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#br-knn-learner">BR-kNN Learner</a><ul>
+<li><a class="reference internal" href="#id4">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="multi-label-classification-multilabel">
+<h1>Multi-label classification (<tt class="docutils literal"><span class="pre">multilabel</span></tt>)<a class="headerlink" href="#multi-label-classification-multilabel" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Multi-label_classification">Multi-label classification</a> is a machine learning prediction
+problem in which multiple binary variables (i.e. labels) are being predicted.
+Orange offers a limited number of methods for this task.</p>
+<p>Multi-label data is represented as <a class="reference internal" href="Orange.data.domain.html#multiple-classes"><em>multi-target data</em></a>
+with discrete binary classes with values &#8216;0&#8217; and &#8216;1&#8217;. Multi-target data is
+also supported by Orange&#8217;s tab file format
+using <a class="reference internal" href="Orange.data.formats.html#tab-delimited"><em>multiclass directive</em></a>.</p>
+<span class="target" id="module-Orange.multilabel.br"></span><div class="section" id="binary-relevance-learner">
+<span id="index-0"></span><h2>Binary Relevance Learner<a class="headerlink" href="#binary-relevance-learner" title="Permalink to this headline">¶</a></h2>
+<p>The most basic problem transformation method for multi-label classification
+is the Binary Relevance method. 
+It learns <span class="math">|L|</span> binary classifiers <span class="math">H_l:X \rightarrow \{l, \neg l\}</span>, 
+one for each different label <span class="math">l</span> in <span class="math">L</span>.
+It transforms the original data set into <span class="math">|L|</span> data sets <span class="math">D_l</span> 
+that contain all examples of the original data set, labelled as
+<span class="math">l</span> if the labels of the original example contained <span class="math">l</span> and 
+as <span class="math">\neg l</span> otherwise. It is the same solution used in order 
+to deal with a single-label multi-class problem using a binary classifier. 
+For more information, see G. Tsoumakas and I. Katakis. <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.104.9401&amp;rep=rep1&amp;type=pdf">Multi-label classification: An overview</a>. 
+International Journal of Data Warehousing and Mining, 3(3):1-13, 2007.</p>
+<p>Note that a copy of the table is made in RAM for each label to enable construction of
+a classifier. Due to technical limitations, that is currently unavoidable and
+should be remedied in Orange 3.</p>
+<span class="target" id="index-1"></span><dl class="class">
+<dt id="Orange.multilabel.BinaryRelevanceLearner">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">BinaryRelevanceLearner</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BinaryRelevanceLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multibase.MultiLabelLearner</span></tt></p>
+<p>Class that implements the Binary Relevance (BR) method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; a table of instances.</li>
+<li><strong>base_learner</strong> (<a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a>) &#8211; the binary learner, the default learner is 
+<a class="reference internal" href="Orange.classification.bayes.html#Orange.classification.bayes.NaiveLearner" title="Orange.classification.bayes.NaiveLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.bayes.NaiveLearner</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="index-2"></span><dl class="class">
+<dt id="Orange.multilabel.BinaryRelevanceClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">BinaryRelevanceClassifier</tt><big>(</big><em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BinaryRelevanceClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multibase.MultiLabelClassifier</span></tt></p>
+<dl class="method">
+<dt id="Orange.multilabel.BinaryRelevanceClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BinaryRelevanceClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">a list of <a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, a list of <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.distribution.Distribution</span></tt></a>, or a tuple with both</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>The following example demonstrates a straightforward invocation of
+this algorithm (<a class="reference download internal" href="../../_downloads/mlc-classify.py"><tt class="xref download docutils literal"><span class="pre">mlc-classify.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">emotions</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&#39;emotions&#39;</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">multilabel</span><span class="o">.</span><span class="n">BinaryRelevanceLearner</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">classifier</span><span class="p">(</span><span class="n">emotions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<span class="target" id="module-Orange.multilabel.lp"></span><div class="section" id="labelpowerset-learner">
+<span id="index-3"></span><h2>LabelPowerset Learner<a class="headerlink" href="#labelpowerset-learner" title="Permalink to this headline">¶</a></h2>
+<p>LabelPowerset Classification is another transformation method for multi-label classification. 
+It considers each different set of labels that exists in the multi-label data as a 
+single class. Thus it learns a classification problem <span class="math">H:X \rightarrow \mathbb{P}(L)</span>, where
+<span class="math">\mathbb{P}(L)</span> is the power set of L.
+For more information, see G. Tsoumakas and I. Katakis. <a class="reference external" href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.104.9401&amp;rep=rep1&amp;type=pdf">Multi-label classification: An overview</a>. 
+International Journal of Data Warehousing and Mining, 3(3):1-13, 2007.</p>
+<span class="target" id="index-4"></span><dl class="class">
+<dt id="Orange.multilabel.LabelPowersetLearner">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">LabelPowersetLearner</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.LabelPowersetLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multibase.MultiLabelLearner</span></tt></p>
+<p>Class that implements the LabelPowerset (LP) method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; a table of instances.</li>
+<li><strong>base_learner</strong> (<a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a>) &#8211; the binary learner, the default learner is BayesLearner</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="index-5"></span><dl class="class">
+<dt id="Orange.multilabel.LabelPowersetClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">LabelPowersetClassifier</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.LabelPowersetClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multibase.MultiLabelClassifier</span></tt></p>
+<dl class="method">
+<dt id="Orange.multilabel.LabelPowersetClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.multilabel.LabelPowersetClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">a list of <a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, a list of <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.distribution.Distribution</span></tt></a>, or a tuple with both</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="id2">
+<h3>Examples<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>The following example demonstrates a straightforward invocation of
+this algorithm (<a class="reference download internal" href="../../_downloads/mlc-classify.py"><tt class="xref download docutils literal"><span class="pre">mlc-classify.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">emotions</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&#39;emotions&#39;</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">multilabel</span><span class="o">.</span><span class="n">LabelPowersetLearner</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">classifier</span><span class="p">(</span><span class="n">emotions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<span class="target" id="module-Orange.multilabel.multiknn"></span><span class="target" id="index-6"></span><div class="section" id="multiknn-learner">
+<span id="index-7"></span><h2>MultikNN Learner<a class="headerlink" href="#multiknn-learner" title="Permalink to this headline">¶</a></h2>
+<p>MultikNN Classification is the base class of kNN method based multi-label
+classification.</p>
+<span class="target" id="index-8"></span><dl class="class">
+<dt id="Orange.multilabel.MultikNNLearner">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">MultikNNLearner</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.MultikNNLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multibase.MultiLabelLearner</span></tt></p>
+<p>Class implementing the MultikNN (Multi-Label k Nearest Neighbours) algorithm.</p>
+<dl class="attribute">
+<dt id="Orange.multilabel.multiknn.MultikNNLearner.k">
+<tt class="descname">k</tt><a class="headerlink" href="#Orange.multilabel.multiknn.MultikNNLearner.k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of neighbors. The default value is 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.multilabel.multiknn.MultikNNLearner.num_labels">
+<tt class="descname">num_labels</tt><a class="headerlink" href="#Orange.multilabel.multiknn.MultikNNLearner.num_labels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of labels</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.multilabel.multiknn.MultikNNLearner.label_indices">
+<tt class="descname">label_indices</tt><a class="headerlink" href="#Orange.multilabel.multiknn.MultikNNLearner.label_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>The indices of labels in the domain</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.multilabel.multiknn.MultikNNLearner.knn">
+<tt class="descname">knn</tt><a class="headerlink" href="#Orange.multilabel.multiknn.MultikNNLearner.knn" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="Orange.classification.knn.html#Orange.classification.knn.FindNearest" title="Orange.classification.knn.FindNearest"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.knn.FindNearest</span></tt></a> for nearest neighbor search</p>
+</dd></dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; a table of instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="index-9"></span><dl class="class">
+<dt id="Orange.multilabel.MultikNNClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">MultikNNClassifier</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.MultikNNClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multibase.MultiLabelClassifier</span></tt></p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-Orange.multilabel.mlknn"></span><div class="section" id="ml-knn-learner">
+<span id="index-10"></span><h2>ML-kNN Learner<a class="headerlink" href="#ml-knn-learner" title="Permalink to this headline">¶</a></h2>
+<p>ML-kNN Classification is an adaptation kNN for multi-label
+classification.  In essence, ML-kNN uses the kNN algorithm
+independently for each label <span class="math">l</span>.  It finds the k nearest
+examples to the test instance and considers those that are labeled at
+least with <span class="math">l</span> as positive and the rest as negative.  What
+mainly differentiates this method from other binary relevance (BR)
+methods is the use of prior probabilities. ML-kNN can also rank labels.</p>
+<p>For more information, see Zhang, M. and Zhou, Z. 2007. <a class="reference external" href="http://dx.doi.org/10.1016/j.patcog.2006.12.019">ML-KNN: A lazy
+learning approach to multi-label learning</a>.  Pattern
+Recogn. 40, 7 (Jul. 2007), 2038-2048.</p>
+<span class="target" id="index-11"></span><dl class="class">
+<dt id="Orange.multilabel.MLkNNLearner">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">MLkNNLearner</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.MLkNNLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multiknn.MultikNNLearner</span></tt></p>
+<p>Class implementing the ML-kNN (Multi-Label k Nearest Neighbours)
+algorithm. The class is based on the pseudo-code made available by
+the authors.</p>
+<p>The pseudo code of ML-kNN:</p>
+<blockquote>
+<div><p><span class="math">[\vec y_t,\vec r_t] = ML-kNN(T,K,t,s)</span></p>
+<p><span class="math">\%Computing \quad the \quad prior \quad probabilities \quad P(H_b^l)</span></p>
+<p><span class="math">(1) for \quad l \in y \quad do</span></p>
+<p><span class="math">(2) \quad  P(H_1^l) = (s+ \sum_{i=1}^m \vec y_{x_i}(l))/(s * 2+m); P(H_0^l)=1-P(H_1^l)</span></p>
+<p><span class="math">\%Computing \quad the \quad posterior \quad probabilities P(E_j^l|H_b^l)</span></p>
+<p><span class="math">(3) Identify \quad N(x_i), i \in {1,2,...,m}</span></p>
+<p><span class="math">(4) for \quad l \in y \quad do</span></p>
+<p><span class="math">(5) \quad for \quad j \in{0,1,...,K} \quad do</span></p>
+<p><span class="math">(6) \quad \quad c[j]=0; c'[j]=0</span></p>
+<p><span class="math">(7) \quad for \quad i \in{1,...,m} \quad do</span></p>
+<p><span class="math">(8) \quad \quad \delta = \vec C_{x_i}(l)=\sum_{a \in N(x_i)} \vec y_a(l)</span></p>
+<p><span class="math">(9) \quad \quad if (\vec y_{x_i}(l)==1) \quad then \quad c[\delta]=c[\delta]+1</span></p>
+<p><span class="math">(10)\quad \quad \quad \quad else \quad c'[\delta]=c'[\delta]+1</span></p>
+<p><span class="math">(11)\quad for \quad j \in{0,1,...,K} \quad do</span></p>
+<p><span class="math">(12)\quad \quad P(E_j^l|H_1^l)=(s+c[j])/(s * (K+1)+ \sum_{p=0}^k c[p])</span></p>
+<p><span class="math">(13)\quad \quad P(E_j^l|H_0^l)=(s+c'[j])/(s *(K+1)+ \sum_{p=0}^k c'[p])</span></p>
+<p><span class="math">\%Computing \quad \vec y_t \quad and \quad \vec r_t</span></p>
+<p><span class="math">(14) Identify \quad N(t)</span></p>
+<p><span class="math">(15) for \quad l \in y \quad do</span></p>
+<p><span class="math">(16)\quad \vec C_t(l) = \sum_{a \in N(t)} \vec y_a(L)</span></p>
+<p><span class="math">(17)\quad \vec y_t(l) = argmax_{b \in {0,1}}P(H_b^l)P(E_{\vec C_t(l)}^l|H_b^l)</span></p>
+<p><span class="math">(18)\quad \vec r_t(l)=P(H_1^l|E_{\vec C_t(l)}^l)=P(H_1^l)P(E_{\vec C_t(l)}|H_1^l)/P(E_{\vec C_t(l)}^l)=P(H_1^l)P(E_{\vec C_t(l)}|H_1^l)/(\sum_{b \in {0,1}}P(H_b^l)P(E_{\vec C_t(l)}^l|H_b^l))</span></p>
+</div></blockquote>
+<dl class="attribute">
+<dt id="Orange.multilabel.mlknn.MLkNNLearner.k">
+<tt class="descname">k</tt><a class="headerlink" href="#Orange.multilabel.mlknn.MLkNNLearner.k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of neighbors. The default value is 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.multilabel.mlknn.MLkNNLearner.smooth">
+<tt class="descname">smooth</tt><a class="headerlink" href="#Orange.multilabel.mlknn.MLkNNLearner.smooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smoothing parameter controlling the strength of uniform prior (Default value is set to 1 which yields the Laplace smoothing).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.multilabel.mlknn.MLkNNLearner.knn">
+<tt class="descname">knn</tt><a class="headerlink" href="#Orange.multilabel.mlknn.MLkNNLearner.knn" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="Orange.classification.knn.html#Orange.classification.knn.FindNearest" title="Orange.classification.knn.FindNearest"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.knn.FindNearest</span></tt></a> for nearest neighbor search</p>
+</dd></dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; a table of instances.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.multilabel.MLkNNLearner.compute_cond">
+<tt class="descname">compute_cond</tt><big>(</big><em>instances</em><big>)</big><a class="headerlink" href="#Orange.multilabel.MLkNNLearner.compute_cond" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute posterior probabilities for each label of the training set.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.multilabel.MLkNNLearner.compute_prior">
+<tt class="descname">compute_prior</tt><big>(</big><em>instances</em><big>)</big><a class="headerlink" href="#Orange.multilabel.MLkNNLearner.compute_prior" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute prior probability for each label of the training set.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="index-12"></span><dl class="class">
+<dt id="Orange.multilabel.MLkNNClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">MLkNNClassifier</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.MLkNNClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multiknn.MultikNNClassifier</span></tt></p>
+<dl class="method">
+<dt id="Orange.multilabel.MLkNNClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.multilabel.MLkNNClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">a list of <a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, a list of <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.distribution.Distribution</span></tt></a>, or a tuple with both</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="id3">
+<h3>Examples<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>The following example demonstrates a straightforward invocation of
+this algorithm (<a class="reference download internal" href="../../_downloads/mlc-classify.py"><tt class="xref download docutils literal"><span class="pre">mlc-classify.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">emotions</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&#39;emotions&#39;</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">multilabel</span><span class="o">.</span><span class="n">MLkNNLearner</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">classifier</span><span class="p">(</span><span class="n">emotions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<span class="target" id="module-Orange.multilabel.brknn"></span><div class="section" id="br-knn-learner">
+<span id="index-13"></span><h2>BR-kNN Learner<a class="headerlink" href="#br-knn-learner" title="Permalink to this headline">¶</a></h2>
+<p>BR-kNN Classification is an adaptation of the kNN algorithm for multi-label classification that 
+is conceptually equivalent to using the popular Binary Relevance problem transformation method 
+in conjunction with the kNN algorithm. It also implements two extensions of BR-kNN. 
+For more information, see E. Spyromitros, G. Tsoumakas, I. Vlahavas, 
+<a class="reference external" href="http://mlkd.csd.auth.gr/multilabel.html">An Empirical Study of Lazy Multilabel Classification Algorithms</a>, 
+Proc. 5th Hellenic Conference on Artificial Intelligence (SETN 2008), Springer, Syros, Greece, 2008.</p>
+<span class="target" id="index-14"></span><dl class="class">
+<dt id="Orange.multilabel.BRkNNLearner">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">BRkNNLearner</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BRkNNLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multiknn.MultikNNLearner</span></tt></p>
+<p>Class implementing the BR-kNN learner.</p>
+<dl class="attribute">
+<dt id="Orange.multilabel.brknn.BRkNNLearner.k">
+<tt class="descname">k</tt><a class="headerlink" href="#Orange.multilabel.brknn.BRkNNLearner.k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of neighbours. If set to 0 (which is also the default value), 
+the square root of the number of instances is used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.multilabel.brknn.BRkNNLearner.ext">
+<tt class="descname">ext</tt><a class="headerlink" href="#Orange.multilabel.brknn.BRkNNLearner.ext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extension type. The default is None, means &#8216;Standard BR&#8217;; &#8216;a&#8217; means
+predicting top ranked label in case of empty prediction set; &#8216;b&#8217; means
+predicting top n ranked labels based on size of labelset in neighbours.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.multilabel.brknn.BRkNNLearner.knn">
+<tt class="descname">knn</tt><a class="headerlink" href="#Orange.multilabel.brknn.BRkNNLearner.knn" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="Orange.classification.knn.html#Orange.classification.knn.FindNearest" title="Orange.classification.knn.FindNearest"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.knn.FindNearest</span></tt></a> for nearest neighbor search</p>
+</dd></dl>
+
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; a table of instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<span class="target" id="index-15"></span><dl class="class">
+<dt id="Orange.multilabel.BRkNNClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.multilabel.</tt><tt class="descname">BRkNNClassifier</tt><big>(</big><em>**argkw</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BRkNNClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Orange.multilabel.multiknn.MultikNNClassifier</span></tt></p>
+<dl class="method">
+<dt id="Orange.multilabel.BRkNNClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BRkNNClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">a list of <a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, a list of <a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.distribution.Distribution</span></tt></a>, or a tuple with both</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.multilabel.BRkNNClassifier.get_labels_a">
+<tt class="descname">get_labels_a</tt><big>(</big><em>prob</em>, <em>_neighs=None</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BRkNNClassifier.get_labels_a" title="Permalink to this definition">¶</a></dt>
+<dd><p>used for BRknn-a</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prob</strong> (<em>list of double</em>) &#8211; the probabilities of the labels</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">the list label value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.multilabel.BRkNNClassifier.get_labels_b">
+<tt class="descname">get_labels_b</tt><big>(</big><em>prob</em>, <em>neighs</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BRkNNClassifier.get_labels_b" title="Permalink to this definition">¶</a></dt>
+<dd><p>used for BRknn-b</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>prob</strong> (<em>list of double</em>) &#8211; the probabilities of the labels</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">the list label value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.multilabel.BRkNNClassifier.get_prob">
+<tt class="descname">get_prob</tt><big>(</big><em>neighbours</em><big>)</big><a class="headerlink" href="#Orange.multilabel.BRkNNClassifier.get_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the probabilities of the labels, based on the neighboring
+instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>neighbours</strong> (list of <a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Instance</span></tt></a>) &#8211; a list of nearest neighboring instances.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">the prob of the labels</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="id4">
+<h3>Examples<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>The following example demonstrates a straightforward invocation of
+this algorithm (<a class="reference download internal" href="../../_downloads/mlc-classify.py"><tt class="xref download docutils literal"><span class="pre">mlc-classify.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">emotions</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&#39;emotions&#39;</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">multilabel</span><span class="o">.</span><span class="n">BRkNNLearner</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">emotions</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">classifier</span><span class="p">(</span><span class="n">emotions</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

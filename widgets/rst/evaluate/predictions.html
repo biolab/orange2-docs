@@ -1,0 +1,211 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Predictions &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Predictions</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="predictions">
+<span id="id1"></span><h1>Predictions<a class="headerlink" href="#predictions" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/Predictions.svg" /><p>Shows the model&#8217;s prediction on data.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Data (ExampleTable)</dt>
+<dd><p class="first last">Data to be classified</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Predictors (orange.Classifier)</dt>
+<dd><p class="first last">Predictors to be used on the data; multiple widget can connect to this
+slot</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Predictions (orange.ExampleTable)</dt>
+<dd><p class="first last">Original example table with added predictions</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The widget gets a data set and one or more predictors (classifiers, not
+learning algorithms - see the example below). It shows a table with the
+data and the predictions made.</p>
+<p>Despite its simplicity, the widget allows for quite interesting analysis of
+decisions of predictive models; there is a simple demonstration at the end of
+the page. Note also, however, the related widget <a class="reference internal" href="confusionmatrix.html#confusion-matrix"><em>Confusion Matrix</em></a>.
+Although many things can be done with any of them, there are tasks for which
+one of them might be much more convenient than the other.</p>
+<img alt="../../../_images/Predictions.png" src="../../../_images/Predictions.png" />
+<p>The widget can show class predictions (<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">predicted</span> <span class="pre">class</span></tt>) and
+predicted probabilities for the selected classes
+(<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">predicted</span> <span class="pre">probabilities</span></tt>, the classes are selected below).</p>
+<p>By default, the widget also shows the attributes. This can be disabled by
+checking <tt class="xref py py-obj docutils literal"><span class="pre">Hide</span> <span class="pre">all</span></tt> under <tt class="xref py py-obj docutils literal"><span class="pre">Data</span> <span class="pre">Attributes</span></tt>.</p>
+<p>The output of the widget is another data table, where predictions are
+appended as new meta attributes. The table is output either automatically
+(<tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">automatically</span></tt>) or upon clicking <tt class="xref py py-obj docutils literal"><span class="pre">Send</span> <span class="pre">Predictions</span></tt>.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>Here is a demonstration.</p>
+<img alt="../../../_images/Predictions-Schema.png" src="../../../_images/Predictions-Schema.png" />
+<p>First, compare the schema with the one for <a class="reference internal" href="testlearners.html#test-learners"><em>Test Learners</em></a>. Widgets
+representing learning algorithms, like <a class="reference internal" href="../classify/naivebayes.html#naive-bayes"><em>Naive Bayesian Learner</em></a> or
+<a class="reference internal" href="../classify/classificationtree.html#classification-tree"><em>Classification Tree Learner</em></a> provide two kinds of signals, one with a learning
+algorithm and one with a classifier, that is, a result of the learning
+algorithm when it is given some data. The learner is available always, while
+for outputting a classifier, the widget representing a learning algorithm needs
+to be given some data.</p>
+<p>Test Learners tests learning algorithms, hence it expects learning algorithms
+on the input. In the corresponding schema, we gave the Test Learners some data
+from the File widget and a few &#8220;learner widgets&#8221;. Widget Predictions shows
+predictions of a classifier, hence it needs a classifier and data. To get
+a classifier from the learner widget, the widget needs to be given data.</p>
+<p>This is hence what we do: we randomly split the data into two subsets. The
+larger, containing 70 % of data instances, is given to Naive Bayes and
+Classification tree, so they can produce the corresponding classifiers.
+The classifiers go into Predictions, among with the remaining 30 % of the
+data. Predictions shows how these examples are classified.</p>
+<p>The results of this procedure on the heart disease data are shown in the
+snapshot at beginning of the page. The last three columns are the actual
+class, and the predictions by the classification tree and naive Bayesian
+classifier. For the latter two we see the probability of class &#8220;1&#8221; (since
+this is the class chosen on the left-hand side of the widget) and the predicted
+class.</p>
+<p>The schema also shows a few things we can do with the data from the widget.
+First, we can observe it in a <a class="reference internal" href="../data/datatable.html#data-table"><em>Data Table</em></a>. It shows a similar view to
+the one in Predictions, except that the probabilities are shown as separate
+attributes, so we can sort the examples by them and so on.</p>
+<p>To save the predictions, we simply attach the <a class="reference internal" href="../data/save.html#save"><em>Save</em></a> widget to Predictions.</p>
+<p>Finally, we can analyze the classifier&#8217;s predictions. For instance, we want
+to observe the relations between probabilities predicted by the two classifiers
+with respect to the class. For that, we first take <a class="reference internal" href="../data/selectattributes.html#select-attributes"><em>Select Attributes</em></a>
+with which we move the meta attributes with probability predictions to ordinary
+attributes. The transformed data is then given to the <a class="reference internal" href="../visualize/scatterplot.html#scatter-plot"><em>Scatter Plot</em></a>,
+which we set to use the attributes with probabilities for the x and y axes, and
+the class is (as already by default) used to color the data points.</p>
+<img alt="../../../_images/Predictions-ExampleScatterplot.png" src="../../../_images/Predictions-ExampleScatterplot.png" />
+<p>To get the above plot, we added 5% jittering to continuous attributes, since
+the classification tree gives just a few distinct probabilities, hence without
+jittering there would be too much overlap between the points.</p>
+<p>The blue points at the bottom left represent the people with no diameter
+narrowing, which were correctly classified by both classifiers. The upper left
+red points represent the patients with narrowed vessels, which were correctly
+classified by both. At the top left there are a few blue points: these are
+those without narrowed vessels to whom the tree gave a high probability of
+having the disease, while Bayesian classifier was right by predicting a low
+probability of the disease. In the opposite corner, we can spot red points,
+that is, the sick, to which the tree gave a low probability, while the naive
+Bayesian classifier was (again) right by assigning a high probability of having
+the disease.</p>
+<p>Note that this analysis is done on a rather small sample, so these
+conclusions may be ungrounded.</p>
+<p>Another example of using this widget is given in the documentation for
+widget <a class="reference internal" href="confusionmatrix.html#confusion-matrix"><em>Confusion Matrix</em></a>.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

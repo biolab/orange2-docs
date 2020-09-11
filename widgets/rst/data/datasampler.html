@@ -1,0 +1,177 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data Sampler &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Data Sampler</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="data-sampler">
+<span id="id1"></span><h1>Data Sampler<a class="headerlink" href="#data-sampler" title="Permalink to this headline">¶</a></h1>
+<img alt="Data Sampler icon" class="widget-category-data widget-icon" src="../../../_images/DataSampler.svg" /><p>Selects a subset of data instances from the input data set.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Data</span></tt></dt>
+<dd><p class="first last">Input data set to be sampled.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Data</span> <span class="pre">Sample</span></tt></dt>
+<dd><p class="first last">A set of sampled data instances.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Remaining</span> <span class="pre">Data</span></tt></dt>
+<dd><p class="first last">All other data instances from input data set that are not included
+in the sample.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Data Sampler implements several means of
+sampling of the data from the input channel. It outputs the sampled
+data set and complementary data set (with instances from the input set
+that are not included in the sampled data set). Output is set when the
+input data set is provided and after <tt class="xref py py-obj docutils literal"><span class="pre">Sample</span> <span class="pre">Data</span></tt> is
+pressed.</p>
+<img alt="Data Sampler" class="align-right" src="../../../_images/DataSampler-stamped.png" />
+<ol class="stamp-list arabic simple">
+<li>Info on input and output data set.</li>
+<li>If input data contains a class, sampling will try to match
+its class distribution in the output data sets.</li>
+<li>Set random seed to always obtain the same sample given a choice of
+data set and sampling parameters.</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Random</span> <span class="pre">sampling</span></tt> can draw a
+fixed number of instances or create a data set with a size set as
+a proportion of instances from the input data set. In repeated
+sampling, an data instance may be included in a sampled data several
+times (like in bootstrap).</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Cross</span> <span class="pre">validation</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">Leave-one-out</span></tt> or sampling that creates
+<tt class="xref py py-obj docutils literal"><span class="pre">Multiple</span> <span class="pre">subsets</span></tt> of preset sample sizes relative to the input
+data set (like random sampling) all create several data samples.
+Cross validation would split the data to equally-sized subsets
+(<tt class="xref py py-obj docutils literal"><span class="pre">Number</span> <span class="pre">of</span> <span class="pre">folds</span></tt>), and consider one of these as a sample.
+Leave-one-out randomly chooses one data instance; all other instances
+go to <tt class="xref py py-obj docutils literal"><span class="pre">Remaining</span> <span class="pre">Data</span></tt> channel. Multiple subsets can create subset
+of different sizes.</li>
+<li>For sampling methods that create different data subsets, this
+determines which subset is pushed to the <tt class="xref py py-obj docutils literal"><span class="pre">Data</span> <span class="pre">Sample</span></tt> channel.</li>
+<li>Press <tt class="xref py py-obj docutils literal"><span class="pre">Sample</span> <span class="pre">Data</span></tt> to push the sample to the output
+channel of the widget.</li>
+</ol>
+<div class="clearer container">
+<img alt="../../../_images/spacer.png" src="../../../_images/spacer.png" />
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>In the following workflow Schema where we have sampled 10 data instances
+from Iris data set and send original data and the sample
+to Scatterplot widget. Sampled data instances are plotted with filled circles.</p>
+<img alt="A workflow with Data Sampler" src="../../../_images/DataSampler-Example.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

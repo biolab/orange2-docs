@@ -1,0 +1,655 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Preprocessing (preprocess) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Preprocessing (<tt class="docutils literal"><span class="pre">preprocess</span></tt>)</a><ul>
+<li><a class="reference internal" href="#data-scaling-scaling">Data Scaling (<tt class="docutils literal"><span class="pre">scaling</span></tt>)</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="module-Orange.data.preprocess">
+<span id="preprocessing-preprocess"></span><h1>Preprocessing (<tt class="docutils literal"><span class="pre">preprocess</span></tt>)<a class="headerlink" href="#module-Orange.data.preprocess" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Orange.data.preprocess.DiscretizeEntropy">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">DiscretizeEntropy</tt><big>(</big><em>method=Orange.feature.discretization.Entropy()</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.DiscretizeEntropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>An discretizer that uses orange.EntropyDiscretization method but,
+unlike Preprocessor_discretize class, also removes unused attributes
+from the domain.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.RemoveContinuous">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">RemoveContinuous</tt><a class="headerlink" href="#Orange.data.preprocess.RemoveContinuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>A preprocessor that removes all continuous features.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.Continuize">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">Continuize</tt><big>(</big><em>zeroBased=True</em>, <em>multinomialTreatment=NValues</em>, <em>continuousTreatment=Leave</em>, <em>classTreatment=Ignore</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.Continuize" title="Permalink to this definition">¶</a></dt>
+<dd><p>A preprocessor that continuizes a discrete domain (and optionally normalizes it).
+See <a class="reference internal" href="Orange.data.continuization.html#Orange.data.continuization.DomainContinuizer" title="Orange.data.continuization.DomainContinuizer"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.continuization.DomainContinuizer</span></tt></a> for list of
+accepted arguments.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.RemoveDiscrete">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">RemoveDiscrete</tt><big>(</big><em>zeroBased=True</em>, <em>multinomialTreatment=NValues</em>, <em>continuousTreatment=Leave</em>, <em>classTreatment=Ignore</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.RemoveDiscrete" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Preprocessor that removes all discrete attributes from the domain.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.Impute">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">Impute</tt><big>(</big><em>model=None</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.Impute" title="Permalink to this definition">¶</a></dt>
+<dd><p>A preprocessor that imputes unknown values using a learner.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>model</strong> &#8211; a learner class.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.FeatureSelection">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">FeatureSelection</tt><big>(</big><em>measure=Orange.feature.scoring.Relief()</em>, <em>filter=None</em>, <em>limit=10</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.FeatureSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>A preprocessor that runs feature selection using an feature scoring function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>measure</strong> &#8211; a scoring function (default: orange.MeasureAttribute_relief)</li>
+<li><strong>filter</strong> &#8211; a filter function to use for selection (default Preprocessor_featureSelection.bestN)</li>
+<li><strong>limit</strong> &#8211; the limit for the filter function (default 10)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.data.preprocess.bestP">
+<tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">bestP</tt><big>(</big><em>attrMeasures</em>, <em>P=10</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.bestP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return best P percent of attributes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.data.preprocess.bestN">
+<tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">bestN</tt><big>(</big><em>attrMeasures</em>, <em>N=10</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.bestN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return best N attributes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.data.preprocess.selectNRandom">
+<tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">selectNRandom</tt><big>(</big><em>examples</em>, <em>N=10</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.selectNRandom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select N random examples.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.data.preprocess.selectPRandom">
+<tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">selectPRandom</tt><big>(</big><em>examples</em>, <em>P=10</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.selectPRandom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select P percent random examples.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.RFE">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">RFE</tt><big>(</big><em>filter=None</em>, <em>limit=10</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.RFE" title="Permalink to this definition">¶</a></dt>
+<dd><p>A preprocessor that runs RFE(Recursive Feature Elimination) using
+linear SVM derived attribute weights.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filter</strong> &#8211; a filter function to use for selection (default
+Preprocessor_featureSelection.bestN)</li>
+<li><strong>limit</strong> &#8211; the limit for the filter function (default 10)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.Sample">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">Sample</tt><big>(</big><em>filter=None</em>, <em>limit=10</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.Sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>A preprocessor that samples a subset of the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filter</strong> &#8211; a filter function to use for selection (default
+Preprocessor_sample.selectNRandom)</li>
+<li><strong>limit</strong> &#8211; the limit for the filter function (default 10)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.PreprocessorList">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">PreprocessorList</tt><big>(</big><em>preprocessors=()</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.PreprocessorList" title="Permalink to this definition">¶</a></dt>
+<dd><p>A preprocessor wrapping a sequence of other preprocessors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>preprocessors</strong> &#8211; a list of <tt class="xref py py-obj docutils literal"><span class="pre">Preprocessor</span></tt> instances</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.RemoveUnusedValues">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.</tt><tt class="descname">RemoveUnusedValues</tt><big>(</big><em>variable</em>, <em>data</em>, <em>remove_one_valued=False</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.RemoveUnusedValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes unused values and reduces the variable, if a variable
+declares values that do not appear in the data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>variable</strong> &#8211; <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a></li>
+<li><strong>data</strong> &#8211; <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Table</span></tt></a></li>
+<li><strong>remove_one_valued</strong> &#8211; Decides whether to remove or to retain
+the attributes with only one value defined (default: False).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;unusedValues.tab&quot;</span><span class="p">)</span>
+
+<span class="n">new_variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">preprocess</span><span class="o">.</span><span class="n">RemoveUnusedValues</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">variables</span><span class="p">]</span>
+
+<span class="k">print</span>
+<span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span>
+    <span class="k">if</span> <span class="n">new_variables</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="n">variable</span><span class="p">]:</span>
+        <span class="k">print</span> <span class="s">&quot;retained as is&quot;</span>
+    <span class="k">elif</span> <span class="n">new_variables</span><span class="p">[</span><span class="n">variable</span><span class="p">]:</span>
+        <span class="k">print</span> <span class="s">&quot;reduced, new values are&quot;</span><span class="p">,</span> <span class="n">new_variables</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;removed&quot;</span>
+</pre></div>
+</div>
+<p>There are four possible outcomes:</p>
+<p>1. The variable does not have any used values in the data - value
+of this variable is undefined for all examples. The variable is
+thus useless and the class returns None.</p>
+<p>2. The variable has only one used value (or, possibly, only one
+value at all). Such a variable is in fact useless, and can
+probably be removed without harm. Nevertheless, its fate is
+decided by the flag remove_one_valued which is False by default,
+so such variables are retained unless explicitly specified
+otherwise.</p>
+<p>3. All variable&#8217;s values occur in the data (and the variable has more
+than one value; otherwise the above case applies). The original variable
+is returned.</p>
+<p>4. There are some unused values. A new variable is constructed and the
+unused values are omitted. The value of the new variable is computed
+automatically from the value of the original variable
+<a class="reference internal" href="Orange.classification.lookup.html#Orange.classification.lookup.ClassifierByLookupTable" title="Orange.classification.lookup.ClassifierByLookupTable"><tt class="xref py py-class docutils literal"><span class="pre">ClassifierByLookupTable</span></tt></a> is used
+for mapping.</p>
+<p>Results of example:</p>
+<div class="highlight-python"><pre>a	b	c	d	y
+0 1	0 1 2 3	discrete	discrete	discrete
+				class
+0	0	?	0	0
+1	2	?	0	0
+0	0	?	0	1
+</pre>
+</div>
+<p>Variables a and y are OK and are left alone. In b, value 1 is not used
+and is removed (not in the original variable, of course; a new variable
+is created). c is useless and is removed altogether. d is retained since
+remove_one_valued was left at False; if we set it to True, this variable
+would be removed as well.</p>
+</dd></dl>
+
+<span class="target" id="module-Orange.data.preprocess.scaling"></span><span class="target" id="index-0"></span><div class="section" id="data-scaling-scaling">
+<span id="index-1"></span><h2>Data Scaling (<tt class="docutils literal"><span class="pre">scaling</span></tt>)<a class="headerlink" href="#data-scaling-scaling" title="Permalink to this headline">¶</a></h2>
+<p>This module is a conglomerate of Orange 2.0 modules orngScaleData,
+orngScaleLinProjData, orngScaleLinProjData3D, orngScalePolyvizData and orngScaleScatterPlotData. The
+documentation is poor and has to be improved in the future.</p>
+<dl class="class">
+<dt id="Orange.data.preprocess.scaling.ScaleData">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.scaling.</tt><tt class="descname">ScaleData</tt><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.getValidIndices">
+<tt class="descname">getValidIndices</tt><big>(</big><em>indices</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.getValidIndices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array with numbers that represent the instance indices that have a
+valid data value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.getValidList">
+<tt class="descname">getValidList</tt><big>(</big><em>indices</em>, <em>also_class_if_exists=1</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.getValidList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array of 0 and 1 of len = len(self.raw_data). If there is a missing
+value at any attribute in indices return 0 for that instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.getValidSubsetIndices">
+<tt class="descname">getValidSubsetIndices</tt><big>(</big><em>indices</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.getValidSubsetIndices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array with numbers that represent the instance indices that have a
+valid data value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.getValidSubsetList">
+<tt class="descname">getValidSubsetList</tt><big>(</big><em>indices</em>, <em>also_class_if_exists=1</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.getValidSubsetList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array of 0 and 1 of len = len(self.raw_subset_data). if there is a
+missing value at any attribute in indices return 0 for that instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.get_valid_indices">
+<tt class="descname">get_valid_indices</tt><big>(</big><em>indices</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.get_valid_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array with numbers that represent the instance indices that have a
+valid data value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.get_valid_list">
+<tt class="descname">get_valid_list</tt><big>(</big><em>indices</em>, <em>also_class_if_exists=1</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.get_valid_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array of 0 and 1 of len = len(self.raw_data). If there is a missing
+value at any attribute in indices return 0 for that instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.get_valid_subset_indices">
+<tt class="descname">get_valid_subset_indices</tt><big>(</big><em>indices</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.get_valid_subset_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array with numbers that represent the instance indices that have a
+valid data value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.get_valid_subset_list">
+<tt class="descname">get_valid_subset_list</tt><big>(</big><em>indices</em>, <em>also_class_if_exists=1</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.get_valid_subset_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get array of 0 and 1 of len = len(self.raw_subset_data). if there is a
+missing value at any attribute in indices return 0 for that instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.mergeDataSets">
+<tt class="descname">mergeDataSets</tt><big>(</big><em>data</em>, <em>subset_data</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.mergeDataSets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take examples from data and subset_data and merge them into one
+dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.merge_data_sets">
+<tt class="descname">merge_data_sets</tt><big>(</big><em>data</em>, <em>subset_data</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.merge_data_sets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take examples from data and subset_data and merge them into one
+dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.rescaleData">
+<tt class="descname">rescaleData</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.rescaleData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force the existing data to be rescaled due to changes like
+jitter_continuous, jitter_size, ...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.rescale_data">
+<tt class="descname">rescale_data</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.rescale_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force the existing data to be rescaled due to changes like
+jitter_continuous, jitter_size, ...</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.rndCorrection">
+<tt class="descname">rndCorrection</tt><big>(</big><em>max</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.rndCorrection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a number from -max to max.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.rnd_correction">
+<tt class="descname">rnd_correction</tt><big>(</big><em>max</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.rnd_correction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a number from -max to max.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.scaleExampleValue">
+<tt class="descname">scaleExampleValue</tt><big>(</big><em>instance</em>, <em>index</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.scaleExampleValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale instance&#8217;s value at index index to a range between 0 and 1 with
+respect to self.raw_data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleData.scale_example_value">
+<tt class="descname">scale_example_value</tt><big>(</big><em>instance</em>, <em>index</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleData.scale_example_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scale instance&#8217;s value at index index to a range between 0 and 1 with
+respect to self.raw_data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.scaling.</tt><tt class="descname">ScaleLinProjData</tt><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.data.preprocess.scaling.ScaleData" title="Orange.data.preprocess.scaling.ScaleData"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.preprocess.scaling.ScaleData</span></tt></a></p>
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData.createAnchors">
+<tt class="descname">createAnchors</tt><big>(</big><em>num_of_attr</em>, <em>labels=None</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData.createAnchors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create anchors around the circle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData.createProjectionAsExampleTable">
+<tt class="descname">createProjectionAsExampleTable</tt><big>(</big><em>attr_indices</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData.createProjectionAsExampleTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the projection of attribute indices given in attr_indices and
+create an example table with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData.create_anchors">
+<tt class="descname">create_anchors</tt><big>(</big><em>num_of_attr</em>, <em>labels=None</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData.create_anchors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create anchors around the circle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData.create_projection_as_example_table">
+<tt class="descname">create_projection_as_example_table</tt><big>(</big><em>attr_indices</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData.create_projection_as_example_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the projection of attribute indices given in attr_indices and
+create an example table with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData.getProjectedPointPosition">
+<tt class="descname">getProjectedPointPosition</tt><big>(</big><em>attr_indices</em>, <em>values</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData.getProjectedPointPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>For attributes in attr_indices and values of these attributes in values
+compute point positions. This function has more sense in radviz and
+polyviz methods.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData.get_projected_point_position">
+<tt class="descname">get_projected_point_position</tt><big>(</big><em>attr_indices</em>, <em>values</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData.get_projected_point_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>For attributes in attr_indices and values of these attributes in values
+compute point positions. This function has more sense in radviz and
+polyviz methods.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData.saveProjectionAsTabData">
+<tt class="descname">saveProjectionAsTabData</tt><big>(</big><em>filename</em>, <em>attrlist</em>, <em>use_anchor_data=0</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData.saveProjectionAsTabData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save projection (xattr, yattr, classval) into a filename filename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData.save_projection_as_tab_data">
+<tt class="descname">save_projection_as_tab_data</tt><big>(</big><em>filename</em>, <em>attrlist</em>, <em>use_anchor_data=0</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData.save_projection_as_tab_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save projection (xattr, yattr, classval) into a filename filename.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.scaling.</tt><tt class="descname">ScaleLinProjData3D</tt><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.data.preprocess.scaling.ScaleData" title="Orange.data.preprocess.scaling.ScaleData"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.preprocess.scaling.ScaleData</span></tt></a></p>
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D.createAnchors">
+<tt class="descname">createAnchors</tt><big>(</big><em>num_of_attrs</em>, <em>labels=None</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D.createAnchors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create anchors on the sphere.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D.createProjectionAsExampleTable">
+<tt class="descname">createProjectionAsExampleTable</tt><big>(</big><em>attr_indices</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D.createProjectionAsExampleTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the projection of attribute indices given in attr_indices and
+create an example table with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D.create_anchors">
+<tt class="descname">create_anchors</tt><big>(</big><em>num_of_attrs</em>, <em>labels=None</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D.create_anchors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create anchors on the sphere.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D.create_projection_as_example_table">
+<tt class="descname">create_projection_as_example_table</tt><big>(</big><em>attr_indices</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D.create_projection_as_example_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the projection of attribute indices given in attr_indices and
+create an example table with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D.getProjectedPointPosition">
+<tt class="descname">getProjectedPointPosition</tt><big>(</big><em>attr_indices</em>, <em>values</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D.getProjectedPointPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>For attributes in attr_indices and values of these attributes in values
+compute point positions. This function has more sense in radviz and
+polyviz methods.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D.get_projected_point_position">
+<tt class="descname">get_projected_point_position</tt><big>(</big><em>attr_indices</em>, <em>values</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D.get_projected_point_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>For attributes in attr_indices and values of these attributes in values
+compute point positions. This function has more sense in radviz and
+polyviz methods.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D.saveProjectionAsTabData">
+<tt class="descname">saveProjectionAsTabData</tt><big>(</big><em>filename</em>, <em>attrlist</em>, <em>use_anchor_data=0</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D.saveProjectionAsTabData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save projection (xattr, yattr, zattr, classval) into a filename filename.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleLinProjData3D.save_projection_as_tab_data">
+<tt class="descname">save_projection_as_tab_data</tt><big>(</big><em>filename</em>, <em>attrlist</em>, <em>use_anchor_data=0</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleLinProjData3D.save_projection_as_tab_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save projection (xattr, yattr, zattr, classval) into a filename filename.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.scaling.ScalePolyvizData">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.scaling.</tt><tt class="descname">ScalePolyvizData</tt><a class="headerlink" href="#Orange.data.preprocess.scaling.ScalePolyvizData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.data.preprocess.scaling.ScaleLinProjData" title="Orange.data.preprocess.scaling.ScaleLinProjData"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.preprocess.scaling.ScaleLinProjData</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData">
+<em class="property">class </em><tt class="descclassname">Orange.data.preprocess.scaling.</tt><tt class="descname">ScaleScatterPlotData</tt><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.data.preprocess.scaling.ScaleData" title="Orange.data.preprocess.scaling.ScaleData"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.preprocess.scaling.ScaleData</span></tt></a></p>
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.createProjectionAsExampleTable">
+<tt class="descname">createProjectionAsExampleTable</tt><big>(</big><em>attr_indices</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.createProjectionAsExampleTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the projection of attribute indices given in attr_indices and
+create an example table with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.createProjectionAsExampleTable3D">
+<tt class="descname">createProjectionAsExampleTable3D</tt><big>(</big><em>attr_indices</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.createProjectionAsExampleTable3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the projection of attribute indices given in attr_indices and
+create an example table with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.create_projection_as_example_table">
+<tt class="descname">create_projection_as_example_table</tt><big>(</big><em>attr_indices</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.create_projection_as_example_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the projection of attribute indices given in attr_indices and
+create an example table with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.create_projection_as_example_table_3D">
+<tt class="descname">create_projection_as_example_table_3D</tt><big>(</big><em>attr_indices</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.create_projection_as_example_table_3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the projection of attribute indices given in attr_indices and
+create an example table with it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.getProjectedPointPosition">
+<tt class="descname">getProjectedPointPosition</tt><big>(</big><em>attr_indices</em>, <em>values</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.getProjectedPointPosition" title="Permalink to this definition">¶</a></dt>
+<dd><p>For attributes in attr_indices and values of these attributes in values
+compute point positions this function has more sense in radviz and
+polyviz methods. settings_dict has to be because radviz and polyviz have
+this parameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.getXYDataPositions">
+<tt class="descname">getXYDataPositions</tt><big>(</big><em>xattr</em>, <em>yattr</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.getXYDataPositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create x-y projection of attributes in attrlist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.getXYSubsetDataPositions">
+<tt class="descname">getXYSubsetDataPositions</tt><big>(</big><em>xattr</em>, <em>yattr</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.getXYSubsetDataPositions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create x-y projection of attributes in attr_list.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.get_projected_point_position">
+<tt class="descname">get_projected_point_position</tt><big>(</big><em>attr_indices</em>, <em>values</em>, <em>**settings_dict</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.get_projected_point_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>For attributes in attr_indices and values of these attributes in values
+compute point positions this function has more sense in radviz and
+polyviz methods. settings_dict has to be because radviz and polyviz have
+this parameter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.get_xy_data_positions">
+<tt class="descname">get_xy_data_positions</tt><big>(</big><em>xattr</em>, <em>yattr</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.get_xy_data_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create x-y projection of attributes in attrlist.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.preprocess.scaling.ScaleScatterPlotData.get_xy_subset_data_positions">
+<tt class="descname">get_xy_subset_data_positions</tt><big>(</big><em>xattr</em>, <em>yattr</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.ScaleScatterPlotData.get_xy_subset_data_positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create x-y projection of attributes in attr_list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.data.preprocess.scaling.get_variable_values_sorted">
+<tt class="descclassname">Orange.data.preprocess.scaling.</tt><tt class="descname">get_variable_values_sorted</tt><big>(</big><em>variable</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.get_variable_values_sorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of sorted values for given attribute.</p>
+<p>EXPLANATION: if variable values have values 1, 2, 3, 4, ... then their
+order in orange depends on when they appear first in the data. With this
+function we get a sorted list of values.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.data.preprocess.scaling.get_variable_value_indices">
+<tt class="descclassname">Orange.data.preprocess.scaling.</tt><tt class="descname">get_variable_value_indices</tt><big>(</big><em>variable</em>, <em>sort_values_for_discrete_attrs=1</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.get_variable_value_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a dictionary with given variable. Keys are variable values, values
+are indices (transformed from string to int); in case all values are
+integers, we also sort them.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.data.preprocess.scaling.discretize_domain">
+<tt class="descclassname">Orange.data.preprocess.scaling.</tt><tt class="descname">discretize_domain</tt><big>(</big><em>data</em>, <em>remove_unused_values=1</em>, <em>number_of_intervals=2</em><big>)</big><a class="headerlink" href="#Orange.data.preprocess.scaling.discretize_domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretize the domain. If we have a class, remove the instances with missing
+class value, discretize the continuous class into discrete class with two
+values, discretize continuous attributes using entropy discretization (or
+equiN if we don&#8217;t have a class or class is continuous).</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

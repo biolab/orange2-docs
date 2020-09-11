@@ -1,0 +1,221 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MDS &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">MDS</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="mds">
+<span id="id1"></span><h1>MDS<a class="headerlink" href="#mds" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/MDS1.svg" /><p>Multidimensional scaling (MDS) - a projection into a plane fitted to the given
+distances between the points</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Distance Matrix</dt>
+<dd><p class="first last">A matrix of (desired) distances between points</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Example Subset (ExampleTable)</dt>
+<dd><p class="first last">A subset of examples to be marked in the graph</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Selected Examples</dt>
+<dd><p class="first last">A table of selected examples</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Signals Example Subset and Selected Examples are only applicable if Distance
+Matrix describes distances between examples, for instance if the matrix comes
+from <a class="reference internal" href="exampledistance.html#example-distance"><em>Example Distance</em></a>.</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Multidimensional scaling is a technique which finds a low-dimensional (in our
+case a two-dimensional) projection of points, where it tries to fit the given
+distances between points as well is possible. The perfect fit is typically
+impossible to obtain since the data is higher dimensional or the distances are
+not Euclidean.</p>
+<p>To do its work, the widget needs a matrix of distances. The distances can
+correspond to any kinds of object. However, the widget has some functionality
+dedicated to distances between examples, such as coloring the points and
+changing their shapes, marking them, and outputting them upon selection.</p>
+<p>The algorithm iteratively moves the points around in a kind of simulation of a
+physical model: if two points are too close to each other (or too far away),
+there is a force pushing them apart (together). The change of the point&#8217;s
+position at each time interval corresponds to the sum of forces acting on it.</p>
+<img alt="../../../_images/MDS.png" src="../../../_images/MDS.png" />
+<p>The first group of buttons set the position of points. <tt class="xref py py-obj docutils literal"><span class="pre">Randomize</span></tt> sets
+the to a random position; the initial positions are also random.
+<tt class="xref py py-obj docutils literal"><span class="pre">Jitter</span></tt> randomly moves the points for a short distance; this may be
+useful if the optimization is stuck in a (seemingly) local minimum.
+<tt class="xref py py-obj docutils literal"><span class="pre">Torgerson</span></tt> positions the points using Torgerson&#8217;s method.</p>
+<p>Optimization is run by pushing <tt class="xref py py-obj docutils literal"><span class="pre">Optimize</span></tt>. <tt class="xref py py-obj docutils literal"><span class="pre">Single</span> <span class="pre">Step</span></tt> makes a
+single step of optimization; this is primarily useful for educative purposes.</p>
+<p>Stress function defines how the difference between the desired and the actual
+distance between points translates into the forces acting on them. Several are
+available. Let current and desired be the distance in the current projection
+and the desired distances, and diff=current-desired. Then the stress functions
+are defined as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Kruskal</span> <span class="pre">stress</span></tt>: diff<sup>2</sup></li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Sammon</span> <span class="pre">stress</span></tt>: diff<sup>2</sup>/current</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Signed</span> <span class="pre">Sammon</span> <span class="pre">stress</span></tt>: diff/current</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Signed</span> <span class="pre">relative</span> <span class="pre">stress</span></tt>: diff/desired</li>
+</ul>
+</div></blockquote>
+<p>The widget redraws the projection during optimization. It can do so at
+<tt class="xref py py-obj docutils literal"><span class="pre">Every</span> <span class="pre">step</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">Every</span> <span class="pre">10</span> <span class="pre">steps</span></tt> or <tt class="xref py py-obj docutils literal"><span class="pre">Every</span> <span class="pre">100</span> <span class="pre">steps</span></tt>. Setting a
+lower refresh interval makes the animation more visually appealing, but can be
+slow if the number of points is high.</p>
+<p>The optimization stops either when the projection changes only minimally at
+the last iteration or when a specified number of steps have been made. The two
+conditions are given with options <tt class="xref py py-obj docutils literal"><span class="pre">Minimal</span> <span class="pre">average</span> <span class="pre">stress</span> <span class="pre">change</span></tt> and
+<tt class="xref py py-obj docutils literal"><span class="pre">Maximal</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">steps</span></tt>.</p>
+<p>The bottom of the settings pane shows the average stress (the lower the better)
+and the number of steps made in the last optimization.</p>
+<img alt="MDS 'Graph' tab" class="align-left" src="../../../_images/MDS-Graph.png" />
+<p>The second tab with settings defines how the points are visualized and the
+settings related to outputting the data. The user can set the size of points
+(<tt class="xref py py-obj docutils literal"><span class="pre">Point</span> <span class="pre">Size</span></tt>) or let the size depend on the value of some continuous
+attribute (<tt class="xref py py-obj docutils literal"><span class="pre">Size</span></tt>) of the example the point represents. The color and
+shape of the point (<tt class="xref py py-obj docutils literal"><span class="pre">Color</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">Shape</span></tt>) can depend upon values of
+discrete attributes. Any attribute can serve as a label.</p>
+<p>These options are only active if the points represents examples (that is, if
+there is a table of examples attached to the distance matrix on the widget&#8217;s
+input). If the points represent attributes (e.g. the distance matrix comes
+from <a class="reference internal" href="attributedistance.html#attribute-distance"><em>Attribute Distance</em></a>, the points can be labeled by attribute names.
+If the points come from a labeled distance file (see <a class="reference internal" href="distancefile.html#distance-file"><em>Distance File</em></a>, the
+labels can be used for annotating the points.</p>
+<p>The widget can superimpose a graph onto the projection, where the specified
+proportion of the most similar pairs is connected, with the width of connection
+showing the similarity. This is enabled by checking <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">similar</span> <span class="pre">pairs</span></tt>
+and setting the proportion of connected pairs below. Enabling this option
+during the optimization can illustrate how the algorithm works, though drawing
+too many connections at each refresh can make the optimization very slow. The
+picture below shows a rendering of the zoo data set with this option enabled.</p>
+<img alt="MDS Similar Pairs" src="../../../_images/MSD-Connected.png" />
+<p>The remaining options deal with zooming selecting the points and sending them
+on. The magnifying glass enables zooming, and the other two icons enable
+selection of examples with rectangular or arbitrary selection areas. The
+buttons in the left group undo the last action, remove all selection and send
+the selected examples. Sending the examples can be automatic if
+<tt class="xref py py-obj docutils literal"><span class="pre">Auto</span> <span class="pre">send</span> <span class="pre">selected</span></tt> is checked.</p>
+<p>The output data can have the coordinates of each point appended, either as
+normal attributes (<tt class="xref py py-obj docutils literal"><span class="pre">Append</span> <span class="pre">coordinates</span></tt>) or as meta attributes
+(<tt class="xref py py-obj docutils literal"><span class="pre">Append</span> <span class="pre">coordinates</span> <span class="pre">as</span> <span class="pre">meta</span></tt>).</p>
+<p>The MDS graph performs many of the functions of the visualizations widget. It
+is in many respects similar to the <a class="reference internal" href="../visualize/scatterplot.html#scatter-plot"><em>Scatter Plot</em></a>, so we recommend
+reading its description as well.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The above graphs were drawn using the following simple schema.</p>
+<img alt="MDS Scheme" src="../../../_images/MDS-Schema.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

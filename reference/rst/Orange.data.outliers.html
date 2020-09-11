@@ -1,0 +1,174 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Outlier detection (outliers) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Outlier detection (<tt class="docutils literal"><span class="pre">outliers</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.data.outliers"></span><span class="target" id="index-0"></span><div class="section" id="outlier-detection-outliers">
+<span id="index-1"></span><h1>Outlier detection (<tt class="docutils literal"><span class="pre">outliers</span></tt>)<a class="headerlink" href="#outlier-detection-outliers" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Orange.data.outliers.OutlierDetection">
+<em class="property">class </em><tt class="descclassname">Orange.data.outliers.</tt><tt class="descname">OutlierDetection</tt><a class="headerlink" href="#Orange.data.outliers.OutlierDetection" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for detecting outliers.</p>
+<p>It calculates average distances of each example to other examples
+and converts them to Z-scores. Z-scores higher than zero denote an 
+example that is more distant to other examples than average.</p>
+<p>Detection of outliers can be performed directly on examples or on 
+an existant distance matrix. Also, the number of nearest neighbours
+used for averaging distances can be set. The default 0 means 
+that all examples are used when calculating average distances.</p>
+<dl class="method">
+<dt id="Orange.data.outliers.OutlierDetection.distance_matrix">
+<tt class="descname">distance_matrix</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.outliers.OutlierDetection.distance_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the distance matrix of the dataset.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.outliers.OutlierDetection.set_distance_matrix">
+<tt class="descname">set_distance_matrix</tt><big>(</big><em>distances</em><big>)</big><a class="headerlink" href="#Orange.data.outliers.OutlierDetection.set_distance_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the distance matrix on which the outlier detection 
+will be performed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.outliers.OutlierDetection.set_examples">
+<tt class="descname">set_examples</tt><big>(</big><em>examples</em>, <em>distance=None</em><big>)</big><a class="headerlink" href="#Orange.data.outliers.OutlierDetection.set_examples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set examples on which the outlier detection will be
+performed. Distance is a distance constructor for distances
+between examples. If omitted, Manhattan distance is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.outliers.OutlierDetection.set_knn">
+<tt class="descname">set_knn</tt><big>(</big><em>knn=0</em><big>)</big><a class="headerlink" href="#Orange.data.outliers.OutlierDetection.set_knn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the number of nearest neighbours considered in determinating.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.outliers.OutlierDetection.z_values">
+<tt class="descname">z_values</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.outliers.OutlierDetection.z_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of Z values of average distances for each element 
+to others. N-th number in the list is the Z-value of N-th example.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">Examples</p>
+<p>The following example prints a list of Z-values of examples in bridges dataset
+(<a class="reference download internal" href="../../_downloads/outlier1.py"><tt class="xref download docutils literal"><span class="pre">outlier1.py</span></tt></a>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">bridges</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bridges&quot;</span><span class="p">)</span>
+<span class="n">outlierDet</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">OutlierDetection</span><span class="p">()</span>
+<span class="n">outlierDet</span><span class="o">.</span><span class="n">set_examples</span><span class="p">(</span><span class="n">bridges</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%.8f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">outlierDet</span><span class="o">.</span><span class="n">z_values</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>The following example prints 5 examples with highest Z-scores. Euclidean
+distance is used as a distance measurement and average distance is calculated
+over 3 nearest neighbours (<a class="reference download internal" href="../../_downloads/outlier2.py"><tt class="xref download docutils literal"><span class="pre">outlier2.py</span></tt></a>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">bridges</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bridges&quot;</span><span class="p">)</span>
+<span class="n">outlier_det</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">outliers</span><span class="o">.</span><span class="n">OutlierDetection</span><span class="p">()</span>
+<span class="n">outlier_det</span><span class="o">.</span><span class="n">set_examples</span><span class="p">(</span><span class="n">bridges</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">Euclidean</span><span class="p">(</span><span class="n">bridges</span><span class="p">))</span>
+<span class="n">outlier_det</span><span class="o">.</span><span class="n">set_knn</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">z_values</span> <span class="o">=</span> <span class="n">outlier_det</span><span class="o">.</span><span class="n">z_values</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">ex</span><span class="p">,</span> <span class="n">zv</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">bridges</span><span class="p">,</span> <span class="n">z_values</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]:</span>
+    <span class="k">print</span> <span class="n">ex</span><span class="p">,</span> <span class="s">&quot;Z-score: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">zv</span>
+</pre></div>
+</div>
+<p>The output:</p>
+<div class="highlight-python"><pre>['M', 1838, 'HIGHWAY', ?, 2, 'N', 'THROUGH', 'WOOD', '?', 'S', 'WOOD'] Z-score: 1.732
+['M', 1818, 'HIGHWAY', ?, 2, 'N', 'THROUGH', 'WOOD', 'SHORT', 'S', 'WOOD'] Z-score: 1.732
+['A', 1853, 'RR', ?, 2, 'N', 'DECK', 'WOOD', '?', 'S', 'WOOD'] Z-score: 1.732
+['A', 1829, 'AQUEDUCT', ?, 1, 'N', 'THROUGH', 'WOOD', '?', 'S', 'WOOD'] Z-score: 1.733
+['A', 1848, 'AQUEDUCT', ?, 1, 'N', 'DECK', 'WOOD', '?', 'S', 'WOOD'] Z-score: 1.733</pre>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

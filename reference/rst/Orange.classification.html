@@ -1,0 +1,200 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Classification (classification) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Classification (<tt class="docutils literal"><span class="pre">classification</span></tt>)</a><ul>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.classification"></span><div class="section" id="classification-classification">
+<h1>Classification (<tt class="docutils literal"><span class="pre">classification</span></tt>)<a class="headerlink" href="#classification-classification" title="Permalink to this headline">¶</a></h1>
+<p>Induction of models in Orange is implemented through a two-class
+schema. A learning algorithm is represented by an instance of a class
+derived from <a class="reference internal" href="#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a>. The learner stores
+all parameters of the learning algorithm. Induced models are
+represented by instances of classes derived from
+<a class="reference internal" href="#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.Classifier</span></tt></a>.</p>
+<p>Therefore, to induce models from data, one first needs to construct
+the instance representing a learning algorithm
+(e.g. <a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.TreeLearner" title="Orange.classification.tree.TreeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">TreeLearner</span></tt></a>) and set its
+parameters. Calling the learner with some training data returns a
+classifier (e.g. <a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.TreeClassifier" title="Orange.classification.tree.TreeClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">TreeClassifier</span></tt></a>). The
+learner does not &#8220;learn&#8221; to classify but constructs classifiers.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">titanic</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;titanic.tab&quot;</span><span class="p">)</span>
+
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">titanic</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">titanic</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">inst</span><span class="o">.</span><span class="n">getclass</span><span class="p">(),</span> <span class="n">classifier</span><span class="p">(</span><span class="n">inst</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To simplify the procedure, the learner&#8217;s constructor can also be given
+training data, in which case it fits and returns a model (an instance
+of <a class="reference internal" href="#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-obj docutils literal"><span class="pre">Classifier</span></tt></a>) instead of a learner:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">classifier</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">titanic</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Orange contains a number of learning algorithms described in detail on
+separate pages.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.bayes.html">Naive Bayes classifier (<tt class="docutils literal"><span class="pre">bayes</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.knn.html">k-nearest neighbors (<tt class="docutils literal"><span class="pre">knn</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.rules.html">Rule induction (<tt class="docutils literal"><span class="pre">rules</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.svm.html">Support Vector Machines (<tt class="docutils literal"><span class="pre">svm</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.tree.html">Classification trees (<tt class="docutils literal"><span class="pre">tree</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.logreg.html">Logistic regression (<tt class="docutils literal"><span class="pre">logreg</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.majority.html">Majority (<tt class="docutils literal"><span class="pre">majority</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.lookup.html">Lookup classifiers (<tt class="docutils literal"><span class="pre">lookup</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.classfromvar.html">Classifier from variable</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.constant.html">Constant Classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.neural.html">Neural Network Learner  (<tt class="docutils literal"><span class="pre">neural</span></tt>)</a></li>
+</ul>
+</div>
+<p>All learning algorithms and prediction models are derived from the following two clases.</p>
+<dl class="class">
+<dt id="Orange.classification.Learner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.</tt><tt class="descname">Learner</tt><a class="headerlink" href="#Orange.classification.Learner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for learning algorithms.</p>
+<dl class="method">
+<dt id="Orange.classification.Learner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em><span class="optional">[</span>, <em>weightID</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.classification.Learner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>An abstract method that fits a model and returns it as an
+instance of <a class="reference internal" href="#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-class docutils literal"><span class="pre">Classifier</span></tt></a>. The first argument gives the
+data (as <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a> and the optional second
+argument gives the id of the meta attribute with instance
+weights.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.Classifier">
+<em class="property">class </em><tt class="descclassname">Orange.classification.</tt><tt class="descname">Classifier</tt><a class="headerlink" href="#Orange.classification.Classifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for prediction models (both classifiers and regressors).</p>
+<dl class="method">
+<dt id="Orange.classification.Classifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>return_type=GetValue</em><big>)</big><a class="headerlink" href="#Orange.classification.Classifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify a new instance using this model. Results depends upon
+the second parameter that must be one of the following.</p>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.Classifier.GetValue</span></tt></p>
+<blockquote>
+<div>Return value of the target class when performing prediction.</div></blockquote>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.Classifier.GetProbabilities</span></tt></p>
+<blockquote>
+<div>Return probability of each target class when performing prediction.</div></blockquote>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.Classifier.GetBoth</span></tt></p>
+<blockquote>
+<div>Return a tuple of target class value and probabilities for each class.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Instance</span></tt></a>) &#8211; data instance to be classified.</li>
+<li><strong>return_type</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">GetBoth</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">GetValue</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">GetProbabilities</span></tt>) &#8211; what needs to be predicted</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a>,
+<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a> or a
+tuple with both</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

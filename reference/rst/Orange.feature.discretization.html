@@ -1,0 +1,492 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Feature discretization (discretization) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Feature discretization (<tt class="docutils literal"><span class="pre">discretization</span></tt>)</a><ul>
+<li><a class="reference internal" href="#id1">Discretization Algorithms</a></li>
+<li><a class="reference internal" href="#discretizers">Discretizers</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="feature-discretization-discretization">
+<h1>Feature discretization (<tt class="docutils literal"><span class="pre">discretization</span></tt>)<a class="headerlink" href="#feature-discretization-discretization" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><p id="index-1">Feature discretization module provides rutines that consider continuous features and
+introduce a new discretized feature based on the training data set. Most often such procedure would be executed
+on all the features of the data set using implementations from <a class="reference internal" href="Orange.data.discretization.html"><em>Data discretization (discretization)</em></a>. Implementation
+in this module are concerned with discretization of one feature at the time, and do not provide wrappers for
+whole-data set discretization. The discretization is data-specific, and consist of learning of discretization
+procedure (see <a class="reference internal" href="#discretization-algorithms">Discretization Algorithms</a>) and actual discretization (see <a class="reference internal" href="#discretizers">Discretizers</a>) of the data. Splitting of
+these
+two phases is intentional,
+as in machine learing discretization may be learned from the training set and executed on the test set.</p>
+<p>Consider a following example (part of <a class="reference download internal" href="../../_downloads/discretization.py"><tt class="xref download docutils literal"><span class="pre">discretization.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Entropy discretization, first 10 examples&quot;</span>
+<span class="n">sep_w</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">discretization</span><span class="o">.</span><span class="n">Entropy</span><span class="p">(</span><span class="s">&quot;sepal width&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="n">data2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;sepal width&quot;</span><span class="p">],</span> <span class="n">sep_w</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">data2</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">ex</span>
+</pre></div>
+</div>
+<p>The discretized attribute <tt class="docutils literal"><span class="pre">sep_w</span></tt> is constructed with a call to
+<a class="reference internal" href="#Orange.feature.discretization.Entropy" title="Orange.feature.discretization.Entropy"><tt class="xref py py-class docutils literal"><span class="pre">Entropy</span></tt></a>; instead of constructing it and calling
+it afterwards, we passed the arguments for calling to the constructor. We then constructed a new
+<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a> with attributes &#8220;sepal width&#8221; (the original
+continuous attribute), <tt class="docutils literal"><span class="pre">sep_w</span></tt> and the class attribute:</p>
+<div class="highlight-python"><pre>Entropy discretization, first 5 data instances
+[3.5, '&gt;3.30', 'Iris-setosa']
+[3.0, '(2.90, 3.30]', 'Iris-setosa']
+[3.2, '(2.90, 3.30]', 'Iris-setosa']
+[3.1, '(2.90, 3.30]', 'Iris-setosa']
+[3.6, '&gt;3.30', 'Iris-setosa']</pre>
+</div>
+<p>The name of the new categorical variable derives from the name of original
+continuous variable by adding a prefix <tt class="docutils literal"><span class="pre">D_</span></tt>. The values of the new attributes
+are computed automatically when they are needed using a transformation
+function <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor.get_value_from" title="Orange.feature.Descriptor.get_value_from"><tt class="xref py py-obj docutils literal"><span class="pre">get_value_from</span></tt></a>
+(see <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a>) which encodes the discretization:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">sep_w</span>
+<span class="go">EnumVariable &#39;D_sepal width&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sep_w</span><span class="o">.</span><span class="n">get_value_from</span>
+<span class="go">&lt;ClassifierFromVar instance at 0x01BA7DC0&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sep_w</span><span class="o">.</span><span class="n">get_value_from</span><span class="o">.</span><span class="n">whichVar</span>
+<span class="go">FloatVariable &#39;sepal width&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sep_w</span><span class="o">.</span><span class="n">get_value_from</span><span class="o">.</span><span class="n">transformer</span>
+<span class="go">&lt;IntervalDiscretizer instance at 0x01BA2100&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sep_w</span><span class="o">.</span><span class="n">get_value_from</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">points</span>
+<span class="go">&lt;2.90000009537, 3.29999995232&gt;</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">select</span></tt> statement in the discretization script converted all data instances
+from <tt class="docutils literal"><span class="pre">data</span></tt> to the new domain. This includes a new feature
+<tt class="docutils literal"><span class="pre">sep_w</span></tt> whose values are computed on the fly by calling <tt class="docutils literal"><span class="pre">sep_w.get_value_from</span></tt> for each data instance.
+The original, continuous sepal width
+is passed to the <tt class="docutils literal"><span class="pre">transformer</span></tt> that determines the interval by its field
+<tt class="docutils literal"><span class="pre">points</span></tt>. Transformer returns the discrete value which is in turn returned
+by <tt class="docutils literal"><span class="pre">get_value_from</span></tt> and stored in the new example.</p>
+<p>With exception to fixed discretization, discretization approaches infer the cut-off points from the
+training data set and thus construct a discretizer to convert continuous values of this feature into categorical
+value according to the rule found by discretization. In this respect, the discretization behaves similar to
+<a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Learner</span></tt></a>.</p>
+<div class="section" id="id1">
+<h2><span class="target" id="discretization-algorithms">Discretization Algorithms</span><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Instances of discretization classes are all derived from <a class="reference internal" href="#Orange.feature.discretization.Discretization" title="Orange.feature.discretization.Discretization"><tt class="xref py py-class docutils literal"><span class="pre">Discretization</span></tt></a>.</p>
+<dl class="class">
+<dt id="Orange.feature.discretization.Discretization">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">Discretization</tt><a class="headerlink" href="#Orange.feature.discretization.Discretization" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Orange.feature.discretization.Discretization.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>variable</em>, <em>data</em><span class="optional">[</span>, <em>weightID</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.feature.discretization.Discretization.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a continuous <tt class="docutils literal"><span class="pre">variable</span></tt>, <tt class="docutils literal"><span class="pre">data</span></tt> and, optionally id
+of attribute with example weight, this function returns a
+discretized feature. Argument <tt class="docutils literal"><span class="pre">variable</span></tt> can be a
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>, index or name of the
+variable within <tt class="docutils literal"><span class="pre">data.domain</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.discretization.EqualWidth">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">EqualWidth</tt><a class="headerlink" href="#Orange.feature.discretization.EqualWidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretizes the feature by spliting its domain to a fixed number
+of equal-width intervals. The span of original domain is computed
+from the training data and is defined by the smallest and the
+largest feature value.</p>
+<dl class="attribute">
+<dt id="Orange.feature.discretization.EqualWidth.n">
+<tt class="descname">n</tt><a class="headerlink" href="#Orange.feature.discretization.EqualWidth.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of discretization intervals (default: 4).</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The following example discretizes Iris dataset features using six
+intervals. The script constructs a <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a> with discretized
+features and outputs their description:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">disc</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">discretization</span><span class="o">.</span><span class="n">EqualWidth</span><span class="p">(</span><span class="n">numberOfIntervals</span> <span class="o">=</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">newattrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">disc</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">]</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">newattrs</span> <span class="o">+</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">classVar</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">newattrs</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output of this script is:</p>
+<div class="highlight-python"><pre>D_sepal length: &lt;&lt;4.90, [4.90, 5.50), [5.50, 6.10), [6.10, 6.70), [6.70, 7.30), &gt;7.30&gt;
+D_sepal width: &lt;&lt;2.40, [2.40, 2.80), [2.80, 3.20), [3.20, 3.60), [3.60, 4.00), &gt;4.00&gt;
+D_petal length: &lt;&lt;1.98, [1.98, 2.96), [2.96, 3.94), [3.94, 4.92), [4.92, 5.90), &gt;5.90&gt;
+D_petal width: &lt;&lt;0.50, [0.50, 0.90), [0.90, 1.30), [1.30, 1.70), [1.70, 2.10), &gt;2.10&gt;</pre>
+</div>
+<p>The cut-off values are hidden in the discretizer and stored in <tt class="docutils literal"><span class="pre">attr.get_value_from.transformer</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">newattrs</span><span class="p">:</span>
+<span class="gp">... </span>   <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">: first interval at </span><span class="si">%5.3f</span><span class="s">, step </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> \
+<span class="gp">... </span>   <span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="o">.</span><span class="n">get_value_from</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">first_cut</span><span class="p">,</span> \
+<span class="gp">... </span>   <span class="n">attr</span><span class="o">.</span><span class="n">get_value_from</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">step</span><span class="p">)</span>
+<span class="go">D_sepal length: first interval at 4.900, step 0.600</span>
+<span class="go">D_sepal width: first interval at 2.400, step 0.400</span>
+<span class="go">D_petal length: first interval at 1.980, step 0.980</span>
+<span class="go">D_petal width: first interval at 0.500, step 0.400</span>
+</pre></div>
+</div>
+<p>All discretizers have the method
+<tt class="docutils literal"><span class="pre">construct_variable</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">edisc</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">discretization</span><span class="o">.</span><span class="n">EqualWidthDiscretizer</span><span class="p">(</span><span class="n">first_cut</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">newattrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">edisc</span><span class="o">.</span><span class="n">constructVariable</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">]</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">newattrs</span> <span class="o">+</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">classVar</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">data2</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">ex</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.feature.discretization.EqualFreq">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">EqualFreq</tt><a class="headerlink" href="#Orange.feature.discretization.EqualFreq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Infers the cut-off points so that the discretization intervals contain
+approximately equal number of training data instances.</p>
+<dl class="attribute">
+<dt id="Orange.feature.discretization.EqualFreq.n">
+<tt class="descname">n</tt><a class="headerlink" href="#Orange.feature.discretization.EqualFreq.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of discretization intervals (default: 4).</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The resulting discretizer is of class <a class="reference internal" href="#Orange.feature.discretization.IntervalDiscretizer" title="Orange.feature.discretization.IntervalDiscretizer"><tt class="xref py py-class docutils literal"><span class="pre">IntervalDiscretizer</span></tt></a>. Its <tt class="docutils literal"><span class="pre">transformer</span></tt> includes <tt class="docutils literal"><span class="pre">points</span></tt>
+that store the inferred cut-offs.</p>
+<dl class="class">
+<dt id="Orange.feature.discretization.Entropy">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">Entropy</tt><a class="headerlink" href="#Orange.feature.discretization.Entropy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entropy-based discretization as originally proposed by <a class="reference internal" href="#fayyadirani93">[FayyadIrani93]</a>. The approach infers the most
+appropriate number of intervals by recursively splitting the domain of continuous feature to minimize the
+class-entropy of training examples. The splitting is repeated until the entropy decrease is smaller than the
+increase of minimal descripton length (MDL) induced by the new cut-off point.</p>
+<p>Entropy-based discretization can reduce a continuous feature into
+a single interval if no suitable cut-off points are found. In this case the new feature is constant and can be
+removed. This discretization can
+therefore also serve for identification of non-informative features and thus used for feature subset selection.</p>
+<dl class="attribute">
+<dt id="Orange.feature.discretization.Entropy.force_attribute">
+<tt class="descname">force_attribute</tt><a class="headerlink" href="#Orange.feature.discretization.Entropy.force_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forces the algorithm to induce at least one cut-off point, even when
+its information gain is lower than MDL (default: <tt class="docutils literal"><span class="pre">False</span></tt>).</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Part of <a class="reference download internal" href="../../_downloads/discretization.py"><tt class="xref download docutils literal"><span class="pre">discretization.py</span></tt></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">entro</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">discretization</span><span class="o">.</span><span class="n">Entropy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+    <span class="n">disc</span> <span class="o">=</span> <span class="n">entro</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">disc</span><span class="o">.</span><span class="n">get_value_from</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output shows that all attributes are discretized onto three intervals:</p>
+<div class="highlight-python"><pre>sepal length: &lt;5.5, 6.09999990463&gt;
+sepal width: &lt;2.90000009537, 3.29999995232&gt;
+petal length: &lt;1.89999997616, 4.69999980927&gt;
+petal width: &lt;0.600000023842, 1.0000004768&gt;</pre>
+</div>
+<dl class="class">
+<dt id="Orange.feature.discretization.BiModal">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">BiModal</tt><a class="headerlink" href="#Orange.feature.discretization.BiModal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Infers two cut-off points to optimize the difference of class distribution of data instances in the
+middle and in the other two intervals. The
+difference is scored by chi-square statistics. All possible cut-off
+points are examined, thus the discretization runs in O(n^2). This discretization method is especially suitable
+for the attributes in
+which the middle region corresponds to normal and the outer regions to
+abnormal values of the feature.</p>
+<dl class="attribute">
+<dt id="Orange.feature.discretization.BiModal.split_in_two">
+<tt class="descname">split_in_two</tt><a class="headerlink" href="#Orange.feature.discretization.BiModal.split_in_two" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decides whether the resulting attribute should have three or two values.
+If <tt class="docutils literal"><span class="pre">True</span></tt> (default), the feature will be discretized to three
+intervals and the discretizer is of type <a class="reference internal" href="#Orange.feature.discretization.BiModalDiscretizer" title="Orange.feature.discretization.BiModalDiscretizer"><tt class="xref py py-class docutils literal"><span class="pre">BiModalDiscretizer</span></tt></a>.
+If <tt class="docutils literal"><span class="pre">False</span></tt> the result is the ordinary <a class="reference internal" href="#Orange.feature.discretization.IntervalDiscretizer" title="Orange.feature.discretization.IntervalDiscretizer"><tt class="xref py py-class docutils literal"><span class="pre">IntervalDiscretizer</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Iris dataset has three-valued class attribute. The figure below, drawn using LOESS probability estimation, shows that
+sepal lenghts of versicolors are between lengths of setosas and virginicas.</p>
+<img alt="../../_images/bayes-iris.gif" src="../../_images/bayes-iris.gif" />
+<p>If we merge classes setosa and virginica, we can observe if
+the bi-modal discretization would correctly recognize the interval in
+which versicolors dominate. The following scripts peforms the merging and construction of new data set with class
+that reports if iris is versicolor or not.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">newclass</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;is versicolor&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;no&quot;</span><span class="p">,</span> <span class="s">&quot;yes&quot;</span><span class="p">])</span>
+<span class="n">newclass</span><span class="o">.</span><span class="n">get_value_from</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">ex</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="n">ex</span><span class="p">[</span><span class="s">&quot;iris&quot;</span><span class="p">]</span><span class="o">==</span><span class="s">&quot;Iris-versicolor&quot;</span>
+<span class="n">newdomain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">,</span> <span class="n">newclass</span><span class="p">)</span>
+<span class="n">data_v</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">newdomain</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The following script implements the discretization:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bimod</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">discretization</span><span class="o">.</span><span class="n">BiModal</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">data_v</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+    <span class="n">disc</span> <span class="o">=</span> <span class="n">bimod</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">data_v</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">: (</span><span class="si">%5.3f</span><span class="s">, </span><span class="si">%5.3f</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">disc</span><span class="o">.</span><span class="n">get_value_from</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">low</span><span class="p">,</span> <span class="n">disc</span><span class="o">.</span><span class="n">get_value_from</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">high</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The middle intervals are printed:</p>
+<div class="highlight-python"><pre>sepal length: (5.400, 6.200]
+sepal width: (2.000, 2.900]
+petal length: (1.900, 4.700]
+petal width: (0.600, 1.600]</pre>
+</div>
+<p>Judging by the graph, the cut-off points inferred by discretization for &#8220;sepal length&#8221; make sense.</p>
+</div>
+<div class="section" id="discretizers">
+<span id="id3"></span><h2>Discretizers<a class="headerlink" href="#discretizers" title="Permalink to this headline">¶</a></h2>
+<p>Discretizers construct a categorical feature from the continuous feature according to the method they implement and
+its parameters. The most general is
+<a class="reference internal" href="#Orange.feature.discretization.IntervalDiscretizer" title="Orange.feature.discretization.IntervalDiscretizer"><tt class="xref py py-class docutils literal"><span class="pre">IntervalDiscretizer</span></tt></a> that is also used by most discretization
+methods. Two other discretizers, <tt class="xref py py-class docutils literal"><span class="pre">EquiDistDiscretizer</span></tt> and
+<a class="reference internal" href="#Orange.feature.discretization.ThresholdDiscretizer" title="Orange.feature.discretization.ThresholdDiscretizer"><tt class="xref py py-class docutils literal"><span class="pre">ThresholdDiscretizer</span></tt></a>&gt; could easily be replaced by
+<a class="reference internal" href="#Orange.feature.discretization.IntervalDiscretizer" title="Orange.feature.discretization.IntervalDiscretizer"><tt class="xref py py-class docutils literal"><span class="pre">IntervalDiscretizer</span></tt></a> but are used for speed and simplicity.
+The fourth discretizer, <a class="reference internal" href="#Orange.feature.discretization.BiModalDiscretizer" title="Orange.feature.discretization.BiModalDiscretizer"><tt class="xref py py-class docutils literal"><span class="pre">BiModalDiscretizer</span></tt></a> is specialized
+for discretizations induced by <tt class="xref py py-class docutils literal"><span class="pre">BiModalDiscretization</span></tt>.</p>
+<dl class="class">
+<dt id="Orange.feature.discretization.Discretizer">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">Discretizer</tt><a class="headerlink" href="#Orange.feature.discretization.Discretizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A superclass implementing the construction of a new
+attribute from an existing one.</p>
+<dl class="method">
+<dt id="Orange.feature.discretization.Discretizer.construct_variable">
+<tt class="descname">construct_variable</tt><big>(</big><em>variable</em><big>)</big><a class="headerlink" href="#Orange.feature.discretization.Discretizer.construct_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs a descriptor for a new variable. The new variable&#8217;s
+name is equal to <tt class="docutils literal"><span class="pre">variable.name</span></tt> prefixed by &#8220;D_&#8221;. Its
+symbolic values are specific to discretizer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.discretization.IntervalDiscretizer">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">IntervalDiscretizer</tt><a class="headerlink" href="#Orange.feature.discretization.IntervalDiscretizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretizer defined with a set of cut-off points.</p>
+<dl class="attribute">
+<dt id="Orange.feature.discretization.IntervalDiscretizer.points">
+<tt class="descname">points</tt><a class="headerlink" href="#Orange.feature.discretization.IntervalDiscretizer.points" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cut-off points; feature values below or equal to the first point will be mapped to the first interval,
+those between the first and the second point
+(including those equal to the second) are mapped to the second interval and
+so forth to the last interval which covers all values greater than
+the last value in <tt class="docutils literal"><span class="pre">points</span></tt>. The number of intervals is thus
+<tt class="docutils literal"><span class="pre">len(points)+1</span></tt>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>The script that follows is an examples of a manual construction of a discretizer with cut-off points
+at 3.0 and 5.0:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">idisc</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">discretization</span><span class="o">.</span><span class="n">IntervalDiscretizer</span><span class="p">(</span><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">])</span>
+<span class="n">sep_l</span> <span class="o">=</span> <span class="n">idisc</span><span class="o">.</span><span class="n">construct_variable</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;sepal length&quot;</span><span class="p">])</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;sepal length&quot;</span><span class="p">],</span> <span class="n">sep_l</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">classVar</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">data2</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">ex</span>
+</pre></div>
+</div>
+<p>First five data instances of <tt class="docutils literal"><span class="pre">data2</span></tt> are:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="mf">5.1</span><span class="p">,</span> <span class="s">&#39;&gt;5.00&#39;</span><span class="p">,</span> <span class="s">&#39;Iris-setosa&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">4.9</span><span class="p">,</span> <span class="s">&#39;(3.00, 5.00]&#39;</span><span class="p">,</span> <span class="s">&#39;Iris-setosa&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">4.7</span><span class="p">,</span> <span class="s">&#39;(3.00, 5.00]&#39;</span><span class="p">,</span> <span class="s">&#39;Iris-setosa&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">4.6</span><span class="p">,</span> <span class="s">&#39;(3.00, 5.00]&#39;</span><span class="p">,</span> <span class="s">&#39;Iris-setosa&#39;</span><span class="p">]</span>
+<span class="p">[</span><span class="mf">5.0</span><span class="p">,</span> <span class="s">&#39;(3.00, 5.00]&#39;</span><span class="p">,</span> <span class="s">&#39;Iris-setosa&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The same discretizer can be used on several features by calling the function construct_var:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">idisc</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">discretization</span><span class="o">.</span><span class="n">IntervalDiscretizer</span><span class="p">(</span><span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">])</span>
+<span class="n">newattrs</span> <span class="o">=</span> <span class="p">[</span><span class="n">idisc</span><span class="o">.</span><span class="n">construct_variable</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">]</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">newattrs</span> <span class="o">+</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">data2</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">ex</span>
+</pre></div>
+</div>
+<p>Each feature has its own instance of <a class="reference internal" href="Orange.classification.classfromvar.html#ClassifierFromVar" title="ClassifierFromVar"><tt class="xref py py-class docutils literal"><span class="pre">ClassifierFromVar</span></tt></a> stored in
+<tt class="docutils literal"><span class="pre">get_value_from</span></tt>, but all use the same <a class="reference internal" href="#Orange.feature.discretization.IntervalDiscretizer" title="Orange.feature.discretization.IntervalDiscretizer"><tt class="xref py py-class docutils literal"><span class="pre">IntervalDiscretizer</span></tt></a>,
+<tt class="docutils literal"><span class="pre">idisc</span></tt>. Changing any element of its <tt class="docutils literal"><span class="pre">points</span></tt> affect all attributes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The length of <a class="reference internal" href="#Orange.feature.discretization.IntervalDiscretizer.points" title="Orange.feature.discretization.IntervalDiscretizer.points"><tt class="xref py py-obj docutils literal"><span class="pre">points</span></tt></a> should not be changed if the
+discretizer is used by any attribute. The length of
+<a class="reference internal" href="#Orange.feature.discretization.IntervalDiscretizer.points" title="Orange.feature.discretization.IntervalDiscretizer.points"><tt class="xref py py-obj docutils literal"><span class="pre">points</span></tt></a> should always match the number of values
+of the feature, which is determined by the length of the attribute&#8217;s field
+<tt class="docutils literal"><span class="pre">values</span></tt>. If <tt class="docutils literal"><span class="pre">attr</span></tt> is a discretized attribute, than <tt class="docutils literal"><span class="pre">len(attr.values)</span></tt> must equal
+<tt class="docutils literal"><span class="pre">len(attr.get_value_from.transformer.points)+1</span></tt>.</p>
+</div>
+<dl class="class">
+<dt id="Orange.feature.discretization.EqualWidthDiscretizer">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">EqualWidthDiscretizer</tt><a class="headerlink" href="#Orange.feature.discretization.EqualWidthDiscretizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretizes to intervals of the fixed width. All values lower than <tt class="xref py py-obj docutils literal"><span class="pre">first_cut</span></tt> are mapped to the first
+interval. Otherwise, value <tt class="docutils literal"><span class="pre">val</span></tt>&#8216;s interval is <tt class="docutils literal"><span class="pre">floor((val-first_cut)/step)</span></tt>. Possible overflows are mapped to the
+last intervals.</p>
+<dl class="attribute">
+<dt id="Orange.feature.discretization.EqualWidthDiscretizer.first_cut">
+<tt class="descname">first_cut</tt><a class="headerlink" href="#Orange.feature.discretization.EqualWidthDiscretizer.first_cut" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first cut-off point.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.discretization.EqualWidthDiscretizer.step">
+<tt class="descname">step</tt><a class="headerlink" href="#Orange.feature.discretization.EqualWidthDiscretizer.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Width of the intervals.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.discretization.EqualWidthDiscretizer.n">
+<tt class="descname">n</tt><a class="headerlink" href="#Orange.feature.discretization.EqualWidthDiscretizer.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of the intervals.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.discretization.EqualWidthDiscretizer.points">
+<tt class="descname">points</tt><big>(</big><em>read-only</em><big>)</big><a class="headerlink" href="#Orange.feature.discretization.EqualWidthDiscretizer.points" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cut-off points; this is not a real attribute although it behaves
+as one. Reading it constructs a list of cut-off points and returns it,
+but changing the list doesn&#8217;t affect the discretizer. Only present to provide
+the <tt class="xref py py-obj docutils literal"><span class="pre">EquiDistDiscretizer</span></tt> the same interface as that of
+<a class="reference internal" href="#Orange.feature.discretization.IntervalDiscretizer" title="Orange.feature.discretization.IntervalDiscretizer"><tt class="xref py py-obj docutils literal"><span class="pre">IntervalDiscretizer</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.discretization.ThresholdDiscretizer">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">ThresholdDiscretizer</tt><a class="headerlink" href="#Orange.feature.discretization.ThresholdDiscretizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threshold discretizer converts continuous values into binary by comparing
+them to a fixed threshold. Orange uses this discretizer for
+binarization of continuous attributes in decision trees.</p>
+<dl class="attribute">
+<dt id="Orange.feature.discretization.ThresholdDiscretizer.threshold">
+<tt class="descname">threshold</tt><a class="headerlink" href="#Orange.feature.discretization.ThresholdDiscretizer.threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>The value threshold; values below or equal to the threshold belong to the first
+interval and those that are greater go to the second.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.discretization.BiModalDiscretizer">
+<em class="property">class </em><tt class="descclassname">Orange.feature.discretization.</tt><tt class="descname">BiModalDiscretizer</tt><a class="headerlink" href="#Orange.feature.discretization.BiModalDiscretizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bimodal discretizer has two cut off points and values are
+discretized according to whether or not they belong to the region between these points
+which includes the lower but not the upper boundary. The
+discretizer is returned by <tt class="xref py py-class docutils literal"><span class="pre">BiModalDiscretization</span></tt> if its
+field <tt class="xref py py-obj docutils literal"><span class="pre">split_in_two</span></tt> is true (the default).</p>
+<dl class="attribute">
+<dt id="Orange.feature.discretization.BiModalDiscretizer.low">
+<tt class="descname">low</tt><a class="headerlink" href="#Orange.feature.discretization.BiModalDiscretizer.low" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lower boundary of the interval (included in the interval).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.discretization.BiModalDiscretizer.high">
+<tt class="descname">high</tt><a class="headerlink" href="#Orange.feature.discretization.BiModalDiscretizer.high" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upper boundary of the interval (not included in the interval).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils citation" frame="void" id="fayyadirani93" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[FayyadIrani93]</a></td><td>UM Fayyad and KB Irani. Multi-interval discretization of continuous valued
+attributes for classification learning. In Proc. 13th International Joint Conference on Artificial Intelligence, pages
+1022&#8211;1029, Chambery, France, 1993.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

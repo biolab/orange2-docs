@@ -1,0 +1,367 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Random sampling data (sample) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Random sampling data (<tt class="docutils literal"><span class="pre">sample</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.data.sample"></span><div class="section" id="random-sampling-data-sample">
+<h1>Random sampling data (<tt class="docutils literal"><span class="pre">sample</span></tt>)<a class="headerlink" href="#random-sampling-data-sample" title="Permalink to this headline">¶</a></h1>
+<p>Random sampling is done by constructing a vector of subset indices
+(e.g. a table of 0&#8217;s and 1&#8217;s), one corresponding to each instance, and
+then passing the vector to the table&#8217;s <a class="reference internal" href="Orange.data.table.html#Orange.data.Table.select" title="Orange.data.Table.select"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table.select</span></tt></a>
+method.</p>
+<p>Orange provides several methods for construction of such indices:
+<a class="reference internal" href="#Orange.data.sample.SubsetIndices2" title="Orange.data.sample.SubsetIndices2"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndices2</span></tt></a> for splitting into two sets (or extracting a
+random subset), <a class="reference internal" href="#Orange.data.sample.SubsetIndicesN" title="Orange.data.sample.SubsetIndicesN"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndicesN</span></tt></a> for splitting into multiple
+sets and <a class="reference internal" href="#Orange.data.sample.SubsetIndicesCV" title="Orange.data.sample.SubsetIndicesCV"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndicesCV</span></tt></a> for cross validation. All classes are
+derived from the abstract class <a class="reference internal" href="#Orange.data.sample.SubsetIndices" title="Orange.data.sample.SubsetIndices"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndices</span></tt></a>.</p>
+<p>The typical usage pattern is as follows.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">lenses</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+<span class="n">indices2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndices2</span><span class="p">(</span><span class="n">p0</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="n">ind</span> <span class="o">=</span> <span class="n">indices2</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+<span class="n">lenses0</span> <span class="o">=</span> <span class="n">lenses</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">lenses1</span> <span class="o">=</span> <span class="n">lenses</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Subset indices are deterministic in the sense that unless the caller
+explicitly modifies random seeds, the same setup will always return
+the same indices. Details are shown in the section about
+<a class="reference internal" href="#Orange.data.sample.SubsetIndices2" title="Orange.data.sample.SubsetIndices2"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndices2</span></tt></a>.</p>
+<dl class="class">
+<dt id="Orange.data.sample.SubsetIndices">
+<em class="property">class </em><tt class="descclassname">Orange.data.sample.</tt><tt class="descname">SubsetIndices</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.data.sample.SubsetIndices.stratified">
+<tt class="descname">stratified</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices.stratified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines whether the samples should be stratified, that is,
+whether all subset should have approximatelly equal class
+distributions. Possible values are</p>
+<dl class="data">
+<dt id="Orange.data.sample.SubsetIndices.Stratified">
+<tt class="descname">Stratified</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices.Stratified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Division is stratified; exceptions is raised if this is
+not possible, for instance if the data is numeric.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="Orange.data.sample.SubsetIndices.NotStratified">
+<tt class="descname">NotStratified</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices.NotStratified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Division is not stratified.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="Orange.data.sample.SubsetIndices.StratifiedIfPossible">
+<tt class="descname">StratifiedIfPossible</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices.StratifiedIfPossible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Division is stratified if possible and unstratified
+otherwise (default).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.sample.SubsetIndices.randseed">
+<tt class="descname">randseed</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices.randseed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.sample.SubsetIndices.random_generator">
+<tt class="descname">random_generator</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices.random_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <a class="reference internal" href="#Orange.data.sample.SubsetIndices.random_generator" title="Orange.data.sample.SubsetIndices.random_generator"><tt class="xref py py-obj docutils literal"><span class="pre">random_generator</span></tt></a> (of type <a class="reference internal" href="Orange.misc.html#Orange.misc.Random" title="Orange.misc.Random"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.misc.Random</span></tt></a>)
+is set, it is used for generation of random numbers. In this
+case, <a class="reference internal" href="#Orange.data.sample.SubsetIndices" title="Orange.data.sample.SubsetIndices"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndices</span></tt></a> will return a different set of
+indices each time it is called.</p>
+<p>The same generator can be shared between different objects;
+this can be useful when constructing an experiment that
+depends on a single random seed.</p>
+<p>If <a class="reference internal" href="#Orange.data.sample.SubsetIndices.random_generator" title="Orange.data.sample.SubsetIndices.random_generator"><tt class="xref py py-obj docutils literal"><span class="pre">random_generator</span></tt></a> is not given, but <a class="reference internal" href="#Orange.data.sample.SubsetIndices.randseed" title="Orange.data.sample.SubsetIndices.randseed"><tt class="xref py py-attr docutils literal"><span class="pre">randseed</span></tt></a>
+is set (that is, positive), the value is used to initiate a
+new, temporary local random generator. This way, the indices
+generator will always give same indices for the same data.</p>
+<p>If none of the two is defined, a new random generator is
+constructed each time the object is called and initialized
+with a seed of 0. Note that this is different from some other
+classes, such as <tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt>,
+<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-obj docutils literal"><span class="pre">Distribution</span></tt></a> and
+<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Table</span></tt></a>, that store such generators for
+future use: the generator constructed by <a class="reference internal" href="#Orange.data.sample.SubsetIndices" title="Orange.data.sample.SubsetIndices"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndices</span></tt></a>
+is disposed after use) and initialized with random seed
+0.</p>
+<p>Examples are shown in documentation for <a class="reference internal" href="#Orange.data.sample.SubsetIndices2" title="Orange.data.sample.SubsetIndices2"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndices2</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sample.SubsetIndices.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#Orange.data.sample.SubsetIndices.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a list of indices for the given data table. If data has
+a discrete class, sampling can be stratified.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__call__</tt><big>(</big><em>n</em><big>)</big></dt>
+<dd><p>Return a list of <tt class="docutils literal"><span class="pre">n</span></tt> indices. Sampling cannot be stratified.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.sample.SubsetIndices2">
+<em class="property">class </em><tt class="descclassname">Orange.data.sample.</tt><tt class="descname">SubsetIndices2</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares a list of 0&#8217;s and 1&#8217;s in the given proportions.</p>
+<dl class="attribute">
+<dt id="Orange.data.sample.SubsetIndices2.p0">
+<tt class="descname">p0</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndices2.p0" title="Permalink to this definition">¶</a></dt>
+<dd><p>The proportion or a number of 0&#8217;s. If <a class="reference internal" href="#Orange.data.sample.SubsetIndices2.p0" title="Orange.data.sample.SubsetIndices2.p0"><tt class="xref py py-obj docutils literal"><span class="pre">p0</span></tt></a> is less than
+1, the number gives a proportion; for instance, if <a class="reference internal" href="#Orange.data.sample.SubsetIndices2.p0" title="Orange.data.sample.SubsetIndices2.p0"><tt class="xref py py-obj docutils literal"><span class="pre">p0</span></tt></a>
+is 0.2, 20% of indices will be 0&#8217;s and 80% will be 1&#8217;s. If
+<a class="reference internal" href="#Orange.data.sample.SubsetIndices2.p0" title="Orange.data.sample.SubsetIndices2.p0"><tt class="xref py py-obj docutils literal"><span class="pre">p0</span></tt></a> is 1 or more, it gives the number of 0&#8217;s; with
+<tt class="xref py py-obj docutils literal"><span class="pre">p0=10</span></tt>, the list will have 10 0&#8217;s and the rest of the
+list will be 1&#8217;s.</p>
+</dd></dl>
+
+<p>The following examples splits the data on lenses to two datasets,
+the first containing only 6 data instances and the other
+containing the rest (from <a class="reference download internal" href="../../_downloads/randomindices2.py"><tt class="xref download docutils literal"><span class="pre">randomindices2.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">indices2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndices2</span><span class="p">(</span><span class="n">p0</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="n">ind</span> <span class="o">=</span> <span class="n">indices2</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">ind</span>
+<span class="n">lenses0</span> <span class="o">=</span> <span class="n">lenses</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">lenses1</span> <span class="o">=</span> <span class="n">lenses</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ind</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">lenses0</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">lenses1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>&lt;0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1&gt;
+6 18</pre>
+</div>
+<p>Repeating this gives the same set of indices.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Indices without playing with random generator&quot;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">indices2</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>Indices without playing with random generator
+&lt;0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1&gt;
+&lt;0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1&gt;
+&lt;0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1&gt;
+&lt;0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1&gt;
+&lt;0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1&gt;</pre>
+</div>
+<p>With a random generator, it gives different indices every time.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Indices with random generator&quot;</span>
+<span class="n">indices2</span><span class="o">.</span><span class="n">random_generator</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">misc</span><span class="o">.</span><span class="n">Random</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>    
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">indices2</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>Indices with random generator
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1&gt;
+&lt;1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1&gt;
+&lt;1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1&gt;
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0&gt;
+&lt;1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1&gt;</pre>
+</div>
+<p>Running this same script again however gives the same indices
+since the same random generator is constructed and used.</p>
+<p>The next example sets the random seed and removes the random
+generator (otherwise the seed would have no effect as the
+generator has the priority). At each call, it constructs a private
+random generator and initializes it with the given seed, and
+therefore always returns the same indices.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Indices with randseed&quot;</span>
+<span class="n">indices2</span><span class="o">.</span><span class="n">random_generator</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="n">indices2</span><span class="o">.</span><span class="n">randseed</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">indices2</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>Indices with randseed
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1&gt;
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1&gt;
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1&gt;
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1&gt;
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1&gt;</pre>
+</div>
+<p>There are 24 instances in the dataset. Setting
+<a class="reference internal" href="#Orange.data.sample.SubsetIndices2.p0" title="Orange.data.sample.SubsetIndices2.p0"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndices2.p0</span></tt></a> to 0.25 instead of 6 gives the same result.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Indices with p0 set as probability (not &#39;a number of&#39;)&quot;</span>
+<span class="n">indices2</span><span class="o">.</span><span class="n">p0</span> <span class="o">=</span> <span class="mf">0.25</span>
+<span class="k">print</span> <span class="n">indices2</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>Indices with p0 set as probability (not 'a number of')
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1&gt;</pre>
+</div>
+<p>The class can also be called with a number of data instances
+instead of the data. In this case, stratification is not possible.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">... stratified &#39;if possible&#39;&quot;</span>
+<span class="n">indices2</span><span class="o">.</span><span class="n">stratified</span> <span class="o">=</span> <span class="n">indices2</span><span class="o">.</span><span class="n">StratifiedIfPossible</span>
+<span class="k">print</span> <span class="n">indices2</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>... stratified 'if possible'
+&lt;1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.sample.SubsetIndicesN">
+<em class="property">class </em><tt class="descclassname">Orange.data.sample.</tt><tt class="descname">SubsetIndicesN</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndicesN" title="Permalink to this definition">¶</a></dt>
+<dd><p>A generalization of <tt class="xref py py-obj docutils literal"><span class="pre">RandomIndices2</span></tt> to multiple subsets.</p>
+<dl class="attribute">
+<dt id="Orange.data.sample.SubsetIndicesN.p">
+<tt class="descname">p</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndicesN.p" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of proportions of data that go to each fold. If
+<a class="reference internal" href="#Orange.data.sample.SubsetIndicesN.p" title="Orange.data.sample.SubsetIndicesN.p"><tt class="xref py py-obj docutils literal"><span class="pre">p</span></tt></a> has a length of 3, the returned list will have four
+different indices, the first three will have probabilities as
+defined in <a class="reference internal" href="#Orange.data.sample.SubsetIndicesN.p" title="Orange.data.sample.SubsetIndicesN.p"><tt class="xref py py-obj docutils literal"><span class="pre">p</span></tt></a> while the last will have a probability of
+(1 - sum of elements of <a class="reference internal" href="#Orange.data.sample.SubsetIndicesN.p" title="Orange.data.sample.SubsetIndicesN.p"><tt class="xref py py-obj docutils literal"><span class="pre">p</span></tt></a>).</p>
+</dd></dl>
+
+<p><a class="reference internal" href="#Orange.data.sample.SubsetIndicesN" title="Orange.data.sample.SubsetIndicesN"><tt class="xref py py-obj docutils literal"><span class="pre">SubsetIndicesN</span></tt></a> does not support stratification; setting
+<tt class="xref py py-obj docutils literal"><span class="pre">stratified</span></tt> to <tt class="xref py py-obj docutils literal"><span class="pre">Stratified</span></tt> will yield an error.</p>
+<p>The following constructs a division in which one half of data is
+in the first set and one quarter in the second and in the third
+<a class="reference download internal" href="../../_downloads/randomindicesn.py"><tt class="xref download docutils literal"><span class="pre">randomindicesn.py</span></tt></a>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">lenses</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+
+<span class="n">indicesn</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndicesN</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">])</span>
+
+<span class="n">ind</span> <span class="o">=</span> <span class="n">indicesn</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">ind</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>&lt;1, 0, 0, 2, 0, 1, 1, 0, 2, 0, 2, 2, 1, 0, 0, 0, 2, 0, 0, 0, 1, 2, 1, 0&gt;</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.sample.SubsetIndicesCV">
+<em class="property">class </em><tt class="descclassname">Orange.data.sample.</tt><tt class="descname">SubsetIndicesCV</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndicesCV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes indices for cross-validation by constructing a list of
+indices between 0 and <a class="reference internal" href="#Orange.data.sample.SubsetIndicesCV.folds" title="Orange.data.sample.SubsetIndicesCV.folds"><tt class="xref py py-obj docutils literal"><span class="pre">folds</span></tt></a>-1 (inclusive), with an equal
+number of each (if the number of instances is not divisible by
+<a class="reference internal" href="#Orange.data.sample.SubsetIndicesCV.folds" title="Orange.data.sample.SubsetIndicesCV.folds"><tt class="xref py py-obj docutils literal"><span class="pre">folds</span></tt></a>, the last folds will have one element less).</p>
+<dl class="attribute">
+<dt id="Orange.data.sample.SubsetIndicesCV.folds">
+<tt class="descname">folds</tt><a class="headerlink" href="#Orange.data.sample.SubsetIndicesCV.folds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of folds. Default is 10.</p>
+</dd></dl>
+
+<p>This prepares indices for ten-fold cross validation and indices
+for 10 data instances for 5-fold cross validation without giving
+the actual data in the latter case (<a class="reference download internal" href="../../_downloads/randomindicescv.py"><tt class="xref download docutils literal"><span class="pre">randomindicescv.py</span></tt></a>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">lenses</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Indices for ordinary 10-fold CV&quot;</span>
+<span class="k">print</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndicesCV</span><span class="p">(</span><span class="n">lenses</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Indices for 5 folds on 10 instances&quot;</span>
+<span class="k">print</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndicesCV</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>Output::</dt>
+<dd>Indices for ordinary 10-fold CV
+&lt;1, 1, 3, 8, 8, 3, 2, 7, 5, 0, 1, 5, 2, 9, 4, 7, 4, 9, 3, 6, 0, 2, 0, 6&gt;
+Indices for 5 folds on 10 instances
+&lt;3, 0, 1, 0, 3, 2, 4, 4, 1, 2&gt;</dd>
+</dl>
+<p>Since instances do not divide evenly into ten folds, the first
+four folds have one element more - there are three 0&#8217;s, 1&#8217;s, 2&#8217;s
+and 3&#8217;s, but only two 4&#8217;s, 5&#8217;s..</p>
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

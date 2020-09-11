@@ -1,0 +1,257 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Radviz &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Radviz</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="radviz">
+<span id="id1"></span><h1>Radviz<a class="headerlink" href="#radviz" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/Radviz1.svg" /><p>Radviz vizualization with explorative data analysis and intelligent data
+visualization enhancements.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Input data set.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Example Subset (ExampleTable)</dt>
+<dd><p class="first last">A subset of data instances from Examples.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Attribute Selection List</dt>
+<dd><p class="first last">List of attributes to be shown in the visualization.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Selected Examples (ExampleTable)</dt>
+<dd><p class="first last">A subset of examples that user has manually selected from the scatterplot.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Unselected Examples (ExampleTable)</dt>
+<dd><p class="first last">All other examples (examples not included in the user&#8217;s selection).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Attribute Selection List</dt>
+<dd><p class="first last">List of attributes used in the visualization.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Radviz (<a class="footnote-reference" href="#id8" id="id2">[1]</a>) is a neat non-linear multi-dimensional visualization
+technique that can display data on three or more attributes in a 2-dimensional
+projection. The visualized attributes are presented as anchor points equally
+spaced around the perimeter of a unit circle. Data instances are shown as
+points inside the circle, with their positions determined by a metaphor from
+physics: each point is held in place with springs that are attached at the
+other end to the attribute anchors. The stiffness of each spring is
+proportional to the value of the corresponding attribute and the point ends up
+at the position where the spring forces are in equilibrium. Prior to
+visualization, attribute values are scaled to lie between 0 and 1. Data
+instances that are close to a set of feature anchors have higher values for
+these features than for the others.</p>
+<p>The snapshot shown below shows a Radviz widget with a visualization of the
+data set from functional genomics (<a class="footnote-reference" href="#id9" id="id3">[2]</a>). In this particular
+visualization the data instances are colored according to the corresponding
+class, and the visualization space is colored according to the computed class
+probability. Notice that the particular visualization very nicely separates
+the data instances of the different class, making the visualization interesting
+and potentially informative.</p>
+<img alt="../../../_images/Radviz-Brown.png" src="../../../_images/Radviz-Brown.png" />
+<p>To gain further understanding about the placement of the data points in
+two-dimensional space, it helps to set on the <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">value</span> <span class="pre">lines</span></tt> and
+use <tt class="xref py py-obj docutils literal"><span class="pre">Tooltips</span> <span class="pre">show</span> <span class="pre">spring</span> <span class="pre">values</span></tt>. We also switched-off the
+<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">probabilities</span></tt> to see the markings associated with data points
+better. The resulting display is shown below. From it, it should be clear that
+high values of &#8220;spo5 11&#8221; attribute (and for some data instances high values of
+&#8220;spo mid&#8221;) is quite characteristic for instance of class Ribo, which at the
+same time have comparable lower value of other attributes. High values of
+heat 20 and diau f are characteristic for Resp class. See <a class="footnote-reference" href="#id10" id="id4">[3]</a> and
+<a class="footnote-reference" href="#id12" id="id5">[5]</a> for further illustrations of utility of Radviz in analysis of
+this and similar data set from functional genomics. Other options in the
+<tt class="xref py py-obj docutils literal"><span class="pre">Settings</span></tt> tab are quite standard. The <tt class="xref py py-obj docutils literal"><span class="pre">Point</span> <span class="pre">size</span></tt> controls the size
+of the points that mark the data instnace. <tt class="xref py py-obj docutils literal"><span class="pre">Jittering</span> <span class="pre">Options</span></tt> are
+especially interesting when displaying data with discrete attributes, where
+many of the data instances would overlap. Same could happen also with
+continuous attributes if many data instances use the same value of the
+attributes. <tt class="xref py py-obj docutils literal"><span class="pre">Scaling</span> <span class="pre">Options</span></tt> can shrink or blow-up the visualization from
+its central point. From <tt class="xref py py-obj docutils literal"><span class="pre">General</span> <span class="pre">Graph</span> <span class="pre">Settings</span></tt>, which mainly includes
+standard point-visualization options, let us bring to your attention
+<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">value</span> <span class="pre">lines</span></tt> which we used in the visualization below and which
+tells the widget to annotate each data point with a set of lines, each
+corresponding with each of the attributes displayed. The length of these lines
+are proportional to the attribute values (no line if the value is minimal).
+A slider accompanying this option sets the scale in which the lines are drawn.
+<tt class="xref py py-obj docutils literal"><span class="pre">Tooltip</span> <span class="pre">Settings</span></tt> determine which information is being displayed when the
+pointer gets over the data instance.</p>
+<img alt="../../../_images/Radviz-Brown-Springs.png" src="../../../_images/Radviz-Brown-Springs.png" />
+<p>Just like all point-based visualizations, this widget includes tools for
+intelligent data visualization (VizRank and FreeViz, see <a class="footnote-reference" href="#id10" id="id6">[3]</a>) and
+<a class="footnote-reference" href="#id11" id="id7">[4]</a>) and interface for explorative data analysis - selection of data
+points in visualization. Just like in <a class="reference internal" href="scatterplot.html#scatter-plot"><em>Scatter Plot</em></a> widget, intelligent
+visualization can be used to find a set of attributes that would result in an
+interesting visualization. For now, this works only with class-labeled data
+set, where interesting visualizations are those that well separate data
+instances of different class. Radviz graph above is according to this
+definition an example of a very good visualization, while the one below - where
+we show an VizRank&#8217;s interface (<tt class="xref py py-obj docutils literal"><span class="pre">VizRank</span></tt> button in
+<tt class="xref py py-obj docutils literal"><span class="pre">Optimization</span> <span class="pre">dialogs</span></tt>) with a list of 5-attribute visualizations and
+their scores - is not. See documentation of <a class="reference internal" href="scatterplot.html#scatter-plot"><em>Scatter Plot</em></a> widget for
+further details on VizRank, and for description of explorative analysis
+functions (selection of data instances and zooming).</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>Hoffman,P.E. et al. (1997) DNA visual and analytic data mining.
+In the Proceedings of the IEEE Visualization. Phoenix, AZ, pp. 437-441.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id9" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Brown, M. P., W. N. Grundy, et al. (2000).
+&#8220;Knowledge-based analysis of microarray gene expression data by using
+support vector machines.&#8221; Proc Natl Acad Sci U S A 97(1): 262-7.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[3]</td><td><em>(<a class="fn-backref" href="#id4">1</a>, <a class="fn-backref" href="#id6">2</a>)</em> Leban, G., B. Zupan, et al. (2006). &#8220;VizRank: Data Visualization
+Guided by Machine Learning.&#8221; Data Mining and Knowledge Discovery 13(2):
+119-136.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[4]</a></td><td>Demsar J, Leban G, Zupan B. FreeViz-An intelligent multivariate
+visualization approach to explorative analysis of biomedical data. J Biomed
+Inform 40(6):661-71, 2007.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[5]</a></td><td>Mramor M, Leban G, Demsar J, Zupan B. Visualization-based
+cancer microarray data classification analysis. Bioinformatics 23(16):
+2147-2154, 2007.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

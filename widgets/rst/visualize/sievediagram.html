@@ -1,0 +1,160 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Sieve Diagram &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Sieve Diagram</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="sieve-diagram">
+<span id="id1"></span><h1>Sieve Diagram<a class="headerlink" href="#sieve-diagram" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/SieveDiagram1.svg" /><p>Plots a sieve diagram for a pair of attributes.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Input data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last simple">
+<li>None</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>A sieve diagram is a graphical method for visualizing the frequencies in a
+two-way contingency table and comparing them to the expected frequencies under
+assumtion of independence. The sieve diagram was proposed by Riedwyl and
+Schüpbach in a technical report in 1983 and later called a parquet diagram
+(<a class="reference internal" href="#riedwy1994">[Riedwy1994]</a>). In this display the area of each rectangle is proportional to
+expected frequency and observed frequency is shown by the number of squares in
+each rectangle. The difference between observed and expected frequency
+(proportional to standard Pearson residual) appears as the density of shading,
+using color to indicate whether the deviation from independence is positive
+(blue) or negative (red).</p>
+<p>The snapshot below shows a sieve diagram for Titanic data set and attributes
+sex and survived (the later is actually a class attribute in this data set).
+The plot shows that the two variables are highly associated, as there are
+substantial differences between observed and expected frequencies in all of the
+four quadrants. For example and as highlighted in a balloon, the chance for
+not surviving the accident was for female passengers much lower than expected
+(0.05 vs. 0.14).</p>
+<img alt="../../../_images/SieveDiagram-Titanic.png" src="../../../_images/SieveDiagram-Titanic.png" />
+<p>Orange can help to identify pairs of attributes with interesting associations.
+Such attribute pairs are upon request (<tt class="xref py py-obj docutils literal"><span class="pre">Calculate</span> <span class="pre">Chi</span> <span class="pre">Squares</span></tt>) listed
+in <tt class="xref py py-obj docutils literal"><span class="pre">Interesting</span> <span class="pre">attribute</span> <span class="pre">pair</span></tt>. As it turns out, the most interesting
+attribute pair in Titanic data set is indeed the one we show in the above
+snapshot. For a contrast, the sieve diagram of the least interesting pair
+(age vs. survival) is shown below.</p>
+<img alt="../../../_images/SieveDiagram-Titanic-age-survived.png" src="../../../_images/SieveDiagram-Titanic-age-survived.png" />
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils citation" frame="void" id="riedwy1994" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[Riedwy1994]</a></td><td>Riedwyl, H., and Schüpbach, M. (1994). Parquet diagram to plot
+contingency tables. In  Softstat &#8216;93: Advances in Statistical Software,
+F. Faulbaum (Ed.). New York: Gustav Fischer, 293-299.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

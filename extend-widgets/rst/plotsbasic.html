@@ -1,0 +1,212 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Using the new ‘plot’ module &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Using the new &#8216;plot&#8217; module</a><ul>
+<li><a class="reference internal" href="#setting-the-data">Setting the data</a></li>
+<li><a class="reference internal" href="#showing-a-legend">Showing a legend</a></li>
+<li><a class="reference internal" href="#running-this-example">Running this example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="using-the-new-plot-module">
+<h1>Using the new &#8216;plot&#8217; module<a class="headerlink" href="#using-the-new-plot-module" title="Permalink to this headline">¶</a></h1>
+<p>Orange has a new plotting interface via the <tt class="xref py py-obj docutils literal"><span class="pre">OrangeWidgets.plot</span></tt>
+module. The OWPlot class use Qt&#8217;s graphics framework and was written specifically for
+Orange, so it contains methods more suitable to its data structures. It also provides
+most methods also found in the Qwt-based OWGraph, so switching from one base
+to another is quite easy.</p>
+<p>In the other example (<a class="reference internal" href="plots.html"><em>Graphing and Orange Widgets</em></a>) we showed how little modification
+is used to replace OWGraph with OWPlot.
+On the other hand, this example shows that using OWPlot from the start can be much easier.
+We will implement the simplest graph: a series of points with x and y coordinates,
+and different colors, sizes and shapes.</p>
+<img alt="../../_images/owplot_example.png" src="../../_images/owplot_example.png" />
+<p>The central method for plotting a series of points is
+<tt class="xref py py-obj docutils literal"><span class="pre">set_main_curve_data()</span></tt>. It creates a curve and adds it to the plot, or
+just updates it if one already exists. Because it doesn&#8217;t recreate the curve every time
+it&#8217;s called, it can animate the transition from one data set to another.</p>
+<div class="section" id="setting-the-data">
+<h2>Setting the data<a class="headerlink" href="#setting-the-data" title="Permalink to this headline">¶</a></h2>
+<p>To use this method, we must first convert the data to lists, one list for every property:
+X coordinates, Y coordinates, point colors, sizes and shapes.
+Each list except the coordinates can be empty, in which case the default value is used for all points.
+You can convert the data directly from your inputs, or use the classes in the
+<tt class="xref py py-obj docutils literal"><span class="pre">preprocess.scaling</span></tt> module.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">color_cont</span> <span class="o">=</span> <span class="p">(</span><span class="n">domain</span><span class="p">[</span><span class="n">c_i</span><span class="p">]</span><span class="o">.</span><span class="n">varType</span> <span class="o">==</span> <span class="n">orange</span><span class="o">.</span><span class="n">VarTypes</span><span class="o">.</span><span class="n">Continuous</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">x_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">x_i</span><span class="p">])</span>
+    <span class="n">y_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">y_i</span><span class="p">])</span>
+    <span class="n">c_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">c_i</span><span class="p">])</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">+</span> <span class="nb">round</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">s_i</span><span class="p">])</span>
+    <span class="n">s_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">color_cont</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">c_data</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">c_data</span><span class="p">)</span>
+    <span class="n">c_data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">continuous_palette</span><span class="p">[(</span><span class="n">v</span><span class="o">-</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">M</span><span class="o">-</span><span class="n">m</span><span class="p">)]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">c_data</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">c_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">QColor</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">discrete_palette</span><span class="o">.</span><span class="n">getRGB</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c_data</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>You can see that we have to adjust the color attribute in case that attribute is continuous.
+This is becouse OWPaletteGenerator only accepts values between 0 and 1 for such attributes.
+So we have to shrink the whole intervale to [0,1] before assigning any colors.</p>
+<p>Once we have the data lists, it&#8217;s time to plot them:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">set_main_curve_data</span><span class="p">(</span><span class="n">x_data</span><span class="p">,</span> <span class="n">y_data</span><span class="p">,</span> <span class="n">color_data</span><span class="o">=</span><span class="n">c_data</span><span class="p">,</span> <span class="n">size_data</span><span class="o">=</span><span class="n">s_data</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">replot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="showing-a-legend">
+<h2>Showing a legend<a class="headerlink" href="#showing-a-legend" title="Permalink to this headline">¶</a></h2>
+<p>The points sure look nice, but how do we know what color represents what value?
+We show a legend. Unfortunately, using <tt class="xref py py-obj docutils literal"><span class="pre">set_main_curve_data()</span></tt> can&#8217;t
+guess the names and values of all attributes, so we must do it ourselves.
+Still, it isn&#8217;t much work.</p>
+<p>First, we extend the loop for earlier to store colors and sizes in a set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">color_cont</span> <span class="o">=</span> <span class="p">(</span><span class="n">domain</span><span class="p">[</span><span class="n">c_i</span><span class="p">]</span><span class="o">.</span><span class="n">varType</span> <span class="o">==</span> <span class="n">orange</span><span class="o">.</span><span class="n">VarTypes</span><span class="o">.</span><span class="n">Continuous</span><span class="p">)</span>
+
+<span class="n">legend_sizes</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="n">x_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">x_i</span><span class="p">])</span>
+    <span class="n">y_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">y_i</span><span class="p">])</span>
+    <span class="n">c_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">c_i</span><span class="p">])</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">+</span> <span class="nb">round</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">s_i</span><span class="p">])</span>
+    <span class="n">s_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="n">legend_sizes</span><span class="o">.</span><span class="n">add</span><span class="p">(</span> <span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="n">s_i</span><span class="p">]))</span> <span class="p">)</span>
+
+<span class="k">if</span> <span class="n">color_cont</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">c_data</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">c_data</span><span class="p">)</span>
+    <span class="n">legend_colors</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">c_data</span><span class="p">)</span>
+    <span class="n">c_data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">continuous_palette</span><span class="p">[(</span><span class="n">v</span><span class="o">-</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">M</span><span class="o">-</span><span class="n">m</span><span class="p">)]</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">c_data</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">_colors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">discrete_palette</span><span class="o">.</span><span class="n">getRGB</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c_data</span><span class="p">]</span>
+    <span class="n">_values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">c_data</span><span class="p">])</span>
+    <span class="n">legend_colors</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">([</span><span class="n">QColor</span><span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">_colors</span><span class="p">)],</span> <span class="n">_values</span><span class="p">)</span>
+    <span class="n">c_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">QColor</span><span class="p">(</span><span class="o">*</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">_colors</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The logic for storing all possible sizes is quite simple:
+we create a set that holds them. Unfortunately, handling colors is bit more complex,
+because we first store (R,G,B) tuples in a set, and then convert them to QColor.
+Also, the approach differs for continuous or discrete color attributes.</p>
+<p>Now we have a set all colors and sizes we need to display in the legend.
+<tt class="xref py py-obj docutils literal"><span class="pre">legend_colors</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">legend_sizes</span></tt> are both sets because
+we only want one legend item for each possible value, no matter how many
+points share that value. Now all that&#8217;s left is adding the legend items:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">domain</span><span class="p">[</span><span class="n">s_i</span><span class="p">]</span><span class="o">.</span><span class="n">varType</span> <span class="o">==</span> <span class="n">orange</span><span class="o">.</span><span class="n">VarTypes</span><span class="o">.</span><span class="n">Discrete</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">size</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">legend_sizes</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span> <span class="n">domain</span><span class="p">[</span><span class="n">s_i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">domain</span><span class="p">[</span><span class="n">s_i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)],</span> <span class="n">OWPoint</span><span class="p">(</span><span class="n">OWPoint</span><span class="o">.</span><span class="n">Diamond</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="n">OWPalette</span><span class="o">.</span><span class="n">Data</span><span class="p">),</span> <span class="n">size</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="k">if</span> <span class="n">color_cont</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span><span class="o">.</span><span class="n">add_color_gradient</span><span class="p">(</span><span class="n">domain</span><span class="p">[</span><span class="n">c_i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">min</span><span class="p">(</span><span class="n">legend_colors</span><span class="p">),</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">max</span><span class="p">(</span><span class="n">legend_colors</span><span class="p">)))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">legend_colors</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span> <span class="n">domain</span><span class="p">[</span><span class="n">c_i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">domain</span><span class="p">[</span><span class="n">c_i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)],</span> <span class="n">OWPoint</span><span class="p">(</span><span class="n">OWPoint</span><span class="o">.</span><span class="n">Diamond</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>We only show a legend for the size attribute if it&#8217;s discrete.
+However, we show the color attribute in both cases.
+If it&#8217;s continuous, only one item is created with a color gradient.</p>
+</div>
+<div class="section" id="running-this-example">
+<h2>Running this example<a class="headerlink" href="#running-this-example" title="Permalink to this headline">¶</a></h2>
+<p>You can find the full code for the example <a class="reference download internal" href="../../_downloads/owplot_example.py"><tt class="xref download docutils literal"><span class="pre">here</span></tt></a>.
+This particular example has a timer, so that <tt class="xref py py-obj docutils literal"><span class="pre">set_data</span></tt> is called every
+five seconds, and attributes are chosen at random each time, athough always
+from the same data set.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

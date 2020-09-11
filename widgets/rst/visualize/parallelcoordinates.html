@@ -1,0 +1,193 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Parallel Coordinates &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Parallel Coordinates</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="parallel-coordinates">
+<span id="id1"></span><h1>Parallel Coordinates<a class="headerlink" href="#parallel-coordinates" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/ParallelCoordinates1.svg" /><p>Parallel Coordinates visualization with some explorative data analysis and
+intelligent data visualization enhancements.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Input data set.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Example Subset (ExampleTable)</dt>
+<dd><p class="first last">A subset of data instances from Examples.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Attribute Selection List</dt>
+<dd><p class="first last">List of attributes to be shown in the visualization.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Selected Examples (ExampleTable)</dt>
+<dd><p class="first last">A subset of examples that user has manually selected from the
+scatterplot.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Unselected Examples (ExampleTable)</dt>
+<dd><p class="first last">All other examples (examples not included in the user&#8217;s selection).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Attribute Selection List</dt>
+<dd><p class="first last">List of attributes used in the visualization.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Parallel Coordinates is a multidimensional data visualization technique. Each
+attribute is represented in a vertical line, where the maximum and minimum
+values of that dimension are scaled to the upper and lower points on these
+vertical lines. For N visualized attributes, N-1 lines connected to each
+vertical line at the appropriate dimensional value represent an N-dimensional
+point. The snapshot shown below displays data from the Iris data set, with
+the data instance closest to the cursor being highlighted. In Iris data set,
+the instances are labeled with one of the three distinct classes, depicted with
+colored lines in the visualization (red, green, blue).</p>
+<img alt="../../../_images/ParallelCoordinates-Iris.png" src="../../../_images/ParallelCoordinates-Iris.png" />
+<p>The <tt class="xref py py-obj docutils literal"><span class="pre">Main</span></tt> tab allows the user to choose the subset of attributes to be
+displayed in the visualization. In case of a class-labeled data set, only one
+class (vs. the others) may be exposed by selecting it from <tt class="xref py py-obj docutils literal"><span class="pre">Target</span> <span class="pre">class</span></tt>.
+Especially with data sets that include many attributes,
+<tt class="xref py py-obj docutils literal"><span class="pre">Optimization</span> <span class="pre">Dialog</span></tt> may help to find interesting projections. Currently,
+this is decided based on a correlation between neighboring attributes in the
+visualization, where the target s to find visualizations with the highest sum
+of the absolute value of correlations between neighboring attributes. Snapshot
+below shows such a visualization which uses five attributes and plots the data
+set from functional genomics (<strong>brown-selected.tab</strong>).</p>
+<img alt="../../../_images/ParallelCoordinates-Optimization.png" src="../../../_images/ParallelCoordinates-Optimization.png" />
+<p>The <tt class="xref py py-obj docutils literal"><span class="pre">Settings</span></tt> tab is used to control several aspects on visualization.
+<tt class="xref py py-obj docutils literal"><span class="pre">Jittering</span></tt> may be useful when the data includes instances which share
+many of the attribute values. The graph can be annotated by displaying minimal
+(bottom) and maximal (top) values of the attributes
+(<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">attribute</span> <span class="pre">values</span></tt>). For polygon of each of the data instances can
+be converted to a spline (<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">splines</span></tt>). <tt class="xref py py-obj docutils literal"><span class="pre">Global</span> <span class="pre">value</span> <span class="pre">scaling</span></tt>
+would make the scale for each of the attributes equal by finding the extreme
+values across the attributes in the display. That could be useful in a number
+of applications, such as, for instance, those from functional genomics (the
+snapshot shown below). <tt class="xref py py-obj docutils literal"><span class="pre">Line</span> <span class="pre">tracking</span></tt> can highlight the polygon of an
+instance closest to the mouse pointer (see the topmost snapshot on this page).
+The option <tt class="xref py py-obj docutils literal"><span class="pre">Hide</span> <span class="pre">pure</span> <span class="pre">examples</span></tt> would draw the data instance polygons from
+left to right, stopping at the attribute where at a distinct point all the
+instances would belong to a single class. The setting in <tt class="xref py py-obj docutils literal"><span class="pre">Statistics</span></tt> box
+toggles the drawing of an average or median trajectory. Information on
+correlation between the neighboring attributes may also be displayed
+(<tt class="xref py py-obj docutils literal"><span class="pre">Between-axis</span> <span class="pre">labels</span></tt>).</p>
+<img alt="../../../_images/ParallelCoordinates-Settings.png" src="../../../_images/ParallelCoordinates-Settings.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,447 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>k-nearest neighbors (knn) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">k-nearest neighbors (<tt class="docutils literal"><span class="pre">knn</span></tt>)</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#finding-nearest-neighbors">Finding nearest neighbors</a></li>
+<li><a class="reference internal" href="#id1">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="k-nearest-neighbors-knn">
+<h1>k-nearest neighbors (<tt class="docutils literal"><span class="pre">knn</span></tt>)<a class="headerlink" href="#k-nearest-neighbors-knn" title="Permalink to this headline">¶</a></h1>
+<p>The <a class="reference external" href="http://en.wikipedia.org/wiki/K-nearest_neighbor_algorithm">nearest neighbors algorithm</a> is one
+of the most basic, <a class="reference external" href="http://en.wikipedia.org/wiki/Lazy_learning">lazy</a> machine learning
+algorithms.  The learner only stores the training data, and the
+classifier makes predictions based on the instances most similar to
+the data instance being classified:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+
+<span class="n">knnLearner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">kNNLearner</span><span class="p">()</span>
+<span class="n">knnLearner</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">knnClassifier</span> <span class="o">=</span> <span class="n">knnLearner</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.classification.knn.kNNLearner">
+<em class="property">class </em><tt class="descclassname">Orange.classification.knn.</tt><tt class="descname">kNNLearner</tt><big>(</big><em>k</em>, <em>distance_constructor</em>, <em>weight_id</em><big>)</big><a class="headerlink" href="#Orange.classification.knn.kNNLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lazy classifier that stores instances from the training set. Constructor
+parameters set the corresponding attributes.</p>
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNLearner.k">
+<tt class="descname">k</tt><a class="headerlink" href="#Orange.classification.knn.kNNLearner.k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of nearest neighbors used in classification. If 0
+(default), the square root of the numbers of instances is
+used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNLearner.distance_constructor">
+<tt class="descname">distance_constructor</tt><a class="headerlink" href="#Orange.classification.knn.kNNLearner.distance_constructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Component that constructs the object for measuring distances between
+instances. Defaults to <a class="reference internal" href="Orange.distance.html#Orange.distance.Euclidean" title="Orange.distance.Euclidean"><tt class="xref py py-class docutils literal"><span class="pre">Euclidean</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNLearner.weight_id">
+<tt class="descname">weight_id</tt><a class="headerlink" href="#Orange.classification.knn.kNNLearner.weight_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Id of meta attribute with instance weights.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNLearner.rank_weight">
+<tt class="descname">rank_weight</tt><a class="headerlink" href="#Orange.classification.knn.kNNLearner.rank_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <tt class="docutils literal"><span class="pre">True</span></tt> (default), neighbours are weighted according to
+their order and not their (normalized) distances to the
+instance that is being classified.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.knn.kNNLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#Orange.classification.knn.kNNLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a <a class="reference internal" href="#Orange.classification.knn.kNNClassifier" title="Orange.classification.knn.kNNClassifier"><tt class="xref py py-class docutils literal"><span class="pre">kNNClassifier</span></tt></a>. Learning consists of
+constructing a distance measure and passing it to the
+classifier along with <tt class="xref py py-obj docutils literal"><span class="pre">instances</span></tt> and attributes (<a class="reference internal" href="#Orange.classification.knn.kNNLearner.k" title="Orange.classification.knn.kNNLearner.k"><tt class="xref py py-obj docutils literal"><span class="pre">k</span></tt></a>,
+<a class="reference internal" href="#Orange.classification.knn.kNNLearner.rank_weight" title="Orange.classification.knn.kNNLearner.rank_weight"><tt class="xref py py-obj docutils literal"><span class="pre">rank_weight</span></tt></a> and <a class="reference internal" href="#Orange.classification.knn.kNNLearner.weight_id" title="Orange.classification.knn.kNNLearner.weight_id"><tt class="xref py py-obj docutils literal"><span class="pre">weight_id</span></tt></a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Table</span></tt></a>) &#8211; training instances</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.knn.kNNClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.classification.knn.</tt><tt class="descname">kNNClassifier</tt><big>(</big><em>domain</em>, <em>weight_id</em>, <em>k</em>, <em>find_nearest</em>, <em>rank_weight</em>, <em>n_examples</em><big>)</big><a class="headerlink" href="#Orange.classification.knn.kNNClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Orange.classification.knn.kNNClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>return_type</em><big>)</big><a class="headerlink" href="#Orange.classification.knn.kNNClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><em>Orange.data.Instance</em></a>) &#8211; given instance to be classified</li>
+<li><strong>return_type</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">GetBoth</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">GetValue</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">GetProbabilities</span></tt>) &#8211; return value and probabilities, only value or only
+probabilities</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Value</span></tt></a>,
+<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-class docutils literal"><span class="pre">Distribution</span></tt></a> or a
+tuple with both</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNClassifier.find_nearest">
+<tt class="descname">find_nearest</tt><a class="headerlink" href="#Orange.classification.knn.kNNClassifier.find_nearest" title="Permalink to this definition">¶</a></dt>
+<dd><p>A callable component that finds the nearest <a class="reference internal" href="#Orange.classification.knn.kNNClassifier.k" title="Orange.classification.knn.kNNClassifier.k"><tt class="xref py py-obj docutils literal"><span class="pre">k</span></tt></a> neighbors
+of the given instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Instance</span></tt></a>) &#8211; given instance</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Instance</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNClassifier.k">
+<tt class="descname">k</tt><a class="headerlink" href="#Orange.classification.knn.kNNClassifier.k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of neighbors. If set to 0 (which is also the default value),
+the square root of the number of examples is used.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNClassifier.weight_id">
+<tt class="descname">weight_id</tt><a class="headerlink" href="#Orange.classification.knn.kNNClassifier.weight_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Id of meta attribute with instance weights.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNClassifier.rank_weight">
+<tt class="descname">rank_weight</tt><a class="headerlink" href="#Orange.classification.knn.kNNClassifier.rank_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <tt class="docutils literal"><span class="pre">True</span></tt> (default), neighbours are weighted according to
+their order and not their (normalized) distances to the
+instance that is being classified.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.kNNClassifier.n_examples">
+<tt class="descname">n_examples</tt><a class="headerlink" href="#Orange.classification.knn.kNNClassifier.n_examples" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of learning instances, used to compute the number of
+neighbors if the value of <a class="reference internal" href="#Orange.classification.knn.kNNClassifier.k" title="Orange.classification.knn.kNNClassifier.k"><tt class="xref py py-attr docutils literal"><span class="pre">kNNClassifier.k</span></tt></a> is zero.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>When called to classify instance <tt class="docutils literal"><span class="pre">inst</span></tt>, the classifier first calls
+<tt class="xref py py-obj docutils literal"><span class="pre">kNNClassifier.find_nearest(inst)</span></tt> to retrieve a list with
+<a class="reference internal" href="#Orange.classification.knn.kNNClassifier.k" title="Orange.classification.knn.kNNClassifier.k"><tt class="xref py py-attr docutils literal"><span class="pre">kNNClassifier.k</span></tt></a> nearest neighbors. The component
+<a class="reference internal" href="#Orange.classification.knn.kNNClassifier.find_nearest" title="Orange.classification.knn.kNNClassifier.find_nearest"><tt class="xref py py-meth docutils literal"><span class="pre">kNNClassifier.find_nearest()</span></tt></a> has a stored table of training
+instances together with their weights. If instances are weighted
+(non-zero <tt class="xref py py-obj docutils literal"><span class="pre">weight_id</span></tt>), weights are considered when counting the
+neighbors.</p>
+<p>If <a class="reference internal" href="#Orange.classification.knn.kNNClassifier.find_nearest" title="Orange.classification.knn.kNNClassifier.find_nearest"><tt class="xref py py-meth docutils literal"><span class="pre">kNNClassifier.find_nearest()</span></tt></a> returns only one neighbor (this
+is the case if <tt class="xref py py-obj docutils literal"><span class="pre">k=1</span></tt>), <a class="reference internal" href="#Orange.classification.knn.kNNClassifier" title="Orange.classification.knn.kNNClassifier"><tt class="xref py py-class docutils literal"><span class="pre">kNNClassifier</span></tt></a> returns the
+neighbor&#8217;s class.</p>
+<p>Otherwise, the retrieved neighbors vote for the class prediction or
+probability of classes. Voting can be a product of two weights:
+weights of training instances, if they are given, and weights that
+reflect the distance from <tt class="docutils literal"><span class="pre">inst</span></tt>. Nearer neighbors have a greater
+impact on the prediction: the weight is computed as
+<span class="math">-exp(-t^2 / s^2)</span> , where the meaning of <cite>t</cite> depends on the
+setting of <tt class="xref py py-obj docutils literal"><span class="pre">rank_weight</span></tt>.</p>
+<ul class="simple">
+<li>if <tt class="xref py py-obj docutils literal"><span class="pre">rank_weight</span></tt> is <a class="reference external" href="http://docs.python.org/library/constants.html#False" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">False</span></tt></a>, <tt class="xref py py-obj docutils literal"><span class="pre">t</span></tt> is the distance from the
+instance being classified</li>
+<li>if <tt class="xref py py-obj docutils literal"><span class="pre">rank_weight</span></tt> is <a class="reference external" href="http://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">True</span></tt></a>, neighbors are ordered and <tt class="xref py py-obj docutils literal"><span class="pre">t</span></tt>
+is the position of the neighbor on the list (a rank)</li>
+</ul>
+<p>In both cases, <tt class="xref py py-obj docutils literal"><span class="pre">s</span></tt> is chosen so that the weight of the farthest
+instance is 0.001.</p>
+<p>Weighting gives the classifier a certain insensitivity to the number of
+neighbors used, making it possible to use large <tt class="xref py py-obj docutils literal"><span class="pre">k</span></tt>&#8216;s.</p>
+<p>The classifier can use continuous and discrete features, and can even
+distinguish between ordinal and nominal features. See information on
+distance measuring for details.</p>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The learner will be tested on an &#8216;iris&#8217; data set. The data will be split
+into training (80%) and testing (20%) instances. We will use the former
+for &#8220;training&#8221; the classifier and test it on five testing instances
+randomly selected from a part of (<a class="reference download internal" href="../../_downloads/knnlearner.py"><tt class="xref download docutils literal"><span class="pre">knnlearner.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+
+<span class="n">rndind</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndices2</span><span class="p">(</span><span class="n">iris</span><span class="p">,</span> <span class="n">p0</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">rndind</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">rndind</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">knn</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">kNNLearner</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="n">test</span><span class="o">.</span><span class="n">random_example</span><span class="p">()</span>
+    <span class="k">print</span> <span class="n">instance</span><span class="o">.</span><span class="n">getclass</span><span class="p">(),</span> <span class="n">knn</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output of this code is:</p>
+<div class="highlight-python"><pre>Iris-setosa Iris-setosa
+Iris-versicolor Iris-versicolor
+Iris-versicolor Iris-versicolor
+Iris-setosa Iris-setosa
+Iris-setosa Iris-setosa</pre>
+</div>
+<p>The choice of metric usually has not greater impact on the performance
+of kNN classifiers, so default should work fine. To change it,
+distance_constructor must be set to an instance of one of the classes
+for distance measuring.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">knn</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">kNNLearner</span><span class="p">()</span>
+<span class="n">knn</span><span class="o">.</span><span class="n">k</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">knn</span><span class="o">.</span><span class="n">distance_constructor</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">Hamming</span><span class="p">()</span>
+<span class="n">knn</span> <span class="o">=</span> <span class="n">knn</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="finding-nearest-neighbors">
+<h2>Finding nearest neighbors<a class="headerlink" href="#finding-nearest-neighbors" title="Permalink to this headline">¶</a></h2>
+<p>Orange provides classes for finding the nearest neighbors of a given
+reference instance.</p>
+<p>As usual in Orange, there are two classes: one that does the work
+(<a class="reference internal" href="#Orange.classification.knn.FindNearest" title="Orange.classification.knn.FindNearest"><tt class="xref py py-class docutils literal"><span class="pre">FindNearest</span></tt></a>) and another that constructs the former from
+data (<a class="reference internal" href="#Orange.classification.knn.FindNearestConstructor" title="Orange.classification.knn.FindNearestConstructor"><tt class="xref py py-class docutils literal"><span class="pre">FindNearestConstructor</span></tt></a>).</p>
+<dl class="class">
+<dt id="Orange.classification.knn.FindNearest">
+<em class="property">class </em><tt class="descclassname">Orange.classification.knn.</tt><tt class="descname">FindNearest</tt><a class="headerlink" href="#Orange.classification.knn.FindNearest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Brute force search for nearest neighbors in the stored data table.</p>
+<dl class="attribute">
+<dt id="Orange.classification.knn.FindNearest.distance">
+<tt class="descname">distance</tt><a class="headerlink" href="#Orange.classification.knn.FindNearest.distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>An instance of <a class="reference internal" href="Orange.distance.html#Orange.distance.Distance" title="Orange.distance.Distance"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.distance.Distance</span></tt></a> used for
+computing distances between data instances.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.FindNearest.instances">
+<tt class="descname">instances</tt><a class="headerlink" href="#Orange.classification.knn.FindNearest.instances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stored data table</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.FindNearest.weight_ID">
+<tt class="descname">weight_ID</tt><a class="headerlink" href="#Orange.classification.knn.FindNearest.weight_ID" title="Permalink to this definition">¶</a></dt>
+<dd><p>ID of meta attribute with weight. If present (non-null) the
+class does not return <tt class="docutils literal"><span class="pre">k</span></tt> instances but a set of instances
+with a total weight of <tt class="docutils literal"><span class="pre">k</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.FindNearest.distance_ID">
+<tt class="descname">distance_ID</tt><a class="headerlink" href="#Orange.classification.knn.FindNearest.distance_ID" title="Permalink to this definition">¶</a></dt>
+<dd><p>The id of meta attribute that will be added to the found
+neighbours and to store the distances between the returned
+data instances and the reference. If zero, the distances is
+not stored.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.knn.FindNearest.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>k</em><big>)</big><a class="headerlink" href="#Orange.classification.knn.FindNearest.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a data table with <tt class="docutils literal"><span class="pre">k</span></tt> nearest neighbours of
+<tt class="docutils literal"><span class="pre">instance</span></tt>.  Any ties for the last place(s) are resolved by
+randomly picking the appropriate number of instances. A local
+random generator is constructed and seeded by a constant
+computed from <tt class="xref py py-obj docutils literal"><span class="pre">instance</span></tt>, so the same random neighbors
+are always returned for the same instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><em>Orange.data.Instance</em></a>) &#8211; given instance</li>
+<li><strong>k</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of neighbors</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.classification.knn.FindNearestConstructor">
+<em class="property">class </em><tt class="descclassname">Orange.classification.knn.</tt><tt class="descname">FindNearestConstructor</tt><a class="headerlink" href="#Orange.classification.knn.FindNearestConstructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that constructs <a class="reference internal" href="#Orange.classification.knn.FindNearest" title="Orange.classification.knn.FindNearest"><tt class="xref py py-obj docutils literal"><span class="pre">FindNearest</span></tt></a> and initializes it with a
+distance metric, constructed by <a class="reference internal" href="#Orange.classification.knn.FindNearestConstructor.distance_constructor" title="Orange.classification.knn.FindNearestConstructor.distance_constructor"><tt class="xref py py-obj docutils literal"><span class="pre">distance_constructor</span></tt></a>.</p>
+<dl class="attribute">
+<dt id="Orange.classification.knn.FindNearestConstructor.distance_constructor">
+<tt class="descname">distance_constructor</tt><a class="headerlink" href="#Orange.classification.knn.FindNearestConstructor.distance_constructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>An instance of <a class="reference internal" href="Orange.distance.html#Orange.distance.DistanceConstructor" title="Orange.distance.DistanceConstructor"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.distance.DistanceConstructor</span></tt></a> that
+&#8220;learns&#8221; to measure distances between instances. Learning can
+mean, for example, storing the ranges of continuous features
+or the number of values of a discrete feature. The result of
+learning is an instance of <a class="reference internal" href="Orange.distance.html#Orange.distance.Distance" title="Orange.distance.Distance"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.distance.Distance</span></tt></a> that is
+used for measuring distances between instances.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.classification.knn.FindNearestConstructor.include_same">
+<tt class="descname">include_same</tt><a class="headerlink" href="#Orange.classification.knn.FindNearestConstructor.include_same" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether to include the instances that are same as
+the reference; default is <tt class="docutils literal"><span class="pre">true</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.classification.knn.FindNearestConstructor.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>weight_ID</em>, <em>distance_ID</em><big>)</big><a class="headerlink" href="#Orange.classification.knn.FindNearestConstructor.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs an instance of <a class="reference internal" href="#Orange.classification.knn.FindNearest" title="Orange.classification.knn.FindNearest"><tt class="xref py py-obj docutils literal"><span class="pre">FindNearest</span></tt></a> for the given
+data. Arguments <tt class="xref py py-obj docutils literal"><span class="pre">weight_ID</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">distance_ID</span></tt> are copied to the new object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>table</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; table of instances</li>
+<li><strong>weight_ID</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; id of meta attribute with weights of instances</li>
+<li><strong>distance_ID</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; id of meta attribute that will store distances</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#Orange.classification.knn.FindNearest" title="Orange.classification.knn.FindNearest"><tt class="xref py py-obj docutils literal"><span class="pre">FindNearest</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h2>Examples<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>The following script (<a class="reference download internal" href="../../_downloads/knnInstanceDistance.py"><tt class="xref download docutils literal"><span class="pre">knnInstanceDistance.py</span></tt></a>)
+shows how to find the five nearest neighbors of the first instance
+in the lenses dataset.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">lenses</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+
+<span class="n">nnc</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">FindNearestConstructor</span><span class="p">()</span>
+<span class="n">nnc</span><span class="o">.</span><span class="n">distance_constructor</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">distance</span><span class="o">.</span><span class="n">Euclidean</span><span class="p">()</span>
+
+<span class="n">did</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Descriptor</span><span class="o">.</span><span class="n">new_meta_id</span><span class="p">()</span>
+<span class="n">nn</span> <span class="o">=</span> <span class="n">nnc</span><span class="p">(</span><span class="n">lenses</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">did</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;*** Reference instance: &quot;</span><span class="p">,</span> <span class="n">lenses</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">nn</span><span class="p">(</span><span class="n">lenses</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="k">print</span> <span class="n">inst</span>
+</pre></div>
+</div>
+<span class="target" id="module-Orange.classification.knn"></span></div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

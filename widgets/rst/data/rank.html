@@ -1,0 +1,167 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Rank &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Rank</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#example-attribute-ranking-and-selection">Example: Attribute Ranking and Selection</a></li>
+<li><a class="reference internal" href="#example-feature-subset-selection-for-machine-learning">Example: Feature Subset Selection for Machine Learning</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="rank">
+<span id="id1"></span><h1>Rank<a class="headerlink" href="#rank" title="Permalink to this headline">¶</a></h1>
+<img class="widget-category-data widget-icon" src="../../../_images/Rank.svg" /><p>Ranking of attributes in classification or regression data sets.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Data</span></tt></dt>
+<dd><p class="first last">Input data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Reduced</span> <span class="pre">Data</span></tt></dt>
+<dd><p class="first last">Data set which selected attributes.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Rank widget considers class-labeled data sets (classification or regression)
+and scores the attributes according to their correlation with the
+class.</p>
+<img alt="../../../_images/Rank-stamped.png" src="../../../_images/Rank-stamped.png" />
+<ol class="stamp-list arabic simple">
+<li>Attributes (rows) and their scores by different scoring methods
+(columns).</li>
+<li>Scoring techniques and their (optional) parameters.</li>
+<li>For scoring techniques that require discrete attributes this is the number
+of intervals to which continues attributes will be discretized to.</li>
+<li>Number of decimals used in reporting the score.</li>
+<li>Toggles the bar-based visualisation of the feature scores.</li>
+<li>Adds a score table to the current report.</li>
+</ol>
+</div>
+<div class="section" id="example-attribute-ranking-and-selection">
+<h2>Example: Attribute Ranking and Selection<a class="headerlink" href="#example-attribute-ranking-and-selection" title="Permalink to this headline">¶</a></h2>
+<p>Below we have used immediately after the <a class="reference internal" href="file.html#file"><em>File</em></a>
+widget to reduce the set of data attribute and include only the most
+informative one:</p>
+<img alt="../../../_images/Rank-Select-Schema.png" src="../../../_images/Rank-Select-Schema.png" />
+<p>Notice how the widget outputs a data set that includes only the best-scored
+attributes:</p>
+<img alt="../../../_images/Rank-Select-Widgets.png" src="../../../_images/Rank-Select-Widgets.png" />
+</div>
+<div class="section" id="example-feature-subset-selection-for-machine-learning">
+<h2>Example: Feature Subset Selection for Machine Learning<a class="headerlink" href="#example-feature-subset-selection-for-machine-learning" title="Permalink to this headline">¶</a></h2>
+<p>Following is a bit more complicated example. In the workflow below we
+first split the data into training and test set. In the upper branch
+the training data passes through the Rank widget to select the most
+informative attributes, while in the lower branch there is no feature
+selection. Both feature selected and original data sets are passed to
+its own <a class="reference internal" href="../evaluate/testlearners.html#test-learners"><em>Test Learners</em></a> widget, which develops a
+<a class="reference internal" href="../classify/naivebayes.html#naive-bayes"><em>Naive Bayes</em></a> classifier and scores it on a test set.</p>
+<img alt="../../../_images/Rank-and-Test.png" src="../../../_images/Rank-and-Test.png" />
+<p>For data sets with many features and naive Bayesian classifier feature
+selection, as shown above, would often yield a better predictive accuracy.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

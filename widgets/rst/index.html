@@ -1,0 +1,377 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Orange Widgets &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Orange Widgets</a><ul>
+<li><a class="reference internal" href="#data">Data</a></li>
+<li><a class="reference internal" href="#visualize">Visualize</a></li>
+<li><a class="reference internal" href="#classify">Classify</a></li>
+<li><a class="reference internal" href="#regression">Regression</a></li>
+<li><a class="reference internal" href="#evaluate">Evaluate</a></li>
+<li><a class="reference internal" href="#associate">Associate</a></li>
+<li><a class="reference internal" href="#unsupervised">Unsupervised</a><ul>
+<li><a class="reference internal" href="#index-and-search">Index and search</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="orange-widgets">
+<h1>Orange Widgets<a class="headerlink" href="#orange-widgets" title="Permalink to this headline">¶</a></h1>
+<p>Orange widgets are building blocks of data analysis workflows that are
+assembled in Orange&#8217;s visual programming environment.</p>
+<img alt="Orange Workflow" src="../../_images/simple-workflow.png" />
+<p>Widgets are grouped into classes according to their function. A typical
+workflow may mix widgets for data input and filtering, visualization,
+and predictive data mining.</p>
+<div class="section" id="data">
+<h2>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="widget-catalog-table widget-category-data docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="File" height="36" src="../../_images/File1.svg" width="36" /> <a class="reference internal" href="data/file.html#file"><em>File</em></a></td>
+<td><img alt="File" height="36" src="../../_images/PaintData1.svg" width="36" /> <a class="reference internal" href="data/paintdata.html#paint-data"><em>Paint Data</em></a></td>
+<td><img alt="Data Table" height="36" src="../../_images/DataTable1.svg" width="36" /> <a class="reference internal" href="data/datatable.html#data-table"><em>Data Table</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Select Attributes" height="36" src="../../_images/SelectAttributes1.svg" width="36" /> <a class="reference internal" href="data/selectattributes.html#select-attributes"><em>Select Attributes</em></a></td>
+<td><img alt="Rank" height="36" src="../../_images/Rank1.svg" width="36" /> <a class="reference internal" href="data/rank.html#rank"><em>Rank</em></a></td>
+<td><img alt="Purge Domain" height="36" src="../../_images/PurgeDomain1.svg" width="36" /> <a class="reference internal" href="data/purgedomain.html#purge-domain"><em>Purge Domain</em></a></td>
+</tr>
+<tr class="row-odd"><td><img alt="Merge Data" height="36" src="../../_images/MergeData1.svg" width="36" /> <a class="reference internal" href="data/mergedata.html#merge-data"><em>Merge Data</em></a></td>
+<td><img alt="Merge Data" height="36" src="../../_images/Concatenate1.svg" width="36" /> <a class="reference internal" href="data/concatenate.html#concatenate"><em>Concatenate</em></a></td>
+<td><img alt="Merge Data" height="36" src="../../_images/DataSampler1.svg" width="36" /> <a class="reference internal" href="data/datasampler.html#data-sampler"><em>Data Sampler</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Merge Data" height="36" src="../../_images/SelectData1.svg" width="36" /> <a class="reference internal" href="data/selectdata.html#select-data"><em>Select Data</em></a></td>
+<td><img alt="Merge Data" height="36" src="../../_images/Save1.svg" width="36" /> <a class="reference internal" href="data/save.html#save"><em>Save</em></a></td>
+<td><img alt="Merge Data" height="36" src="../../_images/Discretize1.svg" width="36" /> <a class="reference internal" href="data/discretize.html#discretize"><em>Discretize</em></a></td>
+</tr>
+<tr class="row-odd"><td><img alt="Merge Data" height="36" src="../../_images/Continuize1.svg" width="36" /> <a class="reference internal" href="data/continuize.html#continuize"><em>Continuize</em></a></td>
+<td><img alt="Merge Data" height="36" src="../../_images/Impute1.svg" width="36" /> <a class="reference internal" href="data/impute.html#impute"><em>Impute</em></a></td>
+<td><img alt="Merge Data" height="36" src="../../_images/Outliers1.svg" width="36" /> <a class="reference internal" href="data/outliers.html#outliers"><em>Outliers</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Edit Domain" height="36" src="../../_images/EditDomain1.svg" width="36" /> <a class="reference internal" href="data/editdomain.html#edit-domain"><em>Edit Domain</em></a></td>
+<td><img alt="Edit Domain" height="36" src="../../_images/PythonScript1.svg" width="36" /> <a class="reference internal" href="data/pythonscript.html#python-script"><em>Python Script</em></a></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="visualize">
+<h2>Visualize<a class="headerlink" href="#visualize" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="widget-catalog-table widget-category-visualize docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="Distributions" height="36" src="../../_images/Distribution.svg" width="36" /> <a class="reference internal" href="visualize/distributions.html#distributions"><em>Distributions</em></a></td>
+<td><img alt="Scatter Plot" height="36" src="../../_images/ScatterPlot.svg" width="36" /> <a class="reference internal" href="visualize/scatterplot.html#scatter-plot"><em>Scatter Plot</em></a></td>
+<td><img alt="AttributeStatistics" height="36" src="../../_images/AttributeStatistics.svg" width="36" /> <a class="reference internal" href="visualize/attributestatistics.html#attribute-statistics"><em>Attribute Statistics</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Linear Projection" height="36" src="../../_images/LinearProjection.svg" width="36" /> <a class="reference internal" href="visualize/linearprojection.html#linear-projection"><em>Linear Projection</em></a></td>
+<td><img alt="Rad Viz" height="36" src="../../_images/Radviz.svg" width="36" /> <a class="reference internal" href="visualize/radviz.html#radviz"><em>Radviz</em></a></td>
+<td><img alt="Poly Viz" height="36" src="../../_images/Polyviz.svg" width="36" /> <a class="reference internal" href="visualize/polyviz.html#polyviz"><em>Polyviz</em></a></td>
+</tr>
+<tr class="row-odd"><td><img alt="Parallel Coordinates" height="36" src="../../_images/ParallelCoordinates.svg" width="36" /> <a class="reference internal" href="visualize/parallelcoordinates.html#parallel-coordinates"><em>Parallel Coordinates</em></a></td>
+<td><img alt="Survey Plot" height="36" src="../../_images/SurveyPlot.svg" width="36" /> <a class="reference internal" href="visualize/surveyplot.html#survey-plot"><em>Survey Plot</em></a></td>
+<td><img alt="Mosaic Display" height="36" src="../../_images/MosaicDisplay.svg" width="36" /> <a class="reference internal" href="visualize/mosaicdisplay.html#mosaic-display"><em>Mosaic Display</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Sieve Diagram" height="36" src="../../_images/SieveDiagram.svg" width="36" /> <a class="reference internal" href="visualize/sievediagram.html#sieve-diagram"><em>Sieve Diagram</em></a></td>
+<td><img alt="Sieve Multigram" height="36" src="../../_images/SieveMultigram.svg" width="36" /> <cite>Sieve Multigram</cite></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="classify">
+<h2>Classify<a class="headerlink" href="#classify" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="widget-catalog-table widget-category-classify docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="Naive Bayes" height="36" src="../../_images/NaiveBayes1.svg" width="36" /> <a class="reference internal" href="classify/naivebayes.html#naive-bayes"><em>Naive Bayesian Learner</em></a></td>
+<td><img alt="Support Vector Machines" height="36" src="../../_images/SVM1.svg" width="36" /> <a class="reference internal" href="classify/svm.html#svm"><em>SVM Learner</em></a></td>
+<td><img alt="Logistic Regression" height="36" src="../../_images/LogisticRegression1.svg" width="36" /> <a class="reference internal" href="classify/logisticregression.html#logistic-regression"><em>Logistic Regression Learner</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Majority" height="36" src="../../_images/Majority1.svg" width="36" /> <a class="reference internal" href="classify/majority.html#majority"><em>Majority Learner</em></a></td>
+<td><img alt="Classification Tree" height="36" src="../../_images/ClassificationTree1.svg" width="36" /> <a class="reference internal" href="classify/classificationtree.html#classification-tree"><em>Classification Tree Learner</em></a></td>
+<td><img alt="Classification Tree Graph" height="36" src="../../_images/ClassificationTreeGraph1.svg" width="36" /> <a class="reference internal" href="classify/classificationtreegraph.html#classification-tree-graph"><em>Classification Tree Graph</em></a></td>
+</tr>
+<tr class="row-odd"><td><img alt="Classification Tree Viewer" height="36" src="../../_images/ClassificationTreeViewer1.svg" width="36" /> <a class="reference internal" href="classify/classificationtreeviewer.html#classification-tree-viewer"><em>Classification Tree Viewer</em></a></td>
+<td><img alt="CN2 Rules" height="36" src="../../_images/CN21.svg" width="36" /> <a class="reference internal" href="classify/cn2.html#cn2-rules"><em>CN2 Rule Learner</em></a></td>
+<td><img alt="CN2 Rules Viewer" height="36" src="../../_images/CN2RulesViewer1.svg" width="36" /> <a class="reference internal" href="classify/cn2rulesviewer.html#cn2-rules-viewer"><em>Rule Viewer</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="k-Nearest Neighbours" height="36" src="../../_images/kNearestNeighbours1.svg" width="36" /> <a class="reference internal" href="classify/knearestneighbours.html#k-nearest-neighbours"><em>k-Nearest Neighbours Learner</em></a></td>
+<td><img alt="Nomogram" height="36" src="../../_images/Nomogram1.svg" width="36" /> <a class="reference internal" href="classify/nomogram.html#nomogram"><em>Nomogram</em></a></td>
+<td><img alt="Random Forest" height="36" src="../../_images/RandomForest1.svg" width="36" /> <a class="reference internal" href="classify/randomforest.html#random-forest"><em>Random Forest</em></a></td>
+</tr>
+<tr class="row-odd"><td><img alt="C4.5" height="36" src="../../_images/C4.51.svg" width="36" /> <a class="reference internal" href="classify/c45.html#c4-5"><em>C4.5 Learner</em></a></td>
+<td><img alt="Interactive Tree Builder" height="36" src="../../_images/InteractiveTreeBuilder1.svg" width="36" /> <a class="reference internal" href="classify/interactivetreebuilder.html#interactive-tree-builder"><em>Interactive Tree Builder</em></a></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="regression">
+<h2>Regression<a class="headerlink" href="#regression" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="widget-catalog-table widget-category-regression docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="Mean" height="36" src="../../_images/Mean.svg" width="36" /> <a class="reference internal" href="regression/mean.html#mean"><em>Mean Learner</em></a></td>
+<td><img alt="Linear Regression" height="36" src="../../_images/LinearRegression.svg" width="36" /> <a class="reference internal" href="regression/linear.html#linear-regression"><em>Linear Regression Learner</em></a></td>
+<td><img alt="Regression Tree" height="36" src="../../_images/RegressionTree.svg" width="36" /> <a class="reference internal" href="regression/regressiontree.html#regression-tree"><em>Regression Tree Learner</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Regression Tree Graph" height="36" src="../../_images/RegressionTreeGraph.svg" width="36" /> <a class="reference internal" href="regression/regressiontreegraph.html#regression-tree-graph"><em>Regression Tree Viewer</em></a></td>
+<td><img alt="Pade" height="36" src="../../_images/Pade.svg" width="36" /> <a class="reference internal" href="regression/pade.html#pade"><em>Pade</em></a></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="evaluate">
+<h2>Evaluate<a class="headerlink" href="#evaluate" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="widget-catalog-table widget-category-evaluate docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="Confusion Matrix" height="36" src="../../_images/ConfusionMatrix1.svg" width="36" /> <a class="reference internal" href="evaluate/confusionmatrix.html#confusion-matrix"><em>Confusion Matrix</em></a></td>
+<td><img alt="Pade" height="36" src="../../_images/ROCAnalysis1.svg" width="36" /> <a class="reference internal" href="evaluate/rocanalysis.html#roc-analysis"><em>ROC Analysis</em></a></td>
+<td><img alt="Lift Curve" height="36" src="../../_images/LiftCurve1.svg" width="36" /> <a class="reference internal" href="evaluate/liftcurve.html#lift-curve"><em>Lift Curve</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Calibration Plot" height="36" src="../../_images/CalibrationPlot1.svg" width="36" /> <a class="reference internal" href="evaluate/calibrationplot.html#calibration-plot"><em>Calibration Plot</em></a></td>
+<td><img alt="Test Learners" height="36" src="../../_images/TestLearners11.svg" width="36" /> <a class="reference internal" href="evaluate/testlearners.html#test-learners"><em>Test Learners</em></a></td>
+<td><img alt="Predictions" height="36" src="../../_images/Predictions1.svg" width="36" /> <a class="reference internal" href="evaluate/predictions.html#predictions"><em>Predictions</em></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="associate">
+<h2>Associate<a class="headerlink" href="#associate" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="widget-catalog-table widget-category-associate docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="Association Rules" height="36" src="../../_images/AssociationRules1.svg" width="36" /> <a class="reference internal" href="associate/associationrules.html#association-rules"><em>Association Rules</em></a></td>
+<td><img alt="AssociationRulesFilter" height="36" src="../../_images/AssociationRulesFilter1.svg" width="36" /> <a class="reference internal" href="associate/associationrulesfilter.html#association-rules-filter"><em>Association Rules Filter</em></a></td>
+<td><img alt="Association Rules Explorer" height="36" src="../../_images/AssociationRulesExplorer1.svg" width="36" /> <a class="reference internal" href="associate/associationrulesexplorer.html#association-rules-explorer"><em>Association Rules Tree Viewer</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="Item Sets" height="36" src="../../_images/Itemsets.svg" width="36" /> <cite>Item Sets</cite></td>
+<td><img alt="Item Sets Explorer" height="36" src="../../_images/ItemsetsExplorer.svg" width="36" /> <cite>Item Sets Explorer</cite></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="unsupervised">
+<h2>Unsupervised<a class="headerlink" href="#unsupervised" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="widget-catalog-table widget-category-unsupervised docutils">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><img alt="Distance File" height="36" src="../../_images/LoadDistances.svg" width="36" /> <a class="reference internal" href="unsupervized/distancefile.html#distance-file"><em>Distance File</em></a></td>
+<td><img alt="Save Distance File" height="36" src="../../_images/SaveDistances.svg" width="36" /> <cite>Save Distance File</cite></td>
+<td><img alt="Matrix Transformation" height="36" src="../../_images/MatrixTransformation.svg" width="36" /> <cite>Matrix Transformation</cite></td>
+</tr>
+<tr class="row-even"><td><img alt="Distance Matrix Filter" src="../../_images/DistanceFilter.png" style="width: 36px; height: 36px;" /> <cite>Distance Matrix Filter</cite></td>
+<td><img alt="Distance Map" height="36" src="../../_images/DistanceMatrix.svg" width="36" /> <a class="reference internal" href="unsupervized/distancemap.html#distance-map"><em>Distance Map</em></a></td>
+<td><img alt="Example Distance" height="36" src="../../_images/Distance.svg" width="36" /> <a class="reference internal" href="unsupervized/exampledistance.html#example-distance"><em>Example Distance</em></a></td>
+</tr>
+<tr class="row-odd"><td><img alt="Attribute Distance" height="36" src="../../_images/Distance.svg" width="36" /> <a class="reference internal" href="unsupervized/attributedistance.html#attribute-distance"><em>Attribute Distance</em></a></td>
+<td><img alt="Hierarchical Clustering" height="36" src="../../_images/HierarchicalClustering.svg" width="36" /> <a class="reference internal" href="unsupervized/hierarchicalclustering.html#hierarchical-clustering"><em>Hierarchical Clustering</em></a></td>
+<td><img alt="Interaction Graph" src="../../_images/InteractionGraph_40.png" style="width: 36px; height: 36px;" /> <a class="reference internal" href="unsupervized/interactiongraph.html#interaction-graph"><em>Interaction Graph</em></a></td>
+</tr>
+<tr class="row-even"><td><img alt="k-Means Clustering" height="36" src="../../_images/kMeansClustering.svg" width="36" /> <a class="reference internal" href="unsupervized/kmeansclustering.html#k-means-clustering"><em>K-Means Clustering</em></a></td>
+<td><img alt="MDS" height="36" src="../../_images/MDS.svg" width="36" /> <a class="reference internal" href="unsupervized/mds.html#mds"><em>MDS</em></a></td>
+<td><img alt="PCA" height="36" src="../../_images/PCA.svg" width="36" /> <a class="reference internal" href="unsupervized/PCA.html#pca"><em>Principal Component Analysis</em></a></td>
+</tr>
+<tr class="row-odd"><td><img alt="SOM" height="36" src="../../_images/SOM.svg" width="36" /> <cite>SOM</cite></td>
+<td><img alt="SOM Visualizer" height="36" src="../../_images/SOMVisualizer.svg" width="36" /> <cite>SOM Visualizer</cite></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>Index:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="data/file.html">File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/paintdata.html">Paint Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/datatable.html">Data Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/selectattributes.html">Select Attributes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/rank.html">Rank</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/purgedomain.html">Purge Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/mergedata.html">Merge Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/concatenate.html">Concatenate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/datasampler.html">Data Sampler</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/selectdata.html">Select Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/save.html">Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/discretize.html">Discretize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/continuize.html">Continuize</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/impute.html">Impute</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/outliers.html">Outliers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/editdomain.html">Edit Domain</a></li>
+<li class="toctree-l1"><a class="reference internal" href="data/pythonscript.html">Python Script</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/distributions.html">Distributions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/scatterplot.html">Scatter Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/attributestatistics.html">Attribute Statistics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/linearprojection.html">Linear Projection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/radviz.html">Radviz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/polyviz.html">Polyviz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/parallelcoordinates.html">Parallel Coordinates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/surveyplot.html">Survey Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/mosaicdisplay.html">Mosaic Display</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualize/sievediagram.html">Sieve Diagram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/naivebayes.html">Naive Bayesian Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/svm.html">SVM Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/logisticregression.html">Logistic Regression Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/majority.html">Majority Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/classificationtree.html">Classification Tree Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/classificationtreegraph.html">Classification Tree Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/classificationtreeviewer.html">Classification Tree Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/cn2.html">CN2 Rule Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/cn2rulesviewer.html">Rule Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/knearestneighbours.html">k-Nearest Neighbours Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/nomogram.html">Nomogram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/randomforest.html">Random Forest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/c45.html">C4.5 Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="classify/interactivetreebuilder.html">Interactive Tree Builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="regression/mean.html">Mean Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="regression/linear.html">Linear Regression Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="regression/regressiontree.html">Regression Tree Learner</a></li>
+<li class="toctree-l1"><a class="reference internal" href="regression/regressiontreegraph.html">Regression Tree Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="regression/pade.html">Pade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluate/confusionmatrix.html">Confusion Matrix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluate/rocanalysis.html">ROC Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluate/liftcurve.html">Lift Curve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluate/calibrationplot.html">Calibration Plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluate/testlearners.html">Test Learners</a></li>
+<li class="toctree-l1"><a class="reference internal" href="evaluate/predictions.html">Predictions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="associate/associationrules.html">Association Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="associate/associationrulesfilter.html">Association Rules Filter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="associate/associationrulesexplorer.html">Association Rules Tree Viewer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/distancefile.html">Distance File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/distancemap.html">Distance Map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/exampledistance.html">Example Distance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/attributedistance.html">Attribute Distance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/hierarchicalclustering.html">Hierarchical Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/interactiongraph.html">Interaction Graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/kmeansclustering.html">K-Means Clustering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/mds.html">MDS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unsupervized/PCA.html">Principal Component Analysis</a></li>
+</ul>
+</div>
+<div class="section" id="index-and-search">
+<h3>Index and search<a class="headerlink" href="#index-and-search" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="../../genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="../../search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

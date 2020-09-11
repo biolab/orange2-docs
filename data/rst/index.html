@@ -1,0 +1,244 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Loading your Data &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Loading your Data</a><ul>
+<li><a class="reference internal" href="#in-a-nutshell">In a Nutshell</a></li>
+<li><a class="reference internal" href="#data-from-excel">Data from Excel</a></li>
+<li><a class="reference internal" href="#header-with-attribute-type-information">Header with Attribute Type Information</a></li>
+<li><a class="reference internal" href="#native-data-format-of-orange">Native Data Format of Orange</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="loading-your-data">
+<h1>Loading your Data<a class="headerlink" href="#loading-your-data" title="Permalink to this headline">¶</a></h1>
+<p>Orange comes with its own
+<a class="reference internal" href="../../reference/rst/Orange.data.formats.html#tab-delimited"><em>its own data format</em></a>, but can also handle standard
+comma or tab delimited data files. The input data set would usually be a
+table, with data instances (samples) in rows and data attributes in columns.
+Data attributes can be of different types
+(continuous, discrete, and strings) and kinds (input variables, meta
+attributes, and a class). Data attribute type and kind can be provided in
+the data table header and can be changed later, after reading the data,
+with several specialized widgets, like <a class="reference internal" href="../../widgets/rst/data/selectattributes.html#select-attributes"><em>Select Attributes</em></a>.</p>
+<div class="section" id="in-a-nutshell">
+<h2>In a Nutshell<a class="headerlink" href="#in-a-nutshell" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Orange can import any comma or tab-delimited data file. Use <a class="reference internal" href="../../widgets/rst/data/file.html#file"><em>File</em></a> widget
+and then, if needed, select class and meta attributes
+in <a class="reference internal" href="../../widgets/rst/data/selectattributes.html#select-attributes"><em>Select Attributes</em></a> widget.</li>
+<li>To specify the domain and the type of the attribute, attribute names can
+be preceded with a label followed by a hash. Use c for a class and m for
+meta attribute, i to ignore a column, and C, D, S to continuous, discrete
+and string attribute type. Examples: C#mpg, mS#name, i#dummy. Make sure
+to set <strong>Import Options</strong> in <a class="reference internal" href="../../widgets/rst/data/file.html#file"><em>File</em></a> widget and set the header to
+<strong>Orange simplified header</strong>.</li>
+<li>Orange&#8217;s native format is a tab-delimited text file with three header rows.
+The first row contains attribute names, the second the domain
+(<strong>continuous</strong>,
+<strong>discrete</strong> or <strong>string</strong>), and the third optional type
+(<strong>class</strong>, <strong>meta</strong> or <strong>string</strong>).</li>
+</ul>
+</div>
+<div class="section" id="data-from-excel">
+<h2>Data from Excel<a class="headerlink" href="#data-from-excel" title="Permalink to this headline">¶</a></h2>
+<p>Say we have the data (<a class="reference download internal" href="../../_downloads/sample.xlsx"><tt class="xref download docutils literal"><span class="pre">sample.xlsx</span></tt></a>) in some popular
+spreadsheet application, like Excel:</p>
+<a class="reference internal image-reference" href="../../_images/spreadsheet.png"><img alt="../../_images/spreadsheet.png" src="../../_images/spreadsheet.png" style="width: 446.4px; height: 196.8px;" /></a>
+<p>To move this data to Orange, we need to save the file in a tab or comma
+separated format. In Excel, we can use a <strong>Save As ...</strong>
+command from the <strong>File</strong> menu:</p>
+<a class="reference internal image-reference" href="../../_images/save-as.png"><img alt="../../_images/save-as.png" src="../../_images/save-as.png" style="width: 283.2px; height: 25.6px;" /></a>
+<p>and select <strong>Comma Separated Values (.csv)</strong> as an output format:</p>
+<a class="reference internal image-reference" href="../../_images/save-as-csv.png"><img alt="../../_images/save-as-csv.png" src="../../_images/save-as-csv.png" style="width: 306.4px; height: 145.6px;" /></a>
+<p>We can now save the data in, say, a file named
+<a class="reference download internal" href="../../_downloads/sample.csv"><tt class="xref download docutils literal"><span class="pre">sample.csv</span></tt></a>.</p>
+<p>To load the data set in Orange,
+we can design a simple workflow with File and Data Table widget,</p>
+<a class="reference internal image-reference" href="../../_images/file-data-table-workflow.png"><img alt="../../_images/file-data-table-workflow.png" src="../../_images/file-data-table-workflow.png" style="width: 155.2px; height: 63.2px;" /></a>
+<p>open the <a class="reference internal" href="../../widgets/rst/data/file.html#file"><em>File</em></a> widget (double click on its icon) and click
+on the file browser icon,</p>
+<a class="reference internal image-reference" href="../../_images/file-browser-icon.png"><img alt="../../_images/file-browser-icon.png" src="../../_images/file-browser-icon.png" style="width: 55.2px; height: 25.6px;" /></a>
+<p>change the file type selector to csv,</p>
+<a class="reference internal image-reference" href="../../_images/csv-selector.png"><img alt="../../_images/csv-selector.png" src="../../_images/csv-selector.png" style="width: 279.2px; height: 28.8px;" /></a>
+<p>locate the data file sample.csv which we have saved from Excel
+and open it. The <strong>File</strong> widget should now look something like this:</p>
+<a class="reference internal image-reference" href="../../_images/file-widget.png"><img alt="../../_images/file-widget.png" src="../../_images/file-widget.png" style="width: 772.8px; height: 421.6px;" /></a>
+<p>Notice that our data contains 8 data instances (rows) and 7 data
+attributes (columns). We can explore the contents of this data set
+in the <a class="reference internal" href="../../widgets/rst/data/datatable.html#data-table"><em>Data Table</em></a> widget (double click its icon to open it):</p>
+<a class="reference internal image-reference" href="../../_images/data-table-widget.png"><img alt="../../_images/data-table-widget.png" src="../../_images/data-table-widget.png" style="width: 772.8px; height: 421.6px;" /></a>
+<p>Question marks in the data table denote missing data entries. These
+entries correspond to empty cells in the Excel table. Rows in our example
+data set
+represent genes, with the values in the first column denoting a gene class.
+The second column stores gene names and the remaining columns record
+measurements that characterize each gene. Gene class can be used
+for classification. Gene name is a meta information, a label that is not
+relevant to any data mining algorithm but can identify a data instance in, say,
+visualizations like scatter plot. We need to tell Orange that these first two
+columns are special. One way to do this within Orange is through
+<a class="reference internal" href="../../widgets/rst/data/selectattributes.html#select-attributes"><em>Select Attributes</em></a> widget:</p>
+<a class="reference internal image-reference" href="../../_images/select-attributes-schema.png"><img alt="../../_images/select-attributes-schema.png" src="../../_images/select-attributes-schema.png" style="width: 280.0px; height: 72.8px;" /></a>
+<p>Opening the <a class="reference internal" href="../../widgets/rst/data/selectattributes.html#select-attributes"><em>Select Attributes</em></a> widget reveals that in our input data file
+all seven column are treated as ordinary attributes (input variables), with the
+only distinction that the first two variables are categorical (discrete)
+and the other two are real-valued (continuous):</p>
+<a class="reference internal image-reference" href="../../_images/select-attributes-start.png"><img alt="../../_images/select-attributes-start.png" src="../../_images/select-attributes-start.png" style="width: 400.0px; height: 368.8px;" /></a>
+<p>To correctly reassign attribute types, drag attribute named <tt class="docutils literal"><span class="pre">function</span></tt> to
+a <strong>Class</strong> box, and attribute named <tt class="docutils literal"><span class="pre">gene</span></tt> to a <strong>Meta Attribute</strong> box.
+The <a class="reference internal" href="../../widgets/rst/data/selectattributes.html#select-attributes"><em>Select Attributes</em></a> widget should now look like this:</p>
+<a class="reference internal image-reference" href="../../_images/select-attributes-reassigned.png"><img alt="../../_images/select-attributes-reassigned.png" src="../../_images/select-attributes-reassigned.png" style="width: 400.0px; height: 368.8px;" /></a>
+<p>Change of attribute types in <em class="xref std std-ref">Select Attribute</em> widget should be confirmed by
+clicking the <strong>Apply</strong> button. The data from this widget is fed into
+<a class="reference internal" href="../../widgets/rst/data/datatable.html#data-table"><em>Data Table</em></a>
+widget, that now renders the class and meta attribute in a color different
+from those for input features:</p>
+<a class="reference internal image-reference" href="../../_images/data-table-with-class.png"><img alt="../../_images/data-table-with-class.png" src="../../_images/data-table-with-class.png" style="width: 772.8px; height: 421.6px;" /></a>
+<p>We could also define the domain for this data set in some different way. Say,
+we could make the data set ready for regression, and use <tt class="docutils literal"><span class="pre">heat</span> <span class="pre">0</span></tt> as
+a continuous class variable,
+keep gene function and name as meta variables, and remove
+<tt class="docutils literal"><span class="pre">heat</span> <span class="pre">10</span></tt> and <tt class="docutils literal"><span class="pre">heat</span> <span class="pre">20</span></tt> from the data set (making these two attributes
+available for type assignment, but not including them in the data on the output
+of <a class="reference internal" href="../../widgets/rst/data/selectattributes.html#select-attributes"><em>Select Attributes</em></a> widget):</p>
+<a class="reference internal image-reference" href="../../_images/select-attributes-regression.png"><img alt="../../_images/select-attributes-regression.png" src="../../_images/select-attributes-regression.png" style="width: 400.0px; height: 368.8px;" /></a>
+<p>Under the above setting of attributes the rending of the data in the Data Table
+widget looks like the following:</p>
+<a class="reference internal image-reference" href="../../_images/data-table-regression.png"><img alt="../../_images/data-table-regression.png" src="../../_images/data-table-regression.png" style="width: 616.8px; height: 421.6px;" /></a>
+</div>
+<div class="section" id="header-with-attribute-type-information">
+<h2>Header with Attribute Type Information<a class="headerlink" href="#header-with-attribute-type-information" title="Permalink to this headline">¶</a></h2>
+<p>Information on attribute type may already be provided in the header of the
+Comma Separated Values file. Let us open the
+(<a class="reference download internal" href="../../_downloads/sample.xlsx"><tt class="xref download docutils literal"><span class="pre">sample.xlsx</span></tt></a>) data set in Excel again. This time,
+however, we will augment the names of the attributes with prefix characters
+expressing attribute type (class or meta attribute) and/or its domain
+(continuous, discrete, string), and separate them from the attribute name
+with a hash sign (&#8220;#&#8221;). For the type, the abbreviations are:</p>
+<ul class="simple">
+<li>c: class attribute</li>
+<li>m: meta attribute</li>
+<li>i: ignore the attribute</li>
+</ul>
+<p>and abbreviations for the domain are:</p>
+<ul class="simple">
+<li>C: Continuous</li>
+<li>D: Discrete</li>
+<li>S: String</li>
+</ul>
+<p>This is how the header with augmented attribute names looks like in Excel
+(<tt class="xref download docutils literal"><span class="pre">sample-head.xlsx</span></tt>):</p>
+<a class="reference internal image-reference" href="../../_images/spreadsheet-simple-head.png"><img alt="../../_images/spreadsheet-simple-head.png" src="../../_images/spreadsheet-simple-head.png" style="width: 428.0px; height: 236.8px;" /></a>
+<p>We can again use a <a class="reference internal" href="../../widgets/rst/data/file.html#file"><em>File</em></a> widget to read the data from
+the comma-separated file
+exported from Excel. We have to instruct Orange to interpret annotations in
+attribute names. We do so by choosing <strong>Import Options ...</strong> button in the File
+widget, and set the <strong>Header</strong> to <strong>Orange simplified header</strong>:</p>
+<a class="reference internal image-reference" href="../../_images/file-widget-simplified-header.png"><img alt="../../_images/file-widget-simplified-header.png" src="../../_images/file-widget-simplified-header.png" style="width: 379.2px; height: 331.2px;" /></a>
+<p>Notice that the attributes that we have ignored (label &#8220;i&#8221; in the attribute
+name) are not present in the data set.</p>
+</div>
+<div class="section" id="native-data-format-of-orange">
+<h2>Native Data Format of Orange<a class="headerlink" href="#native-data-format-of-orange" title="Permalink to this headline">¶</a></h2>
+<p>Orange&#8217;s native data format is a tab-delimited text file with three header
+rows. The first row lists attribute names, the second row defines
+their domain (continuous, discrete and string, or abbreviated c, d and s),
+and the third row an optional type (class, meta, or ignore). Here is an
+example:</p>
+<a class="reference internal image-reference" href="../../_images/excel-with-tab.png"><img alt="../../_images/excel-with-tab.png" src="../../_images/excel-with-tab.png" style="width: 421.6px; height: 262.4px;" /></a>
+<p>The above screenshot is from Excel, but the file was actually saved
+using &#8220;Tab Delimited Text (.txt)&#8221; format.
+To open it in Orange, we have to rename
+the file such that it ends with &#8221;.tab&#8221; extension (say from sample.txt to
+<tt class="xref download docutils literal"><span class="pre">sample.tab</span></tt>). In Windows, one can bypass this step
+by placing the name of the file and the .tab extension in quotes when using
+<strong>Save As ...</strong> command (e.g., &#8220;sample.tab&#8221;).</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

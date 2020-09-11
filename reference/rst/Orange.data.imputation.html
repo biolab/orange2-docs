@@ -1,0 +1,132 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Imputation (imputation) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Imputation (<tt class="docutils literal"><span class="pre">imputation</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="index-0"></span><div class="section" id="imputation-imputation">
+<span id="index-1"></span><h1>Imputation (<tt class="docutils literal"><span class="pre">imputation</span></tt>)<a class="headerlink" href="#imputation-imputation" title="Permalink to this headline">¶</a></h1>
+<p>Imputation replaces missing feature values with appropriate values. The
+example below shows how to replace the missing values with variables&#8217;
+averages:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">bridges</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bridges&quot;</span><span class="p">)</span>
+<span class="n">imputed_bridges</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">ImputeTable</span><span class="p">(</span><span class="n">bridges</span><span class="p">,</span>
+    <span class="n">method</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">imputation</span><span class="o">.</span><span class="n">AverageConstructor</span><span class="p">())</span>
+
+<span class="k">print</span> <span class="s">&quot;Original data set:&quot;</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">bridges</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">e</span>
+
+<span class="k">print</span> <span class="s">&quot;Imputed data set:&quot;</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">imputed_bridges</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">e</span>
+</pre></div>
+</div>
+<p>The output of this code is:</p>
+<div class="highlight-python"><pre>Original data set:
+['M', 1818, 'HIGHWAY', ?, 2, 'N', 'THROUGH', 'WOOD', 'SHORT', 'S', 'WOOD']
+['A', 1819, 'HIGHWAY', 1037, 2, 'N', 'THROUGH', 'WOOD', 'SHORT', 'S', 'WOOD']
+['A', 1829, 'AQUEDUCT', ?, 1, 'N', 'THROUGH', 'WOOD', '?', 'S', 'WOOD']
+
+Imputed data set:
+['M', 1818, 'HIGHWAY', 1300, 2, 'N', 'THROUGH', 'WOOD', 'SHORT', 'S', 'WOOD']
+['A', 1819, 'HIGHWAY', 1037, 2, 'N', 'THROUGH', 'WOOD', 'SHORT', 'S', 'WOOD']
+['A', 1829, 'AQUEDUCT', 1300, 1, 'N', 'THROUGH', 'WOOD', 'MEDIUM', 'S', 'WOOD']</pre>
+</div>
+<p>The function uses feature imputation methods from
+<a class="reference internal" href="Orange.feature.imputation.html"><em>Imputation (imputation)</em></a> and applies them on entire data set. The
+supported methods are:</p>
+<ul class="simple">
+<li>imputation of minimal, maximal, average value (uses <a class="reference internal" href="Orange.feature.imputation.html#Orange.feature.imputation.Defaults" title="Orange.feature.imputation.Defaults"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.imputation.Defaults</span></tt></a>),</li>
+<li>imputation of random value (uses <a class="reference internal" href="Orange.feature.imputation.html#Orange.feature.imputation.Random" title="Orange.feature.imputation.Random"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.imputation.Random</span></tt></a>),</li>
+<li>imputation based on a predictive model (uses <a class="reference internal" href="Orange.feature.imputation.html#Orange.feature.imputation.Model" title="Orange.feature.imputation.Model"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.imputation.Model</span></tt></a>),</li>
+<li>imputation where missing value is treated as a value (uses <a class="reference internal" href="Orange.feature.imputation.html#Orange.feature.imputation.AsValue" title="Orange.feature.imputation.AsValue"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.imputation.AsValue</span></tt></a>).</li>
+</ul>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

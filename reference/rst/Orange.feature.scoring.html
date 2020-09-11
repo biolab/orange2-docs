@@ -1,0 +1,681 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Scoring (scoring) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Scoring (<tt class="docutils literal"><span class="pre">scoring</span></tt>)</a><ul>
+<li><a class="reference internal" href="#calling-scoring-methods">Calling scoring methods</a></li>
+<li><a class="reference internal" href="#feature-scoring-in-classification-problems">Feature scoring in classification problems</a></li>
+<li><a class="reference internal" href="#feature-scoring-in-regression-problems">Feature scoring in regression problems</a></li>
+<li><a class="reference internal" href="#base-classes">Base Classes</a></li>
+<li><a class="reference internal" href="#other">Other</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="scoring-scoring">
+<h1>Scoring (<tt class="docutils literal"><span class="pre">scoring</span></tt>)<a class="headerlink" href="#scoring-scoring" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><p id="index-1">Feature score is an assessment of the usefulness of the feature for
+prediction of the dependant (class) variable. Orange provides classes
+that compute the common feature scores for <a class="reference internal" href="#classification"><em>classification</em></a> and regression <a class="reference internal" href="#regression"><em>regression</em></a>.</p>
+<p>The script below computes the information gain of feature &#8220;tear_rate&#8221;
+in the Lenses data set (loaded into <tt class="docutils literal"><span class="pre">data</span></tt>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">InfoGain</span><span class="p">(</span><span class="s">&quot;tear_rate&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="go">0.548795044422</span>
+</pre></div>
+</div>
+<p>Calling the scorer by passing the variable and the data to the
+constructor, like above is convenient. However, when scoring multiple
+variables, some methods run much faster if the scorer is constructed,
+stored and called for each variable.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">gain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">InfoGain</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span> <span class="n">feature</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">gain</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="go">age 0.0393966436386</span>
+<span class="go">prescription 0.0395109653473</span>
+<span class="go">astigmatic 0.377005338669</span>
+<span class="go">tear_rate 0.548795044422</span>
+</pre></div>
+</div>
+<p>The speed gain is most noticable in Relief, which computes the scores of
+all features in parallel.</p>
+<p>The module also provides a convenience function <a class="reference internal" href="#Orange.feature.scoring.score_all" title="Orange.feature.scoring.score_all"><tt class="xref py py-obj docutils literal"><span class="pre">score_all</span></tt></a> that
+computes the scores for all attributes. The following example computes
+feature scores, both with <a class="reference internal" href="#Orange.feature.scoring.score_all" title="Orange.feature.scoring.score_all"><tt class="xref py py-obj docutils literal"><span class="pre">score_all</span></tt></a> and by scoring each feature
+individually, and prints out the best three features.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">voting</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">print_best_3</span><span class="p">(</span><span class="n">ma</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ma</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%5.3f</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="k">print</span> <span class="s">&#39;Feature scores for best three features (with score_all):&#39;</span>
+<span class="n">ma</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">score_all</span><span class="p">(</span><span class="n">voting</span><span class="p">)</span>
+<span class="n">print_best_3</span><span class="p">(</span><span class="n">ma</span><span class="p">)</span>
+
+<span class="k">print</span>
+
+<span class="k">print</span> <span class="s">&#39;Feature scores for best three features (scored individually):&#39;</span>
+<span class="n">meas</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Relief</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">mr</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">meas</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">voting</span><span class="p">))</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">voting</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">]</span>
+<span class="n">mr</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c">#sort decreasingly by the score</span>
+<span class="n">print_best_3</span><span class="p">(</span><span class="n">mr</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output:</p>
+<div class="highlight-python"><pre>Feature scores for best three features (with score_all):
+0.613 physician-fee-freeze
+0.255 el-salvador-aid
+0.228 synfuels-corporation-cutback
+
+Feature scores for best three features (scored individually):
+0.613 physician-fee-freeze
+0.255 el-salvador-aid
+0.228 synfuels-corporation-cutback</pre>
+</div>
+<p>It is also possible to score features that do not appear in the data
+but can be computed from it. A typical case are discretized features:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+
+<span class="n">d1</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">discretization</span><span class="o">.</span><span class="n">Entropy</span><span class="p">(</span><span class="s">&quot;petal length&quot;</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">InfoGain</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="calling-scoring-methods">
+<span id="callingscore"></span><h2>Calling scoring methods<a class="headerlink" href="#calling-scoring-methods" title="Permalink to this headline">¶</a></h2>
+<p>Scorers can be called with different type of arguments. For instance,
+when given the data, most scoring methods first compute the
+corresponding contingency tables. If these are already known, they can
+be given to the scorer instead of the data to save some time.</p>
+<p>Not all classes accept all kinds of arguments. <a class="reference internal" href="#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-obj docutils literal"><span class="pre">Relief</span></tt></a>,
+for instance, only supports the form with instances on the input.</p>
+<dl class="method">
+<dt id="Orange.feature.scoring.Score.__call__">
+<tt class="descclassname">Score.</tt><tt class="descname">__call__</tt><big>(</big><em>attribute, data[, apriori_class_distribution][, weightID]</em><big>)</big><a class="headerlink" href="#Orange.feature.scoring.Score.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>attribute</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a> or int or string) &#8211; the chosen feature, either as a descriptor,
+index, or a name.</li>
+<li><strong>data</strong> (<cite>Orange.data.Table</cite>) &#8211; data.</li>
+<li><strong>weightID</strong> &#8211; id for meta-feature with weight.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>All scoring methods support this form.</p>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descclassname">Score.</tt><tt class="descname">__call__</tt><big>(</big><em>attribute</em>, <em>domain_contingency</em><span class="optional">[</span>, <em>apriori_class_distribution</em><span class="optional">]</span><big>)</big></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>attribute</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.Descriptor</span></tt></a> or int or string) &#8211; the chosen feature, either as a descriptor,
+index, or a name.</li>
+<li><strong>domain_contingency</strong> (<a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.Domain" title="Orange.statistics.contingency.Domain"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.contingency.Domain</span></tt></a>) &#8211; </li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descclassname">Score.</tt><tt class="descname">__call__</tt><big>(</big><em>contingency</em>, <em>class_distribution</em><span class="optional">[</span>, <em>apriori_class_distribution</em><span class="optional">]</span><big>)</big></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>contingency</strong> (<a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.VarClass" title="Orange.statistics.contingency.VarClass"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.contingency.VarClass</span></tt></a>) &#8211; </li>
+<li><strong>class_distribution</strong> (<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Distribution" title="Orange.statistics.distribution.Distribution"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.distribution.Distribution</span></tt></a>) &#8211; distribution of the class
+variable. If <a class="reference internal" href="#Orange.feature.scoring.Score.unknowns_treatment" title="Orange.feature.scoring.Score.unknowns_treatment"><tt class="xref py py-obj docutils literal"><span class="pre">unknowns_treatment</span></tt></a> is <a class="reference internal" href="#Orange.feature.scoring.Score.IgnoreUnknowns" title="Orange.feature.scoring.Score.IgnoreUnknowns"><tt class="xref py py-obj docutils literal"><span class="pre">IgnoreUnknowns</span></tt></a>,
+it should be computed on instances where feature value is
+defined. Otherwise, class distribution should be the overall
+class distribution.</li>
+<li><strong>apriori_class_distribution</strong> &#8211; Optional and most often
+ignored. Useful if the scoring method makes any probability estimates
+based on apriori class probabilities (such as the m-estimate).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Feature score - the higher the value, the better the feature.
+If the quality cannot be scored, return <tt class="xref py py-obj docutils literal"><span class="pre">Score.Rejected</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float or <tt class="xref py py-obj docutils literal"><span class="pre">Score.Rejected</span></tt>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The code demonstrates using the different call signatures by computing
+the score of the same feature with <a class="reference internal" href="#Orange.feature.scoring.GainRatio" title="Orange.feature.scoring.GainRatio"><tt class="xref py py-obj docutils literal"><span class="pre">GainRatio</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">titanic</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;titanic&quot;</span><span class="p">)</span>
+<span class="n">meas</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">GainRatio</span><span class="p">()</span>
+
+<span class="k">print</span> <span class="s">&quot;Call with variable and data table&quot;</span>
+<span class="k">print</span> <span class="n">meas</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">titanic</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Call with variable and domain contingency&quot;</span>
+<span class="n">domain_cont</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">contingency</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">titanic</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">meas</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">domain_cont</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Call with contingency and class distribution&quot;</span>
+<span class="n">cont</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">contingency</span><span class="o">.</span><span class="n">VarClass</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">titanic</span><span class="p">)</span>
+<span class="n">class_dist</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">distribution</span><span class="o">.</span><span class="n">Distribution</span><span class="p">(</span> \
+    <span class="n">titanic</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="p">,</span> <span class="n">titanic</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">meas</span><span class="p">(</span><span class="n">cont</span><span class="p">,</span> <span class="n">class_dist</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="feature-scoring-in-classification-problems">
+<span id="classification"></span><h2>Feature scoring in classification problems<a class="headerlink" href="#feature-scoring-in-classification-problems" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="index-2"></span><dl class="class">
+<dt id="Orange.feature.scoring.InfoGain">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">InfoGain</tt><a class="headerlink" href="#Orange.feature.scoring.InfoGain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Information gain; the expected decrease of entropy. See <a class="reference external" href="http://en.wikipedia.org/wiki/Information_gain_ratio">page on wikipedia</a>.</p>
+</dd></dl>
+
+<span class="target" id="index-3"></span><dl class="class">
+<dt id="Orange.feature.scoring.GainRatio">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">GainRatio</tt><a class="headerlink" href="#Orange.feature.scoring.GainRatio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Information gain ratio; information gain divided by the entropy of the feature&#8217;s
+value. Introduced in <a class="reference internal" href="#quinlan1986">[Quinlan1986]</a> in order to avoid overestimation
+of multi-valued features. It has been shown, however, that it still
+overestimates features with multiple values. See <a class="reference external" href="http://en.wikipedia.org/wiki/Information_gain_ratio">Wikipedia</a>.</p>
+</dd></dl>
+
+<span class="target" id="index-4"></span><dl class="class">
+<dt id="Orange.feature.scoring.Gini">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">Gini</tt><a class="headerlink" href="#Orange.feature.scoring.Gini" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gini index is the probability that two randomly chosen instances will have different
+classes. See <a class="reference external" href="http://en.wikipedia.org/wiki/Gini_coefficient">Gini coefficient on Wikipedia</a>.</p>
+</dd></dl>
+
+<span class="target" id="index-5"></span><dl class="class">
+<dt id="Orange.feature.scoring.Relevance">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">Relevance</tt><a class="headerlink" href="#Orange.feature.scoring.Relevance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The potential value for decision rules.</p>
+</dd></dl>
+
+<span class="target" id="index-6"></span><dl class="class">
+<dt id="Orange.feature.scoring.Cost">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">Cost</tt><a class="headerlink" href="#Orange.feature.scoring.Cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates features based on the cost decrease achieved by knowing the value of
+feature, according to the specified cost matrix.</p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Cost.cost">
+<tt class="descname">cost</tt><a class="headerlink" href="#Orange.feature.scoring.Cost.cost" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cost matrix, an instance of <a class="reference internal" href="Orange.misc.html#Orange.misc.CostMatrix" title="Orange.misc.CostMatrix"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.misc.CostMatrix</span></tt></a>.</p>
+</dd></dl>
+
+<p>If the cost of predicting the first class of an instance that is actually in
+the second is 5, and the cost of the opposite error is 1, than an appropriate
+score can be constructed as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">meas</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Cost</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">meas</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">meas</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="go">0.083333350718021393</span>
+</pre></div>
+</div>
+<p>Knowing the value of feature 3 would decrease the
+classification cost for approximately 0.083 per instance.</p>
+</dd></dl>
+
+<span class="target" id="index-7"></span><dl class="class">
+<dt id="Orange.feature.scoring.Relief">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">Relief</tt><a class="headerlink" href="#Orange.feature.scoring.Relief" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assesses features&#8217; ability to distinguish between very similar
+instances from different classes. This scoring method was first
+developed by Kira and Rendell and then improved by  Kononenko. The
+class <a class="reference internal" href="#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-obj docutils literal"><span class="pre">Relief</span></tt></a> works on discrete and continuous classes and
+thus implements ReliefF and RReliefF.</p>
+<p>ReliefF is slow since it needs to find k nearest neighbours for
+each of m reference instances. As we normally compute ReliefF for
+all features in the dataset, <a class="reference internal" href="#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-obj docutils literal"><span class="pre">Relief</span></tt></a> caches the results for
+all features, when called to score a certain feature.  When called
+again, it uses the stored results if the domain and the data table
+have not changed (data table version and the data checksum are
+compared). Caching will only work if you use the same object.
+Constructing new instances of <a class="reference internal" href="#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-obj docutils literal"><span class="pre">Relief</span></tt></a> for each feature,
+like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Relief</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>runs much slower than reusing the same instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">meas</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Relief</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">table</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">meas</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Relief.k">
+<tt class="descname">k</tt><a class="headerlink" href="#Orange.feature.scoring.Relief.k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of neighbours for each instance. Default is 5.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Relief.m">
+<tt class="descname">m</tt><a class="headerlink" href="#Orange.feature.scoring.Relief.m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of reference instances. Default is 100. When -1, all
+instances are used as reference.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Relief.check_cached_data">
+<tt class="descname">check_cached_data</tt><a class="headerlink" href="#Orange.feature.scoring.Relief.check_cached_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the cached data is changed, which may be slow on large
+tables.  Defaults to <a class="reference external" href="http://docs.python.org/library/constants.html#True" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">True</span></tt></a>, but should be disabled when it
+is certain that the data will not change while the scorer is used.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.scoring.Distance">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">Distance</tt><a class="headerlink" href="#Orange.feature.scoring.Distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <span class="math">1-D</span> distance is defined as information gain divided
+by joint entropy <span class="math">H_{CA}</span> (<span class="math">C</span> is the class variable
+and <span class="math">A</span> the feature):</p>
+<div class="math">
+<p><span class="math">1-D(C,A) = \frac{\mathrm{Gain}(A)}{H_{CA}}</span></p>
+</div></dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.scoring.MDL">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">MDL</tt><a class="headerlink" href="#Orange.feature.scoring.MDL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimum description length principle <a class="reference internal" href="#kononenko1995">[Kononenko1995]</a>. Let
+<span class="math">n</span> be the number of instances, <span class="math">n_0</span> the number of
+classes, and <span class="math">n_{cj}</span> the number of instances with feature
+value <span class="math">j</span> and class value <span class="math">c</span>. Then MDL score for the
+feature A is</p>
+<div class="math">
+<p><span class="math">\mathrm{MDL}(A) = \frac{1}{n} \Bigg[
+\log\binom{n}{n_{1.},\cdots,n_{n_0 .}} - \sum_j
+\log \binom{n_{.j}}{n_{1j},\cdots,n_{n_0 j}} \\
++ \log \binom{n+n_0-1}{n_0-1} - \sum_j \log
+\binom{n_{.j}+n_0-1}{n_0-1}
+\Bigg]</span></p>
+</div></dd></dl>
+
+</div>
+<div class="section" id="feature-scoring-in-regression-problems">
+<span id="regression"></span><h2>Feature scoring in regression problems<a class="headerlink" href="#feature-scoring-in-regression-problems" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt>
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">Relief</tt></dt>
+<dd><p>Relief is used for regression in the same way as for
+classification (see <a class="reference internal" href="#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-class docutils literal"><span class="pre">Relief</span></tt></a> in classification
+problems).</p>
+</dd></dl>
+
+<span class="target" id="index-8"></span><dl class="class">
+<dt id="Orange.feature.scoring.MSE">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">MSE</tt><a class="headerlink" href="#Orange.feature.scoring.MSE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Implements the mean square error score.</p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.MSE.unknowns_treatment">
+<tt class="descname">unknowns_treatment</tt><a class="headerlink" href="#Orange.feature.scoring.MSE.unknowns_treatment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decides the treatment of unknown values. See
+<a class="reference internal" href="#Orange.feature.scoring.Score.unknowns_treatment" title="Orange.feature.scoring.Score.unknowns_treatment"><tt class="xref py py-obj docutils literal"><span class="pre">Score.unknowns_treatment</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.MSE.m">
+<tt class="descname">m</tt><a class="headerlink" href="#Orange.feature.scoring.MSE.m" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parameter for m-estimate of error. Default is 0 (no m-estimate).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="base-classes">
+<h2>Base Classes<a class="headerlink" href="#base-classes" title="Permalink to this headline">¶</a></h2>
+<p>Implemented methods for scoring relevances of features are subclasses
+of <a class="reference internal" href="#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Score</span></tt></a>. Those that compute statistics on conditional
+distributions of class values given the feature values are derived from
+<a class="reference internal" href="#Orange.feature.scoring.ScoreFromProbabilities" title="Orange.feature.scoring.ScoreFromProbabilities"><tt class="xref py py-obj docutils literal"><span class="pre">ScoreFromProbabilities</span></tt></a>.</p>
+<dl class="class">
+<dt id="Orange.feature.scoring.Score">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">Score</tt><a class="headerlink" href="#Orange.feature.scoring.Score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for feature scoring. Its attributes describe which
+types of features it can handle which kind of data it requires.</p>
+<p><strong>Capabilities</strong></p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.handles_discrete">
+<tt class="descname">handles_discrete</tt><a class="headerlink" href="#Orange.feature.scoring.Score.handles_discrete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether the scoring method can handle discrete features.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.handles_continuous">
+<tt class="descname">handles_continuous</tt><a class="headerlink" href="#Orange.feature.scoring.Score.handles_continuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether the scoring method can handle continuous features.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.computes_thresholds">
+<tt class="descname">computes_thresholds</tt><a class="headerlink" href="#Orange.feature.scoring.Score.computes_thresholds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Indicates whether the scoring method implements the <a class="reference internal" href="#Orange.feature.scoring.Score.threshold_function" title="Orange.feature.scoring.Score.threshold_function"><tt class="xref py py-obj docutils literal"><span class="pre">threshold_function</span></tt></a>.</p>
+</dd></dl>
+
+<p><strong>Input specification</strong></p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.needs">
+<tt class="descname">needs</tt><a class="headerlink" href="#Orange.feature.scoring.Score.needs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of data needed indicated by one the constants
+below. Classes with use <a class="reference internal" href="#Orange.feature.scoring.Score.DomainContingency" title="Orange.feature.scoring.Score.DomainContingency"><tt class="xref py py-obj docutils literal"><span class="pre">DomainContingency</span></tt></a> will also handle
+generators. Those based on <a class="reference internal" href="#Orange.feature.scoring.Score.Contingency_Class" title="Orange.feature.scoring.Score.Contingency_Class"><tt class="xref py py-obj docutils literal"><span class="pre">Contingency_Class</span></tt></a> will be able
+to take generators and domain contingencies.</p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.Generator">
+<tt class="descname">Generator</tt><a class="headerlink" href="#Orange.feature.scoring.Score.Generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant. Indicates that the scoring method needs an instance
+generator on the input as, for example, <a class="reference internal" href="#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-obj docutils literal"><span class="pre">Relief</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.DomainContingency">
+<tt class="descname">DomainContingency</tt><a class="headerlink" href="#Orange.feature.scoring.Score.DomainContingency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant. Indicates that the scoring method needs
+<a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.Domain" title="Orange.statistics.contingency.Domain"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.contingency.Domain</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.Contingency_Class">
+<tt class="descname">Contingency_Class</tt><a class="headerlink" href="#Orange.feature.scoring.Score.Contingency_Class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant. Indicates, that the scoring method needs the contingency
+(<a class="reference internal" href="Orange.statistics.contingency.html#Orange.statistics.contingency.VarClass" title="Orange.statistics.contingency.VarClass"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.contingency.VarClass</span></tt></a>), feature
+distribution and the apriori class distribution (as most
+scoring methods).</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Treatment of unknown values</strong></p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.unknowns_treatment">
+<tt class="descname">unknowns_treatment</tt><a class="headerlink" href="#Orange.feature.scoring.Score.unknowns_treatment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defined in classes that are able to treat unknown values. It
+should be set to one of the values below.</p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.IgnoreUnknowns">
+<tt class="descname">IgnoreUnknowns</tt><a class="headerlink" href="#Orange.feature.scoring.Score.IgnoreUnknowns" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant. Instances for which the feature value is unknown are removed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.ReduceByUnknown">
+<tt class="descname">ReduceByUnknown</tt><a class="headerlink" href="#Orange.feature.scoring.Score.ReduceByUnknown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant. Features with unknown values are
+punished. The feature quality is reduced by the proportion of
+unknown values. For impurity scores the impurity decreases
+only where the value is defined and stays the same otherwise.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.UnknownsToCommon">
+<tt class="descname">UnknownsToCommon</tt><a class="headerlink" href="#Orange.feature.scoring.Score.UnknownsToCommon" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant. Undefined values are replaced by the most common value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.Score.UnknownsAsValue">
+<tt class="descname">UnknownsAsValue</tt><a class="headerlink" href="#Orange.feature.scoring.Score.UnknownsAsValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constant. Unknown values are treated as a separate value.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p><strong>Methods</strong></p>
+<dl class="method">
+<dt>
+<tt class="descname">__call__</tt><big>(</big><big>)</big></dt>
+<dd><p>Abstract. See <a class="reference internal" href="#callingscore"><em>Calling scoring methods</em></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.feature.scoring.Score.threshold_function">
+<tt class="descname">threshold_function</tt><big>(</big><em>attribute</em>, <em>instances</em><span class="optional">[</span>, <em>weightID</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.feature.scoring.Score.threshold_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract.</p>
+<p>Assess different binarizations of the continuous feature
+<tt class="xref py py-obj docutils literal"><span class="pre">attribute</span></tt>.  Return a list of tuples. The first element
+is a threshold (between two existing values), the second is
+the quality of the corresponding binary feature, and the third
+the distribution of instances below and above the threshold.
+Not all scorers return the third element.</p>
+<p>To show the computation of thresholds, we shall use the Iris
+data set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+<span class="n">meas</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Relief</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">meas</span><span class="o">.</span><span class="n">threshold_function</span><span class="p">(</span><span class="s">&quot;petal length&quot;</span><span class="p">,</span> <span class="n">iris</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%5.3f</span><span class="s">: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">t</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.feature.scoring.Score.best_threshold">
+<tt class="descname">best_threshold</tt><big>(</big><em>attribute</em>, <em>instances</em><big>)</big><a class="headerlink" href="#Orange.feature.scoring.Score.best_threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the best threshold for binarization, that is, the threshold
+with which the resulting binary feature will have the optimal
+score.</p>
+<p>The script below prints out the best threshold for
+binarization of an feature. ReliefF is used scoring:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">thresh</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">distr</span> <span class="o">=</span> <span class="n">meas</span><span class="o">.</span><span class="n">best_threshold</span><span class="p">(</span><span class="s">&quot;petal length&quot;</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Best threshold: </span><span class="si">%5.3f</span><span class="s"> (score </span><span class="si">%5.3f</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">thresh</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.feature.scoring.ScoreFromProbabilities">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">ScoreFromProbabilities</tt><a class="headerlink" href="#Orange.feature.scoring.ScoreFromProbabilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Score</span></tt></a></p>
+<p>Abstract base class for feature scoring method that can be
+computed from contingency matrices.</p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.ScoreFromProbabilities.estimator_constructor">
+<tt class="descname">estimator_constructor</tt><a class="headerlink" href="#Orange.feature.scoring.ScoreFromProbabilities.estimator_constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.feature.scoring.ScoreFromProbabilities.conditional_estimator_constructor">
+<tt class="descname">conditional_estimator_constructor</tt><a class="headerlink" href="#Orange.feature.scoring.ScoreFromProbabilities.conditional_estimator_constructor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The classes that are used to estimate unconditional
+and conditional probabilities of classes, respectively.
+Defaults use relative frequencies; possible alternatives are,
+for instance, <tt class="xref py py-obj docutils literal"><span class="pre">ProbabilityEstimatorConstructor_m</span></tt> and
+<tt class="xref py py-obj docutils literal"><span class="pre">ConditionalProbabilityEstimatorConstructor_ByRows</span></tt>
+(with estimator constructor again set to
+<tt class="xref py py-obj docutils literal"><span class="pre">ProbabilityEstimatorConstructor_m</span></tt>), respectively.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="other">
+<h2>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Orange.feature.scoring.OrderAttributes">
+<em class="property">class </em><tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">OrderAttributes</tt><big>(</big><em>score=None</em><big>)</big><a class="headerlink" href="#Orange.feature.scoring.OrderAttributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orders features by their scores.</p>
+<dl class="attribute">
+<dt id="Orange.feature.scoring.OrderAttributes.score">
+<tt class="descname">score</tt><a class="headerlink" href="#Orange.feature.scoring.OrderAttributes.score" title="Permalink to this definition">¶</a></dt>
+<dd><p>A scoring method derived from <a class="reference internal" href="#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Score</span></tt></a>.
+If <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>, <a class="reference internal" href="#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-obj docutils literal"><span class="pre">Relief</span></tt></a> with m=5 and k=10 is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.feature.scoring.OrderAttributes.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>weight</em><big>)</big><a class="headerlink" href="#Orange.feature.scoring.OrderAttributes.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Score and order all features.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Table</span></tt></a>) &#8211; a data table used to score features</li>
+<li><strong>weight</strong> (<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Descriptor" title="Orange.feature.Descriptor"><tt class="xref py py-obj docutils literal"><span class="pre">Descriptor</span></tt></a>) &#8211; meta attribute that stores weights of instances</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.feature.scoring.score_all">
+<tt class="descclassname">Orange.feature.scoring.</tt><tt class="descname">score_all</tt><big>(</big><em>data</em>, <em>score=Relief(k=20</em>, <em>m=50)</em><big>)</big><a class="headerlink" href="#Orange.feature.scoring.score_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assess the quality of features using the given measure and return
+a sorted list of tuples (feature name, measure).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Table</span></tt></a>) &#8211; data table should include a discrete class.</li>
+<li><strong>score</strong> (<a class="reference internal" href="#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Score</span></tt></a>) &#8211; feature scoring function. Derived from
+<a class="reference internal" href="#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-obj docutils literal"><span class="pre">Score</span></tt></a>. Defaults to 
+<a class="reference internal" href="#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-obj docutils literal"><span class="pre">Relief</span></tt></a> with k=20 and m=50.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">list</span></tt></a>; a sorted list of tuples (feature name, score)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p class="rubric">Bibliography</p>
+<table class="docutils citation" frame="void" id="kononenko2007" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Kononenko2007]</td><td>Igor Kononenko, Matjaz Kukar: Machine Learning and Data Mining,
+Woodhead Publishing, 2007.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="quinlan1986" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[Quinlan1986]</a></td><td>J R Quinlan: Induction of Decision Trees, Machine Learning, 1986.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="breiman1984" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[Breiman1984]</td><td>L Breiman et al: Classification and Regression Trees, Chapman and Hall, 1984.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="kononenko1995" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[Kononenko1995]</a></td><td>I Kononenko: On biases in estimating multi-valued attributes, International Joint Conference on Artificial Intelligence, 1995.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

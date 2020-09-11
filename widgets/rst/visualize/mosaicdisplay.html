@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Mosaic Display &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Mosaic Display</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="mosaic-display">
+<span id="id1"></span><h1>Mosaic Display<a class="headerlink" href="#mosaic-display" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/MosaicDisplay1.svg" /><p>Shows a mosaic display of n-way tables.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Examples (ExampleTable)</dt>
+<dd><p class="first last">Input data set.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Example Subset (ExampleTable)</dt>
+<dd><p class="first last">A subset of data instances from Examples.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Selected Examples (ExampleTable)</dt>
+<dd><p class="first last">A subset of examples belonging to manually selected cells in mosaic
+display.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last simple">
+<li>None</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The mosaic display is a graphical method to visualize the counts in n-way
+<a class="reference external" href="http://en.wikipedia.org/wiki/Contingency_table">contingency tables</a>, that
+is, tables where each cell corresponds to a distinct value-combination of n
+attributes. The method was proposed by Hartigan &amp; Kleiner
+(<a class="reference internal" href="#hartigankleiner81">[HartiganKleiner81]</a>) and extended by Friendly (<a class="reference internal" href="#friendly94">[Friendly94]</a>). Each cell in
+mosaic display corresponds to a single cell in contingency table. If the data
+contains a class attribute, the mosaic display will show the class
+distribution.</p>
+<p>Orange&#8217;s implementation of mosaic display allows to observe the interactions
+of up to four variables in a single visualization. The snapshot below shows a
+mosaic display for the Titanic data set, observing three variables (sex,
+status, and age) and their association with a class (survived). The diagram
+shows that the survival (red color) was highest for women traveling in the
+first class, and lowest for men traveling in the second and third class.</p>
+<img alt="Mosiac Display on titanic dataset" src="../../../_images/MosaicDisplay-Titanic.png" />
+<p>This visualization gets slightly more complex - but once getting used to, more
+informative - if the expected class distribution is shown on the same
+visualization. For this purpose, a sub-box
+(<tt class="xref py py-obj docutils literal"><span class="pre">Use</span> <span class="pre">sub-boxes</span> <span class="pre">on</span> <span class="pre">the</span> <span class="pre">left</span> <span class="pre">to</span> <span class="pre">show...</span></tt> and below it choose
+<tt class="xref py py-obj docutils literal"><span class="pre">Apriori</span> <span class="pre">class</span> <span class="pre">distribution</span></tt>. This would plot a bar on the top of every
+cell displayed, being able to observe the difference between the actual and
+expected distribution for each cell. Change <tt class="xref py py-obj docutils literal"><span class="pre">Apriori</span> <span class="pre">class</span> <span class="pre">distribution</span></tt>
+to <tt class="xref py py-obj docutils literal"><span class="pre">Expected</span> <span class="pre">class</span> <span class="pre">distribution</span></tt> to compare the actual distributions to
+those computed by assuming the independence of attributes.</p>
+<img alt="../../../_images/MosaicDisplay-Titanic-Apriori.png" src="../../../_images/MosaicDisplay-Titanic-Apriori.png" />
+<p>The degree of deviation from aprori class distribution for each cell can be
+directly visualized using <tt class="xref py py-obj docutils literal"><span class="pre">Standard</span> <span class="pre">Pearson</span> <span class="pre">residuals</span></tt> option (from
+<tt class="xref py py-obj docutils literal"><span class="pre">Colors</span> <span class="pre">in</span> <span class="pre">cells</span> <span class="pre">represent</span> <span class="pre">...</span></tt> box, see snapshot below). On Titanic data
+set, this visualization clearly shows for which combinations of attributes the
+changes of survival were highest or lowest.</p>
+<img alt="Mosiac Display - Pearson residual" src="../../../_images/MosaicDisplay-Titanic-Residuals.png" />
+<p>If there are many attributes, finding subsets which would yield interesting
+mosaic displays is at least cumbersome. Orange implementation includes
+<tt class="xref py py-obj docutils literal"><span class="pre">VizRank</span></tt> (<tt class="xref py py-obj docutils literal"><span class="pre">Main</span></tt> tab), which can list provide a list of most
+interesting subsets with chosen cardinality. Various measures of
+interestingness are implemented, but in principle all favor displays where at
+least some cells would exhibit high deviation from the apriori class
+distributions.</p>
+<img alt="Mosiac Display with Viz Rank" src="../../../_images/MosaicDisplay-Titanic-VizRank.png" />
+<p>Instead of comparing cell&#8217;s class distribution to apriori ones, these can be
+compared to distribution from a subset of instances from the same data domain.
+The widget uses a separate input channel for this purpose. Notice also that
+individual cells can be selected/de-selected (clicking with left or right mouse
+button on the cell), sending out the instances from the selected cells using
+the <tt class="xref py py-obj docutils literal"><span class="pre">Selected</span> <span class="pre">Examples</span></tt> channel.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils citation" frame="void" id="hartigankleiner81" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[HartiganKleiner81]</a></td><td>Hartigan, J. A., and Kleiner, B. (1981).  Mosaics for
+contingency tables. In W. F. Eddy (Ed.),  Computer Science and Statistics:
+Proceedings of the 13th Symposium on the Interface. New York:
+Springer-Verlag.</td></tr>
+</tbody>
+</table>
+<table class="docutils citation" frame="void" id="friendly94" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[Friendly94]</a></td><td>Friendly, M. (1994). Mosaic displays for multi-way contingency
+tables.  Journal of the American Statistical Association,  89, 190-200.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,220 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Test Learners &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Test Learners</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="test-learners">
+<span id="id1"></span><h1>Test Learners<a class="headerlink" href="#test-learners" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/TestLearners1.svg" /><p>Tests learning algorithms on data.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Data (ExampleTable)</dt>
+<dd><p class="first last">Data for training and, unless separate test data set is used, testing</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Separate Test Data (ExampleTable)</dt>
+<dd><p class="first last">Separa data for testing</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Learner (orange.Learner)</dt>
+<dd><p class="first last">One or more learning algorithms</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Evaluation results (orngTest.ExperimentResults)</dt>
+<dd><p class="first last">Results of testing the algorithms</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The widget tests learning algorithms on data. Different sampling schemes are
+available, including using a separate test data. The widget does two things.
+First, it shows a table with different performance measures of the classifiers,
+such as classification accuracy and area under ROC. Second, it outputs a signal
+with data which can be used by other widgets for analyzing the performance of
+classifiers, such as <a class="reference internal" href="rocanalysis.html#roc-analysis"><em>ROC Analysis</em></a> or <a class="reference internal" href="confusionmatrix.html#confusion-matrix"><em>Confusion Matrix</em></a>.</p>
+<p>The signal Learner has a not very common property that it can be connected to
+more than one widget, which provide multiple learners to be tested with the
+same procedures. If the results of evaluation or fed into further widgets,
+such as the one for ROC analysis, the learning algorithms are analyzed together.</p>
+<img alt="../../../_images/TestLearners.png" src="../../../_images/TestLearners.png" />
+<p>The widget supports various sampling methods. <tt class="xref py py-obj docutils literal"><span class="pre">Cross-validation</span></tt> splits
+the data into the given number of folds (usually 5 or 10). The algorithm is
+tested by holding out the examples from one fold at a time; the model is
+induced from the other folds and the examples from the held out fold are
+classified. <tt class="xref py py-obj docutils literal"><span class="pre">Leave-one-out</span></tt> is similar, but it holds out one example
+at a time, inducing the model from all others and then classifying the held
+out. This method is obviously very stable and reliable ... and very slow.
+<tt class="xref py py-obj docutils literal"><span class="pre">Random</span> <span class="pre">sampling</span></tt> randomly splits the data onto the training and
+testing set in the given proportion (e.g. 70:30); the whole procedure is t
+repeated for the specified number of times. <tt class="xref py py-obj docutils literal"><span class="pre">Test</span> <span class="pre">on</span> <span class="pre">train</span> <span class="pre">data</span></tt> uses the
+whole data set for training and then for testing. This method practically
+always gives overly optimistic results.</p>
+<p>The above methods use the data from signal Data only. To give another data
+set with testing examples (for instance from another file or some data selected
+in another widget), we put it on the input signal Separate Test Data and select
+<tt class="xref py py-obj docutils literal"><span class="pre">Test</span> <span class="pre">on</span> <span class="pre">test</span> <span class="pre">data</span></tt>.</p>
+<p>Any changes in the above settings are applied immediately if
+<tt class="xref py py-obj docutils literal"><span class="pre">Applied</span> <span class="pre">on</span> <span class="pre">any</span> <span class="pre">change</span></tt> is checked. If not, the user will have to press
+<tt class="xref py py-obj docutils literal"><span class="pre">Apply</span></tt> to apply any changes.</p>
+<p>The widget can compute a number of performance statistics.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Classification</span> <span class="pre">accuracy</span></tt> is the proportion of correctly classified
+examples</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Sensitivity</span></tt> (also called true positive rate (TPR), hit rate and
+recall) is the number of detected positive examples among all positive
+examples, e.g. the proportion of sick people correctly diagnosed as sick</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Specificity</span></tt> is the proportion of detected negative examples among
+all negative examples, e.g. the proportion of healthy correctly recognized
+as healthy</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Area</span> <span class="pre">under</span> <span class="pre">ROC</span></tt> is the area under receiver-operating curve</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Information</span> <span class="pre">score</span></tt> is the average amount of information per
+classified instance, as defined by Kononenko and Bratko</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">F-measure</span></tt> is a weighted harmonic mean of precision and recall
+(see below), 2*precision*recall/(precision+recall)</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Precision</span></tt> is the number of positive examples among all examples
+classified as positive, e.g. the number of sick among all diagnosed as
+sick, or a number of relevant documents among all retrieved documents</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Recall</span></tt> is the same measure as sensitivity, except that the latter
+term is more common in medicine and recall comes from text mining, where
+it means the proportion of relevant documents which are retrieved</li>
+<li><tt class="xref py py-obj docutils literal"><span class="pre">Brier</span> <span class="pre">score</span></tt> measure the accuracy of probability assessments, which
+measures the average deviation between the predicted probabilities of
+events and the actual events.</li>
+</ul>
+</div></blockquote>
+<p>More comprehensive descriptions of measures can be found at
+<a class="reference external" href="http://en.wikipedia.org/wiki/Receiver_operating_characteristic">http://en.wikipedia.org/wiki/Receiver_operating_characteristic</a>
+(from classification accuracy to area under ROC),
+<a class="reference external" href="http://www.springerlink.com/content/j21p620rw33xw773/">http://www.springerlink.com/content/j21p620rw33xw773/</a> (information score),
+<a class="reference external" href="http://en.wikipedia.org/wiki/F-measure#Performance_measures">http://en.wikipedia.org/wiki/F-measure#Performance_measures</a>
+(from F-measure to recall) and
+<a class="reference external" href="http://en.wikipedia.org/wiki/Brier_score">http://en.wikipedia.org/wiki/Brier_score</a> (Brier score).</p>
+<p>Most measure require a target class, e.g. having the disease or being relevant.
+The target class can be selected at the bottom of the widget.</p>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>In a typical use of the widget, we give it a data set and a few learning
+algorithms, and we observe their performance in the table inside the Test
+Learners widgets and in the ROC and Lift Curve widgets attached to the Test
+Learners. The data is often preprocessed before testing; in this case we
+discretized it and did some manual feature selection; not that this is done
+outside the cross-validation loop, so the testing results may be overly
+optimistic.</p>
+<img alt="../../../_images/TestLearners-Schema.png" src="../../../_images/TestLearners-Schema.png" />
+<p>Another example of using this widget is given in the documentation for
+widget <a class="reference internal" href="confusionmatrix.html#confusion-matrix"><em>Confusion Matrix</em></a>.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

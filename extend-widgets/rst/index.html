@@ -1,0 +1,204 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Orange Widgets Development &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Orange Widgets Development</a><ul>
+<li><a class="reference internal" href="#reference">Reference</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#index-and-search">Index and search</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="orange-widgets-development">
+<h1>Orange Widgets Development<a class="headerlink" href="#orange-widgets-development" title="Permalink to this headline">¶</a></h1>
+<p>Writing widgets is fairly easy with the provided environment which
+does most of the GUI-related boring stuff.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="basics.html">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#let-s-start">Let&#8217;s Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="basics.html#testing-your-widget-outside-orange-canvas">Testing Your Widget Outside Orange Canvas</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">Settings and Controls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#widgets-settings">Widgets Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#controls-and-owgui">Controls and OWGUI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#context-dependent-settings">Context dependent settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#using-domaincontexthandler">Using <tt class="docutils literal"><span class="pre">DomainContextHandler</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#defining-new-context-handlers">Defining New Context Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#saving-and-loading-settings">Saving and loading settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="channels.html">Channels and Tokens</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="channels.html#multi-input-channels">Multi-Input Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="channels.html#using-several-output-channels">Using Several Output Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="channels.html#default-channels-when-using-input-channels-of-the-same-type">Default Channels (When Using Input Channels of the Same Type)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="progressbar.html">Progress Bar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graphing.html">Graphing and Orange Widgets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graphing.html#plots">Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphing.html#colors-in-orange-widgets">Colors in Orange Widgets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plotsbasic.html">Using the new &#8216;plot&#8217; module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plotsbasic.html#setting-the-data">Setting the data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotsbasic.html#showing-a-legend">Showing a legend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotsbasic.html#running-this-example">Running this example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plots.html">Graphing and Orange Widgets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plots.html#plots">Plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html#colors-in-orange-widgets">Colors in Orange Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html#further-reading">Further reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contextsettings.html">Context-Dependent Settings</a></li>
+</ul>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Orange Widgets Reference Guide for Developers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.html#channels-definitions-data-exchange">Channels Definitions, Data Exchange</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.html#output-channels">Output Channels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#input-channels">Input Channels</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="owgui.html">OWGUI: Library of Common GUI Controls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="owgui.html#common-attributes">Common Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="owgui.html#controls">Controls</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#check-box">Check Box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#line-edit">Line Edit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#button">Button</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#radio-buttons">Radio Buttons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#combo-box">Combo Box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#list-box">List Box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#spin">Spin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#slider">Slider</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#check-box-with-spin">Check Box with Spin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#labels">Labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="owgui.html#utilities">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#widget-box">Widget box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#idented-box">Idented box</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#inserting-space-between-widgets">Inserting Space between Widgets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#attribute-icons">Attribute Icons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="owgui.html#send-automatically-send">Send automatically / Send</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="OrangeWidgets.plot.html">Plot tools (<tt class="docutils literal"><span class="pre">plot</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="OrangeWidgets.plot.owplot.html">Plot (<tt class="docutils literal"><span class="pre">owplot</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OrangeWidgets.plot.owplotgui.html">GUI elements for plots (<tt class="docutils literal"><span class="pre">owplotgui</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OrangeWidgets.plot.owtools.html">Plot tools (<tt class="docutils literal"><span class="pre">owtools</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OrangeWidgets.plot.owcurve.html">Curve (<tt class="docutils literal"><span class="pre">owcurve</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OrangeWidgets.plot.owpoint.html">Point (<tt class="docutils literal"><span class="pre">owpoint</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="OrangeWidgets.plot.owlegend.html">Plot legend (<tt class="docutils literal"><span class="pre">owlegend</span></tt>)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="index-and-search">
+<h2>Index and search<a class="headerlink" href="#index-and-search" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="../../genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="../../py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="../../search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

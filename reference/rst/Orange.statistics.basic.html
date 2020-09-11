@@ -1,0 +1,241 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Basic Statistics for Continuous Features (basic) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Basic Statistics for Continuous Features (<tt class="docutils literal"><span class="pre">basic</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="basic-statistics-for-continuous-features-basic">
+<span id="index-0"></span><h1>Basic Statistics for Continuous Features (<tt class="docutils literal"><span class="pre">basic</span></tt>)<a class="headerlink" href="#basic-statistics-for-continuous-features-basic" title="Permalink to this headline">¶</a></h1>
+<p>The are two simple classes for computing basic statistics
+for continuous features, such as their minimal and maximal value
+or average: <a class="reference internal" href="#Orange.statistics.basic.Variable" title="Orange.statistics.basic.Variable"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.basic.Variable</span></tt></a> holds the statistics for a single variable
+and <a class="reference internal" href="#Orange.statistics.basic.Domain" title="Orange.statistics.basic.Domain"><tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.basic.Domain</span></tt></a> behaves like a list of instances of
+the above class for all variables in the domain.</p>
+<dl class="class">
+<dt id="Orange.statistics.basic.Variable">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.basic.</tt><tt class="descname">Variable</tt><a class="headerlink" href="#Orange.statistics.basic.Variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes and stores minimal, maximal, average and
+standard deviation of a variable. It does not include the median or any
+other statistics that can be computed on the fly, without remembering the
+data; such statistics can be obtained classes from module <tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.distribution</span></tt>.</p>
+<p>Instances of this class are seldom constructed manually; they are more often
+returned by <a class="reference internal" href="#Orange.statistics.basic.Domain" title="Orange.statistics.basic.Domain"><tt class="xref py py-obj docutils literal"><span class="pre">Domain</span></tt></a> described below.</p>
+<dl class="attribute">
+<dt id="Orange.statistics.basic.Variable.variable">
+<tt class="descname">variable</tt><a class="headerlink" href="#Orange.statistics.basic.Variable.variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>The variable to which the data applies.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.basic.Variable.min">
+<tt class="descname">min</tt><a class="headerlink" href="#Orange.statistics.basic.Variable.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimal value encountered</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.basic.Variable.max">
+<tt class="descname">max</tt><a class="headerlink" href="#Orange.statistics.basic.Variable.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximal value encountered</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.basic.Variable.avg">
+<tt class="descname">avg</tt><a class="headerlink" href="#Orange.statistics.basic.Variable.avg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Average value</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.basic.Variable.dev">
+<tt class="descname">dev</tt><a class="headerlink" href="#Orange.statistics.basic.Variable.dev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard deviation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.basic.Variable.n">
+<tt class="descname">n</tt><a class="headerlink" href="#Orange.statistics.basic.Variable.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of instances for which the value was defined.
+If instances were weighted, <a class="reference internal" href="#Orange.statistics.basic.Variable.n" title="Orange.statistics.basic.Variable.n"><tt class="xref py py-obj docutils literal"><span class="pre">n</span></tt></a> holds the sum of weights</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.basic.Variable.sum">
+<tt class="descname">sum</tt><a class="headerlink" href="#Orange.statistics.basic.Variable.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weighted sum of values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.statistics.basic.Variable.sum2">
+<tt class="descname">sum2</tt><a class="headerlink" href="#Orange.statistics.basic.Variable.sum2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weighted sum of squared values</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.basic.Variable.add">
+<tt class="descname">add</tt><big>(</big><em>value</em><span class="optional">[</span>, <em>weight=1</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.basic.Variable.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a value to the statistics: adjust <a class="reference internal" href="#Orange.statistics.basic.Variable.min" title="Orange.statistics.basic.Variable.min"><tt class="xref py py-obj docutils literal"><span class="pre">min</span></tt></a> and <a class="reference internal" href="#Orange.statistics.basic.Variable.max" title="Orange.statistics.basic.Variable.max"><tt class="xref py py-obj docutils literal"><span class="pre">max</span></tt></a> if
+necessary, increase <a class="reference internal" href="#Orange.statistics.basic.Variable.n" title="Orange.statistics.basic.Variable.n"><tt class="xref py py-obj docutils literal"><span class="pre">n</span></tt></a> and recompute <a class="reference internal" href="#Orange.statistics.basic.Variable.sum" title="Orange.statistics.basic.Variable.sum"><tt class="xref py py-obj docutils literal"><span class="pre">sum</span></tt></a>, <a class="reference internal" href="#Orange.statistics.basic.Variable.sum2" title="Orange.statistics.basic.Variable.sum2"><tt class="xref py py-obj docutils literal"><span class="pre">sum2</span></tt></a>,
+<a class="reference internal" href="#Orange.statistics.basic.Variable.avg" title="Orange.statistics.basic.Variable.avg"><tt class="xref py py-obj docutils literal"><span class="pre">avg</span></tt></a> and <a class="reference internal" href="#Orange.statistics.basic.Variable.dev" title="Orange.statistics.basic.Variable.dev"><tt class="xref py py-obj docutils literal"><span class="pre">dev</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Value to be added to the statistics</li>
+<li><strong>weight</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Weight assigned to the value</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.statistics.basic.Domain">
+<em class="property">class </em><tt class="descclassname">Orange.statistics.basic.</tt><tt class="descname">Domain</tt><a class="headerlink" href="#Orange.statistics.basic.Domain" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="docutils literal"><span class="pre">statistics.basic.Domain</span></tt> behaves like an ordinary list, except that its
+elements can also be indexed by variable names or descriptors.</p>
+<dl class="method">
+<dt id="Orange.statistics.basic.Domain.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>data</em><span class="optional">[</span>, <em>weight=None</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.statistics.basic.Domain.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the statistics for all continuous variables in the data, and put
+<a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a> to the places corresponding to variables of other types.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><em>Orange.data.Table</em></a>) &#8211; A table of instances</li>
+<li><strong>weight</strong> (<cite>int</cite> or none) &#8211; The id of the meta-attribute with weights</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.statistics.basic.Domain.purge">
+<tt class="descname">purge</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.statistics.basic.Domain.purge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>&#8216;s corresponding to non-continuous features; this
+truncates the list, so the indices do not respond to indices of
+variables in the domain.</p>
+</dd></dl>
+
+<p>part of <a class="reference download internal" href="../../_downloads/distributions-basic-stat.py"><tt class="xref download docutils literal"><span class="pre">distributions-basic-stat.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">iris</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+<span class="n">bas</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">basic</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span> 
+
+<span class="k">print</span> <span class="s">&quot;</span><span class="si">%20s</span><span class="s"> </span><span class="si">%5s</span><span class="s"> </span><span class="si">%5s</span><span class="s"> </span><span class="si">%5s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s">&quot;feature&quot;</span><span class="p">,</span> <span class="s">&quot;min&quot;</span><span class="p">,</span> <span class="s">&quot;max&quot;</span><span class="p">,</span> <span class="s">&quot;avg&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">bas</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">a</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;</span><span class="si">%20s</span><span class="s"> </span><span class="si">%5.3f</span><span class="s"> </span><span class="si">%5.3f</span><span class="s"> </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">max</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">avg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>     feature   min   max   avg
+sepal length 4.300 7.900 5.843
+ sepal width 2.000 4.400 3.054
+petal length 1.000 6.900 3.759
+ petal width 0.100 2.500 1.199</pre>
+</div>
+<p>part of <a class="reference download internal" href="../../_downloads/distributions-basic-stat.py"><tt class="xref download docutils literal"><span class="pre">distributions-basic-stat.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">bas</span><span class="p">[</span><span class="s">&quot;sepal length&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">avg</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="mf">5.84333467484</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

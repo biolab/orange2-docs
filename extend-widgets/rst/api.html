@@ -1,0 +1,206 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Orange Widgets Reference Guide for Developers &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Orange Widgets Reference Guide for Developers</a><ul>
+<li><a class="reference internal" href="#channels-definitions-data-exchange">Channels Definitions, Data Exchange</a><ul>
+<li><a class="reference internal" href="#output-channels">Output Channels</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#input-channels">Input Channels</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="orange-widgets-reference-guide-for-developers">
+<h1>Orange Widgets Reference Guide for Developers<a class="headerlink" href="#orange-widgets-reference-guide-for-developers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="channels-definitions-data-exchange">
+<h2>Channels Definitions, Data Exchange<a class="headerlink" href="#channels-definitions-data-exchange" title="Permalink to this headline">¶</a></h2>
+<p>Input and output channels are defined anywhere within the
+<tt class="xref py py-obj docutils literal"><span class="pre">__init__</span></tt> function of a main widget class. The definition
+is used when running a widget, but also when registering your widget
+within Orange Canvas. Channel definitions are optional, depending on
+what your widget does.</p>
+<div class="section" id="output-channels">
+<h3>Output Channels<a class="headerlink" href="#output-channels" title="Permalink to this headline">¶</a></h3>
+<p>Following is an example that defines two output channels:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Sampled Data&quot;</span><span class="p">,</span> <span class="n">orange</span><span class="o">.</span><span class="n">ExampleTable</span><span class="p">),</span>
+                <span class="p">(</span><span class="s">&quot;Learner&quot;</span><span class="p">,</span> <span class="n">orange</span><span class="o">.</span><span class="n">Learner</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">self.outputs</span></tt> should thus be a list of tuples, within
+each the first element is a name of the channel, and the second the
+type of the tokens that will be passed through. Token types are class
+names; most often these are some Orange classes, but they can also be
+anything you may define as class in Python.</p>
+<p>Widgets send the data by using <tt class="xref py py-obj docutils literal"><span class="pre">self.send</span></tt> call,
+like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Sampled Data&quot;</span><span class="p">,</span> <span class="n">mydata</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Parameters of <tt class="xref py py-obj docutils literal"><span class="pre">send</span></tt> are channel name and a token to be
+send (e.g., a variable that holds the data to be send through the
+channel).</p>
+<p>When tokens are send around, the signaling mechanism annotates
+them with a pointer to an object that sent the toke (e.g., a widget
+id). Additionally, this annotation can be coupled with some name
+passed to <tt class="xref py py-obj docutils literal"><span class="pre">send</span></tt>, in case you have a widget that can send
+few tokens one after the other and you would like to enable a receiving widget
+recognize these are different tokens (and not updates of the same
+one):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="nb">id</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;Sampled Data&quot;</span><span class="p">,</span> <span class="n">mydata</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="input-channels">
+<h2>Input Channels<a class="headerlink" href="#input-channels" title="Permalink to this headline">¶</a></h2>
+<p>An example of the simplest definition of an input channel is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Data&quot;</span><span class="p">,</span> <span class="n">orange</span><span class="o">.</span><span class="n">ExampleTable</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiveData</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>Again, <tt class="xref py py-obj docutils literal"><span class="pre">self.inputs</span></tt> is a list of tuples, where the
+elements are the name of the channel, followed by a channel type and a
+Python function that will be called with any token received. For the
+channel defined above, a corresponding receiving function would be of
+the type (we would most often define it within the widget class
+defintion, hence <tt class="xref py py-obj docutils literal"><span class="pre">self</span></tt> for the first attribute):</p>
+<div class="highlight-python"><pre>def receiveData(self, data):
+    # handle data in some way</pre>
+</div>
+<p>Any time our widget would receive a token, <tt class="xref py py-obj docutils literal"><span class="pre">receiveData</span></tt>
+would be called. Notice there would be no way of knowing anything
+about the sender of the token, hence widget would most often replace
+the previously received token with the new one, and forget about the
+old one.</p>
+<p>Widgets can often clear their output by sending a <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>
+as a token. Also, upon deletion of some widget, this is the way that
+Orange Canvas would inform all directly connected downstream widgets
+about deletion. Similar, when channels connecting two widgets are
+deleted, Orange Canvas would automatically send <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a> to
+the receiving widget. Make sure your widget handles <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>
+tokens appropriately!</p>
+<p>There are cases when widget would like to know about the origin of
+a token. Say, you would like to input several learners to the
+evaluation widget, how would this distinguish between the learners of
+different origins? Remember (from above) that tokens are actually
+passed around with IDs (pointers to widgets that sent them). To
+declare a widget is interested about these IDs, one needs to define an
+input channel in the following way:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Learners&quot;</span><span class="p">,</span> <span class="n">orange</span><span class="o">.</span><span class="n">Learner</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">learner</span><span class="p">,</span> <span class="n">Multiple</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>where the last argument refers if we have a &#8220;Single&#8221; (default if not
+specified) or a &#8220;Multiple&#8221; channel. For the above declared channel, the
+receiving function should include an extra argument for the ID, like:</p>
+<div class="highlight-python"><pre>def learner(self, learnertoken, tokenid):
+    # handle learnertoken and tokeid in some way</pre>
+</div>
+<p>Widgets such as <tt class="xref py py-obj docutils literal"><span class="pre">OWTestLearners</span></tt> and alike use such
+schema.</p>
+<p>Finally, we may have input channels of the same type. If a widget
+would declare input channels like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Data&quot;</span><span class="p">,</span> <span class="n">orange</span><span class="o">.</span><span class="n">ExampleTable</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maindata</span><span class="p">),</span>
+               <span class="p">(</span><span class="s">&quot;Additional Data&quot;</span><span class="p">,</span> <span class="n">orange</span><span class="o">.</span><span class="n">ExampleTable</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">otherdata</span><span class="p">)]</span>
+</pre></div>
+</div>
+<p>and we connect this widget in Orange Canvas to a sending widget
+that has a single orange.ExampleTable output channel, Canvas would
+bring up <em>Set Channels</em> dialog. There, a sending widget&#8217;s channel could
+be connected to both receiving channels. As we would often prefer to
+connect to a single (default) channel instead (still allowing user of
+Orange Canvas to set up a different schema manually), we set that channel
+as the default. We do this by the using the fourth element in the channel
+definition list, like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;Data&quot;</span><span class="p">,</span> <span class="n">orange</span><span class="o">.</span><span class="n">ExampleTable</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maindata</span><span class="p">,</span> <span class="n">Default</span><span class="p">),</span>
+               <span class="p">(</span><span class="s">&quot;Additional Data&quot;</span><span class="p">,</span> <span class="n">orange</span><span class="o">.</span><span class="n">ExampleTable</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">otherdata</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

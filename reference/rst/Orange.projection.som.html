@@ -1,0 +1,535 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Self-organizing maps (som) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Self-organizing maps (<tt class="docutils literal"><span class="pre">som</span></tt>)</a><ul>
+<li><a class="reference internal" href="#inference-of-self-organizing-maps">Inference of Self-Organizing Maps</a><ul>
+<li><a class="reference internal" href="#topology">Topology</a></li>
+<li><a class="reference internal" href="#map-initialization">Map initialization</a></li>
+<li><a class="reference internal" href="#node-neighbourhood">Node neighbourhood</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#supervised-learning-with-self-organizing-maps">Supervised Learning with Self-Organizing Maps</a></li>
+<li><a class="reference internal" href="#supporting-classes">Supporting Classes</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.projection.som"></span><div class="section" id="self-organizing-maps-som">
+<h1>Self-organizing maps (<tt class="docutils literal"><span class="pre">som</span></tt>)<a class="headerlink" href="#self-organizing-maps-som" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="index-0"></span><p id="index-1"><a class="reference external" href="http://en.wikipedia.org/wiki/Self-organizing_map">Self-organizing map</a>
+(SOM) is an unsupervised learning  algorithm that infers low, 
+typically two-dimensional discretized representation of the input
+space, called a map. The map preserves topological properties of the
+input space, such that the cells that are close in the map include data 
+instances that are similar to each other.</p>
+<div class="section" id="inference-of-self-organizing-maps">
+<h2>Inference of Self-Organizing Maps<a class="headerlink" href="#inference-of-self-organizing-maps" title="Permalink to this headline">¶</a></h2>
+<p>The main class for inference of self-organizing maps is <a class="reference internal" href="#Orange.projection.som.SOMLearner" title="Orange.projection.som.SOMLearner"><tt class="xref py py-obj docutils literal"><span class="pre">SOMLearner</span></tt></a>. 
+The class initializes the topology of the map and returns an inference
+objects which, given the data, performs the optimization of the map:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">som</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">som</span><span class="o">.</span><span class="n">SOMLearner</span><span class="p">(</span><span class="n">map_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> 
+         <span class="n">initialize</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">som</span><span class="o">.</span><span class="n">InitializeRandom</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+<span class="nb">map</span> <span class="o">=</span> <span class="n">som</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.projection.som.SOMLearner">
+<em class="property">class </em><tt class="descclassname">Orange.projection.som.</tt><tt class="descname">SOMLearner</tt><big>(</big><em>map_shape=(5</em>, <em>10)</em>, <em>initialize=0</em>, <em>topology=0</em>, <em>neighbourhood=0</em>, <em>batch_train=True</em>, <em>learning_rate=0.05</em>, <em>radius_ini=3</em>, <em>radius_fin=1</em>, <em>epochs=1000</em>, <em>solver=&lt;class 'Orange.projection.som.Solver'&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.projection.som.SOMLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Considers an input data set, projects the data instances
+onto a map, and returns a result in the form of a classifier
+holding  projection information together with an algorithm to
+project new data instances. Uses <a class="reference internal" href="#Orange.projection.som.Map" title="Orange.projection.som.Map"><tt class="xref py py-obj docutils literal"><span class="pre">Map</span></tt></a> for representation of 
+projection space, <a class="reference internal" href="#Orange.projection.som.Solver" title="Orange.projection.som.Solver"><tt class="xref py py-obj docutils literal"><span class="pre">Solver</span></tt></a> for training, and returns a 
+trained map with information on projection of the training
+data as crafted by <a class="reference internal" href="#Orange.projection.som.SOMMap" title="Orange.projection.som.SOMMap"><tt class="xref py py-obj docutils literal"><span class="pre">SOMMap</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>map_shape</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#tuple" title="(in Python v2.7)"><em>tuple</em></a>) &#8211; dimension of the map</li>
+<li><strong>initialize</strong> (<a class="reference internal" href="#Orange.projection.som.InitializeRandom" title="Orange.projection.som.InitializeRandom"><tt class="xref py py-obj docutils literal"><span class="pre">InitializeRandom</span></tt></a> or <a class="reference internal" href="#Orange.projection.som.InitializeLinear" title="Orange.projection.som.InitializeLinear"><tt class="xref py py-obj docutils literal"><span class="pre">InitializeLinear</span></tt></a>) &#8211; initialization type id; linear initialization 
+assigns the data to the cells according to its position in
+two-dimensional principal component projection</li>
+<li><strong>topology</strong> (<a class="reference internal" href="#Orange.projection.som.HexagonalTopology" title="Orange.projection.som.HexagonalTopology"><tt class="xref py py-obj docutils literal"><span class="pre">HexagonalTopology</span></tt></a> or <a class="reference internal" href="#Orange.projection.som.RectangularTopology" title="Orange.projection.som.RectangularTopology"><tt class="xref py py-obj docutils literal"><span class="pre">RectangularTopology</span></tt></a>) &#8211; topology type id</li>
+<li><strong>neighbourhood</strong> (<a class="reference internal" href="#Orange.projection.som.NeighbourhoodGaussian" title="Orange.projection.som.NeighbourhoodGaussian"><tt class="xref py py-obj docutils literal"><span class="pre">NeighbourhoodGaussian</span></tt></a>, 
+<a class="reference internal" href="#Orange.projection.som.NeighbourhoodBubble" title="Orange.projection.som.NeighbourhoodBubble"><tt class="xref py py-obj docutils literal"><span class="pre">NeighbourhoodBubble</span></tt></a>, or <a class="reference internal" href="#Orange.projection.som.NeighbourhoodEpanechicov" title="Orange.projection.som.NeighbourhoodEpanechicov"><tt class="xref py py-obj docutils literal"><span class="pre">NeighbourhoodEpanechicov</span></tt></a>) &#8211; cell neighborhood type id</li>
+<li><strong>batch_train</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; perform batch training?</li>
+<li><strong>learning_rate</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; learning rate</li>
+<li><strong>radius_ini</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; initial radius</li>
+<li><strong>radius_fin</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; final radius</li>
+<li><strong>epochs</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of epochs (iterations of a training steps)</li>
+<li><strong>solver</strong> &#8211; a class with the optimization algorithm</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.projection.som.SOMMap">
+<em class="property">class </em><tt class="descclassname">Orange.projection.som.</tt><tt class="descname">SOMMap</tt><big>(</big><em>map=</em><span class="optional">[</span><span class="optional">]</span>, <em>data=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.projection.som.SOMMap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project the data onto the inferred self-organizing map.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>map</strong> (<a class="reference internal" href="#Orange.projection.som.SOMMap" title="Orange.projection.som.SOMMap"><tt class="xref py py-obj docutils literal"><span class="pre">SOMMap</span></tt></a>) &#8211; a trained self-organizing map</li>
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; the data to be mapped on the map</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.projection.som.SOMMap.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>what=0</em><big>)</big><a class="headerlink" href="#Orange.projection.som.SOMMap.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Map <cite>instance</cite> onto the best matching node and predict
+its class using the majority/mean of the training data in
+that node.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.SOMMap.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>val</em><big>)</big><a class="headerlink" href="#Orange.projection.som.SOMMap.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the node at position x, y</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.SOMMap.__iter__">
+<tt class="descname">__iter__</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.som.SOMMap.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over all nodes in the map</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.SOMMap.get_best_matching_node">
+<tt class="descname">get_best_matching_node</tt><big>(</big><em>instance</em><big>)</big><a class="headerlink" href="#Orange.projection.som.SOMMap.get_best_matching_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the best matching node for a given data instance</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="topology">
+<h3>Topology<a class="headerlink" href="#topology" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="Orange.projection.som.HexagonalTopology">
+<tt class="descclassname">Orange.projection.som.</tt><tt class="descname">HexagonalTopology</tt><em class="property"> = 0</em><a class="headerlink" href="#Orange.projection.som.HexagonalTopology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hexagonal topology, cells are hexagon-shaped.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="Orange.projection.som.RectangularTopology">
+<tt class="descclassname">Orange.projection.som.</tt><tt class="descname">RectangularTopology</tt><em class="property"> = 1</em><a class="headerlink" href="#Orange.projection.som.RectangularTopology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rectangular topology, cells are square-shaped</p>
+</dd></dl>
+
+</div>
+<div class="section" id="map-initialization">
+<h3>Map initialization<a class="headerlink" href="#map-initialization" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="Orange.projection.som.InitializeLinear">
+<tt class="descclassname">Orange.projection.som.</tt><tt class="descname">InitializeLinear</tt><em class="property"> = 0</em><a class="headerlink" href="#Orange.projection.som.InitializeLinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data instances are initially assigned to cells according to their two-dimensional PCA projection.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="Orange.projection.som.InitializeRandom">
+<tt class="descclassname">Orange.projection.som.</tt><tt class="descname">InitializeRandom</tt><em class="property"> = 1</em><a class="headerlink" href="#Orange.projection.som.InitializeRandom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data instances are initially randomly assigned to cells.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="node-neighbourhood">
+<h3>Node neighbourhood<a class="headerlink" href="#node-neighbourhood" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="Orange.projection.som.NeighbourhoodGaussian">
+<tt class="descclassname">Orange.projection.som.</tt><tt class="descname">NeighbourhoodGaussian</tt><em class="property"> = 0</em><a class="headerlink" href="#Orange.projection.som.NeighbourhoodGaussian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gaussian (smoothed) neighborhood.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="Orange.projection.som.NeighbourhoodBubble">
+<tt class="descclassname">Orange.projection.som.</tt><tt class="descname">NeighbourhoodBubble</tt><em class="property"> = 1</em><a class="headerlink" href="#Orange.projection.som.NeighbourhoodBubble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bubble (crisp) neighborhood.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="Orange.projection.som.NeighbourhoodEpanechicov">
+<tt class="descclassname">Orange.projection.som.</tt><tt class="descname">NeighbourhoodEpanechicov</tt><em class="property"> = 2</em><a class="headerlink" href="#Orange.projection.som.NeighbourhoodEpanechicov" title="Permalink to this definition">¶</a></dt>
+<dd><p>Epanechicov (cut and smoothed) neighborhood.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="supervised-learning-with-self-organizing-maps">
+<h2>Supervised Learning with Self-Organizing Maps<a class="headerlink" href="#supervised-learning-with-self-organizing-maps" title="Permalink to this headline">¶</a></h2>
+<p>Supervised learning requires class-labeled data. For training,
+class information is first added to data instances as a regular
+feature by extending the feature vectors accordingly. Next, the
+map is trained, and the training data projected to nodes. Each
+node then classifies to the majority class. The dimensions 
+corresponding to the class features are then removed from the 
+prototype vector of each node in the map. For classification, 
+the data instance is projected to the best matching cell, returning 
+the associated class.</p>
+<p>An example of the code that trains and then classifies on the same
+data set is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">som</span><span class="o">.</span><span class="n">SOMSupervisedLearner</span><span class="p">(</span><span class="n">map_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-15s</span><span class="s"> originally </span><span class="si">%-15s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">classifier</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">getclass</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.projection.som.SOMSupervisedLearner">
+<em class="property">class </em><tt class="descclassname">Orange.projection.som.</tt><tt class="descname">SOMSupervisedLearner</tt><big>(</big><em>map_shape=(5</em>, <em>10)</em>, <em>initialize=0</em>, <em>topology=0</em>, <em>neighbourhood=0</em>, <em>batch_train=True</em>, <em>learning_rate=0.05</em>, <em>radius_ini=3</em>, <em>radius_fin=1</em>, <em>epochs=1000</em>, <em>solver=&lt;class 'Orange.projection.som.Solver'&gt;</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.projection.som.SOMSupervisedLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>SOMSupervisedLearner is a class used to learn SOM from
+orange.ExampleTable, by using the class information in the
+learning process. This is achieved by adding a value for each
+class to the training instances, where 1.0 signals class membership
+and all other values are 0.0. After the training, the new values 
+are discarded from the node vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; class-labeled data set</li>
+<li><strong>progress_callback</strong> &#8211; a one argument function to report 
+on inference progress (in %)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="supporting-classes">
+<h2>Supporting Classes<a class="headerlink" href="#supporting-classes" title="Permalink to this headline">¶</a></h2>
+<p>The actual map optimization algorithm is implemented by <a class="reference internal" href="#Orange.projection.som.Solver" title="Orange.projection.som.Solver"><tt class="xref py py-class docutils literal"><span class="pre">Solver</span></tt></a>
+class which is used by both the <a class="reference internal" href="#Orange.projection.som.SOMLearner" title="Orange.projection.som.SOMLearner"><tt class="xref py py-class docutils literal"><span class="pre">SOMLearner</span></tt></a> and the
+<a class="reference internal" href="#Orange.projection.som.SOMSupervisedLearner" title="Orange.projection.som.SOMSupervisedLearner"><tt class="xref py py-class docutils literal"><span class="pre">SOMSupervisedLearner</span></tt></a>.</p>
+<dl class="class">
+<dt id="Orange.projection.som.Solver">
+<em class="property">class </em><tt class="descclassname">Orange.projection.som.</tt><tt class="descname">Solver</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>SOM Solver class used to train the map. Supports batch 
+and sequential training. Based on ideas from
+<a class="reference external" href="http://www.cis.hut.fi/somtoolbox">SOM Toolkit for Matlab</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>neighbourhood</strong> (<a class="reference internal" href="#Orange.projection.som.NeighbourhoodGaussian" title="Orange.projection.som.NeighbourhoodGaussian"><tt class="xref py py-obj docutils literal"><span class="pre">NeighbourhoodGaussian</span></tt></a>, 
+<a class="reference internal" href="#Orange.projection.som.NeighbourhoodBubble" title="Orange.projection.som.NeighbourhoodBubble"><tt class="xref py py-obj docutils literal"><span class="pre">NeighbourhoodBubble</span></tt></a>, or <a class="reference internal" href="#Orange.projection.som.NeighbourhoodEpanechicov" title="Orange.projection.som.NeighbourhoodEpanechicov"><tt class="xref py py-obj docutils literal"><span class="pre">NeighbourhoodEpanechicov</span></tt></a>) &#8211; neighborhood function id</li>
+<li><strong>radius_ini</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; initial radius</li>
+<li><strong>raduis_fin</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; final radius</li>
+<li><strong>epoch</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; number of training interactions</li>
+<li><strong>batch_train</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; if True run the batch training algorithm 
+(default), else use the sequential one</li>
+<li><strong>learning_rate</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; learning rate for the sequential training algorithm</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="Orange.projection.som.Solver.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>map</em>, <em>progress_callback=None</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Solver.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train the map from data. Pass progress_callback function to report on the progress.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Solver.alpha">
+<tt class="descname">alpha</tt><big>(</big><em>iter</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Solver.alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the learning rate from iterations, starting with learning_rate to 0 at the end of training.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Solver.radius_seq">
+<tt class="descname">radius_seq</tt><big>(</big><em>iter</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Solver.radius_seq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the radius regarding the iterations, not epochs.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Solver.train_batch">
+<tt class="descname">train_batch</tt><big>(</big><em>progress_callback=None</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Solver.train_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Batch training algorithm.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Solver.train_sequential">
+<tt class="descname">train_sequential</tt><big>(</big><em>progress_callback</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Solver.train_sequential" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sequential training algorithm.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Solver.train_step_batch">
+<tt class="descname">train_step_batch</tt><big>(</big><em>epoch</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Solver.train_step_batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>A single step of batch training algorithm.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Solver.train_step_sequential">
+<tt class="descname">train_step_sequential</tt><big>(</big><em>epoch</em>, <em>indices=None</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Solver.train_step_sequential" title="Permalink to this definition">¶</a></dt>
+<dd><p>A single step of sequential training algorithm.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>Class <a class="reference internal" href="#Orange.projection.som.Map" title="Orange.projection.som.Map"><tt class="xref py py-obj docutils literal"><span class="pre">Map</span></tt></a> stores the self-organizing map composed of <a class="reference internal" href="#Orange.projection.som.Node" title="Orange.projection.som.Node"><tt class="xref py py-obj docutils literal"><span class="pre">Node</span></tt></a>
+objects. The code below (<a class="reference download internal" href="../../_downloads/som-node.py"><tt class="xref download docutils literal"><span class="pre">som-node.py</span></tt></a>) 
+shows an example how to access the information stored in the node of the 
+map:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">som</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">som</span><span class="o">.</span><span class="n">SOMLearner</span><span class="p">(</span><span class="n">map_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="nb">map</span> <span class="o">=</span> <span class="n">som</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">))</span>
+<span class="n">node</span> <span class="o">=</span> <span class="nb">map</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="k">print</span> <span class="s">&quot;Node position: (</span><span class="si">%d</span><span class="s">, </span><span class="si">%d</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">node</span><span class="o">.</span><span class="n">pos</span>
+<span class="k">print</span> <span class="s">&quot;Data instances in the node:&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">instances</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.projection.som.Map">
+<em class="property">class </em><tt class="descclassname">Orange.projection.som.</tt><tt class="descname">Map</tt><big>(</big><em>map_shape=(20</em>, <em>40)</em>, <em>topology=0</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Self organizing map (the structure). Includes methods for
+data initialization.</p>
+<dl class="attribute">
+<dt id="Orange.projection.som.Map.map_shape">
+<tt class="descname">map_shape</tt><a class="headerlink" href="#Orange.projection.som.Map.map_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>A two element tuple containing the map width and height.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.som.Map.topology">
+<tt class="descname">topology</tt><a class="headerlink" href="#Orange.projection.som.Map.topology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Topology of the map (<tt class="docutils literal"><span class="pre">HexagonalTopology</span></tt> or 
+<tt class="docutils literal"><span class="pre">RectangularTopology</span></tt>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.som.Map.map">
+<tt class="descname">map</tt><a class="headerlink" href="#Orange.projection.som.Map.map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Self orginzing map. A list of lists of <a class="reference internal" href="#Orange.projection.som.Node" title="Orange.projection.som.Node"><tt class="xref py py-obj docutils literal"><span class="pre">Node</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Map.__getitem__">
+<tt class="descname">__getitem__</tt><big>(</big><em>pos</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Map.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the node at position x, y.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Map.__iter__">
+<tt class="descname">__iter__</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.som.Map.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over all nodes in the map.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Map.initialize_map_linear">
+<tt class="descname">initialize_map_linear</tt><big>(</big><em>data</em>, <em>map_shape=(10</em>, <em>20)</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Map.initialize_map_linear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the map node vectors linearly over the subspace
+of the two most significant eigenvectors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Map.initialize_map_random">
+<tt class="descname">initialize_map_random</tt><big>(</big><em>data=None</em>, <em>dimension=5</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Map.initialize_map_random" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the map nodes vectors randomly, by supplying
+either training data or dimension of the data.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Map.unit_coords">
+<tt class="descname">unit_coords</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.som.Map.unit_coords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the unit coordinates of all nodes in the map 
+as an numpy.array.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Map.unit_distances">
+<tt class="descname">unit_distances</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.som.Map.unit_distances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a NxN numpy.array of internode distances (based on
+node position in the map, not vector space) where N is the 
+number of nodes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.projection.som.Map.vectors">
+<tt class="descname">vectors</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.projection.som.Map.vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return all vectors of the map as rows in an numpy.array.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.projection.som.Node">
+<em class="property">class </em><tt class="descclassname">Orange.projection.som.</tt><tt class="descname">Node</tt><big>(</big><em>pos</em>, <em>map=None</em>, <em>vector=None</em><big>)</big><a class="headerlink" href="#Orange.projection.som.Node" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object holding the information about the node in the map.</p>
+<dl class="attribute">
+<dt id="Orange.projection.som.Node.pos">
+<tt class="descname">pos</tt><a class="headerlink" href="#Orange.projection.som.Node.pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Node position.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.som.Node.reference_instance">
+<tt class="descname">reference_instance</tt><a class="headerlink" href="#Orange.projection.som.Node.reference_instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference data instance (a prototype).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.projection.som.Node.instances">
+<tt class="descname">instances</tt><a class="headerlink" href="#Orange.projection.som.Node.instances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data set with training instances that were mapped to the node.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The following code  (<a class="reference download internal" href="../../_downloads/som-mapping.py"><tt class="xref download docutils literal"><span class="pre">som-mapping.py</span></tt></a>)
+infers self-organizing map from Iris data set. The map is rather small,
+and consists of only 9 cells. We optimize the network, and then report
+how many data instances were mapped into each cell. The second part 
+of the code reports on data instances from one of the corner cells:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">som</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">som</span><span class="o">.</span><span class="n">SOMLearner</span><span class="p">(</span><span class="n">map_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                <span class="n">initialize</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">som</span><span class="o">.</span><span class="n">InitializeRandom</span><span class="p">)</span>
+<span class="nb">map</span> <span class="o">=</span> <span class="n">som</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">))</span>
+
+<span class="k">print</span> <span class="s">&quot;Node    Instances&quot;</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">  </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">pos</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">instances</span><span class="p">))</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">])</span>
+
+<span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">print</span>
+<span class="k">print</span> <span class="s">&quot;Data instances in cell (</span><span class="si">%d</span><span class="s">, </span><span class="si">%d</span><span class="s">):&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">instances</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">e</span>
+</pre></div>
+</div>
+<p>The output of this code is:</p>
+<div class="highlight-python"><pre>Node    Instances
+(0, 0)  31
+(0, 1)  7
+(0, 2)  0
+(1, 0)  24
+(1, 1)  7
+(1, 2)  50
+(2, 0)  10
+(2, 1)  21
+(2, 2)  0
+
+Data instances in cell (0, 1):
+[6.9, 3.1, 4.9, 1.5, 'Iris-versicolor']
+[6.7, 3.0, 5.0, 1.7, 'Iris-versicolor']
+[6.3, 2.9, 5.6, 1.8, 'Iris-virginica']
+[6.5, 3.2, 5.1, 2.0, 'Iris-virginica']
+[6.4, 2.7, 5.3, 1.9, 'Iris-virginica']
+[6.1, 2.6, 5.6, 1.4, 'Iris-virginica']
+[6.5, 3.0, 5.2, 2.0, 'Iris-virginica']</pre>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

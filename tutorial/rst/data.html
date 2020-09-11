@@ -1,0 +1,354 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Data &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">The Data</a><ul>
+<li><a class="reference internal" href="#data-input">Data Input</a></li>
+<li><a class="reference internal" href="#saving-the-data">Saving the Data</a></li>
+<li><a class="reference internal" href="#exploration-of-data-domain">Exploration of Data Domain</a></li>
+<li><a class="reference internal" href="#data-instances">Data Instances</a></li>
+<li><a class="reference internal" href="#missing-values">Missing Values</a></li>
+<li><a class="reference internal" href="#data-subsetting">Data Subsetting</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="the-data">
+<h1>The Data<a class="headerlink" href="#the-data" title="Permalink to this headline">¶</a></h1>
+<p>This section describes how to load and save the data. We also show how to explore the data, its domain description, how to report on basic data set statistics, and how to sample the data.</p>
+<div class="section" id="data-input">
+<h2>Data Input<a class="headerlink" href="#data-input" title="Permalink to this headline">¶</a></h2>
+<p id="index-0">Orange can read files in native and other data formats. Native format starts with feature (attribute) names, their type (continuous, discrete, string). The third line contains meta information to identify dependent features (class), irrelevant features (ignore) or meta features (meta). Here are the first few lines from a data set <a class="reference download internal" href="../../_downloads/lenses.tab"><tt class="xref download docutils literal"><span class="pre">lenses.tab</span></tt></a> on prescription of eye
+lenses [CJ1987]:</p>
+<div class="highlight-python"><pre>age       prescription  astigmatic    tear_rate     lenses
+discrete  discrete      discrete      discrete      discrete
+                                                    class
+young     myope         no            reduced       none
+young     myope         no            normal        soft
+young     myope         yes           reduced       none
+young     myope         yes           normal        hard
+young     hypermetrope  no            reduced       none</pre>
+</div>
+<p>Values are tab-limited. The data set has four attributes (age of the patient, spectacle prescription, notion on astigmatism, and information on tear production rate) and an associated three-valued dependent variable encoding lens prescription for the patient (hard contact lenses, soft contact lenses, no lenses). Feature descriptions could use one letter only, so the header of this data set could also read:</p>
+<div class="highlight-python"><pre>age       prescription  astigmatic    tear_rate     lenses
+d         d             d             d             d
+                                                    c</pre>
+</div>
+<p>The rest of the table gives the data. Note that there are 5
+instances in our table above (check the original file to see
+other). Orange is rather free in what attribute value names it
+uses, so they do not need all to start with a letter like in our
+example.</p>
+<p>You may download <a class="reference download internal" href="../../_downloads/lenses.tab"><tt class="xref download docutils literal"><span class="pre">lenses.tab</span></tt></a> to a target directory and there open a python shell. Alternatively, just execute the code below; this particular data set comes with Orange instalation, and Orange knows where to find it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>Note that for the file name no suffix is needed; as Orange checks if any files in the current directory are of the readable type. The call to <tt class="docutils literal"><span class="pre">Orange.data.Table</span></tt> creates an object called <tt class="docutils literal"><span class="pre">data</span></tt> that holds your data set and information about the lenses domain:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span>
+<span class="go">&lt;Orange.feature.Discrete &#39;age&#39;, Orange.feature.Discrete &#39;prescription&#39;, Orange.feature.Discrete &#39;astigmatic&#39;, Orange.feature.Discrete &#39;tear_rate&#39;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span>
+<span class="go">Orange.feature.Discrete &#39;lenses&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+<span class="go">   ...:     print d</span>
+<span class="go">   ...:</span>
+<span class="go">[&#39;young&#39;, &#39;myope&#39;, &#39;no&#39;, &#39;reduced&#39;, &#39;none&#39;]</span>
+<span class="go">[&#39;young&#39;, &#39;myope&#39;, &#39;no&#39;, &#39;normal&#39;, &#39;soft&#39;]</span>
+<span class="go">[&#39;young&#39;, &#39;myope&#39;, &#39;yes&#39;, &#39;reduced&#39;, &#39;none&#39;]</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>The following script wraps-up everything we have done so far and lists first 5 data instances with <tt class="docutils literal"><span class="pre">soft</span></tt> perscription:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Attributes:&quot;</span><span class="p">,</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Class:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="o">.</span><span class="n">name</span>
+<span class="k">print</span> <span class="s">&quot;Data instances&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">target</span> <span class="o">=</span> <span class="s">&quot;soft&quot;</span>
+<span class="k">print</span> <span class="s">&quot;Data instances with </span><span class="si">%s</span><span class="s"> prescriptions:&quot;</span> <span class="o">%</span> <span class="n">target</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get_class</span><span class="p">()</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="si">%-15s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">d</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Note that data is an object that holds both the data and information on the domain. We show above how to access attribute and class names, but there is much more information there, including that on feature type, set of values for categorical features, and other.</p>
+</div>
+<div class="section" id="saving-the-data">
+<h2>Saving the Data<a class="headerlink" href="#saving-the-data" title="Permalink to this headline">¶</a></h2>
+<p>Data objects can be saved to a file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;new_data.tab&quot;</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+</pre></div>
+</div>
+<p>This time, we have to provide the extension for Orange to know which data format to use. An extension for native Orange&#8217;s data format is &#8221;.tab&#8221;. The following code saves only the data items with myope perscription:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;N1=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s">&quot;prescription&quot;</span><span class="p">]</span><span class="o">==</span><span class="s">&quot;myope&quot;</span><span class="p">])</span>
+<span class="k">print</span> <span class="s">&quot;N2=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span><span class="nb">len</span><span class="p">(</span><span class="n">new_data</span><span class="p">)</span>
+<span class="n">new_data</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;lenses-subset.tab&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exploration-of-data-domain">
+<h2>Exploration of Data Domain<a class="headerlink" href="#exploration-of-data-domain" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="index-1"></span><span class="target" id="index-2"></span><p id="index-3">Data table object stores information on data instances as well as on data domain. Domain holds the names of features, optional classes, their types and, if categorical, value names.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;imports-85.tab&quot;</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="n">m_cont</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">var_type</span><span class="o">==</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Continuous</span><span class="p">)</span>
+<span class="n">m_disc</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">var_type</span><span class="o">==</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Discrete</span><span class="p">)</span>
+<span class="n">m_disc</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s"> features, </span><span class="si">%d</span><span class="s"> continuous and </span><span class="si">%d</span><span class="s"> discrete&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">m_cont</span><span class="p">,</span> <span class="n">m</span><span class="o">-</span><span class="n">m_cont</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;First three features:&quot;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&quot;   &quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+
+<span class="k">print</span> <span class="s">&quot;First three features (again):&quot;</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="s">&quot;   &quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span>
+
+<span class="k">print</span> <span class="s">&quot;Class:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="o">.</span><span class="n">name</span>
+</pre></div>
+</div>
+<p>Orange&#8217;s objects often behave like Python lists and dictionaries, and can be indexed or accessed through feature names.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="s">&quot;Name of the first feature:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s">&#39;fuel-type&#39;</span>
+<span class="k">print</span> <span class="s">&quot;Values of feature &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">,</span>
+<span class="k">print</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-instances">
+<h2>Data Instances<a class="headerlink" href="#data-instances" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="index-4"></span><p id="index-5">Data table stores data instances (or examples). These can be index or traversed as any Python list. Data instances can be considered as vectors, accessed through element index, or through feature name.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;First three data instances:&quot;</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">d</span>
+
+<span class="k">print</span> <span class="s">&quot;25-th data instance:&quot;</span>
+<span class="k">print</span> <span class="n">data</span><span class="p">[</span><span class="mi">24</span><span class="p">]</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s">&quot;sepal width&quot;</span>
+<span class="k">print</span> <span class="s">&quot;Value of &#39;</span><span class="si">%s</span><span class="s">&#39; for the first instance:&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;The 3rd value of the 25th data instance:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">24</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The script above displays the following output:</p>
+<div class="highlight-python"><pre>First three data instances:
+[5.1, 3.5, 1.4, 0.2, 'Iris-setosa']
+[4.9, 3.0, 1.4, 0.2, 'Iris-setosa']
+[4.7, 3.2, 1.3, 0.2, 'Iris-setosa']
+25-th data instance:
+[4.8, 3.4, 1.9, 0.2, 'Iris-setosa']
+Value of 'sepal width' for the first instance: 3.5
+The 3rd value of the 25th data instance: 1.9</pre>
+</div>
+<p>Iris data set we have used above has four continous attributes. Here&#8217;s a script that computes their mean:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">average</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xs</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">))</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="si">%-15s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s">&quot;Feature&quot;</span><span class="p">,</span> <span class="s">&quot;Mean&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-15s</span><span class="s"> </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">average</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p>Above also illustrates indexing of data instances with objects that store features; in <tt class="docutils literal"><span class="pre">d[x]</span></tt> variable <tt class="docutils literal"><span class="pre">x</span></tt> is an Orange object. Here&#8217;s the output:</p>
+<div class="highlight-python"><pre>Feature         Mean
+sepal length    5.84
+sepal width     3.05
+petal length    3.76
+petal width     1.20</pre>
+</div>
+<p>Slightly more complicated, but more interesting is a code that computes per-class averages:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">average</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">xs</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">))</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+<span class="n">targets</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="o">.</span><span class="n">values</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="si">%-15s</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s">&quot;Feature&quot;</span><span class="p">,</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%15s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;</span><span class="si">%15.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">average</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">get_class</span><span class="p">()</span><span class="o">==</span><span class="n">c</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">targets</span><span class="p">]</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%-15s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dist</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Of the four features, petal width and length look quite discriminative for the type of iris:</p>
+<div class="highlight-python"><pre>Feature             Iris-setosa Iris-versicolor  Iris-virginica
+sepal length               5.01            5.94            6.59
+sepal width                3.42            2.77            2.97
+petal length               1.46            4.26            5.55
+petal width                0.24            1.33            2.03</pre>
+</div>
+<p>Finally, here is a quick code that computes the class distribution for another data set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">Counter</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get_class</span><span class="p">())</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="missing-values">
+<h2>Missing Values<a class="headerlink" href="#missing-values" title="Permalink to this headline">¶</a></h2>
+<p id="index-6">Consider the following exploration of senate voting data set:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting.tab&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="go">[&#39;?&#39;, &#39;y&#39;, &#39;y&#39;, &#39;?&#39;, &#39;y&#39;, &#39;y&#39;, &#39;n&#39;, &#39;n&#39;, &#39;n&#39;, &#39;n&#39;, &#39;y&#39;, &#39;n&#39;, &#39;y&#39;, &#39;y&#39;, &#39;n&#39;, &#39;n&#39;, &#39;democrat&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">is_special</span><span class="p">()</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">is_special</span><span class="p">()</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+<p>The particular data instance included missing data (represented with &#8216;?&#8217;) for first and fourth feature. We can use the method <tt class="docutils literal"><span class="pre">is_special()</span></tt> to detect parts of the data which is missing. In the original data set file, the missing values are, by default, represented with a blank space. We use the method <tt class="docutils literal"><span class="pre">is_special()</span></tt> below to examine each feature and report on proportion of instances for which this feature was undefined:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting.tab&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+    <span class="n">n_miss</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">is_special</span><span class="p">())</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%4.1f%%</span><span class="s"> </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="mf">100.</span><span class="o">*</span><span class="n">n_miss</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>First few lines of the output of this script are:</p>
+<div class="highlight-python"><pre> 2.8% handicapped-infants
+11.0% water-project-cost-sharing
+ 2.5% adoption-of-the-budget-resolution
+ 2.5% physician-fee-freeze
+ 3.4% el-salvador-aid</pre>
+</div>
+<p>A single-liner that reports on number of data instances with at least one missing value is:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">sum</span><span class="p">(</span><span class="nb">any</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">.</span><span class="n">is_special</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">)</span>
+<span class="go">203</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-subsetting">
+<h2>Data Subsetting<a class="headerlink" href="#data-subsetting" title="Permalink to this headline">¶</a></h2>
+<p id="index-7"><tt class="docutils literal"><span class="pre">Orange.data.Table</span></tt> accepts a list of data items and returns a new data set. This is useful for any data subsetting:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="s">&quot;petal length&quot;</span><span class="p">]</span><span class="o">&gt;</span><span class="mf">3.0</span><span class="p">])</span>
+<span class="k">print</span> <span class="s">&quot;Subsetting from </span><span class="si">%d</span><span class="s"> to </span><span class="si">%d</span><span class="s"> instances.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_data</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The code outputs:</p>
+<div class="highlight-python"><pre>Subsetting from 150 to 99 instances.</pre>
+</div>
+<p>and inherits the data description (domain) from the original data set. Changing the domain requires setting up a new domain descriptor. This feature is useful for any kind of feature selection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris.tab&quot;</span><span class="p">)</span>
+<span class="n">new_domain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">class_var</span><span class="p">])</span>
+<span class="n">new_data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">new_domain</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="n">new_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p id="index-8">By default, <tt class="docutils literal"><span class="pre">Orange.data.Domain</span></tt> assumes that last feature in argument feature list is a class variable. This can be changed with an optional argument:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">nd</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">nd</span><span class="o">.</span><span class="n">class_var</span>
+<span class="go">None</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nd</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="bp">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">nd</span><span class="o">.</span><span class="n">class_var</span>
+<span class="go">Orange.feature.Continuous &#39;sepal width&#39;</span>
+</pre></div>
+</div>
+<p>The first call to <tt class="docutils literal"><span class="pre">Orange.data.Domain</span></tt> constructed the classless domain, while the second used the last feature and constructed the domain with one input feature and a continous class.</p>
+<p><strong>References</strong></p>
+<table class="docutils citation" frame="void" id="cj1987" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[CJ1987]</td><td>Cendrowska J (1987) PRISM: An algorithm for inducing modular rules, International Journal of Man-Machine Studies, 27, 349-370.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

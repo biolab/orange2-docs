@@ -1,0 +1,214 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Hierarchical Clustering &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Hierarchical Clustering</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="hierarchical-clustering">
+<span id="id1"></span><h1>Hierarchical Clustering<a class="headerlink" href="#hierarchical-clustering" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/HierarchicalClustering1.svg" /><p>Groups items using a hierarchical clustering algorithm.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Distance Matrix</dt>
+<dd><p class="first last">A matrix of distances between items being clustered</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Selected Examples</dt>
+<dd><p class="first last">A list of selected examples; applicable only when the input matrix
+refers to distances between examples</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Remaining Examples</dt>
+<dd><p class="first last">A list of unselected examples</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Centroids</dt>
+<dd><p class="first last">A list of cluster centroids</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The widget computes hierarchical clustering of arbitrary types of objects from
+the matrix of distances between them and shows the corresponding dendrogram. If
+the distances apply to examples, the widget offers some special functionality
+(adding cluster indices, outputting examples...).</p>
+<img alt="../../../_images/HierarchicalClustering.png" src="../../../_images/HierarchicalClustering.png" />
+<p>The widget supports three kinds of linkages. In <tt class="xref py py-obj docutils literal"><span class="pre">Single</span> <span class="pre">linkage</span></tt>
+clustering, the distance between two clusters is defined as the distance
+between the closest elements of the two clusters. <tt class="xref py py-obj docutils literal"><span class="pre">Average</span> <span class="pre">linkage</span></tt>
+clustering computes the average distance between elements of the two clusters,
+and <tt class="xref py py-obj docutils literal"><span class="pre">Complete</span> <span class="pre">linkage</span></tt> defines the distance between two clusters as the
+distance between their most distant elements.</p>
+<p>Nodes of the dendrogram can be labeled. What the labels are depends upon the
+items being clustered. For instance, when clustering attributes, the labels
+are obviously the attribute names. When clustering examples, we can use the
+values of one of the attributes, typically one that give the name or id of an
+instance, as labels. The label can be chosen in the box <tt class="xref py py-obj docutils literal"><span class="pre">Annotate</span></tt>, which
+also allows setting the font size and line spacing.</p>
+<p>Huge dendrograms can be pruned by checking <tt class="xref py py-obj docutils literal"><span class="pre">Limit</span> <span class="pre">pring</span> <span class="pre">depth</span></tt> and
+selecting the appropriate depth. This only affects the displayed dendrogram
+and not the actual clustering.</p>
+<p>Clicking inside the dendrogram can have two effects. If the cut off line is
+not shown (<tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">cutoff</span> <span class="pre">line</span></tt> is unchecked), clicking inside the
+dendrogram will select a cluster. Multiple clusters can be selected by holding
+Ctrl. Each selected cluster is shown in different color and is treated as a
+separate cluster on the output.</p>
+<p>If <tt class="xref py py-obj docutils literal"><span class="pre">Show</span> <span class="pre">cutoff</span> <span class="pre">line</span></tt> is checked, clicking in the dendrogram places a
+cutoff line. All items in the clustering are selected and the are divided
+into groups according to the position of the line.</p>
+<p>If the items being clustered are examples, they can be added a cluster index
+(<tt class="xref py py-obj docutils literal"><span class="pre">Append</span> <span class="pre">cluster</span> <span class="pre">indices</span></tt>). The index can appear as a
+<tt class="xref py py-obj docutils literal"><span class="pre">Class</span> <span class="pre">attribute</span></tt>, ordinary <tt class="xref py py-obj docutils literal"><span class="pre">Attribute</span></tt> or a <tt class="xref py py-obj docutils literal"><span class="pre">Meta</span> <span class="pre">attribute</span></tt>.
+In the former case, if the data already has a class attribute, the original
+class is placed among meta attributes.</p>
+<p>The data can be output on any change (<tt class="xref py py-obj docutils literal"><span class="pre">Commit</span> <span class="pre">on</span> <span class="pre">change</span></tt>) or, if this
+is disabled, by pushing <tt class="xref py py-obj docutils literal"><span class="pre">Commit</span></tt>.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The schema below computes clustering of attributes and of examples.</p>
+<img alt="../../../_images/HierarchicalClustering-Schema.png" src="../../../_images/HierarchicalClustering-Schema.png" />
+<p>We loaded the Zoo data set. The clustering of attributes is already shown
+above. Below is the clustering of examples, that is, of animals, and the nodes
+are annotated by the animals&#8217; names. We connected the <a class="reference internal" href="../visualize/linearprojection.html#linear-projection"><em>Linear Projection</em></a>
+showing the freeviz-optimized projection of the data so that it shows all
+examples read from the file, while the signal from Hierarchical clustering is
+used as a subset. Linear projection thus marks the examples selected in
+Hierarchical clustering. This way, we can observe the position of the selected
+cluster(s) in the projection.</p>
+<img alt="../../../_images/HierarchicalClustering-Example.png" src="../../../_images/HierarchicalClustering-Example.png" />
+<p>To (visually) test how well the clustering corresponds to the actual classes
+in the data, we can tell the widget to show the class (&#8220;type&#8221;) of the animal
+instead of its name (<tt class="xref py py-obj docutils literal"><span class="pre">Annotate</span></tt>). Correspondence looks good.</p>
+<img alt="../../../_images/HierarchicalClustering-Example2.png" src="../../../_images/HierarchicalClustering-Example2.png" />
+<p>A fancy way to verify the correspondence between the clustering and the actual
+classes would be to compute the chi-square test between them. As Orange does
+not have a dedicated widget for that, we can compute the chi-square in
+<a class="reference internal" href="attributedistance.html#attribute-distance"><em>Attribute Distance</em></a> and observe it in <a class="reference internal" href="distancemap.html#distance-map"><em>Distance Map</em></a>. The only
+caveat is that Attribute Distance computes distances between attributes and
+not the class and the attribute, so we have to use <a class="reference internal" href="../data/selectattributes.html#select-attributes"><em>Select Attributes</em></a> to
+put the class among the ordinary attributes and replace it with another
+attribute, say &#8220;tail&#8221; (this is needed since Attribute Distance requires data
+with a class attribute, for technical reasons; the class attribute itself does
+not affect the computed chi-square).</p>
+<p>A more direct approach is to leave the class attribute (the animal type) as it
+is, simply add the cluster index and observe its information gain in the
+<a class="reference internal" href="../data/rank.html#rank"><em>Rank</em></a>.</p>
+<p>More tricks with a similar purpose are described in the documentation for
+<a class="reference internal" href="kmeansclustering.html#k-means-clustering"><em>K-Means Clustering</em></a>.</p>
+<p>The schema that does both and the corresponding settings of the hiearchical
+clustering widget are shown below.</p>
+<img alt="../../../_images/HierarchicalClustering-Schema2.png" src="../../../_images/HierarchicalClustering-Schema2.png" />
+<img alt="../../../_images/HierarchicalClustering-Example3.png" src="../../../_images/HierarchicalClustering-Example3.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

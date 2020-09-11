@@ -1,0 +1,329 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Lasso regression (lasso) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Lasso regression (<tt class="docutils literal"><span class="pre">lasso</span></tt>)</a><ul>
+<li><a class="reference internal" href="#utility-functions">Utility functions</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="module-Orange.regression.lasso">
+<span id="lasso-regression-lasso"></span><h1>Lasso regression (<tt class="docutils literal"><span class="pre">lasso</span></tt>)<a class="headerlink" href="#module-Orange.regression.lasso" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www-stat.stanford.edu/~tibs/lasso/lasso.pdf">The lasso</a>
+(least absolute shrinkage and selection operator) is a regularized
+version of least squares regression.
+It minimizes the sum of squared errors while also penalizing the
+<span class="math">L_1</span> norm (sum of absolute values) of the coefficients.</p>
+<p>Concretely, the function that is minimized in Orange is:</p>
+<div class="math">
+<p><span class="math">\frac{1}{n}\|Xw - y\|_2^2 + \frac{\lambda}{m} \|w\|_1</span></p>
+</div><p>Where <span class="math">X</span> is a <span class="math">n \times m</span> data matrix, <span class="math">y</span> the vector
+of class values and <span class="math">w</span> the regression coefficients to be estimated.</p>
+<dl class="class">
+<dt id="Orange.regression.lasso.LassoRegressionLearner">
+<em class="property">class </em><tt class="descclassname">Orange.regression.lasso.</tt><tt class="descname">LassoRegressionLearner</tt><big>(</big><em>lasso_lambda=0.1</em>, <em>max_iter=20000</em>, <em>eps=1e-06</em>, <em>n_boot=0</em>, <em>n_perm=0</em>, <em>imputer=None</em>, <em>continuizer=None</em>, <em>name=Lasso</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.LassoRegressionLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.regression.html#Orange.regression.base.BaseRegressionLearner" title="Orange.regression.base.BaseRegressionLearner"><tt class="xref py py-class docutils literal"><span class="pre">Orange.regression.base.BaseRegressionLearner</span></tt></a></p>
+<p>Fits the lasso regression model using FISTA
+(Fast Iterative Shrinkage-Thresholding Algorithm).</p>
+<dl class="method">
+<dt id="Orange.regression.lasso.LassoRegressionLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>data</em>, <em>weight=None</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.LassoRegressionLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; Training data.</li>
+<li><strong>weight</strong> &#8211; Weights for instances. Not implemented yet.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.lasso.LassoRegressionLearner.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>lasso_lambda=0.1</em>, <em>max_iter=20000</em>, <em>eps=1e-06</em>, <em>n_boot=0</em>, <em>n_perm=0</em>, <em>imputer=None</em>, <em>continuizer=None</em>, <em>name=Lasso</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.LassoRegressionLearner.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lasso_lambda</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Regularization parameter.</li>
+<li><strong>max_iter</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Maximum number of iterations for
+the optimization method.</li>
+<li><strong>eps</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; Stop optimization when improvements are lower than eps.</li>
+<li><strong>n_boot</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of bootstrap samples used for non-parametric
+estimation of standard errors.</li>
+<li><strong>n_perm</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; Number of permuations used for non-parametric
+estimation of p-values.</li>
+<li><strong>name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Learner name.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.lasso.LassoRegressionLearner.fista">
+<tt class="descname">fista</tt><big>(</big><em>X</em>, <em>y</em>, <em>l</em>, <em>lipschitz</em>, <em>w_init=None</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.LassoRegressionLearner.fista" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fast Iterative Shrinkage-Thresholding Algorithm (FISTA).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.lasso.LassoRegressionLearner.get_lipschitz">
+<tt class="descname">get_lipschitz</tt><big>(</big><em>X</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.LassoRegressionLearner.get_lipschitz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Lipschitz constant of <span class="math">\nabla f</span>,
+where <span class="math">f(w) = \frac{1}{2}||Xw-y||^2</span>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.regression.lasso.LassoRegression">
+<em class="property">class </em><tt class="descclassname">Orange.regression.lasso.</tt><tt class="descname">LassoRegression</tt><big>(</big><em>domain=None</em>, <em>class_var=None</em>, <em>coef0=None</em>, <em>coefficients=None</em>, <em>std_errors=None</em>, <em>p_vals=None</em>, <em>model=None</em>, <em>mu_x=None</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.LassoRegression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Orange.classification.html#Orange.classification.Classifier" title="Orange.classification.Classifier"><tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier</span></tt></a></p>
+<p>Lasso regression predicts the value of the response variable
+based on the values of independent variables.</p>
+<dl class="attribute">
+<dt id="Orange.regression.lasso.LassoRegression.coef0">
+<tt class="descname">coef0</tt><a class="headerlink" href="#Orange.regression.lasso.LassoRegression.coef0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intercept (sample mean of the response variable).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.lasso.LassoRegression.coefficients">
+<tt class="descname">coefficients</tt><a class="headerlink" href="#Orange.regression.lasso.LassoRegression.coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regression coefficients.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.lasso.LassoRegression.std_errors">
+<tt class="descname">std_errors</tt><a class="headerlink" href="#Orange.regression.lasso.LassoRegression.std_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard errors of coefficient estimates for a fixed
+regularization parameter. The standard errors are estimated
+using the bootstrapping method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.lasso.LassoRegression.p_vals">
+<tt class="descname">p_vals</tt><a class="headerlink" href="#Orange.regression.lasso.LassoRegression.p_vals" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of p-values for the null hypotheses that the regression
+coefficients equal 0 based on a non-parametric permutation test.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.lasso.LassoRegression.model">
+<tt class="descname">model</tt><a class="headerlink" href="#Orange.regression.lasso.LassoRegression.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary with the statistical properties of the model:
+Keys - names of the independent variables
+Values - tuples (coefficient, standard error, p-value)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.lasso.LassoRegression.mu_x">
+<tt class="descname">mu_x</tt><a class="headerlink" href="#Orange.regression.lasso.LassoRegression.mu_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sample mean of independent variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.lasso.LassoRegression.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.LassoRegression.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Instance</span></tt></a>) &#8211; Data instance for which the value of the response
+variable will be predicted.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.lasso.LassoRegression.to_string">
+<tt class="descname">to_string</tt><big>(</big><em>skip_zero=True</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.LassoRegression.to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty-prints a lasso regression model,
+i.e. estimated regression coefficients with standard errors
+and significances. Standard errors are obtained using the
+bootstrapping method and significances by a permuation test.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>skip_zero</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; If True, variables with estimated coefficient
+equal to 0 are omitted.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="utility-functions">
+<h2>Utility functions<a class="headerlink" href="#utility-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="Orange.regression.lasso.get_bootstrap_sample">
+<tt class="descclassname">Orange.regression.lasso.</tt><tt class="descname">get_bootstrap_sample</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.get_bootstrap_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a bootstrap sample of a given data set.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; the original data sample</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="Orange.regression.lasso.permute_responses">
+<tt class="descclassname">Orange.regression.lasso.</tt><tt class="descname">permute_responses</tt><big>(</big><em>data</em><big>)</big><a class="headerlink" href="#Orange.regression.lasso.permute_responses" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permute values of the class (response) variable.
+The independence between independent variables and the response
+is obtained but the distribution of the response variable is kept.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; Original data.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>To fit the regression parameters on housing data set use the following code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">housing</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing&quot;</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">lasso</span><span class="o">.</span><span class="n">LassoRegressionLearner</span><span class="p">(</span>
+    <span class="n">lasso_lambda</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_boot</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_perm</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To predict values of the response for the first five instances:</p>
+<div class="highlight-python"><pre>for ins in housing[:5]:
+    print "Actual: %3.2f, predicted: %3.2f" % (
+</pre>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>Actual: 24.00, predicted: 30.45
+Actual: 21.60, predicted: 25.60
+Actual: 34.70, predicted: 31.48
+Actual: 33.40, predicted: 30.18
+Actual: 36.20, predicted: 29.59</pre>
+</div>
+<p>To see the fitted regression coefficients, print the model:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">print</span> <span class="n">classifier</span>
+</pre></div>
+</div>
+<p>Output:</p>
+<div class="highlight-python"><pre>  Variable  Coeff Est  Std Error          p
+ Intercept     22.533
+      CRIM     -0.023      0.024      0.050     .
+      CHAS      1.970      1.331      0.040     *
+       NOX     -4.226      2.944      0.010     *
+        RM      4.270      0.934      0.000   ***
+       DIS     -0.373      0.170      0.010     *
+   PTRATIO     -0.798      0.117      0.000   ***
+         B      0.007      0.003      0.020     *
+     LSTAT     -0.519      0.102      0.000   ***
+Signif. codes:  0 *** 0.001 ** 0.01 * 0.05 . 0.1 empty 1
+
+For 5 variables the regression coefficient equals 0:
+ZN, INDUS, AGE, RAD, TAX</pre>
+</div>
+<p>Note that some of the regression coefficients are equal to 0.</p>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,229 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Orange Scripting Reference &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Orange Scripting Reference</a><ul>
+<li><a class="reference internal" href="#index-and-search">Index and search</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="orange-scripting-reference">
+<h1>Orange Scripting Reference<a class="headerlink" href="#orange-scripting-reference" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.html">Data description (<tt class="docutils literal"><span class="pre">data</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.table.html">Data table (<tt class="docutils literal"><span class="pre">Table</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.domain.html">Domain description (<tt class="docutils literal"><span class="pre">Domain</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.instance.html">Data instances (<tt class="docutils literal"><span class="pre">Instance</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.value.html">Values (<tt class="docutils literal"><span class="pre">Value</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.formats.html">Loading and saving data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.sample.html">Random sampling data (<tt class="docutils literal"><span class="pre">sample</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.filter.html">Filtering (<tt class="docutils literal"><span class="pre">filter</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.discretization.html">Data discretization (<tt class="docutils literal"><span class="pre">discretization</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.continuization.html">Continuization (<tt class="docutils literal"><span class="pre">continuization</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.imputation.html">Imputation (<tt class="docutils literal"><span class="pre">imputation</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.preprocess.html">Preprocessing (<tt class="docutils literal"><span class="pre">preprocess</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.utils.html">Utilities (<tt class="docutils literal"><span class="pre">utils</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.sql.html">SQL interface (<tt class="docutils literal"><span class="pre">sql</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.outliers.html">Outlier detection (<tt class="docutils literal"><span class="pre">outliers</span></tt>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.feature.html">Feature (<tt class="docutils literal"><span class="pre">feature</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.feature.descriptor.html">Descriptor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.feature.scoring.html">Scoring (<tt class="docutils literal"><span class="pre">scoring</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.feature.selection.html">Selection (<tt class="docutils literal"><span class="pre">selection</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.feature.discretization.html">Feature discretization (<tt class="docutils literal"><span class="pre">discretization</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.feature.continuization.html">Feature Continuization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.feature.imputation.html">Imputation (<tt class="docutils literal"><span class="pre">imputation</span></tt>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.classification.html">Classification (<tt class="docutils literal"><span class="pre">classification</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.bayes.html">Naive Bayes classifier (<tt class="docutils literal"><span class="pre">bayes</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.knn.html">k-nearest neighbors (<tt class="docutils literal"><span class="pre">knn</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.rules.html">Rule induction (<tt class="docutils literal"><span class="pre">rules</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.svm.html">Support Vector Machines (<tt class="docutils literal"><span class="pre">svm</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.tree.html">Classification trees (<tt class="docutils literal"><span class="pre">tree</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.logreg.html">Logistic regression (<tt class="docutils literal"><span class="pre">logreg</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.majority.html">Majority (<tt class="docutils literal"><span class="pre">majority</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.lookup.html">Lookup classifiers (<tt class="docutils literal"><span class="pre">lookup</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.classfromvar.html">Classifier from variable</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.constant.html">Constant Classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.classification.neural.html">Neural Network Learner  (<tt class="docutils literal"><span class="pre">neural</span></tt>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.regression.html">Regression (<tt class="docutils literal"><span class="pre">regression</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.regression.linear.html">Linear regression (<tt class="docutils literal"><span class="pre">linear</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.regression.lasso.html">Lasso regression (<tt class="docutils literal"><span class="pre">lasso</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.regression.pls.html">Partial least sqaures regression (<tt class="docutils literal"><span class="pre">PLS</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.regression.tree.html">Regression trees (<tt class="docutils literal"><span class="pre">tree</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.regression.mean.html">Mean (<tt class="docutils literal"><span class="pre">mean</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.regression.html#base-class-for-regression">Base class for regression</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.statistics.html">Statistics (<tt class="docutils literal"><span class="pre">statistics</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.statistics.basic.html">Basic Statistics for Continuous Features (<tt class="docutils literal"><span class="pre">basic</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.statistics.contingency.html">Contingency table (<tt class="docutils literal"><span class="pre">contingency</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.statistics.distribution.html">Distributions (<tt class="docutils literal"><span class="pre">distribution</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.statistics.estimate.html">Probability Estimation (<tt class="docutils literal"><span class="pre">estimate</span></tt>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.ensemble.html">Ensemble algorithms (<tt class="docutils literal"><span class="pre">ensemble</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.ensemble.html#bagging">Bagging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.ensemble.html#boosting">Boosting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.ensemble.html#stacking">Stacking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.ensemble.html#random-forest">Random Forest</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.evaluation.html">Evaluation (<tt class="docutils literal"><span class="pre">evaluation</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.evaluation.testing.html">Sampling and Testing (<tt class="docutils literal"><span class="pre">testing</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.evaluation.scoring.html">Method scoring (<tt class="docutils literal"><span class="pre">scoring</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.evaluation.html#classes-for-storing-the-experimental-results">Classes for storing the experimental results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.multilabel.html">Multi-label classification (<tt class="docutils literal"><span class="pre">multilabel</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.multilabel.html#binary-relevance-learner">Binary Relevance Learner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.multilabel.html#labelpowerset-learner">LabelPowerset Learner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.multilabel.html#multiknn-learner">MultikNN Learner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.multilabel.html#ml-knn-learner">ML-kNN Learner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.multilabel.html#br-knn-learner">BR-kNN Learner</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.associate.html">Association rules and frequent itemsets (<tt class="docutils literal"><span class="pre">associate</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.associate.html#association-rules-induction-algorithms">Association rules induction algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.associate.html#representation-of-rules">Representation of rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.associate.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.clustering.html">Clustering (<tt class="docutils literal"><span class="pre">clustering</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.clustering.kmeans.html">K-means clustering (<tt class="docutils literal"><span class="pre">kmeans</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.clustering.hierarchical.html">Hierarchical clustering (<tt class="docutils literal"><span class="pre">hierarchical</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.clustering.consensus.html">Consensus clustering (<tt class="docutils literal"><span class="pre">consensus</span></tt>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.distance.html">Distance (<tt class="docutils literal"><span class="pre">distance</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.distance.html#computing-distances">Computing distances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.distance.html#measures">Measures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.distance.html#utilities">Utilities</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.tuning.html">Tuning (<tt class="docutils literal"><span class="pre">tuning</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.tuning.html#tuning-parameters">Tuning parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.tuning.html#setting-optimal-thresholds">Setting Optimal Thresholds</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.projection.html">Projections (<tt class="docutils literal"><span class="pre">projection</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.projection.linear.html">Linear projection (<tt class="docutils literal"><span class="pre">linear</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.projection.mds.html">Multidimensional scaling (<tt class="docutils literal"><span class="pre">mds</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.projection.som.html">Self-organizing maps (<tt class="docutils literal"><span class="pre">som</span></tt>)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.projection.correspondence.html">Correspondence Analysis (<tt class="docutils literal"><span class="pre">correspondence</span></tt>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.misc.html">Miscellaneous (<tt class="docutils literal"><span class="pre">misc</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.misc.html#costmatrix">CostMatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.misc.html#symmatrix">SymMatrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.misc.html#random-number-generator">Random number generator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.utils.html">Developer utilities (<tt class="docutils literal"><span class="pre">utils</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.utils.html#reporting-progress">Reporting progress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.utils.html#deprecation-utility-functions">Deprecation utility functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.utils.html#module-Orange.utils.environ">Submodules</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="index-and-search">
+<h2>Index and search<a class="headerlink" href="#index-and-search" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference internal" href="../../genindex.html"><em>Index</em></a></li>
+<li><a class="reference internal" href="../../py-modindex.html"><em>Module Index</em></a></li>
+<li><a class="reference internal" href="../../search.html"><em>Search Page</em></a></li>
+</ul>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

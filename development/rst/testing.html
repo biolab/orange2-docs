@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Testing &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Testing</a><ul>
+<li><a class="reference internal" href="#orange-unit-testing">Orange unit testing</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="module-Orange.testing.testing">
+<span id="testing"></span><h1>Testing<a class="headerlink" href="#module-Orange.testing.testing" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="orange-unit-testing">
+<h2>Orange unit testing<a class="headerlink" href="#orange-unit-testing" title="Permalink to this headline">¶</a></h2>
+<p>This module contains some classes in common use by Orange unit testing
+framework. In particular its most useful feature is the BaseTestOnData
+(along with <tt class="docutils literal"><span class="pre">test_on_data</span></tt> function and <tt class="docutils literal"><span class="pre">datasets_driven</span></tt> class decorators) 
+class for automating data driven tests.</p>
+<p>Example of use</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Orange.testing</span> <span class="kn">import</span> <span class="n">testing</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;two&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+
+<span class="c"># Data driven with data_iter argument</span>
+<span class="c"># data must be reiterable multiple times if more than one test member defined</span>
+<span class="nd">@data_driven</span><span class="p">(</span><span class="n">data_iter</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TestDemo</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@test_on_data</span>
+    <span class="k">def</span> <span class="nf">test_instance_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        
+    <span class="nd">@test_on_data</span>
+    <span class="k">def</span> <span class="nf">test_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">arg</span> <span class="o">+</span> <span class="n">arg</span>
+        
+<span class="c"># data_driven without argument</span>
+<span class="nd">@data_driven</span>
+<span class="k">class</span> <span class="nc">TestDemo1</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@test_on_data</span><span class="p">(</span><span class="n">data_iter</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_instance_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        
+    <span class="nd">@test_on_data</span><span class="p">(</span><span class="n">data_iter</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">arg</span> <span class="o">+</span> <span class="n">arg</span>
+
+<span class="c"># data_driven without arg, using a static data_iter method</span>
+<span class="nd">@data_driven</span>
+<span class="k">class</span> <span class="nc">TestDemo1</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@test_on_data</span>
+    <span class="k">def</span> <span class="nf">test_instance_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertIsInstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+        
+    <span class="nd">@test_on_data</span>
+    <span class="k">def</span> <span class="nf">test_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">arg</span> <span class="o">+</span> <span class="n">arg</span>
+        
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">data_iter</span><span class="p">():</span>
+        <span class="k">yield</span> <span class="s">&quot;iris&quot;</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;doc:iris&quot;</span><span class="p">)</span>
+    
+<span class="c">#@data_driven(data_iter=testing.datasets_iter(testing.CLASSIFICATION_DATASETS | testing.CLASSLES_DATASETS))</span>
+<span class="nd">@datasets_driven</span><span class="p">(</span><span class="n">data_iter</span><span class="o">=</span><span class="n">testing</span><span class="o">.</span><span class="n">CLASSIFICATION_DATASETS</span> <span class="o">|</span>                     <span class="n">testing</span><span class="o">.</span><span class="n">CLASSLESS_DATASETS</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TestDefaultLearner</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@test_on_data</span>
+    <span class="k">def</span> <span class="nf">test_learner_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">Orange</span>
+        <span class="n">Orange</span><span class="o">.</span><span class="n">classifcation</span><span class="o">.</span><span class="n">majority</span><span class="o">.</span><span class="n">MajorityLearner</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+        
+    <span class="c"># this overloads the class decorator&#39;s flags </span>
+    <span class="nd">@test_on_datasets</span><span class="p">(</span><span class="n">testing</span><span class="o">.</span><span class="n">CLASSLES_DATASETS</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">test_raise_missing_class_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">Orange</span>
+        <span class="n">Orange</span><span class="o">.</span><span class="n">classifcation</span><span class="o">.</span><span class="n">majority</span><span class="o">.</span><span class="n">MajorityLearner</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

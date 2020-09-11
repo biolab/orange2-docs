@@ -1,0 +1,190 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Regression (regression) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Regression (<tt class="docutils literal"><span class="pre">regression</span></tt>)</a><ul>
+<li><a class="reference internal" href="#base-class-for-regression">Base class for regression</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="regression-regression">
+<h1>Regression (<tt class="docutils literal"><span class="pre">regression</span></tt>)<a class="headerlink" href="#regression-regression" title="Permalink to this headline">¶</a></h1>
+<p>Orange implements a set of methods for regression modeling, that is,
+where the outcome - dependent variable is real-valued:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Orange.regression.linear.html">Linear regression (<tt class="docutils literal"><span class="pre">linear</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.regression.lasso.html">Lasso regression (<tt class="docutils literal"><span class="pre">lasso</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.regression.pls.html">Partial least sqaures regression (<tt class="docutils literal"><span class="pre">PLS</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.regression.tree.html">Regression trees (<tt class="docutils literal"><span class="pre">tree</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.regression.mean.html">Mean (<tt class="docutils literal"><span class="pre">mean</span></tt>)</a></li>
+</ul>
+</div>
+<p>Notice that the dependent variable is in this documentation and in the
+implementation referred to as <cite>class variable</cite>. See also the documentation
+on <a class="reference internal" href="Orange.classification.html"><em>Classification (classification)</em></a> for information on how to fit models
+and use them for prediction.</p>
+<div class="section" id="base-class-for-regression">
+<h2>Base class for regression<a class="headerlink" href="#base-class-for-regression" title="Permalink to this headline">¶</a></h2>
+<p>All regression learners are inherited from <cite>BaseRegressionLearner</cite>.</p>
+<span class="target" id="module-Orange.regression.base"></span><span class="target" id="index-0"></span><dl class="class">
+<dt id="Orange.regression.base.BaseRegressionLearner">
+<em class="property">class </em><tt class="descclassname">Orange.regression.base.</tt><tt class="descname">BaseRegressionLearner</tt><big>(</big><em>imputer=None</em>, <em>continuizer=None</em><big>)</big><a class="headerlink" href="#Orange.regression.base.BaseRegressionLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fitting regressors typically requires data that has only
+continuous-valued features and no missing values. This class
+provides methods for appropriate transformation of the data and
+serves as a base class for most regressor classes.</p>
+<dl class="method">
+<dt id="Orange.regression.base.BaseRegressionLearner.continuize_table">
+<tt class="descname">continuize_table</tt><big>(</big><em>table</em><big>)</big><a class="headerlink" href="#Orange.regression.base.BaseRegressionLearner.continuize_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace discrete variables with continuous and return a new
+instance of <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; data instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.base.BaseRegressionLearner.impute_table">
+<tt class="descname">impute_table</tt><big>(</big><em>table</em><big>)</big><a class="headerlink" href="#Orange.regression.base.BaseRegressionLearner.impute_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impute missing values and return a new
+<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a> object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>table</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; data instances.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.base.BaseRegressionLearner.set_continuizer">
+<tt class="descname">set_continuizer</tt><big>(</big><em>continuizer=None</em><big>)</big><a class="headerlink" href="#Orange.regression.base.BaseRegressionLearner.set_continuizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the continuizer of the discrete variables</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>continuizer</strong> (<em>None or Orange.data.continuization.DomainContinuizer</em>) &#8211; function which replaces the categorical
+(dicrete) variables with numerical variables. If <tt class="docutils literal"><span class="pre">None</span></tt>,
+the default continuizer is used</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.base.BaseRegressionLearner.set_imputer">
+<tt class="descname">set_imputer</tt><big>(</big><em>imputer=None</em><big>)</big><a class="headerlink" href="#Orange.regression.base.BaseRegressionLearner.set_imputer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the imputer for missing data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>imputer</strong> (<em>None or Orange.feature.imputation.ModelConstructor</em>) &#8211; function which constructs the imputer for the
+missing values, if <tt class="docutils literal"><span class="pre">None</span></tt>, the default imputer replaces
+missing continuous data with the average of the
+corresponding variable and missing discrete data with the
+most frequent value.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

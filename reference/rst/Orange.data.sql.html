@@ -1,0 +1,353 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SQL interface (sql) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">SQL interface (<tt class="docutils literal"><span class="pre">sql</span></tt>)</a><ul>
+<li><a class="reference internal" href="#attribute-names-and-types">Attribute Names and Types</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="sql-interface-sql">
+<h1>SQL interface (<tt class="docutils literal"><span class="pre">sql</span></tt>)<a class="headerlink" href="#sql-interface-sql" title="Permalink to this headline">¶</a></h1>
+<p>The <tt class="xref py py-class docutils literal"><span class="pre">sql</span></tt> module provides access to relational databases from Orange.
+It currently supports:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.mysql.com/">MySql</a>  through <a class="reference external" href="http://sourceforge.net/projects/mysql-python/">MySQL for Python</a>,</li>
+<li><a class="reference external" href="http://www.postgresql.org">Postgres</a> through <a class="reference external" href="http://initd.org/psycopg/">Psycopg</a>,</li>
+<li><a class="reference external" href="http://www.sqlite.org/">sqlite</a> through <a class="reference external" href="http://docs.python.org/library/sqlite3.html">sqlite3</a>.</li>
+<li><a class="reference external" href="http://en.wikipedia.org/wiki/ODBC">odbc</a> through <a class="reference external" href="https://code.google.com/p/pyodbc/">pyodbc</a>.</li>
+</ul>
+<p><tt class="xref py py-class docutils literal"><span class="pre">SQLReader</span></tt> and <tt class="xref py py-class docutils literal"><span class="pre">SQLWriter</span></tt> classes require connection string based on
+standard format scheme://[user[:password]&#64;]host[:port]/database[?parameters].</p>
+<p>Examples of valid connection strings:</p>
+<ul class="simple">
+<li>sqlite://database.db/</li>
+<li>mysql://user:password&#64;host/database</li>
+<li>mysql://host/database?debug=1</li>
+<li>postgres://user&#64;host/database?debug=&amp;cache=</li>
+<li>postgres://host:5432/database</li>
+<li>odbc://user:password&#64;host:port/database?DSN=dsn</li>
+</ul>
+<div class="section" id="attribute-names-and-types">
+<h2>Attribute Names and Types<a class="headerlink" href="#attribute-names-and-types" title="Permalink to this headline">¶</a></h2>
+<p>Rows returned by an SQL query have to be converted into Orange examples.
+Each column in a row has to be converted into a certain feature type. The
+following conversions between SQL and Orange types are used:</p>
+<ul class="simple">
+<li>STRING and DATETIME attributes are converted to Orange strings.</li>
+<li>The features listed in <tt class="docutils literal"><span class="pre">discrete_names</span></tt> are converted to Orange
+discrete features.</li>
+<li>Other features are converted to continuous Orange features.</li>
+<li>The attribute in <tt class="docutils literal"><span class="pre">class_name</span></tt> is set as the class features. If no
+<tt class="docutils literal"><span class="pre">class_name</span></tt> is set, the column with the name &#8220;class&#8221; in the
+returned SQL query is set as the class attribute. If no such column
+exists, the last column is set as the class features.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">When reading <tt class="docutils literal"><span class="pre">sqlite</span></tt> data table into <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a> all columns are cast into <a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.String" title="Orange.feature.String"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.String</span></tt></a>.</p>
+</div>
+<p><strong>Examples</strong></p>
+<p>The following example populates the <a class="reference external" href="http://www.sqlite.org/">sqlite</a> database with data from <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">Orange.data.sql</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># load dataset and save it into sqlite database</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;iris&quot;</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">SQLWriter</span><span class="p">(</span><span class="s">&#39;sqlite://iris.db/&#39;</span><span class="p">)</span>
+<span class="n">w</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&#39;iris&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using the existing <a class="reference external" href="http://www.sqlite.org/">sqlite</a> database one can fetch back the data into <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># create sql reader</span>
+<span class="kn">from</span> <span class="nn">Orange.data.sql</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">SQLReader</span><span class="p">()</span>
+<span class="n">r</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;sqlite://iris.db/&#39;</span><span class="p">)</span>
+
+<span class="c"># read iris dataset from database and convert it to Orange Table</span>
+<span class="n">r</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;SELECT *  FROM iris;&quot;</span><span class="p">)</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="si">%d</span><span class="s"> instances returned&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Output data domain:&quot;</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">a</span>
+<span class="k">print</span> <span class="s">&quot;First instance :&quot;</span><span class="p">,</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+
+<span class="n">r</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s">&quot;SELECT `petal width`, `petal length` FROM iris WHERE `sepal length` &lt; 5.0&quot;</span><span class="p">)</span>
+<span class="n">sel</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="si">%d</span><span class="s"> instances returned&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">sel</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output of the last example is:</p>
+<div class="highlight-python"><pre>150 instances returned
+Output data domain:
+StringVariable 'sepal length'
+StringVariable 'sepal width'
+StringVariable 'petal length'
+StringVariable 'petal width'
+StringVariable 'iris'
+First instance : ['5.09999990463', '3.5', '1.39999997616', '0.20000000298', 'Iris-setosa']
+22 instances returned</pre>
+</div>
+<dl class="class">
+<dt id="Orange.data.sql.SQLReader">
+<em class="property">class </em><tt class="descclassname">Orange.data.sql.</tt><tt class="descname">SQLReader</tt><big>(</big><em>addr=None</em>, <em>domain_depot=None</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLReader" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-obj docutils literal"><span class="pre">SQLReader</span></tt> establishes a connection with a database and provides the methods needed
+to fetch the data from the database into Orange.</p>
+<dl class="method">
+<dt id="Orange.data.sql.SQLReader.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>addr=None</em>, <em>domain_depot=None</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLReader.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>uri</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Connection string (scheme://[user[:password]&#64;]host[:port]/database[?parameters]).</li>
+<li><strong>domain_depot</strong> (<tt class="xref py py-class docutils literal"><span class="pre">orange.DomainDepot</span></tt>) &#8211; Domain depot</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.sql.SQLReader.class_name">
+<tt class="descname">class_name</tt><a class="headerlink" href="#Orange.data.sql.SQLReader.class_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of class variable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLReader.connect">
+<tt class="descname">connect</tt><big>(</big><em>uri</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLReader.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uri</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Connection string (scheme://[user[:password]&#64;]host[:port]/database[?parameters])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLReader.data">
+<tt class="descname">data</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLReader.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a> produced by the last executed query.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLReader.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLReader.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect from the database.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.sql.SQLReader.discrete_names">
+<tt class="descname">discrete_names</tt><a class="headerlink" href="#Orange.data.sql.SQLReader.discrete_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names of discrete attributes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.sql.SQLReader.domain">
+<tt class="descname">domain</tt><a class="headerlink" href="#Orange.data.sql.SQLReader.domain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orange domain.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLReader.execute">
+<tt class="descname">execute</tt><big>(</big><em>query</em>, <em>domain=None</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLReader.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executes an sql query.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.sql.SQLReader.meta_names">
+<tt class="descname">meta_names</tt><a class="headerlink" href="#Orange.data.sql.SQLReader.meta_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Names of meta attributes.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.sql.SQLReader.query">
+<tt class="descname">query</tt><a class="headerlink" href="#Orange.data.sql.SQLReader.query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query to be executed on the next execute().</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLReader.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLReader.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Execute a pending SQL query.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.data.sql.SQLWriter">
+<em class="property">class </em><tt class="descclassname">Orange.data.sql.</tt><tt class="descname">SQLWriter</tt><big>(</big><em>uri=None</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Establishes a connection with a database and provides the methods needed to create
+an appropriate table in the database and/or write the data from an <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>
+into the database.</p>
+<dl class="method">
+<dt id="Orange.data.sql.SQLWriter.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>uri=None</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLWriter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uri</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Connection string (scheme://[user[:password]&#64;]host[:port]/database[?parameters])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLWriter.connect">
+<tt class="descname">connect</tt><big>(</big><em>uri</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLWriter.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Connect to the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>uri</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Connection string (scheme://[user[:password]&#64;]host[:port]/database[?parameters])</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLWriter.create">
+<tt class="descname">create</tt><big>(</big><em>table</em>, <em>instances</em>, <em>rename_dict={}</em>, <em>type_dict={}</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLWriter.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the required SQL table, then write the data into it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Table name</li>
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; Data to be written into the database.</li>
+<li><strong>rename_dict</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; When <tt class="docutils literal"><span class="pre">rename_dict</span></tt> is provided the used names are remapped.
+The orange attribute &#8220;X&#8221; is written into the database column rename_dict[&#8220;X&#8221;] of the table.</li>
+<li><strong>type_dict</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; When <tt class="docutils literal"><span class="pre">type_dict</span></tt> is provided the used variables are casted into new types.
+The type of orange attribute &#8220;X&#8221; is casted into the database column of type rename_dict[&#8220;X&#8221;].</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLWriter.disconnect">
+<tt class="descname">disconnect</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLWriter.disconnect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disconnect from the database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.sql.SQLWriter.write">
+<tt class="descname">write</tt><big>(</big><em>table</em>, <em>instances</em>, <em>rename_dict=None</em><big>)</big><a class="headerlink" href="#Orange.data.sql.SQLWriter.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the data into the table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>table</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Table name.</li>
+<li><strong>instances</strong> (<a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Table</span></tt></a>) &#8211; Data to be written into the database.</li>
+<li><strong>rename_dict</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; When <tt class="docutils literal"><span class="pre">rename_dict</span></tt> is provided the used names are remapped.
+The orange attribute &#8220;X&#8221; is written into the database column rename_dict[&#8220;X&#8221;] of the table.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

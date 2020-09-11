@@ -1,0 +1,168 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pade &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Pade</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="pade">
+<span id="id1"></span><h1>Pade<a class="headerlink" href="#pade" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/Pade1.svg" /><p>Replaces a continuous class with a derivative or a MQC by one or more
+continuous attributes.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Classified Examples (ExampleTableWithClass)</dt>
+<dd><p class="first last">Input data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Classified Examples (ExampleTableWithClass)</dt>
+<dd><p class="first last">Output data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This widget implements several techniques for assessing partial derivatives
+of the class variable for the given set of examples. The derivative is appended
+to the example table as a new class attribute. The widget can compute either
+quantitative derivative by a chosen continuous attribute or a qualitative
+derivative by one or more attributes.</p>
+<p>The widget is implemented to cache some data. After, for instance, computing
+the derivatives by <tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">y</span></tt> separately, the widget has already
+stored all the data to produce the derivatives by both in a moment.</p>
+<img alt="../../../_images/Pade.png" src="../../../_images/Pade.png" />
+<p>The <tt class="xref py py-obj docutils literal"><span class="pre">Attributes</span></tt> box lists all continuous attributes and lets the user
+select the attribute by which she wants to compute the qualitative derivative.
+The selection is important only when the widget actually outputs a qualitative
+derivative (this depends on other settings, described below). Buttons
+<tt class="xref py py-obj docutils literal"><span class="pre">All</span></tt> and <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a> select the entire list and nothing.</p>
+<p>Derivatives by more than one attribute are mathematically questionable, and
+computing by many attributes can be slow and messy. Methods that are based on
+triangulation will include all attributes in the triangulation, regardless of
+the selection, but then compute only the selected derivatives.</p>
+<p>Box <tt class="xref py py-obj docutils literal"><span class="pre">Method</span></tt> determines the used method and its settings. Available
+methods are <tt class="xref py py-obj docutils literal"><span class="pre">First</span> <span class="pre">triangle</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">Star</span> <span class="pre">Regression</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">Univariate</span> <span class="pre">Star</span> <span class="pre">Regression</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">Tube</span> <span class="pre">Regression</span></tt>. First triangle is
+unsuitable for data with non-negligible noise. Star regression seems to perform
+rather poor; the quantitative derivatives it computes are even theoretically
+wrong. Univariate Star Regression will handle noise well, but also work well
+for very complex functions (like sin(x)sin(y) across several periods). Tube
+regression is very noise resistant, which can lead it to oversimplify the
+model, yet it is the only method that does not use the triangulation and is
+thus capable of handling discrete attributes, unknown values and large number
+of dimensions. It may be slow when the number of examples is very large.
+Detailed description of these methods can be found in Zabkar and Demsar&#8217;s
+papers.</p>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Ignore</span> <span class="pre">differences</span> <span class="pre">below</span></tt> lets the user set a threshold for qualitative
+derivatives.</p>
+<p>The widget can also put some data in meta attributes: the
+<tt class="xref py py-obj docutils literal"><span class="pre">Qualitative</span> <span class="pre">constraint</span></tt>, as described above,
+<tt class="xref py py-obj docutils literal"><span class="pre">Derivatives</span> <span class="pre">of</span> <span class="pre">selected</span> <span class="pre">attributes</span></tt> and the
+<tt class="xref py py-obj docutils literal"><span class="pre">Original</span> <span class="pre">class</span> <span class="pre">attribute</span></tt>.</p>
+<p>The changes take effect and the widget start processing when <tt class="xref py py-obj docutils literal"><span class="pre">Apply</span></tt>
+is hit.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

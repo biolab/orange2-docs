@@ -1,0 +1,159 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data Table &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Data Table</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="data-table">
+<span id="id1"></span><h1>Data Table<a class="headerlink" href="#data-table" title="Permalink to this headline">¶</a></h1>
+<img alt="Data Table icon" class="widget-category-data widget-icon" src="../../../_images/DataTable.svg" /><p>Displays attribute-value data in a spreadsheet.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Data</span></tt></dt>
+<dd><p class="first last">Attribute-valued data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Selected</span> <span class="pre">Data</span></tt></dt>
+<dd><p class="first last">Selected data instances.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Data Table widget receives one or more data sets on its input and presents
+them in a spreadsheet format. Data instances may be sorted by attribute
+values. Widget also supports manual selection of data instances.</p>
+<img alt="Data table with Iris data set" src="../../../_images/DataTable-stamped.png" />
+<ol class="stamp-list arabic simple">
+<li>The name of the data set (e.g., inherited from the name of the
+input data file) with a table of data instances (in rows)
+and their attribute values (columns). In the example shown the data set
+is sorted by the attribute &#8220;sepal length&#8221;.</li>
+<li>Info on current data set size and the number and types of attributes.</li>
+<li>Meta attributes are not included in this example data set,
+the corresponding option is dimmed.
+Use &#8220;Restore Order&#8221; button to reorder data instance after attribute-based
+sorting.</li>
+<li>Values of continuous attributes can be visualized with bars.</li>
+<li>Data instances (rows) can be selected and sent to the widget&#8217;s output
+channel.</li>
+<li>Adds an entry with the entire data table to the current report.</li>
+</ol>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>We used two <a class="reference internal" href="file.html#file"><em>File</em></a> widgets, read the iris and glass data set (provided in
+Orange distribution), and send them to the Data Table widget.</p>
+<img alt="Example data table schema" src="../../../_images/DataTable-Schema.png" />
+<p>Selected data instances in the first Data Table are passed to the second
+Data Table. Notice that we can select which data set to view (iris or zoo);
+change from one data set to another alters the communicated
+selection of the data instances if &#8220;Commit on any change is selected&#8221;.</p>
+<img alt="Data Table widget example" src="widgets/rst/data/images/DataTable-Example.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

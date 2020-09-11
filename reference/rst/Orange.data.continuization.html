@@ -1,0 +1,202 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Continuization (continuization) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Continuization (<tt class="docutils literal"><span class="pre">continuization</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="continuization-continuization">
+<h1>Continuization (<tt class="docutils literal"><span class="pre">continuization</span></tt>)<a class="headerlink" href="#continuization-continuization" title="Permalink to this headline">¶</a></h1>
+<p>Continuization refers to transformation of discrete (binary or
+multinominal) variables to continuous. The class described below
+operates on the entire domain; documentation on
+<tt class="file docutils literal"><span class="pre">Orange.core.transformvalue.rst</span></tt> explains how to treat each
+variable separately.</p>
+<dl class="class">
+<dt id="Orange.data.continuization.DomainContinuizer">
+<em class="property">class </em><tt class="descclassname">Orange.data.continuization.</tt><tt class="descname">DomainContinuizer</tt><a class="headerlink" href="#Orange.data.continuization.DomainContinuizer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new domain containing only continuous attributes given a
+domain or data table. Some options are available only if the data is
+provided.</p>
+<p>The attributes are treated according to their type:</p>
+<ul class="simple">
+<li>continuous variables can be normalized or left unchanged</li>
+<li>discrete attribute with less than two possible values are removed;</li>
+<li>binary variables are transformed into 0.0/1.0 or -1.0/1.0
+indicator variables</li>
+<li>multinomial variables are treated according to the flag
+<tt class="docutils literal"><span class="pre">multinomial_treatment</span></tt>.</li>
+</ul>
+<p>The typical use of the class is as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">continuizer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">continuization</span><span class="o">.</span><span class="n">DomainContinuizer</span><span class="p">()</span>
+<span class="n">continuizer</span><span class="o">.</span><span class="n">multinomial_treatment</span> <span class="o">=</span> <span class="n">continuizer</span><span class="o">.</span><span class="n">LowestIsBase</span>
+<span class="n">domain0</span> <span class="o">=</span> <span class="n">continuizer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="n">data0</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">domain0</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="Orange.data.continuization.DomainContinuizer.zero_based">
+<tt class="descname">zero_based</tt><a class="headerlink" href="#Orange.data.continuization.DomainContinuizer.zero_based" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the value used as the &#8220;low&#8221; value of the variable. When
+binary variables are transformed into continuous or when multivalued
+variable is transformed into multiple variables, the transformed
+variable can either have values 0.0 and 1.0 (default, <tt class="docutils literal"><span class="pre">zero_based</span></tt>
+is <tt class="docutils literal"><span class="pre">True</span></tt>) or -1.0 and 1.0 (<tt class="docutils literal"><span class="pre">zero_based</span></tt> is <tt class="docutils literal"><span class="pre">False</span></tt>). The
+following text assumes the default case.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.continuization.DomainContinuizer.multinomial_treatment">
+<tt class="descname">multinomial_treatment</tt><a class="headerlink" href="#Orange.data.continuization.DomainContinuizer.multinomial_treatment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decides the treatment of multinomial variables. Let N be the
+number of the variables&#8217;s values.</p>
+<p>DomainContinuizer.NValues</p>
+<blockquote>
+<div><p>The variable is replaced by N indicator variables, each
+corresponding to one value of the original variable. In other
+words, for each value of the original attribute, only the
+corresponding new attribute will have a value of 1 and others
+will be zero.</p>
+<p>Note that these variables are not independent, so they cannot be
+used (directly) in, for instance, linear or logistic regression.</p>
+<p>For example, data set &#8220;bridges&#8221; has feature &#8220;RIVER&#8221; with
+values &#8220;M&#8221;, &#8220;A&#8221;, &#8220;O&#8221; and &#8220;Y&#8221;, in that order. Its value for
+the 15th row is &#8220;M&#8221;. Continuization replaces the variable
+with variables &#8220;RIVER=M&#8221;, &#8220;RIVER=A&#8221;, &#8220;RIVER=O&#8221; and
+&#8220;RIVER=Y&#8221;. For the 15th row, the first has value 1 and
+others are 0.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>DomainContinuizer.LowestIsBase</dt>
+<dd><p class="first">Similar to the above except that it creates only N-1
+variables. The missing indicator belongs to the lowest value:
+when the original variable has the lowest value all indicators
+are 0.</p>
+<p>If the variable descriptor has the <tt class="docutils literal"><span class="pre">base_value</span></tt> defined, the
+specified value is used as base instead of the lowest one.</p>
+<p class="last">Continuizing the variable &#8220;RIVER&#8221; gives similar results as
+above except that it would omit &#8220;RIVER=M&#8221;; all three
+variables would be zero for the 15th data instance.</p>
+</dd>
+<dt>DomainContinuizer.FrequentIsBase</dt>
+<dd><p class="first">Like above, except that the most frequent value is used as the
+base (this can again be overidden by setting the descriptor&#8217;s
+<tt class="docutils literal"><span class="pre">base_value</span></tt>). If there are multiple most frequent values, the
+one with the lowest index is used. The frequency of values is
+extracted from data, so this option cannot be used if constructor
+is given only a domain.</p>
+<p class="last">Variable &#8220;RIVER&#8221; would be continuized similarly to above
+except that it omits &#8220;RIVER=A&#8221;, which is the most frequent value.</p>
+</dd>
+<dt>DomainContinuizer.Ignore</dt>
+<dd>Multivalued variables are omitted.</dd>
+<dt>DomainContinuizer.ReportError</dt>
+<dd>Raise an error if there are any multinominal variables in the data.</dd>
+<dt>DomainContinuizer.AsOrdinal</dt>
+<dd>Multivalued variables are treated as ordinal and replaced by a
+continuous variables with the values&#8217; index, e.g. 0, 1, 2, 3...</dd>
+<dt>DomainContinuizer.AsNormalizedOrdinal</dt>
+<dd>As above, except that the resulting continuous value will be from
+range 0 to 1, e.g. 0, 0.25, 0.5, 0.75, 1 for a five-valued
+variable.</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.continuization.DomainContinuizer.normalize_continuous">
+<tt class="descname">normalize_continuous</tt><a class="headerlink" href="#Orange.data.continuization.DomainContinuizer.normalize_continuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <tt class="docutils literal"><span class="pre">False</span></tt> (default), continues variables are left unchanged. If
+<tt class="docutils literal"><span class="pre">True</span></tt>, they are replaced with normalized values by subtracting
+the average value and dividing by the deviation. Statistics are
+computed from the data, so constructor must be given data, not just
+domain.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

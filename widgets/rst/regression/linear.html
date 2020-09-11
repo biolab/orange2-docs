@@ -1,0 +1,156 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Linear Regression Learner &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Linear Regression Learner</a><ul>
+<li><a class="reference internal" href="#channels">Channels</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="linear-regression-learner">
+<span id="linear-regression"></span><h1>Linear Regression Learner<a class="headerlink" href="#linear-regression-learner" title="Permalink to this headline">¶</a></h1>
+<img alt="Linear Regression" src="../../../_images/LinearRegression1.svg" /><p>Learns a linear function of its input data.</p>
+<div class="section" id="channels">
+<h2>Channels<a class="headerlink" href="#channels" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Input</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Data (Table)</dt>
+<dd><p class="first last">Input data table</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>Output</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>Learner</dt>
+<dd><p class="first last">The learning algorithm with the supplied parameters</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Predictor</dt>
+<dd><p class="first last">Trained regressor</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Model  Statisics</dt>
+<dd><p class="first last">A data table containing trained model statistics</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+<p>Signal <tt class="docutils literal"><span class="pre">Predictor</span></tt> and <tt class="docutils literal"><span class="pre">Model</span> <span class="pre">Statistics</span></tt> send the output
+signal only if input signal <tt class="docutils literal"><span class="pre">Data</span></tt> is present.</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Linear Regression widget construct a learner/predictor that learns a
+linear function from its input data. Furthermore <a class="reference external" href="http://en.wikipedia.org/wiki/Least_squares#LASSO_method">Lasso</a> and <a class="reference external" href="http://en.wikipedia.org/wiki/Ridge_regression">Ridge</a>
+regularization parameters can be specified.</p>
+<img alt="Linear Regression interface" src="../../../_images/LinearRegression.png" />
+<ol class="stamp-list arabic simple">
+<li>The learner/predictor name</li>
+<li>Train an ordinary least squares or ridge regression model</li>
+<li>If <tt class="docutils literal"><span class="pre">Ridge</span> <span class="pre">lambda</span></tt> is checked the learner will build a ridge regression
+model with 4 as the <tt class="docutils literal"><span class="pre">lambda</span></tt> parameter.</li>
+<li>Ridge lambda parameter.</li>
+<li>Use <a class="reference external" href="http://en.wikipedia.org/wiki/Least_squares#LASSO_method">Lasso</a> regularization.</li>
+<li>The Lasso bound (bound on the beta vector L1 norm)</li>
+<li>Tolerance (any beta value lower then this will be forced to 0)</li>
+</ol>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

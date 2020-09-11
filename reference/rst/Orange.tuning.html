@@ -1,0 +1,434 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tuning (tuning) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Tuning (<tt class="docutils literal"><span class="pre">tuning</span></tt>)</a><ul>
+<li><a class="reference internal" href="#tuning-parameters">Tuning parameters</a></li>
+<li><a class="reference internal" href="#setting-optimal-thresholds">Setting Optimal Thresholds</a><ul>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="module-Orange.tuning">
+<span id="tuning-tuning"></span><h1>Tuning (<tt class="docutils literal"><span class="pre">tuning</span></tt>)<a class="headerlink" href="#module-Orange.tuning" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">Wrappers for Tuning Parameters and Thresholds</p>
+<p>Classes for two very useful purposes: tuning learning algorithm&#8217;s parameters
+using internal validation and tuning the threshold for classification into
+positive class.</p>
+<div class="section" id="tuning-parameters">
+<h2>Tuning parameters<a class="headerlink" href="#tuning-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Two classes support tuning parameters.
+<a class="reference internal" href="#Orange.tuning.Tune1Parameter" title="Orange.tuning.Tune1Parameter"><tt class="xref py py-obj docutils literal"><span class="pre">Tune1Parameter</span></tt></a> for fitting a single parameter and
+<a class="reference internal" href="#Orange.tuning.TuneMParameters" title="Orange.tuning.TuneMParameters"><tt class="xref py py-obj docutils literal"><span class="pre">TuneMParameters</span></tt></a> fitting multiple parameters at once,
+trying all possible combinations. When called with data and, optionally, id
+of meta attribute with weights, they find the optimal setting of arguments
+using cross validation. The classes can also be used as ordinary learning
+algorithms - they are in fact derived from
+<a class="reference internal" href="Orange.classification.html#Orange.classification.Learner" title="Orange.classification.Learner"><tt class="xref py py-obj docutils literal"><span class="pre">Learner</span></tt></a>.</p>
+<p>Both classes have a common parent, <a class="reference internal" href="#Orange.tuning.TuneParameters" title="Orange.tuning.TuneParameters"><tt class="xref py py-obj docutils literal"><span class="pre">TuneParameters</span></tt></a>,
+and a few common attributes.</p>
+<dl class="class">
+<dt id="Orange.tuning.TuneParameters">
+<em class="property">class </em><tt class="descclassname">Orange.tuning.</tt><tt class="descname">TuneParameters</tt><a class="headerlink" href="#Orange.tuning.TuneParameters" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.tuning.TuneParameters.data">
+<tt class="descname">data</tt><a class="headerlink" href="#Orange.tuning.TuneParameters.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data table with either discrete or continuous features</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.TuneParameters.weight_id">
+<tt class="descname">weight_id</tt><a class="headerlink" href="#Orange.tuning.TuneParameters.weight_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The id of the weight meta attribute</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.TuneParameters.learner">
+<tt class="descname">learner</tt><a class="headerlink" href="#Orange.tuning.TuneParameters.learner" title="Permalink to this definition">¶</a></dt>
+<dd><p>The learning algorithm whose parameters are to be tuned. This can be,
+for instance, <a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.TreeLearner" title="Orange.classification.tree.TreeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.tree.TreeLearner</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.TuneParameters.evaluate">
+<tt class="descname">evaluate</tt><a class="headerlink" href="#Orange.tuning.TuneParameters.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The statistics to evaluate. The default is
+<a class="reference internal" href="Orange.evaluation.scoring.html#Orange.evaluation.scoring.CA" title="Orange.evaluation.scoring.CA"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.evaluation.scoring.CA</span></tt></a>, so the learner will be fit for the
+optimal classification accuracy. You can replace it with, for instance,
+<a class="reference internal" href="Orange.evaluation.scoring.html#Orange.evaluation.scoring.AUC" title="Orange.evaluation.scoring.AUC"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.evaluation.scoring.AUC</span></tt></a> to optimize the AUC. Statistics
+can return either a single value (classification accuracy), a list with
+a single value (this is what <a class="reference internal" href="Orange.evaluation.scoring.html#Orange.evaluation.scoring.CA" title="Orange.evaluation.scoring.CA"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.evaluation.scoring.CA</span></tt></a>
+actually does), or arbitrary objects which the compare function below
+must be able to compare.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.TuneParameters.folds">
+<tt class="descname">folds</tt><a class="headerlink" href="#Orange.tuning.TuneParameters.folds" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of folds used in internal cross-validation. Default is 5.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.TuneParameters.compare">
+<tt class="descname">compare</tt><a class="headerlink" href="#Orange.tuning.TuneParameters.compare" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function used to compare the results. The function should accept
+two arguments (e.g. two classification accuracies, AUCs or whatever the
+result of <tt class="docutils literal"><span class="pre">evaluate</span></tt> is) and return a positive value if the first
+argument is better, 0 if they are equal and a negative value if the
+first is worse than the second. The default compare function is 
+<tt class="docutils literal"><span class="pre">cmp</span></tt>. You don&#8217;t need to change this if evaluate is such that higher
+values mean a better classifier.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.TuneParameters.return_what">
+<tt class="descname">return_what</tt><a class="headerlink" href="#Orange.tuning.TuneParameters.return_what" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decides what should be result of tuning. Possible values are:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">TuneParameters.RETURN_NONE</span></tt> (or 0): tuning will return nothing,</li>
+<li><tt class="docutils literal"><span class="pre">TuneParameters.RETURN_PARAMETERS</span></tt> (or 1): return the optimal value(s) of parameter(s),</li>
+<li><tt class="docutils literal"><span class="pre">TuneParameters.RETURN_LEARNER</span></tt> (or 2): return the learner set to optimal parameters,</li>
+<li><tt class="docutils literal"><span class="pre">TuneParameters.RETURN_CLASSIFIER</span></tt> (or 3): return a classifier trained with the optimal parameters on the entire data set. This is the default setting.</li>
+</ul>
+<p>Regardless of this, the learner (given as parameter <tt class="docutils literal"><span class="pre">learner</span></tt>) is 
+left set to the optimal parameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.TuneParameters.verbose">
+<tt class="descname">verbose</tt><a class="headerlink" href="#Orange.tuning.TuneParameters.verbose" title="Permalink to this definition">¶</a></dt>
+<dd><p>If 0 (default), the class doesn&#8217;t print anything. If set to 1, it will
+print out the optimal value found, if set to 2, it will print out all
+tried values and the related</p>
+</dd></dl>
+
+<p>If tuner returns the classifier, it behaves as a learning algorithm. As the
+examples below will demonstrate, it can be called, given the data and
+the result is a &#8220;trained&#8221; classifier. It can, for instance, be used in
+cross-validation.</p>
+<p>Out of these attributes, the only necessary argument is <tt class="docutils literal"><span class="pre">learner</span></tt>. The
+real tuning classes (subclasses of this class) add two additional - 
+the attributes that tell what parameter(s) to optimize and which values
+to use.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.tuning.Tune1Parameter">
+<em class="property">class </em><tt class="descclassname">Orange.tuning.</tt><tt class="descname">Tune1Parameter</tt><a class="headerlink" href="#Orange.tuning.Tune1Parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class <tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.Tune1Parameter</span></tt> tunes a single parameter.</p>
+<dl class="attribute">
+<dt id="Orange.tuning.Tune1Parameter.parameter">
+<tt class="descname">parameter</tt><a class="headerlink" href="#Orange.tuning.Tune1Parameter.parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the parameter (or a list of names, if the same parameter is
+stored at multiple places - see the examples) to be tuned.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.Tune1Parameter.values">
+<tt class="descname">values</tt><a class="headerlink" href="#Orange.tuning.Tune1Parameter.values" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of parameter&#8217;s values to be tried.</p>
+</dd></dl>
+
+<p>To show how it works, we shall fit the minimal number of examples in a leaf
+for a tree classifier.</p>
+<p>part of <a class="reference download internal" href="../../_downloads/optimization-tuning1.py"><tt class="xref download docutils literal"><span class="pre">optimization-tuning1.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">()</span>
+<span class="n">voting</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting&quot;</span><span class="p">)</span>
+<span class="n">tuner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">tuning</span><span class="o">.</span><span class="n">Tune1Parameter</span><span class="p">(</span><span class="n">learner</span><span class="o">=</span><span class="n">learner</span><span class="p">,</span>
+                           <span class="n">parameter</span><span class="o">=</span><span class="s">&quot;min_subset&quot;</span><span class="p">,</span>
+                           <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">],</span>
+                           <span class="n">evaluate</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">tuner</span><span class="p">(</span><span class="n">voting</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Optimal setting: &quot;</span><span class="p">,</span> <span class="n">learner</span><span class="o">.</span><span class="n">min_subset</span>
+</pre></div>
+</div>
+<p>Set up like this, when the tuner is called, set <tt class="docutils literal"><span class="pre">learner.min_subset</span></tt> to 
+1, 2, 3, 4, 5, 10, 15 and 20, and measure the AUC in 5-fold cross 
+validation. It will then reset the learner.minSubset to the optimal value
+found and, since we left <tt class="docutils literal"><span class="pre">return_what</span></tt> at the default 
+(<tt class="docutils literal"><span class="pre">RETURN_CLASSIFIER</span></tt>), construct and return the classifier from the 
+entire data set. So, what we get is a  classifier, but if we&#8217;d also like 
+to know what the optimal value was, we can get it from
+<tt class="docutils literal"><span class="pre">learner.min_subset</span></tt>.</p>
+<p>Tuning is of course not limited to setting numeric parameters. You can, for
+instance, try to find the optimal criteria for assessing the quality of
+attributes by tuning <tt class="docutils literal"><span class="pre">parameter=&quot;measure&quot;</span></tt>, trying settings like
+<tt class="docutils literal"><span class="pre">values=[Orange.feature.scoring.GainRatio(),</span> <span class="pre">Orange.feature.scoring.Gini()]</span></tt></p>
+<p>Since the tuner returns a classifier and thus behaves like a learner, it
+can be used in a cross-validation. Let us see whether a tuning tree indeed
+enhances the AUC or not. We shall reuse the tuner from above, add another
+tree learner, and test them both.</p>
+<p>part of <a class="reference download internal" href="../../_downloads/optimization-tuning1.py"><tt class="xref download docutils literal"><span class="pre">optimization-tuning1.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">untuned</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">()</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">([</span><span class="n">untuned</span><span class="p">,</span> <span class="n">tuner</span><span class="p">],</span> <span class="n">voting</span><span class="p">)</span>
+<span class="n">AUCs</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Untuned tree: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">AUCs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;Tuned tree: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">AUCs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>This can be time consuming: for each of 8 values for <tt class="docutils literal"><span class="pre">min_subset</span></tt> it will
+perform 5-fold cross validation inside a 10-fold cross validation -
+altogether 400 trees. Plus, it will learn the optimal tree afterwards for
+each fold. Adding a tree without tuning, that makes 420 trees build in 
+total.</p>
+<p>Nevertheless, results are good:</p>
+<div class="highlight-python"><pre>Untuned tree: 0.930
+Tuned tree: 0.986</pre>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.tuning.TuneMParameters">
+<em class="property">class </em><tt class="descclassname">Orange.tuning.</tt><tt class="descname">TuneMParameters</tt><a class="headerlink" href="#Orange.tuning.TuneMParameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>The use of <tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.TuneMParameters</span></tt> differs from 
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.Tune1Parameter</span></tt> only in specification of tuning
+parameters.</p>
+<dl class="attribute">
+<dt id="Orange.tuning.TuneMParameters.parameters">
+<tt class="descname">parameters</tt><a class="headerlink" href="#Orange.tuning.TuneMParameters.parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of two-element tuples, each containing the name of a parameter
+and its possible values.</p>
+</dd></dl>
+
+<p>For example we can try to tune both the minimal number of instances in 
+leaves and the splitting criteria by setting the tuner as follows:</p>
+<p><a class="reference download internal" href="../../_downloads/optimization-tuningm.py"><tt class="xref download docutils literal"><span class="pre">optimization-tuningm.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">()</span>
+<span class="n">voting</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;voting&quot;</span><span class="p">)</span>
+<span class="n">tuner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">tuning</span><span class="o">.</span><span class="n">TuneMParameters</span><span class="p">(</span><span class="n">learner</span><span class="o">=</span><span class="n">learner</span><span class="p">,</span>
+             <span class="n">parameters</span><span class="o">=</span><span class="p">[(</span><span class="s">&quot;min_subset&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+                         <span class="p">(</span><span class="s">&quot;measure&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">GainRatio</span><span class="p">(),</span> 
+                                      <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">Gini</span><span class="p">()])],</span>
+             <span class="n">evaluate</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">)</span>
+
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">tuner</span><span class="p">(</span><span class="n">voting</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="setting-optimal-thresholds">
+<h2>Setting Optimal Thresholds<a class="headerlink" href="#setting-optimal-thresholds" title="Permalink to this headline">¶</a></h2>
+<p>Some models may perform well in terms of AUC which measures the ability to
+distinguish between instances of two classes, but have low classifications
+accuracies. The reason may be in the threshold: in binary problems, classifiers
+usually classify into the more probable class, while sometimes, when class
+distributions are highly skewed, a modified threshold would give better
+accuracies. Here are two classes that can help.</p>
+<dl class="class">
+<dt id="Orange.tuning.ThresholdLearner">
+<em class="property">class </em><tt class="descclassname">Orange.tuning.</tt><tt class="descname">ThresholdLearner</tt><big>(</big><em>learner=None</em>, <em>store_curve=False</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.tuning.ThresholdLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.ThresholdLearner</span></tt> is a class that wraps 
+another learner. When given the data, it calls the wrapped learner to build
+a classifier, than it uses the classifier to predict the class
+probabilities on the training instances. Storing the probabilities, it
+computes the threshold that would give the optimal classification accuracy.
+Then it wraps the classifier and the threshold into an instance of
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.ThresholdClassifier</span></tt>.</p>
+<p>Note that the learner doesn&#8217;t perform internal cross-validation. Also, the
+learner doesn&#8217;t work for multivalued classes.</p>
+<p><tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.ThresholdLearner</span></tt> has the same interface as any
+learner: if the constructor is given data, it returns a classifier,
+else it returns a learner. It has two attributes.</p>
+<dl class="attribute">
+<dt id="Orange.tuning.ThresholdLearner.learner">
+<tt class="descname">learner</tt><a class="headerlink" href="#Orange.tuning.ThresholdLearner.learner" title="Permalink to this definition">¶</a></dt>
+<dd><p>The wrapped learner, for example an instance of
+<a class="reference internal" href="Orange.classification.bayes.html#Orange.classification.bayes.NaiveLearner" title="Orange.classification.bayes.NaiveLearner"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.bayes.NaiveLearner</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.ThresholdLearner.store_curve">
+<tt class="descname">store_curve</tt><a class="headerlink" href="#Orange.tuning.ThresholdLearner.store_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <cite>True</cite>, the resulting classifier will contain an attribute curve, with
+a list of tuples containing thresholds and classification accuracies at
+that threshold (default <cite>False</cite>).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.tuning.ThresholdClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.tuning.</tt><tt class="descname">ThresholdClassifier</tt><big>(</big><em>classifier</em>, <em>threshold</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#Orange.tuning.ThresholdClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.ThresholdClassifier</span></tt>, used by both 
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.ThredholdLearner</span></tt> and
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.optimization.ThresholdLearner_fixed</span></tt> is therefore another
+wrapper class, containing a classifier and a threshold. When it needs to
+classify an instance, it calls the wrapped classifier to predict
+probabilities. The example will be classified into the second class only if
+the probability of that class is above the threshold.</p>
+<dl class="attribute">
+<dt id="Orange.tuning.ThresholdClassifier.classifier">
+<tt class="descname">classifier</tt><a class="headerlink" href="#Orange.tuning.ThresholdClassifier.classifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>The wrapped classifier, normally the one related to the ThresholdLearner&#8217;s
+learner, e.g. an instance of
+<a class="reference internal" href="Orange.classification.bayes.html#Orange.classification.bayes.NaiveLearner" title="Orange.classification.bayes.NaiveLearner"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.bayes.NaiveLearner</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.tuning.ThresholdClassifier.threshold">
+<tt class="descname">threshold</tt><a class="headerlink" href="#Orange.tuning.ThresholdClassifier.threshold" title="Permalink to this definition">¶</a></dt>
+<dd><p>The threshold for classification into the second class.</p>
+</dd></dl>
+
+<p>The two attributes can be specified set as attributes or given to the
+constructor as ordinary arguments.</p>
+</dd></dl>
+
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>This is how you use the learner.</p>
+<p>part of <a class="reference download internal" href="../../_downloads/optimization-thresholding1.py"><tt class="xref download docutils literal"><span class="pre">optimization-thresholding1.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">bupa</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bupa&quot;</span><span class="p">)</span>
+
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">()</span>
+<span class="n">thresh</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">tuning</span><span class="o">.</span><span class="n">ThresholdLearner</span><span class="p">(</span><span class="n">learner</span><span class="o">=</span><span class="n">learner</span><span class="p">)</span>
+<span class="n">thresh80</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">tuning</span><span class="o">.</span><span class="n">ThresholdLearner_fixed</span><span class="p">(</span><span class="n">learner</span><span class="o">=</span><span class="n">learner</span><span class="p">,</span>
+                                                      <span class="n">threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">([</span><span class="n">learner</span><span class="p">,</span> <span class="n">thresh</span><span class="p">,</span> <span class="n">thresh80</span><span class="p">],</span> <span class="n">bupa</span><span class="p">)</span>
+<span class="n">CAs</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">CA</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;W/out threshold adjustement: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">CAs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;With adjusted thredhold: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">CAs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;With threshold at 0.80: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">CAs</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The output:</p>
+<div class="highlight-python"><pre>W/out threshold adjustement: 0.633
+With adjusted thredhold: 0.659
+With threshold at 0.80: 0.449</pre>
+</div>
+<p>part of <a class="reference download internal" href="../../_downloads/optimization-thresholding2.py"><tt class="xref download docutils literal"><span class="pre">optimization-thresholding2.py</span></tt></a></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">bupa</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;bupa&quot;</span><span class="p">)</span>
+<span class="n">ri2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">SubsetIndices2</span><span class="p">(</span><span class="n">bupa</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">)</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">bupa</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ri2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">bupa</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">ri2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">bayes</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+
+<span class="n">thresholds</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">.</span><span class="mi">8</span><span class="p">]</span>
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">Orange</span><span class="o">.</span><span class="n">tuning</span><span class="o">.</span><span class="n">ThresholdClassifier</span><span class="p">(</span><span class="n">bayes</span><span class="p">,</span> <span class="n">thr</span><span class="p">)</span> <span class="k">for</span> <span class="n">thr</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">]</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">test_on_data</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">test</span><span class="p">)</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">confusion_matrices</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="k">print</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">thr</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">thresholds</span><span class="p">):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%1.2f</span><span class="s">: TP </span><span class="si">%5.3f</span><span class="s">, TN </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">thr</span><span class="p">,</span> <span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">TP</span><span class="p">,</span> <span class="n">cm</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">TN</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The script first divides the data into training and testing subsets. It trains
+a naive Bayesian classifier and than wraps it into
+<tt class="xref py py-obj docutils literal"><span class="pre">ThresholdClassifiers</span></tt> with thresholds of .2, .5 and
+.8. The three models are tested on the left-out data, and we compute the
+confusion matrices from the results. The printout:</p>
+<div class="highlight-python"><pre>0.20: TP 60.000, TN 1.000
+0.50: TP 42.000, TN 24.000
+0.80: TP 2.000, TN 43.000</pre>
+</div>
+<p>shows how the varying threshold changes the balance between the number of true
+positives and negatives.</p>
+<dl class="class">
+<dt id="Orange.tuning.PreprocessedLearner">
+<em class="property">class </em><tt class="descclassname">Orange.tuning.</tt><tt class="descname">PreprocessedLearner</tt><big>(</big><em>preprocessor=None</em>, <em>learner=None</em><big>)</big><a class="headerlink" href="#Orange.tuning.PreprocessedLearner" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

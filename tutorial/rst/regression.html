@@ -1,0 +1,188 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Regression &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Regression</a><ul>
+<li><a class="reference internal" href="#handful-of-regressors">Handful of Regressors</a></li>
+<li><a class="reference internal" href="#cross-validation">Cross Validation</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="regression">
+<h1>Regression<a class="headerlink" href="#regression" title="Permalink to this headline">¶</a></h1>
+<p id="index-0">From the interface point of view, regression methods in Orange are very similar to classification. Both intended for supervised data mining, they require class-labeled data. Just like in classification, regression is implemented with learners and regression models (regressors). Regression learners are objects that accept data and return regressors. Regression models are given data items to predict the value of continuous class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing&quot;</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">LinearRegressionLearner</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">learner</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;pred obs&quot;</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s"> </span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">get_class</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="section" id="handful-of-regressors">
+<h2>Handful of Regressors<a class="headerlink" href="#handful-of-regressors" title="Permalink to this headline">¶</a></h2>
+<p id="index-1">Let us start with regression trees. Below is an example script that builds the tree from data on housing prices and prints out the tree in textual form:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing.tab&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">m_pruning</span><span class="o">=</span><span class="mf">2.</span><span class="p">,</span> <span class="n">min_instances</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">tree</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The script outputs the tree:</p>
+<div class="highlight-python"><pre>RM&lt;=6.941: 19.9
+RM&gt;6.941
+|    RM&lt;=7.437
+|    |    CRIM&gt;7.393: 14.4
+|    |    CRIM&lt;=7.393
+|    |    |    DIS&lt;=1.886: 45.7
+|    |    |    DIS&gt;1.886: 32.7
+|    RM&gt;7.437
+|    |    TAX&lt;=534.500: 45.9
+|    |    TAX&gt;534.500: 21.9</pre>
+</div>
+<p>Following is initialization of few other regressors and their prediction of the first five data instances in housing price data set:</p>
+<div class="highlight-python" id="index-2"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing&quot;</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">train</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">([</span><span class="n">d</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span> <span class="k">if</span> <span class="n">d</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">test</span><span class="p">])</span>
+
+<span class="n">lin</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">LinearRegressionLearner</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">lin</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;lin&quot;</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">forest</span><span class="o">.</span><span class="n">RandomForestLearner</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">rf</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;rf&quot;</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;tree&quot;</span>
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">lin</span><span class="p">,</span> <span class="n">rf</span><span class="p">,</span> <span class="n">tree</span><span class="p">]</span>
+
+<span class="k">print</span> <span class="s">&quot;y    &quot;</span> <span class="o">+</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%-4s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">l</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">models</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">test</span><span class="p">[:</span><span class="mi">3</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get_class</span><span class="p">()),</span>
+    <span class="k">print</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%4.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">model</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Looks like the housing prices are not that hard to predict:</p>
+<div class="highlight-python"><pre>y    lin  rf   tree
+12.7 11.3 15.3 19.1
+13.8 20.2 14.1 13.1
+19.3 20.8 20.7 23.3</pre>
+</div>
+</div>
+<div class="section" id="cross-validation">
+<h2>Cross Validation<a class="headerlink" href="#cross-validation" title="Permalink to this headline">¶</a></h2>
+<p>Just like for classification, the same evaluation module (<tt class="docutils literal"><span class="pre">Orange.evaluation</span></tt>) is available for regression. Its testing submodule includes procedures such as cross-validation, leave-one-out testing and similar, and functions in scoring submodule can assess the accuracy from the testing:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing.tab&quot;</span><span class="p">)</span>
+
+<span class="n">lin</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">LinearRegressionLearner</span><span class="p">()</span>
+<span class="n">lin</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;lin&quot;</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">forest</span><span class="o">.</span><span class="n">RandomForestLearner</span><span class="p">()</span>
+<span class="n">rf</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;rf&quot;</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">m_pruning</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;tree&quot;</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">lin</span><span class="p">,</span> <span class="n">rf</span><span class="p">,</span> <span class="n">tree</span><span class="p">]</span>
+
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">rmse</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">RMSE</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&quot;Learner  RMSE&quot;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">learners</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="s">&quot;{0:8}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">learners</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">rmse</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Random forest has the lowest root mean squared error:</p>
+<div class="highlight-python"><pre>Learner  RMSE
+lin      4.83
+rf       3.73
+tree     5.10</pre>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

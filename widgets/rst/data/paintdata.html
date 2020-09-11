@@ -1,0 +1,152 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Paint Data &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Paint Data</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#example">Example</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="paint-data">
+<span id="id1"></span><h1>Paint Data<a class="headerlink" href="#paint-data" title="Permalink to this headline">¶</a></h1>
+<img alt="Paint Data widget icon" class="widget-category-data widget-icon" src="../../../_images/PaintData.svg" /><p>Paints the data on a 2D plane. Place individual data
+points or use brush to paint a larger data sets.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inputs:</dt>
+<dd><ul class="first last simple">
+<li>(None)</li>
+</ul>
+</dd>
+<dt>Outputs:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt><tt class="xref py py-obj docutils literal"><span class="pre">Data</span></tt></dt>
+<dd><p class="first last">Attribute-valued data set created in the widget.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="description">
+<span id="my-reference-label"></span><h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The widget support the creation of the new data set by visually placing the
+data points on the two-dimension plane. Data points can be placed on the
+plane individually (<tt class="xref py py-obj docutils literal"><span class="pre">Put</span></tt>) or in a larger number by brushing
+(<tt class="xref py py-obj docutils literal"><span class="pre">Brush</span></tt>). Data points can belong to classes if the data
+is intended to be used in supervised learning.</p>
+<img alt="Paint Data widget" src="../../../_images/PaintData-stamped.png" />
+<ol class="stamp-list arabic simple">
+<li>A 2D drawing canvas with fixed coordinate system.</li>
+<li>Select the class to paint its data instances. Add or remove classes.
+Use one class only to create classless, unsupervised data sets.</li>
+<li>Drawing tools. Paint data points with <tt class="xref py py-obj docutils literal"><span class="pre">Brush</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">Paint</span></tt>.
+Select (and then remove or relocate) them with <tt class="xref py py-obj docutils literal"><span class="pre">Select</span></tt> or
+<tt class="xref py py-obj docutils literal"><span class="pre">Lasso</span></tt>. Reposition data points with <tt class="xref py py-obj docutils literal"><span class="pre">Jitter</span></tt> or <tt class="xref py py-obj docutils literal"><span class="pre">Magnet</span></tt>.</li>
+<li>Each of the tools may have its own options shown in this box.</li>
+<li>Undo or redo the editing actions.</li>
+<li>If <tt class="xref py py-obj docutils literal"><span class="pre">Commit</span> <span class="pre">on</span> <span class="pre">change</span></tt> is checked, the data would be sent to the
+output channel of the widget upon any change. This operation could be
+slow when data sets become large.</li>
+</ol>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>In the workflow below we have painted an unsupervised (class-less) data
+set and sent it to <a class="reference internal" href="datatable.html#data-table"><em>Data Table</em></a> and <a class="reference internal" href="../unsupervized/kmeansclustering.html#k-means-clustering"><em>K-Means Clustering</em></a> clustering
+widget. We have painted three clusters, which were, at least in a number
+of clusters correctly identified by the k-means clustering.</p>
+<img alt="Example schema with File widget" src="../../../_images/PaintData-Workflow.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

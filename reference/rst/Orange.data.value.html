@@ -1,0 +1,279 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Values (Value) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Values (<tt class="docutils literal"><span class="pre">Value</span></tt>)</a><ul>
+<li><a class="reference internal" href="#casting-and-comparison-of-values">Casting and comparison of values</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="values-value">
+<h1>Values (<tt class="docutils literal"><span class="pre">Value</span></tt>)<a class="headerlink" href="#values-value" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Orange.data.Value">
+<em class="property">class </em><tt class="descclassname">Orange.data.</tt><tt class="descname">Value</tt><a class="headerlink" href="#Orange.data.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains a value of a variable. Value can be discrete,
+continuous or of some other type, like discrete or continuous
+distribution, or a string.</p>
+<p>Values are not assigned as references. For instance,
+when taking a value from a data instance (e.g. <tt class="docutils literal"><span class="pre">value</span> <span class="pre">=</span> <span class="pre">data[2]</span></tt>),
+the result is a copy of the value; changing it does not affect the
+original data instance.</p>
+<dl class="attribute">
+<dt id="Orange.data.Value.value">
+<tt class="descname">value</tt><a class="headerlink" href="#Orange.data.Value.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>The actual value.</p>
+<ul class="simple">
+<li>If the <cite>Value</cite> is numeric, <cite>value</cite> is a number.</li>
+<li>If it is discrete and the variable descriptor is present
+(<a class="reference internal" href="#Orange.data.Value.variable" title="Orange.data.Value.variable"><tt class="xref py py-obj docutils literal"><span class="pre">variable</span></tt></a> is not <a class="reference external" href="http://docs.python.org/library/constants.html#None" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">None</span></tt></a>), <cite>value</cite> is a string with
+the symbolic value (as retrieved from
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Discrete.values" title="Orange.feature.Discrete.values"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Discrete.values</span></tt></a>).</li>
+<li>If it is discrete and the variable descriptor is unknown,
+<cite>value</cite> is a string with the number representing the value
+index, enclosed in brackets.</li>
+<li>If the value is missing, <cite>value</cite> is a string <tt class="docutils literal"><span class="pre">'?'</span></tt>, <tt class="docutils literal"><span class="pre">'~'</span></tt>
+or <tt class="docutils literal"><span class="pre">'.'</span></tt>  for don&#8217;t know, don&#8217;t care and other, respectively.</li>
+</ul>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.Value.svalue">
+<tt class="descname">svalue</tt><a class="headerlink" href="#Orange.data.Value.svalue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores a value that corresponds to a variable that is neither
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Discrete" title="Orange.feature.Discrete"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Discrete</span></tt></a> nor
+<a class="reference internal" href="Orange.feature.descriptor.html#Orange.feature.Continuous" title="Orange.feature.Continuous"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Continuous</span></tt></a> or a distribution of a
+discrete or continuous value.</p>
+<p>This attribute is most often used for values of
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.StringVariable</span></tt>; in that case <cite>svalue</cite>
+is an instance of <tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.StringValue</span></tt>. Distributions
+are seldom used; when <cite>svalue</cite> contains a distribution, it is
+represented with an instance of
+<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Discrete" title="Orange.statistics.distribution.Discrete"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.distribution.Discrete</span></tt></a> or
+<a class="reference internal" href="Orange.statistics.distribution.html#Orange.statistics.distribution.Continuous" title="Orange.statistics.distribution.Continuous"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.statistics.distribution.Continuous</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.Value.variable">
+<tt class="descname">variable</tt><a class="headerlink" href="#Orange.data.Value.variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Descriptor related to the value. Can be <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.Value.var_type">
+<tt class="descname">var_type</tt><a class="headerlink" href="#Orange.data.Value.var_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read-only descriptor that gives the variable type. Can be
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Type.Discrete</span></tt>, <tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Type.Continuous</span></tt>,
+<tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Type.String</span></tt> or <tt class="xref py py-obj docutils literal"><span class="pre">Orange.feature.Type.Other</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.data.Value.value_type">
+<tt class="descname">value_type</tt><a class="headerlink" href="#Orange.data.Value.value_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells whether the value is known
+(<tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value.Regular</span></tt>) or not
+(<tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value.DC</span></tt>. <tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value.DK</span></tt>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Value.__init__">
+<tt class="descname">__init__</tt><big>(</big><em>variable</em><span class="optional">[</span>, <em>value</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#Orange.data.Value.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Construct a value with the given descriptor. Value can be any
+object that the descriptor understands. For discrete
+variables, this can be a string or an index (an integer number),
+for continuous it can be a string or a number. If the value is
+omitted, it is set to unknown (<tt class="xref py py-obj docutils literal"><span class="pre">Orange.data.Value.DK</span></tt>).</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;fruit&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;plum&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">])</span>
+<span class="n">an_apple</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s">&quot;apple&quot;</span><span class="p">)</span>
+<span class="n">another_apple</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">unknown_fruit</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="n">v2</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Continuous</span><span class="p">(</span><span class="s">&quot;iq&quot;</span><span class="p">)</span>
+<span class="n">genius</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+<span class="n">troll</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">v2</span><span class="p">,</span> <span class="s">&quot;42&quot;</span><span class="p">)</span>
+<span class="n">stranger</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">v2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>variable</strong> &#8211; variable descriptor</li>
+<li><strong>value</strong> (<em>int, float or string, or another type accepted by descriptor</em>) &#8211; A value</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt>
+<tt class="descname">__init__</tt><big>(</big><em>value</em><big>)</big></dt>
+<dd><p>Construct either a discrete value, if the argument is an
+integer, or a continuous one, if the argument is a
+floating-point number. Descriptor is set to <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>int or float</em>) &#8211; A value</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Value.native">
+<tt class="descname">native</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.Value.native" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value in a &#8220;native&#8221; Python form: strings for
+discrete and undefined values and floating-point numbers for
+continuous values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Value.is_DC">
+<tt class="descname">is_DC</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.Value.is_DC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="docutils literal"><span class="pre">True</span></tt> if value is &#8220;don&#8217;t care&#8221;.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Value.is_DK">
+<tt class="descname">is_DK</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.Value.is_DK" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="docutils literal"><span class="pre">True</span></tt> if value is &#8220;don&#8217;t know&#8221;.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.data.Value.is_special">
+<tt class="descname">is_special</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.data.Value.is_special" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <tt class="docutils literal"><span class="pre">True</span></tt> if value is either &#8220;don&#8217;t know&#8221; or &#8220;don&#8217;t care&#8221;.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="casting-and-comparison-of-values">
+<h2>Casting and comparison of values<a class="headerlink" href="#casting-and-comparison-of-values" title="Permalink to this headline">¶</a></h2>
+<p>Discrete and continuous values can be cast to Python types <a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">int</span></tt></a>,
+<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">float</span></tt></a>, <a class="reference external" href="http://docs.python.org/library/functions.html#long" title="(in Python v2.7)"><tt class="xref py py-obj docutils literal"><span class="pre">long</span></tt></a>, to strings and to boolean values. A value is
+considered true if it is not undefined. Continuous values support
+arithmetic operations.</p>
+<p>Values can be compared with each other or with ordinary numbers.
+All discrete variables are treated as ordinal; values are
+compared by their respective indices and not in alphabetical order
+of their symbolic representations. When comparing values
+corresponding to different descriptors, Orange checks whether the
+order is unambiguous. Here are two such values:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">deg3</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span>
+    <span class="s">&quot;deg3&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;little&quot;</span><span class="p">,</span> <span class="s">&quot;medium&quot;</span><span class="p">,</span> <span class="s">&quot;big&quot;</span><span class="p">])</span>
+<span class="n">deg4</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span>
+    <span class="s">&quot;deg4&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;tiny&quot;</span><span class="p">,</span> <span class="s">&quot;little&quot;</span><span class="p">,</span> <span class="s">&quot;big&quot;</span><span class="p">,</span> <span class="s">&quot;huge&quot;</span><span class="p">])</span>
+<span class="n">val3</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">deg3</span><span class="p">)</span>
+<span class="n">val4</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">deg4</span><span class="p">)</span>
+<span class="n">val3</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;medium&quot;</span>
+<span class="n">val4</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;little&quot;</span>
+</pre></div>
+</div>
+<p>Given this order, &#8220;medium&#8221; and &#8220;little&#8221; can be compared since it is known,
+from <tt class="docutils literal"><span class="pre">deg3</span></tt>, that &#8220;little&#8221; is less than &#8220;medium&#8221;.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">val3</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;medium&quot;</span>
+<span class="n">val4</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;huge&quot;</span>
+</pre></div>
+</div>
+<p>These two values cannot be compared since they do not appear in the same
+variable. (Orange cannot use transitivity to conclude that medium is
+less than huge since medium is less than big and big is less than
+huge.)</p>
+<p>Two values also cannot be compared when they have different order in
+the two variables.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

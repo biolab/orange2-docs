@@ -1,0 +1,283 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>GUI elements for plots (owplotgui) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">GUI elements for plots (<tt class="docutils literal"><span class="pre">owplotgui</span></tt>)</a></li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-OrangeWidgets.plot.owplotgui"></span><div class="section" id="gui-elements-for-plots-owplotgui">
+<span id="index-0"></span><h1>GUI elements for plots (<tt class="docutils literal"><span class="pre">owplotgui</span></tt>)<a class="headerlink" href="#gui-elements-for-plots-owplotgui" title="Permalink to this headline">¶</a></h1>
+<p>This module contains functions and classes for creating GUI elements commonly used for plots.</p>
+<dl class="class">
+<dt id="OrangeWidgets.plot.owplotgui.OrientedWidget">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owplotgui.</tt><tt class="descname">OrientedWidget</tt><big>(</big><em>orientation</em>, <em>parent</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplotgui.OrientedWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QWidget</span></tt></p>
+<p>A simple QWidget with a box layout that matches its <tt class="docutils literal"><span class="pre">orientation</span></tt>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owplotgui.StateButtonContainer">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owplotgui.</tt><tt class="descname">StateButtonContainer</tt><big>(</big><em>gui</em>, <em>orientation</em>, <em>buttons</em>, <em>parent</em>, <em>nomargin=False</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplotgui.StateButtonContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#OrangeWidgets.plot.owplotgui.OrientedWidget" title="OrangeWidgets.plot.owplotgui.OrientedWidget"><tt class="xref py py-class docutils literal"><span class="pre">OrangeWidgets.plot.owplotgui.OrientedWidget</span></tt></a></p>
+<p>This class can contain any number of checkable buttons, of which only one can be selected at any time.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gui</strong> (<a class="reference internal" href="#OrangeWidgets.plot.OWPlotGUI" title="OrangeWidgets.plot.OWPlotGUI"><tt class="xref py py-obj docutils literal"><span class="pre">OWPlotGUI</span></tt></a>) &#8211; Used to create containers and buttons</li>
+<li><strong>buttons</strong> (<em>list of (int or tuple)</em>) &#8211; A list of button identifiers to be added to this toolbar</li>
+<li><strong>orientation</strong> &#8211; The orientation of this toolbar, either Qt.Vertical or Qt.Horizontal</li>
+<li><strong>parent</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">QWidget</span></tt>) &#8211; The toolbar&#8217;s parent widget</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owplotgui.OWToolbar">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owplotgui.</tt><tt class="descname">OWToolbar</tt><big>(</big><em>gui</em>, <em>text</em>, <em>orientation</em>, <em>buttons</em>, <em>parent</em>, <em>nomargin=False</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplotgui.OWToolbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#OrangeWidgets.plot.owplotgui.OrientedWidget" title="OrangeWidgets.plot.owplotgui.OrientedWidget"><tt class="xref py py-class docutils literal"><span class="pre">OrangeWidgets.plot.owplotgui.OrientedWidget</span></tt></a></p>
+<p>A toolbar is a container that can contain any number of buttons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>gui</strong> (<a class="reference internal" href="#OrangeWidgets.plot.OWPlotGUI" title="OrangeWidgets.plot.OWPlotGUI"><tt class="xref py py-obj docutils literal"><span class="pre">OWPlotGUI</span></tt></a>) &#8211; Used to create containers and buttons</li>
+<li><strong>text</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The name of this toolbar</li>
+<li><strong>orientation</strong> &#8211; The orientation of this toolbar, either Qt.Vertical or Qt.Horizontal</li>
+<li><strong>buttons</strong> (<em>list of (int or tuple)</em>) &#8211; A list of button identifiers to be added to this toolbar</li>
+<li><strong>parent</strong> (<tt class="xref py py-obj docutils literal"><span class="pre">QWidget</span></tt>) &#8211; The toolbar&#8217;s parent widget</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.owplotgui.OWButton">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.owplotgui.</tt><tt class="descname">OWButton</tt><big>(</big><em>action=None</em>, <em>parent=None</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.owplotgui.OWButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">PyQt4.QtGui.QToolButton</span></tt></p>
+<p>A custom tool button which signal when its down state changes</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="OrangeWidgets.plot.OWPlotGUI">
+<em class="property">class </em><tt class="descclassname">OrangeWidgets.plot.</tt><tt class="descname">OWPlotGUI</tt><big>(</big><em>plot</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class contains functions to create common user interface elements (QWidgets)
+for configuration and interaction with the <tt class="docutils literal"><span class="pre">plot</span></tt>.</p>
+<p>It provides shorter versions of some methods in <a class="reference internal" href="owgui.html#module-OWGUI" title="OWGUI"><tt class="xref py py-obj docutils literal"><span class="pre">OWGUI</span></tt></a> that are directly related to an <a class="reference internal" href="OrangeWidgets.plot.owplot.html#OrangeWidgets.plot.OWPlot" title="OrangeWidgets.plot.OWPlot"><tt class="xref py py-obj docutils literal"><span class="pre">OWPlot</span></tt></a> object.</p>
+<p>Normally, you don&#8217;t have to construct this class manually. Instead, first create the plot, 
+then use the <a class="reference internal" href="OrangeWidgets.plot.owplot.html#OrangeWidgets.plot.owplot.OWPlot.gui" title="OrangeWidgets.plot.owplot.OWPlot.gui"><tt class="xref py py-attr docutils literal"><span class="pre">OWPlot.gui</span></tt></a> attribute.</p>
+<p>Most methods in this class have similar arguments, so they are explaned here in a single place.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>widget</strong> (<em>QWidget</em>) &#8211; The parent widget which will contain the newly created widget.</li>
+<li><strong>id</strong> (<em>int or tuple</em>) &#8211; If <tt class="docutils literal"><span class="pre">id</span></tt> is an <tt class="docutils literal"><span class="pre">int</span></tt>, a button is constructed from the default table. 
+Otherwise, <tt class="docutils literal"><span class="pre">id</span></tt> must be tuple with 5 or 6 elements. These elements
+are explained in the next table.</li>
+<li><strong>ids</strong> (<em>list of id</em>) &#8211; A list of widget identifiers</li>
+<li><strong>text</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The text displayed on the widget</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>When using widgets that are specific to your visualization and not included here, you have to provide your
+own widgets id&#8217;s. They are a tuple with the following members:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>int or str</em>) &#8211; An optional unique identifier for the widget. 
+This is only needed if you want to retrive this widget using <tt class="xref py py-obj docutils literal"><span class="pre">OWToolbar.buttons</span></tt>.</li>
+<li><strong>text</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The text to be displayed on or next to the widget</li>
+<li><strong>attr_name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; Name of attribute which will be set when the button is clicked. 
+If this widget is checkable, its check state will be set
+according to the current value of this attribute. 
+If this parameter is empty or None, no attribute will be read or set.</li>
+<li><strong>attr_value</strong> &#8211; The value that will be assigned to the <tt class="docutils literal"><span class="pre">attr_name</span></tt> when the button is clicked.</li>
+<li><strong>callback</strong> (<em>str or function</em>) &#8211; Function to be called when the button is clicked. 
+If a string is passed as <tt class="docutils literal"><span class="pre">callback</span></tt>, a method by that name of <tt class="docutils literal"><span class="pre">plot</span></tt> will be called. 
+If this parameter is empty or <tt class="docutils literal"><span class="pre">None</span></tt>, no function will be called</li>
+<li><strong>icon_name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; The filename of the icon for this widget, without the &#8216;.png&#8217; suffix.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.alpha_value_slider">
+<tt class="descname">alpha_value_slider</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.alpha_value_slider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a slider that controls point transparency</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.animations_check_box">
+<tt class="descname">animations_check_box</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.animations_check_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a check box that enabled or disables animations</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.antialiasing_check_box">
+<tt class="descname">antialiasing_check_box</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.antialiasing_check_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a check box that toggles the Antialiasing of the plot</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.create_box">
+<tt class="descname">create_box</tt><big>(</big><em>ids</em>, <em>widget</em>, <em>name</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.create_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <tt class="xref py py-obj docutils literal"><span class="pre">QGroupBox</span></tt> with text <tt class="docutils literal"><span class="pre">name</span></tt> and adds it to <tt class="docutils literal"><span class="pre">widget</span></tt>. 
+The <tt class="docutils literal"><span class="pre">ids</span></tt> argument is a list of widget ID&#8217;s that will be added to this box</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.menu_button">
+<tt class="descname">menu_button</tt><big>(</big><em>main_action_id</em>, <em>ids</em>, <em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.menu_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an <a class="reference internal" href="#OrangeWidgets.plot.owplotgui.OWButton" title="OrangeWidgets.plot.owplotgui.OWButton"><tt class="xref py py-obj docutils literal"><span class="pre">OWButton</span></tt></a> with a popup-menu and adds it to the parent <tt class="docutils literal"><span class="pre">widget</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.plot_settings_box">
+<tt class="descname">plot_settings_box</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.plot_settings_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a box with controls for common plot settings</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.point_properties_box">
+<tt class="descname">point_properties_box</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.point_properties_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a box with controls for common point properties. 
+Currently, these properties are point size and transparency.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.point_size_slider">
+<tt class="descname">point_size_slider</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.point_size_slider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a slider that controls point size</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.show_legend_check_box">
+<tt class="descname">show_legend_check_box</tt><big>(</big><em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.show_legend_check_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a check box that shows and hides the plot legend</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.state_buttons">
+<tt class="descname">state_buttons</tt><big>(</big><em>orientation</em>, <em>buttons</em>, <em>widget</em>, <em>nomargin=False</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.state_buttons" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function creates a set of checkable buttons and connects them so that only one
+may be checked at a time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.tool_button">
+<tt class="descname">tool_button</tt><big>(</big><em>id</em>, <em>widget</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.tool_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an <a class="reference internal" href="#OrangeWidgets.plot.owplotgui.OWButton" title="OrangeWidgets.plot.owplotgui.OWButton"><tt class="xref py py-obj docutils literal"><span class="pre">OWButton</span></tt></a> and adds it to the parent <tt class="docutils literal"><span class="pre">widget</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="OrangeWidgets.plot.OWPlotGUI.toolbar">
+<tt class="descname">toolbar</tt><big>(</big><em>widget</em>, <em>text</em>, <em>orientation</em>, <em>buttons</em>, <em>nomargin=False</em><big>)</big><a class="headerlink" href="#OrangeWidgets.plot.OWPlotGUI.toolbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an <a class="reference internal" href="#OrangeWidgets.plot.owplotgui.OWToolbar" title="OrangeWidgets.plot.owplotgui.OWToolbar"><tt class="xref py py-obj docutils literal"><span class="pre">OWToolbar</span></tt></a> with the specified <tt class="docutils literal"><span class="pre">text</span></tt>, <tt class="docutils literal"><span class="pre">orientation</span></tt> and <tt class="docutils literal"><span class="pre">buttons</span></tt> and adds it to <tt class="docutils literal"><span class="pre">widget</span></tt>.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#OrangeWidgets.plot.owplotgui.OWToolbar" title="OrangeWidgets.plot.owplotgui.OWToolbar"><tt class="xref py py-obj docutils literal"><span class="pre">OWToolbar</span></tt></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,160 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Classification Tree Viewer &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Classification Tree Viewer</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="classification-tree-viewer">
+<span id="id1"></span><h1>Classification Tree Viewer<a class="headerlink" href="#classification-tree-viewer" title="Permalink to this headline">¶</a></h1>
+<img src="../../../_images/ClassificationTreeViewer.svg" /><p>A hierarchical browser for classification trees</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Classification Tree (orange.TreeClassifier)</dt>
+<dd><p class="first last">A classification tree</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples (orange.ExampleTable)</dt>
+<dd><p class="first last">Examples from the selected tree node.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Signal <tt class="xref py py-obj docutils literal"><span class="pre">Classified</span> <span class="pre">Examples</span></tt> sends data only if some tree node is
+selected and contains some examples.</p>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The widget shows the tree as a hierarchy in a textual form. Although less
+fancy than the graphical viewer, much more information fits in a Tree Viewer&#8217;s
+window than in the graphical viewer&#8217;s one.</p>
+<img alt="Classification Tree Viewer widget" src="../../../_images/ClassificationTreeViewer.png" />
+<p>The widget&#8217;s options allow choosing the columns to be displayed, setting the
+general depth of the display (individual nodes can, of course, be opened and
+closed manually).</p>
+<p>On the right hand side there is the tree, where it is possible to select a
+single node. The rule describing the particular node is shown at the bottom,
+and the training examples belonging to the node are put on the output.</p>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>The obvious use for the widget browsing the induced tree. Orange Canvas,
+however, offers something more exciting: the widget can be used for exploring
+the examples belonging to a certain node through using any other widget.
+If you are a beginner: this widget&#8217;s output behaves exactly like the output
+of the file widget, with the exception that instead of reading the examples
+from a file, it gets them from the tree.</p>
+<img alt="A schema with Classification Tree Viewer" src="../../../_images/ClassificationTreeViewer-Schema.png" />
+<p>In the above example we constructed a tree from the Wisconsin breast cancer
+data. We explore the tree nodes by feeding the examples in the Data Table,
+by checking the attribute value distributions for each node and
+seeing where the examples lie in the Scatter plot. To make the latter more
+informative, the Scatter plot shows the entire data set (examples from the
+File Widget), but marking - by plotting solid symbols instead of hollow ones
+- the examples belonging to the particular tree node, as shown in the
+snapshot below.</p>
+<img alt="Scatter plot showing the examples from a particular tree node" src="../../../_images/ClassificationTreeViewer-Example-S.png" />
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

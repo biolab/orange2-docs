@@ -1,0 +1,191 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Ensembles &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Ensembles</a><ul>
+<li><a class="reference internal" href="#bagging-and-boosting">Bagging and Boosting</a></li>
+<li><a class="reference internal" href="#stacking">Stacking</a></li>
+<li><a class="reference internal" href="#random-forests">Random Forests</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="ensembles">
+<span id="index-0"></span><h1>Ensembles<a class="headerlink" href="#ensembles" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://en.wikipedia.org/wiki/Ensemble_learning">Learning of ensembles</a> combines the predictions of separate models to gain in accuracy. The models may come from different training data samples, or may use different learners on the same data sets. Learners may also be diversified by changing their parameter sets.</p>
+<p>In Orange, ensembles are simply wrappers around learners. They behave just like any other learner. Given the data, they return models that can predict the outcome for any data instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">btree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">bagging</span><span class="o">.</span><span class="n">BaggedLearner</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">btree</span>
+<span class="go">BaggedLearner &#39;Bagging&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">btree</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="go">BaggedClassifier &#39;Bagging&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">btree</span><span class="p">(</span><span class="n">data</span><span class="p">)(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="go">&lt;orange.Value &#39;MEDV&#39;=&#39;24.6&#39;&gt;</span>
+</pre></div>
+</div>
+<p>The last line builds a predictor (<tt class="docutils literal"><span class="pre">btree(data)</span></tt>) and then uses it on a first data instance.</p>
+<p>Most ensemble methods can wrap either classification or regression learners. Exceptions are task-specialized techniques such as boosting.</p>
+<div class="section" id="bagging-and-boosting">
+<h2>Bagging and Boosting<a class="headerlink" href="#bagging-and-boosting" title="Permalink to this headline">¶</a></h2>
+<p id="index-1"><a class="reference external" href="http://en.wikipedia.org/wiki/Bootstrap_aggregating">Bootstrap aggregating</a>, or bagging, samples the training data uniformly and with replacement to train different predictors. Majority vote (classification) or mean (regression) across predictions then combines independent predictions into a single prediction.</p>
+<p id="index-2">In general, boosting is a technique that combines weak learners into a single strong learner. Orange implements <a class="reference external" href="http://en.wikipedia.org/wiki/AdaBoost">AdaBoost</a>, which assigns weights to data instances according to performance of the learner. AdaBoost uses these weights to iteratively sample the instances to focus on those that are harder to classify. In the aggregation AdaBoost emphases individual classifiers with better performance on their training sets.</p>
+<p>The following script wraps a classification tree in boosted and bagged learner, and tests the three learner through cross-validation:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;promoters&quot;</span><span class="p">)</span>
+
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">m_pruning</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;tree&quot;</span><span class="p">)</span>
+<span class="n">boost</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">boosting</span><span class="o">.</span><span class="n">BoostedLearner</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;boost&quot;</span><span class="p">)</span>
+<span class="n">bagg</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">bagging</span><span class="o">.</span><span class="n">BaggedLearner</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;bagg&quot;</span><span class="p">)</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">tree</span><span class="p">,</span> <span class="n">boost</span><span class="p">,</span> <span class="n">bagg</span><span class="p">]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">folds</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">results</span><span class="p">)):</span>
+    <span class="k">print</span> <span class="s">&quot;</span><span class="si">%5s</span><span class="s">: </span><span class="si">%.2f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The benefit of the two ensembling techniques, assessed in terms of area under ROC curve, is obvious:</p>
+<div class="highlight-python"><pre> tree: 0.83
+boost: 0.90
+ bagg: 0.91</pre>
+</div>
+</div>
+<div class="section" id="stacking">
+<h2>Stacking<a class="headerlink" href="#stacking" title="Permalink to this headline">¶</a></h2>
+<p id="index-3">Consider we partition a training set into held-in and held-out set. Assume that our taks is prediction of y, either probability of the target class in classification or a real value in regression. We are given a set of learners. We train them on held-in set, and obtain a vector of prediction on held-out set. Each element of the vector corresponds to prediction of individual predictor. We can now learn how to combine these predictions to form a target prediction, by training a new predictor on a data set of predictions and true value of y in held-out set. The technique is called <a class="reference external" href="http://en.wikipedia.org/wiki/Ensemble_learning#Stacking">stacked generalization</a>, or in short stacking. Instead of a single split to held-in and held-out data set, the vectors of predictions are obtained through cross-validation.</p>
+<p>Orange provides a wrapper for stacking that is given a set of base learners and a meta learner:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;promoters&quot;</span><span class="p">)</span>
+
+<span class="n">bayes</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;bayes&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">SimpleTreeLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;tree&quot;</span><span class="p">)</span>
+<span class="n">knn</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">kNNLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;knn&quot;</span><span class="p">)</span>
+
+<span class="n">base_learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">bayes</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">knn</span><span class="p">]</span>
+<span class="n">stack</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">stacking</span><span class="o">.</span><span class="n">StackedClassificationLearner</span><span class="p">(</span><span class="n">base_learners</span><span class="p">)</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">stack</span><span class="p">,</span> <span class="n">bayes</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">knn</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="si">%8s</span><span class="s">: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">res</span><span class="p">),</span> <span class="n">learners</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>By default, the meta classifier is naive Bayesian classifier. Changing this to logistic regression may be a good idea as well:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">stack</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">stacking</span><span class="o">.</span><span class="n">StackedClassificationLearner</span><span class="p">(</span><span class="n">base_learners</span><span class="p">,</span> \
+           <span class="n">meta_learner</span><span class="o">=</span><span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">logreg</span><span class="o">.</span><span class="n">LogRegLearner</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Stacking is often better than each of the base learners alone, as also demonstrated by running our script:</p>
+<div class="highlight-python"><pre>stacking: 0.967
+   bayes: 0.933
+    tree: 0.836
+     knn: 0.947</pre>
+</div>
+</div>
+<div class="section" id="random-forests">
+<h2>Random Forests<a class="headerlink" href="#random-forests" title="Permalink to this headline">¶</a></h2>
+<p id="index-4"><a class="reference external" href="http://en.wikipedia.org/wiki/Random_forest">Random forest</a> ensembles tree predictors. The diversity of trees is achieved in randomization of feature selection for node split criteria, where instead of the best feature one is picked arbitrary from a set of best features. Another source of randomization is a bootstrap sample of data from which the threes are developed. Predictions from usually several hundred trees are aggregated by voting. Constructing so many trees may be computationally demanding. Orange uses a special tree inducer (Orange.classification.tree.SimpleTreeLearner, considered by default) optimized for speed in random forest construction:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;promoters&quot;</span><span class="p">)</span>
+
+<span class="n">bayes</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">bayes</span><span class="o">.</span><span class="n">NaiveLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;bayes&quot;</span><span class="p">)</span>
+<span class="n">knn</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">knn</span><span class="o">.</span><span class="n">kNNLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;knn&quot;</span><span class="p">)</span>
+<span class="n">forest</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">ensemble</span><span class="o">.</span><span class="n">forest</span><span class="o">.</span><span class="n">RandomForestLearner</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;forest&quot;</span><span class="p">)</span>
+
+<span class="n">learners</span> <span class="o">=</span> <span class="p">[</span><span class="n">forest</span><span class="p">,</span> <span class="n">bayes</span><span class="p">,</span> <span class="n">knn</span><span class="p">]</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">(</span><span class="n">learners</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s">&quot;</span><span class="si">%6s</span><span class="s">: </span><span class="si">%5.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">l</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">AUC</span><span class="p">(</span><span class="n">res</span><span class="p">),</span> <span class="n">learners</span><span class="p">)])</span>
+</pre></div>
+</div>
+<p>Random forests are often superior when compared to other base classification or regression learners:</p>
+<div class="highlight-python"><pre>forest: 0.976
+ bayes: 0.935
+   knn: 0.952</pre>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

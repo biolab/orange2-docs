@@ -1,0 +1,157 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Data description (data) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Data description (<tt class="docutils literal"><span class="pre">data</span></tt>)</a><ul>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="data-description-data">
+<h1>Data description (<tt class="docutils literal"><span class="pre">data</span></tt>)<a class="headerlink" href="#data-description-data" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.table.html">Data table (<tt class="docutils literal"><span class="pre">Table</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.domain.html">Domain description (<tt class="docutils literal"><span class="pre">Domain</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.domain.html#domains-as-lists-and-dictionaries">Domains as lists and dictionaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.domain.html#conversions-between-domains">Conversions between domains</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.domain.html#multiple-classes">Multiple classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.domain.html#meta-attributes">Meta attributes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.instance.html">Data instances (<tt class="docutils literal"><span class="pre">Instance</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.instance.html#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.instance.html#meta-attributes">Meta attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.instance.html#hashing">Hashing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.value.html">Values (<tt class="docutils literal"><span class="pre">Value</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.value.html#casting-and-comparison-of-values">Casting and comparison of values</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.formats.html">Loading and saving data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.formats.html#orange-s-tab-delimited-format">Orange&#8217;s tab-delimited format</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Orange.data.formats.html#simplified-header">Simplified header</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Orange.data.formats.html#baskets">Baskets</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.formats.html#basket-format">Basket Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.formats.html#other-supported-data-formats">Other supported data formats</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.sample.html">Random sampling data (<tt class="docutils literal"><span class="pre">sample</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.filter.html">Filtering (<tt class="docutils literal"><span class="pre">filter</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.filter.html#filtering-missing-data">Filtering missing data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.filter.html#random-filter">Random filter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.filter.html#filtering-by-single-features">Filtering by single features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.filter.html#filtering-by-multiple-features">Filtering by multiple features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.filter.html#composition-of-filters">Composition of filters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.discretization.html">Data discretization (<tt class="docutils literal"><span class="pre">discretization</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.discretization.html#data-discretization-classes">Data discretization classes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.continuization.html">Continuization (<tt class="docutils literal"><span class="pre">continuization</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.imputation.html">Imputation (<tt class="docutils literal"><span class="pre">imputation</span></tt>)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.preprocess.html">Preprocessing (<tt class="docutils literal"><span class="pre">preprocess</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.preprocess.html#data-scaling-scaling">Data Scaling (<tt class="docutils literal"><span class="pre">scaling</span></tt>)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.utils.html">Utilities (<tt class="docutils literal"><span class="pre">utils</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.utils.html#value-transformers">Value transformers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.sql.html">SQL interface (<tt class="docutils literal"><span class="pre">sql</span></tt>)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Orange.data.sql.html#attribute-names-and-types">Attribute Names and Types</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Orange.data.outliers.html">Outlier detection (<tt class="docutils literal"><span class="pre">outliers</span></tt>)</a></li>
+</ul>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

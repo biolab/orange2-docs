@@ -1,0 +1,515 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Regression trees (tree) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Regression trees (<tt class="docutils literal"><span class="pre">tree</span></tt>)</a><ul>
+<li><a class="reference internal" href="#simpletreelearner">SimpleTreeLearner</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <span class="target" id="module-Orange.regression.tree"></span><span class="target" id="index-0"></span><div class="section" id="regression-trees-tree">
+<span id="index-1"></span><h1>Regression trees (<tt class="docutils literal"><span class="pre">tree</span></tt>)<a class="headerlink" href="#regression-trees-tree" title="Permalink to this headline">¶</a></h1>
+<p>Regression tree shares its implementation with
+<a class="reference internal" href="Orange.classification.tree.html#Orange.classification.tree.TreeLearner" title="Orange.classification.tree.TreeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.tree.TreeLearner</span></tt></a>, but uses a different set of
+functions to evaluate node splitting and stop criteria. Usage of
+regression trees is straightforward as demonstrated on the following
+example (<a class="reference download internal" href="../../_downloads/regression-tree-run.py"><tt class="xref download docutils literal"><span class="pre">regression-tree-run.py</span></tt></a>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+<span class="n">servo</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;servo.tab&quot;</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">TreeLearner</span><span class="p">(</span><span class="n">servo</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">tree</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="Orange.regression.tree.TreeLearner">
+<em class="property">class </em><tt class="descclassname">Orange.regression.tree.</tt><tt class="descname">TreeLearner</tt><big>(</big><em>**kw</em><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeLearner" title="Permalink to this definition">¶</a></dt>
+<dd><p>A classification or regression tree learner. If a set of instances
+is given on initialization, a <a class="reference internal" href="#Orange.regression.tree.TreeClassifier" title="Orange.regression.tree.TreeClassifier"><tt class="xref py py-class docutils literal"><span class="pre">TreeClassifier</span></tt></a> is built and
+returned instead.</p>
+<p>The learning algorithm has a large number of parameters. The class
+provides reasonable defaults; they can be modified either as attributes
+or as arguments given to the constructor.</p>
+<p>The algorithm is very flexible, yet slower than the other two
+implementations that are more suitable for large scale
+experiments.</p>
+<p><strong>The tree induction process</strong></p>
+<ol class="arabic simple">
+<li>The learning instances are copied, unless
+<a class="reference internal" href="#Orange.regression.tree.TreeLearner.store_instances" title="Orange.regression.tree.TreeLearner.store_instances"><tt class="xref py py-obj docutils literal"><span class="pre">store_instances</span></tt></a> is <cite>False</cite> and the instance
+already are stored in a <a class="reference internal" href="Orange.data.table.html#Orange.data.Table" title="Orange.data.Table"><tt class="xref py py-obj docutils literal"><span class="pre">Table</span></tt></a>.</li>
+<li>Apriori class probabilities are computed. A list of
+candidate features for the split is compiled; in the beginning,
+all features are candidates.</li>
+<li>The recursive part. The contingency matrix is computed by
+<a class="reference internal" href="#Orange.regression.tree.TreeLearner.contingency_computer" title="Orange.regression.tree.TreeLearner.contingency_computer"><tt class="xref py py-obj docutils literal"><span class="pre">contingency_computer</span></tt></a>. Contingencies are used by <a class="reference internal" href="#Orange.regression.tree.TreeLearner.split" title="Orange.regression.tree.TreeLearner.split"><tt class="xref py py-obj docutils literal"><span class="pre">split</span></tt></a>,
+<a class="reference internal" href="#Orange.regression.tree.TreeLearner.stop" title="Orange.regression.tree.TreeLearner.stop"><tt class="xref py py-obj docutils literal"><span class="pre">stop</span></tt></a> and <a class="reference internal" href="#Orange.regression.tree.TreeLearner.splitter" title="Orange.regression.tree.TreeLearner.splitter"><tt class="xref py py-obj docutils literal"><span class="pre">splitter</span></tt></a>.</li>
+<li>If the induction should <a class="reference internal" href="#Orange.regression.tree.TreeLearner.stop" title="Orange.regression.tree.TreeLearner.stop"><tt class="xref py py-obj docutils literal"><span class="pre">stop</span></tt></a>, a <tt class="xref py py-obj docutils literal"><span class="pre">node_classifier</span></tt>
+is built by calling <a class="reference internal" href="#Orange.regression.tree.TreeLearner.node_learner" title="Orange.regression.tree.TreeLearner.node_learner"><tt class="xref py py-obj docutils literal"><span class="pre">node_learner</span></tt></a> with the given instances,
+weight ID and the contingency matrix. As the learner uses
+contingencies whenever possible, the <a class="reference internal" href="#Orange.regression.tree.TreeLearner.contingency_computer" title="Orange.regression.tree.TreeLearner.contingency_computer"><tt class="xref py py-obj docutils literal"><span class="pre">contingency_computer</span></tt></a>
+will affect the <tt class="xref py py-obj docutils literal"><span class="pre">node_classifier</span></tt>. The node is returned.</li>
+<li>If the induction continues, a <a class="reference internal" href="#Orange.regression.tree.TreeLearner.split" title="Orange.regression.tree.TreeLearner.split"><tt class="xref py py-obj docutils literal"><span class="pre">split</span></tt></a> is called.
+If <a class="reference internal" href="#Orange.regression.tree.TreeLearner.split" title="Orange.regression.tree.TreeLearner.split"><tt class="xref py py-obj docutils literal"><span class="pre">split</span></tt></a> fails to return a branch selector, induction stops 
+and the <tt class="xref py py-obj docutils literal"><span class="pre">Node</span></tt> is returned.</li>
+<li>The feature spent (if any) is removed from the candidate list.</li>
+<li>Instances are divided into child nodes with <a class="reference internal" href="#Orange.regression.tree.TreeLearner.splitter" title="Orange.regression.tree.TreeLearner.splitter"><tt class="xref py py-obj docutils literal"><span class="pre">splitter</span></tt></a>.
+The process recursively continues with step 3 for
+each of the non-empty subsets. If the splitter returned weights,
+they are used for each branch.</li>
+</ol>
+<p><strong>Attributes</strong></p>
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.node_learner">
+<tt class="descname">node_learner</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.node_learner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Induces a classifier from instances in a node. It is used both
+for internal nodes and leaves. The default is
+<a class="reference internal" href="Orange.classification.majority.html#Orange.classification.majority.MajorityLearner" title="Orange.classification.majority.MajorityLearner"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.classification.majority.MajorityLearner</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.descender">
+<tt class="descname">descender</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.descender" title="Permalink to this definition">¶</a></dt>
+<dd><p>The descender that the induced <a class="reference internal" href="#Orange.regression.tree.TreeClassifier" title="Orange.regression.tree.TreeClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">TreeClassifier</span></tt></a> will
+use. The default is <tt class="xref py py-obj docutils literal"><span class="pre">Descender_UnknownMergeAsSelector</span></tt>.
+It votes with the <tt class="xref py py-obj docutils literal"><span class="pre">branch_selector</span></tt>&#8216;s distribution for
+vote weights.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.contingency_computer">
+<tt class="descname">contingency_computer</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.contingency_computer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation of contingency matrices (used by
+<a class="reference internal" href="#Orange.regression.tree.TreeLearner.split" title="Orange.regression.tree.TreeLearner.split"><tt class="xref py py-obj docutils literal"><span class="pre">split</span></tt></a>, <a class="reference internal" href="#Orange.regression.tree.TreeLearner.stop" title="Orange.regression.tree.TreeLearner.stop"><tt class="xref py py-obj docutils literal"><span class="pre">stop</span></tt></a>, <a class="reference internal" href="#Orange.regression.tree.TreeLearner.splitter" title="Orange.regression.tree.TreeLearner.splitter"><tt class="xref py py-obj docutils literal"><span class="pre">splitter</span></tt></a>). It can be used,
+for example, to change the treatment of unknown values. By
+default ordinary contingency matrices are computed.</p>
+</dd></dl>
+
+<p><strong>Split construction</strong></p>
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.split">
+<tt class="descname">split</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.split" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <tt class="xref py py-obj docutils literal"><span class="pre">SplitConstructor</span></tt> or a function with the same signature as
+<tt class="xref py py-obj docutils literal"><span class="pre">SplitConstructor.__call__</span></tt>. It is useful for prototyping
+new tree induction algorithms. If <a class="reference internal" href="#Orange.regression.tree.TreeLearner.split" title="Orange.regression.tree.TreeLearner.split"><tt class="xref py py-obj docutils literal"><span class="pre">split</span></tt></a> is defined, other 
+arguments that affect split construction are ignored. These include
+<a class="reference internal" href="#Orange.regression.tree.TreeLearner.binarization" title="Orange.regression.tree.TreeLearner.binarization"><tt class="xref py py-obj docutils literal"><span class="pre">binarization</span></tt></a>, <a class="reference internal" href="#Orange.regression.tree.TreeLearner.measure" title="Orange.regression.tree.TreeLearner.measure"><tt class="xref py py-obj docutils literal"><span class="pre">measure</span></tt></a>, <a class="reference internal" href="#Orange.regression.tree.TreeLearner.worst_acceptable" title="Orange.regression.tree.TreeLearner.worst_acceptable"><tt class="xref py py-obj docutils literal"><span class="pre">worst_acceptable</span></tt></a> and
+<a class="reference internal" href="#Orange.regression.tree.TreeLearner.min_subset" title="Orange.regression.tree.TreeLearner.min_subset"><tt class="xref py py-obj docutils literal"><span class="pre">min_subset</span></tt></a>. Default: <tt class="xref py py-class docutils literal"><span class="pre">SplitConstructor_Combined</span></tt>
+with separate constructors for discrete and continuous
+features. Discrete features are used as they are, while
+continuous are binarized. Features are scored with gain ratio.
+At least two instances in a leaf are required for
+discrete and five for continuous features.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.binarization">
+<tt class="descname">binarization</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.binarization" title="Permalink to this definition">¶</a></dt>
+<dd><p>If 1, <tt class="xref py py-class docutils literal"><span class="pre">SplitConstructor_ExhaustiveBinary</span></tt> is used.
+If 2, use <tt class="xref py py-class docutils literal"><span class="pre">SplitConstructor_OneAgainstOthers</span></tt>. If
+0, do not use binarization (use <tt class="xref py py-class docutils literal"><span class="pre">SplitConstructor_Feature</span></tt>).
+Default: 0.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.measure">
+<tt class="descname">measure</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.measure" title="Permalink to this definition">¶</a></dt>
+<dd><p>A score to evaluate features for splitting instances in a
+node.  A subclass of <a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Score" title="Orange.feature.scoring.Score"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.scoring.Score</span></tt></a>
+(perhaps <a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.InfoGain" title="Orange.feature.scoring.InfoGain"><tt class="xref py py-class docutils literal"><span class="pre">InfoGain</span></tt></a>,
+<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.GainRatio" title="Orange.feature.scoring.GainRatio"><tt class="xref py py-class docutils literal"><span class="pre">GainRatio</span></tt></a>,
+<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Gini" title="Orange.feature.scoring.Gini"><tt class="xref py py-class docutils literal"><span class="pre">Gini</span></tt></a>,
+<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-class docutils literal"><span class="pre">Relief</span></tt></a>, or
+<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.MSE" title="Orange.feature.scoring.MSE"><tt class="xref py py-class docutils literal"><span class="pre">MSE</span></tt></a>). Default:
+<a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.GainRatio" title="Orange.feature.scoring.GainRatio"><tt class="xref py py-class docutils literal"><span class="pre">Orange.feature.scoring.GainRatio</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">relief_m, relief_k</tt></dt>
+<dd><p>Set <cite>m</cite> and <cite>k</cite> for <a class="reference internal" href="Orange.feature.scoring.html#Orange.feature.scoring.Relief" title="Orange.feature.scoring.Relief"><tt class="xref py py-class docutils literal"><span class="pre">Relief</span></tt></a>,
+if chosen.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.splitter">
+<tt class="descname">splitter</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.splitter" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-class docutils literal"><span class="pre">Splitter</span></tt> or a function with the same
+signature as <tt class="xref py py-obj docutils literal"><span class="pre">Splitter.__call__</span></tt>. The default is
+<tt class="xref py py-class docutils literal"><span class="pre">Splitter_UnknownsAsSelector</span></tt> that splits the
+learning instances according to distributions given by the
+selector.</p>
+</dd></dl>
+
+<p><strong>Pruning</strong></p>
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.worst_acceptable">
+<tt class="descname">worst_acceptable</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.worst_acceptable" title="Permalink to this definition">¶</a></dt>
+<dd><p>The lowest required feature score. If the score of the best
+feature is below this margin, the tree is not grown further
+(default: 0).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.min_subset">
+<tt class="descname">min_subset</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.min_subset" title="Permalink to this definition">¶</a></dt>
+<dd><p>The lowest required number of instances in non-null leaves (default: 0).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.min_instances">
+<tt class="descname">min_instances</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.min_instances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Data subsets with less than <a class="reference internal" href="#Orange.regression.tree.TreeLearner.min_instances" title="Orange.regression.tree.TreeLearner.min_instances"><tt class="xref py py-obj docutils literal"><span class="pre">min_instances</span></tt></a>
+instances are not split any further. Therefore, all leaves in the tree
+will contain at least that many instances (default: 0).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.max_depth">
+<tt class="descname">max_depth</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.max_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximal tree depth. If 0, only root is generated. 
+The default is 100.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.max_majority">
+<tt class="descname">max_majority</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.max_majority" title="Permalink to this definition">¶</a></dt>
+<dd><p>Induction stops when the proportion of majority class in the
+node exceeds the value set by this parameter (default: 1.0).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.stop">
+<tt class="descname">stop</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-class docutils literal"><span class="pre">StopCriteria</span></tt> or a function with the same signature as
+<tt class="xref py py-obj docutils literal"><span class="pre">StopCriteria.__call__</span></tt>. Useful for prototyping new tree
+induction algorithms.  When used, parameters  <a class="reference internal" href="#Orange.regression.tree.TreeLearner.max_majority" title="Orange.regression.tree.TreeLearner.max_majority"><tt class="xref py py-obj docutils literal"><span class="pre">max_majority</span></tt></a>
+and <a class="reference internal" href="#Orange.regression.tree.TreeLearner.min_instances" title="Orange.regression.tree.TreeLearner.min_instances"><tt class="xref py py-obj docutils literal"><span class="pre">min_instances</span></tt></a> will not be  considered.  The default
+stopping criterion stops induction when all instances in a node
+belong to the same class.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.m_pruning">
+<tt class="descname">m_pruning</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.m_pruning" title="Permalink to this definition">¶</a></dt>
+<dd><p>If non-zero, invokes an error-based bottom-up post-pruning,
+where m-estimate is used to estimate class probabilities 
+(default: 0).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.same_majority_pruning">
+<tt class="descname">same_majority_pruning</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.same_majority_pruning" title="Permalink to this definition">¶</a></dt>
+<dd><p>If true, invokes a bottom-up post-pruning by removing the
+subtrees of which all leaves classify to the same class
+(default: False).</p>
+</dd></dl>
+
+<p><strong>Record keeping</strong></p>
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.store_distributions">
+<tt class="descname">store_distributions</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.store_distributions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.store_contingencies">
+<tt class="descname">store_contingencies</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.store_contingencies" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.store_instances">
+<tt class="descname">store_instances</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.store_instances" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeLearner.store_node_classifier">
+<tt class="descname">store_node_classifier</tt><a class="headerlink" href="#Orange.regression.tree.TreeLearner.store_node_classifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines whether to store class distributions,
+contingencies and instances in <tt class="xref py py-class docutils literal"><span class="pre">Node</span></tt>, and whether the
+<tt class="xref py py-obj docutils literal"><span class="pre">Node.node_classifier</span></tt> should be build for internal nodes
+also (it is needed by the <tt class="xref py py-obj docutils literal"><span class="pre">Descender</span></tt> or for post-pruning).
+Not storing distributions but storing contingencies does not
+save any memory, since distributions actually points to the
+same distribution that is stored in <tt class="xref py py-obj docutils literal"><span class="pre">contingency.classes</span></tt>.
+By default everything except <a class="reference internal" href="#Orange.regression.tree.TreeLearner.store_instances" title="Orange.regression.tree.TreeLearner.store_instances"><tt class="xref py py-obj docutils literal"><span class="pre">store_instances</span></tt></a> is enabled.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.tree.TreeLearner.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instances</em>, <em>weight=0</em><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeLearner.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a classifier from the given instances.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.tree.TreeLearner.instance">
+<tt class="descname">instance</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeLearner.instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>DEPRECATED. Return a base learner - an object 
+of <tt class="xref py py-class docutils literal"><span class="pre">_TreeLearner</span></tt>. 
+This method is left for backwards compatibility.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Orange.regression.tree.TreeClassifier">
+<em class="property">class </em><tt class="descclassname">Orange.regression.tree.</tt><tt class="descname">TreeClassifier</tt><big>(</big><em>base_classifier=None</em><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classifies instances according to the tree stored in <a class="reference internal" href="#Orange.regression.tree.TreeClassifier.tree" title="Orange.regression.tree.TreeClassifier.tree"><tt class="xref py py-obj docutils literal"><span class="pre">tree</span></tt></a>.</p>
+<p><strong>The classification process</strong></p>
+<p><a class="reference internal" href="#Orange.regression.tree.TreeClassifier" title="Orange.regression.tree.TreeClassifier"><tt class="xref py py-obj docutils literal"><span class="pre">TreeClassifier</span></tt></a> uses the <a class="reference internal" href="#Orange.regression.tree.TreeClassifier.descender" title="Orange.regression.tree.TreeClassifier.descender"><tt class="xref py py-obj docutils literal"><span class="pre">descender</span></tt></a> to descend the
+instance from the root. If the <a class="reference internal" href="#Orange.regression.tree.TreeClassifier.descender" title="Orange.regression.tree.TreeClassifier.descender"><tt class="xref py py-obj docutils literal"><span class="pre">descender</span></tt></a> returns only a
+<tt class="xref py py-obj docutils literal"><span class="pre">Node</span></tt> and no distribution, the descend should stop as the node
+was unambiguously selected. The node&#8217;s <tt class="xref py py-obj docutils literal"><span class="pre">node_classifier</span></tt>
+decides the class.</p>
+<p>If the descender returns a <tt class="xref py py-obj docutils literal"><span class="pre">Node</span></tt> and a distribution, as it
+happens, for example, if the instance&#8217;s value for the <tt class="xref py py-obj docutils literal"><span class="pre">Node</span></tt>&#8216;s
+feature is unknown, the same process repeats for all subtrees and
+their predictions are combined.</p>
+<p><strong>Attributes</strong></p>
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeClassifier.tree">
+<tt class="descname">tree</tt><a class="headerlink" href="#Orange.regression.tree.TreeClassifier.tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>The root of the tree, as a <tt class="xref py py-class docutils literal"><span class="pre">Node</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.TreeClassifier.descender">
+<tt class="descname">descender</tt><a class="headerlink" href="#Orange.regression.tree.TreeClassifier.descender" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <tt class="xref py py-obj docutils literal"><span class="pre">Descender</span></tt> used to descend an instance from the root as
+deeply as possible according to the instance&#8217;s feature values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.tree.TreeClassifier.__call__">
+<tt class="descname">__call__</tt><big>(</big><em>instance</em>, <em>result_type=0</em>, <em>*args</em>, <em>**kwdargs</em><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeClassifier.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classify a new instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>instance</strong> (<a class="reference internal" href="Orange.data.instance.html#Orange.data.Instance" title="Orange.data.Instance"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Instance</span></tt></a>) &#8211; instance to be classified.</li>
+<li><strong>result_type</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetValue</span></tt> or               <tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetProbabilities</span></tt> or
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.classification.Classifier.GetBoth</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="Orange.data.value.html#Orange.data.Value" title="Orange.data.Value"><tt class="xref py py-class docutils literal"><span class="pre">Orange.data.Value</span></tt></a>, 
+<tt class="xref py py-class docutils literal"><span class="pre">Orange.statistics.Distribution</span></tt> or a tuple with both</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.tree.TreeClassifier.count_leaves">
+<tt class="descname">count_leaves</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeClassifier.count_leaves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of leaves.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.tree.TreeClassifier.count_nodes">
+<tt class="descname">count_nodes</tt><big>(</big><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeClassifier.count_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of nodes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.tree.TreeClassifier.dot">
+<tt class="descname">dot</tt><big>(</big><em>file_name</em>, <em>leaf_str=</em>, <em>node_str=</em>, <em>leaf_shape=plaintext</em>, <em>node_shape=plaintext</em>, <em>user_formats=</em><span class="optional">[</span><span class="optional">]</span>, <em>min_instances=0</em>, <em>max_depth=10000000000</em>, <em>simple_first=True</em><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeClassifier.dot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the tree to a file in a format used by <a class="reference external" href="http://www.research.att.com/sw/tools/graphviz">GraphViz</a>.  Uses the
+same parameters as <a class="reference internal" href="#Orange.regression.tree.TreeClassifier.to_string" title="Orange.regression.tree.TreeClassifier.to_string"><tt class="xref py py-meth docutils literal"><span class="pre">to_string()</span></tt></a> plus two which define the shape
+of internal nodes and leaves of the tree:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>leaf_shape</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Shape of the outline around leaves of the tree. 
+If &#8220;plaintext&#8221;, no outline is used (default: &#8220;plaintext&#8221;).</li>
+<li><strong>node_shape</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Shape of the outline around internal nodes 
+of the tree. If &#8220;plaintext&#8221;, no outline is used (default: &#8220;plaintext&#8221;)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Check <a class="reference external" href="http://www.graphviz.org/doc/info/shapes.html">Polygon-based Nodes</a> 
+for various outlines supported by GraphViz.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Orange.regression.tree.TreeClassifier.to_string">
+<tt class="descname">to_string</tt><big>(</big><em>leaf_str=</em>, <em>node_str=</em>, <em>user_formats=</em><span class="optional">[</span><span class="optional">]</span>, <em>min_instances=0</em>, <em>max_depth=10000000000</em>, <em>simple_first=True</em><big>)</big><a class="headerlink" href="#Orange.regression.tree.TreeClassifier.to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of a tree.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>leaf_str</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The format string for the tree leaves. If 
+left empty, <tt class="docutils literal"><span class="pre">&quot;%V</span> <span class="pre">(%^.2m%)&quot;</span></tt> will be used for classification trees
+and <tt class="docutils literal"><span class="pre">&quot;%V&quot;</span></tt> for regression trees.</li>
+<li><strong>node_str</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The format string for the internal nodes.
+If left empty (as it is by default), no data is printed out for
+internal nodes. If set to <tt class="docutils literal"><span class="pre">&quot;.&quot;</span></tt>, the same string is
+used as for leaves.</li>
+<li><strong>max_depth</strong> (<em>integer</em>) &#8211; If set, it limits the depth to which the tree is
+printed out.</li>
+<li><strong>min_instances</strong> (<em>integer</em>) &#8211; If set, the subtrees with less than the given 
+number of examples are not printed.</li>
+<li><strong>simple_first</strong> (<em>boolean</em>) &#8211; If True (default), the branches with a single 
+node are printed before the branches with larger subtrees. 
+If False, the branches are printed in order of
+appearance.</li>
+<li><strong>user_formats</strong> &#8211; A list of regular expressions and callback 
+function through which the user can print out other specific 
+information in the nodes.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="simpletreelearner">
+<h2>SimpleTreeLearner<a class="headerlink" href="#simpletreelearner" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#Orange.regression.tree.SimpleTreeLearner" title="Orange.regression.tree.SimpleTreeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">SimpleTreeLearner</span></tt></a> is an implementation of regression and classification
+trees. It is faster than <a class="reference internal" href="#Orange.regression.tree.TreeLearner" title="Orange.regression.tree.TreeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">TreeLearner</span></tt></a> at the expense of flexibility.
+It uses gain ratio for classification and MSE for regression.</p>
+<p><a class="reference internal" href="#Orange.regression.tree.SimpleTreeLearner" title="Orange.regression.tree.SimpleTreeLearner"><tt class="xref py py-obj docutils literal"><span class="pre">SimpleTreeLearner</span></tt></a> was developed for speeding up the construction
+of random forests, but can also be used as a standalone tree learner.</p>
+<dl class="class">
+<dt id="Orange.regression.tree.SimpleTreeLearner">
+<em class="property">class </em><tt class="descclassname">Orange.regression.tree.</tt><tt class="descname">SimpleTreeLearner</tt><a class="headerlink" href="#Orange.regression.tree.SimpleTreeLearner" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="Orange.regression.tree.SimpleTreeLearner.max_majority">
+<tt class="descname">max_majority</tt><a class="headerlink" href="#Orange.regression.tree.SimpleTreeLearner.max_majority" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximal proportion of majority class. When this is exceeded,
+induction stops (only used for classification).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.SimpleTreeLearner.min_instances">
+<tt class="descname">min_instances</tt><a class="headerlink" href="#Orange.regression.tree.SimpleTreeLearner.min_instances" title="Permalink to this definition">¶</a></dt>
+<dd><p>Minimal number of instances in leaves. Instance count is weighed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.SimpleTreeLearner.max_depth">
+<tt class="descname">max_depth</tt><a class="headerlink" href="#Orange.regression.tree.SimpleTreeLearner.max_depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Maximal depth of tree.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.SimpleTreeLearner.skip_prob">
+<tt class="descname">skip_prob</tt><a class="headerlink" href="#Orange.regression.tree.SimpleTreeLearner.skip_prob" title="Permalink to this definition">¶</a></dt>
+<dd><p>At every split an attribute will be skipped with probability <tt class="docutils literal"><span class="pre">skip_prob</span></tt>.
+Useful for building random forests.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Orange.regression.tree.SimpleTreeLearner.random_generator">
+<tt class="descname">random_generator</tt><a class="headerlink" href="#Orange.regression.tree.SimpleTreeLearner.random_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provide your own <a class="reference internal" href="Orange.misc.html#Orange.misc.Random" title="Orange.misc.Random"><tt class="xref py py-obj docutils literal"><span class="pre">Orange.misc.Random</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<p>A basic example of using a SimpleTreeLearner is shown below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">housing</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;housing.tab&quot;</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">regression</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">SimpleTreeLearner</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">cross_validation</span><span class="p">([</span><span class="n">learner</span><span class="p">],</span> <span class="n">housing</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">Orange</span><span class="o">.</span><span class="n">evaluation</span><span class="o">.</span><span class="n">scoring</span><span class="o">.</span><span class="n">MSE</span><span class="p">(</span><span class="n">res</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,227 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Script &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Python Script</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a><ul>
+<li><a class="reference internal" href="#library">Library</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="python-script">
+<span id="id1"></span><h1>Python Script<a class="headerlink" href="#python-script" title="Permalink to this headline">¶</a></h1>
+<img alt="Python Script" src="../../../_images/PythonScript.svg" /><div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>in_data (Orange.data.Table)</dt>
+<dd><p class="first last">Input data set bound to <tt class="docutils literal"><span class="pre">in_data</span></tt> variable in the script&#8217;s local
+namespace.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>in_distance (Orange.core.SymMatrix)</dt>
+<dd><p class="first last">Input symmetric matrix bound to <tt class="docutils literal"><span class="pre">in_distance</span></tt> variable in the script&#8217;s
+local namespace.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>in_learner (Orange.classification.Learner)</dt>
+<dd><p class="first last">Input learner bound to <tt class="docutils literal"><span class="pre">in_learner</span></tt> variable in the script&#8217;s
+local namespace.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>in_classifier (Orange.classification.Learner)</dt>
+<dd><p class="first last">Input classifier bound to <tt class="docutils literal"><span class="pre">in_classifier</span></tt> variable in the script&#8217;s
+local namespace.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>in_object (object)</dt>
+<dd><p class="first last">Input python object bound to <tt class="docutils literal"><span class="pre">in_object</span></tt> variable in the script&#8217;s
+local namespace.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>out_data (Orange.data.Table)</dt>
+<dd><p class="first last">Data set retrieved from <tt class="docutils literal"><span class="pre">out_data</span></tt> variable in the script&#8217;s local
+namespace after execution.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>out_distance (Orange.core.SymMatrix)</dt>
+<dd><p class="first last">Symmetric matrix retrieved from <tt class="docutils literal"><span class="pre">out_distance</span></tt> variable in the
+script&#8217;s local namespace after execution.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>out_learner (Orange.classification.Learner)</dt>
+<dd><p class="first last">Learner retrieved from <tt class="docutils literal"><span class="pre">out_learner</span></tt> variable in the script&#8217;s local
+namespace.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>out_classifier (Orange.classification.Learner), <em>Dynamic</em></dt>
+<dd><p class="first last">Classifier retrieved from <tt class="docutils literal"><span class="pre">out_classifier</span></tt> variable in the script&#8217;s
+local namespace after execution.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>out_object (object), <em>Dynamic</em></dt>
+<dd><p class="first last">Python object retrieved from <tt class="docutils literal"><span class="pre">out_object</span></tt> variable in the script&#8217;s
+local namespace after execution.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<img alt="Python Script widget with an example script" src="../../../_images/PythonScript.png" />
+<p><cite>Python Script</cite> widget can be used to run a python script on the inputs,
+when a suitable functionality is not implemented in an existing widgets.
+The scripts have <tt class="docutils literal"><span class="pre">in_data</span></tt>, <tt class="docutils literal"><span class="pre">in_distance</span></tt>, <tt class="docutils literal"><span class="pre">in_learner</span></tt>,
+<tt class="docutils literal"><span class="pre">in_classifier</span></tt> and <tt class="docutils literal"><span class="pre">in_object</span></tt> varaibles (from input signals) in their
+local namespace. If a signal is not connected or it did not yet receive any
+data, those variables contain <tt class="docutils literal"><span class="pre">None</span></tt>.</p>
+<p>After the script is executed <tt class="docutils literal"><span class="pre">out_data</span></tt>, <tt class="docutils literal"><span class="pre">out_distance</span></tt>, ... variables
+from the script&#8217;s local namespace are extracted and used as outputs of the
+widget.</p>
+<p>For instance the following script would simply pass on all signals it
+receives:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">out_data</span> <span class="o">=</span> <span class="n">in_data</span>
+<span class="n">out_distance</span> <span class="o">=</span> <span class="n">in_distance</span>
+<span class="n">out_learner</span> <span class="o">=</span> <span class="n">in_learner</span>
+<span class="n">out_classifier</span> <span class="o">=</span> <span class="n">in_classifier</span>
+<span class="n">out_object</span> <span class="o">=</span> <span class="n">in_object</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You should not modify the input objects inplace.</p>
+</div>
+<p>The <em class="guilabel">Python script</em> editor on the left can be used to edit
+a script (it supports some rudimentary syntax highlighting).</p>
+<p>Pressing the <em class="guilabel">Execute</em> in the <em class="guilabel">Run</em> box executes the
+script (using <tt class="docutils literal"><span class="pre">exec</span></tt>). Any script output (from <tt class="docutils literal"><span class="pre">print</span></tt>) is captured
+and displayed in the <em class="guilabel">Console</em> below the script.</p>
+<p>If the <em class="guilabel">Auto execute</em> is checked the script is run any time the
+inputs to the widget change.</p>
+<div class="section" id="library">
+<h3>Library<a class="headerlink" href="#library" title="Permalink to this headline">¶</a></h3>
+<p>The <em class="guilabel">Library</em> control can be used to manage multiple scripts.</p>
+<p>Pressing <em class="guilabel">+</em> will add a new entry and open it in the
+<em class="guilabel">Python script</em> editor`. When the script is modified its entry in the
+<em class="guilabel">Library</em> will change to indicate it has unsaved changes. Pressing
+<em class="guilabel">Update</em> will save the script (keyboard shortcut <cite>ctrl + s</cite>). A
+script can be removed by selecting it and pressing the <em class="guilabel">-</em> button.</p>
+</div>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

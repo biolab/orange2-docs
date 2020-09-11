@@ -1,0 +1,195 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Merge Data &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../../index.html" />
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Merge Data</a><ul>
+<li><a class="reference internal" href="#signals">Signals</a></li>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#hint">Hint</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="merge-data">
+<span id="id1"></span><h1>Merge Data<a class="headerlink" href="#merge-data" title="Permalink to this headline">¶</a></h1>
+<img alt="Merge Data widget icon" src="../../../_images/MergeData.svg" /><p>Merges two data sets based on the values of selected attributes.</p>
+<div class="section" id="signals">
+<h2>Signals<a class="headerlink" href="#signals" title="Permalink to this headline">¶</a></h2>
+<p>Inputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Examples A (ExampleTable)</dt>
+<dd><p class="first last">Attribute-valued data set.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Examples B (ExampleTable)</dt>
+<dd><p class="first last">Attribute-valued data set.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>Outputs:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Merged Examples A+B (ExampleTable)</dt>
+<dd><p class="first last">Attribute-valued data set composed from instances from input data A
+which are appended attributes from input data B and their values
+determined by matching the values of the selected attributes.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Merged Examples B+A (ExampleTable)</dt>
+<dd><p class="first last">Attribute-valued data set composed from instances from input data
+B which are appended attributes from input data A and their values
+determined by matching the values of the selected attributes.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Merge Data widget is used to horizontally merge two data sets based on the
+values of selected attributes. On input, two data sets are required, A and B.
+The widget allows for selection of an attribute from each domain which will be
+used to perform the merging. When selected, the widget produces two outputs,
+A+B and B+A. The first output (A+B) corresponds to instances from input
+data A which are appended attributes from B, and the second output (B+A)
+to instances from B which are appended attributes from A.</p>
+<p>The merging is done by the values of the selected (merging) attributes. For
+example, instances from from A+B are constructed in the following way.
+First, the value of the merging attribute from A is taken and instances
+from B are searched with matching values of the merging attributes. If
+more than a single instance from B is found, the first one is taken and
+horizontally merged with the instance from A. If no instance from B match
+the criterium, the unknown values are assigned to the appended attributes.
+Similarly, B+A is constructed.</p>
+<img alt="Merge Data" src="../../../_images/MergeData1.png" />
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>Below is an example that loads spot intensity data from microarray
+measurements and spot annotation data. While microarray data consists of
+measurements of several spots representing equal DNA material (denoted by
+equal <tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">ID's</span></tt>), the annotation data consists of a single line
+(instance) for each spot.</p>
+<p>Merging the two data sets results in annotations appended to each spot
+intensity datum. The <tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">intensities</span></tt> data is connected to
+<tt class="xref py py-obj docutils literal"><span class="pre">Examples</span> <span class="pre">A</span></tt> input of the <a class="reference internal" href="#merge-data"><em>Merge Data</em></a> widget, and the
+<tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">annotations</span></tt> data to the <tt class="xref py py-obj docutils literal"><span class="pre">Examples</span> <span class="pre">B</span></tt> input. Both outputs
+of the <a class="reference internal" href="#merge-data"><em>Merge Data</em></a> widget are then connected to the <a class="reference internal" href="datatable.html#data-table"><em>Data Table</em></a>
+widget. In the latter, the <tt class="xref py py-obj docutils literal"><span class="pre">Merged</span> <span class="pre">Examples</span> <span class="pre">A+B</span></tt> are shown.
+The attributes between <tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">ID</span></tt> and <tt class="xref py py-obj docutils literal"><span class="pre">BG</span> <span class="pre">{Ref}</span></tt>, including these
+two, are from the <tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">intensities</span></tt> data set (<tt class="xref py py-obj docutils literal"><span class="pre">Examples</span> <span class="pre">A</span></tt>),
+while the last three are from the <tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">annotations</span></tt> data set
+(<tt class="xref py py-obj docutils literal"><span class="pre">Examples</span> <span class="pre">B</span></tt>). Only instances representing non-control DNA (these
+with <tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">ID</span></tt> equal to <tt class="xref py py-obj docutils literal"><span class="pre">ST_Hs_???</span></tt>) received annotations, while
+for the others (<tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">ID</span> <span class="pre">=</span> <span class="pre">ST_Cr_048</span></tt>), no annotation data exists in
+the <tt class="xref py py-obj docutils literal"><span class="pre">Spot</span> <span class="pre">annotations</span></tt> data and unknown values were assigned to the
+appended attributes.</p>
+<img alt="Schema with Merge Data" src="../../../_images/MergeData2s.png" />
+</div>
+<div class="section" id="hint">
+<h2>Hint<a class="headerlink" href="#hint" title="Permalink to this headline">¶</a></h2>
+<p>If the two data sets consists of equally-named attributes (others than the
+ones used to perform the merging), Orange will by default check for
+consistency of the values of these attributes and report an error in
+case of non-matching values. In order to avoid the consistency checking,
+make sure that new attributes are created for each data set: you may use
+&#8221;... Always create a new attribute&#8221; option in the <a class="reference internal" href="file.html#file"><em>File</em></a> widget for
+loading the data.</p>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>

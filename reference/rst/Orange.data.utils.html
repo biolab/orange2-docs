@@ -1,0 +1,278 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Utilities (utils) &mdash; Orange Documentation v2.7.8</title>
+    
+    <link rel="stylesheet" href="../../_static/orange.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.7.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="top" title="Orange Documentation v2.7.8" href="../../index.html" />
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+
+  </head>
+  <body>
+	<div id="container">
+    <div class="border1"></div>
+    <div class="border2"></div>
+    <div class="borderv">
+        <div id="header">
+			<div id="orangeimg"><h1><a href="http://orange.biolab.si"><img src="../../_static/orange-logo-w.png" alt="Orange" /></a></h1></div>
+
+            <div id="cse-search-box" style="height: 22px;"></div>
+            <div id="underimg"></div>
+        </div>
+    </div>
+    <div class="border2"></div>
+    <div class="border1"></div>
+
+    <div id="main">
+        <div class="border1"></div>
+        <div class="border2"></div>
+        <div class="borderv">
+            <div id="maininner">
+            <p style="font-size: 32px;">
+                This is documentation for Orange 2.7. For the latest documentation, 
+                <a href="http://orange.biolab.si/docs">
+                see Orange 3</a>.
+            </p>
+ 
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+    <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+           <p><a class="uplink" href="../../index.html">Orange Documentation v2.7.8</a></p>
+           <ul>
+<li><a class="reference internal" href="#">Utilities (<tt class="docutils literal"><span class="pre">utils</span></tt>)</a><ul>
+<li><a class="reference internal" href="#value-transformers">Value transformers</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+    </div>
+    
+  <div class="section" id="utilities-utils">
+<h1>Utilities (<tt class="docutils literal"><span class="pre">utils</span></tt>)<a class="headerlink" href="#utilities-utils" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="value-transformers">
+<h2>Value transformers<a class="headerlink" href="#value-transformers" title="Permalink to this headline">¶</a></h2>
+<p>Value transformers take care of simple transformations of
+values. Discretization, for instance, creates a transformer that
+converts continuous values into discrete, while continuizers do the
+opposite. Classification trees use transformers for binarization where
+values of discrete attributes are converted into binary.</p>
+<p>These objects are most often constructed by other classes and only
+seldom manually. See information on <a class="reference internal" href="Orange.data.discretization.html"><em>Data discretization (discretization)</em></a>
+and <a class="reference internal" href="Orange.data.continuization.html"><em>Continuization (continuization)</em></a>.</p>
+<dl class="class">
+<dt id="TransformValue">
+<em class="property">class </em><tt class="descname">TransformValue</tt><a class="headerlink" href="#TransformValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>The abstract root of the hierarchy of transformers, which provides
+the call operator and chaining of transformers.</p>
+<dl class="attribute">
+<dt id="TransformValue.subtransformer">
+<tt class="descname">subtransformer</tt><a class="headerlink" href="#TransformValue.subtransformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>The transformation that takes place prior to this.
+This way, transformations can be chained.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="Ordinal2Continuous">
+<em class="property">class </em><tt class="descname">Ordinal2Continuous</tt><a class="headerlink" href="#Ordinal2Continuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts ordinal values to continuous. For example, variable values
+values <cite>small</cite>, <cite>medium</cite>, <cite>large</cite>, <cite>extra large</cite> (if given in
+that order) would be, by default, converted to 0.0, 1.0, 2.0 and 3.0.
+It is possible to add a factor by which the values are multiplied. If
+the factor for the above case were 0.3333, the value would be
+converted to 0, 0.3333, 0.6666 and 0.9999.</p>
+<dl class="attribute">
+<dt id="Ordinal2Continuous.factor">
+<tt class="descname">factor</tt><a class="headerlink" href="#Ordinal2Continuous.factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>The factor by which the values are multiplied.</p>
+</dd></dl>
+
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange.data</span>
+<span class="kn">import</span> <span class="nn">Orange.feature</span>
+
+<span class="n">lenses</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+<span class="n">age</span> <span class="o">=</span> <span class="n">lenses</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;age&quot;</span><span class="p">]</span>
+
+<span class="n">age_c</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Continuous</span><span class="p">(</span><span class="s">&quot;age_c&quot;</span><span class="p">)</span>
+<span class="n">age_c</span><span class="o">.</span><span class="n">getValueFrom</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">ClassifierFromVar</span><span class="p">(</span><span class="n">whichVar</span> <span class="o">=</span> <span class="n">age</span><span class="p">)</span>
+<span class="n">age_c</span><span class="o">.</span><span class="n">getValueFrom</span><span class="o">.</span><span class="n">transformer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">Ordinal2Continuous</span><span class="p">()</span>
+
+<span class="n">age_cn</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Continuous</span><span class="p">(</span><span class="s">&quot;age_cn&quot;</span><span class="p">)</span>
+<span class="n">age_cn</span><span class="o">.</span><span class="n">getValueFrom</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">ClassifierFromVar</span><span class="p">(</span><span class="n">whichVar</span> <span class="o">=</span> <span class="n">age</span><span class="p">)</span>
+<span class="n">age_cn</span><span class="o">.</span><span class="n">getValueFrom</span><span class="o">.</span><span class="n">transformer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">Ordinal2Continuous</span><span class="p">()</span>
+<span class="n">age_cn</span><span class="o">.</span><span class="n">getValueFrom</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">factor</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="n">newDomain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="n">age</span><span class="p">,</span> <span class="n">age_c</span><span class="p">,</span> <span class="n">age_cn</span><span class="p">],</span> <span class="n">lenses</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">classVar</span><span class="p">)</span>
+<span class="n">newData</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">newDomain</span><span class="p">,</span> <span class="n">lenses</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The values of attribute <cite>age</cite> (<cite>young</cite>, <cite>pre-presbyopic</cite> and
+<cite>presbyopic</cite>) are transformed to 0.0, 1.0 and 2.0 in <cite>age_c</cite> and to
+0, 0.5 and 1 in <cite>age_cn</cite>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="Discrete2Continuous">
+<em class="property">class </em><tt class="descname">Discrete2Continuous</tt><a class="headerlink" href="#Discrete2Continuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a discrete value to a continuous so that some chosen
+value is converted to 1.0 and all others to 0.0 or -1.0, depending on
+the settings.</p>
+<dl class="attribute">
+<dt id="Discrete2Continuous.value">
+<tt class="descname">value</tt><a class="headerlink" href="#Discrete2Continuous.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>The value that is converted to 1.0; others are converted to
+0.0 or -1.0, depending on <a class="reference internal" href="#Discrete2Continuous.zero_based" title="Discrete2Continuous.zero_based"><tt class="xref py py-obj docutils literal"><span class="pre">zero_based</span></tt></a>. Value needs to be
+specified by an integer index.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Discrete2Continuous.zero_based">
+<tt class="descname">zero_based</tt><a class="headerlink" href="#Discrete2Continuous.zero_based" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decides whether the other values will be transformed to 0.0
+(<tt class="docutils literal"><span class="pre">True</span></tt>, default) or -1.0 (<tt class="docutils literal"><span class="pre">False</span></tt>).
+When <tt class="docutils literal"><span class="pre">False</span></tt>, undefined values are transformed to 0.0;
+otherwise, undefined values yield an error.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="Discrete2Continuous.invert">
+<tt class="descname">invert</tt><a class="headerlink" href="#Discrete2Continuous.invert" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <tt class="docutils literal"><span class="pre">True</span></tt> (default is <tt class="docutils literal"><span class="pre">False</span></tt>), the transformations are
+reversed - the selected <tt class="docutils literal"><span class="pre">value</span></tt> becomes 0.0 (or -1.0)
+and others 1.0.</p>
+</dd></dl>
+
+<p>The following script loads the Monks 1 data set and constructs a
+new attribute <cite>e1</cite> that will indicate whether <cite>e</cite> is 1 or not.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange.data</span>
+
+<span class="n">monks</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;monks-1&quot;</span><span class="p">)</span>
+
+<span class="n">e1</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Continuous</span><span class="p">(</span><span class="s">&quot;e=1&quot;</span><span class="p">)</span>
+<span class="n">e1</span><span class="o">.</span><span class="n">getValueFrom</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">ClassifierFromVar</span><span class="p">(</span><span class="n">whichVar</span><span class="o">=</span><span class="n">monks</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;e&quot;</span><span class="p">])</span>
+<span class="n">e1</span><span class="o">.</span><span class="n">getValueFrom</span><span class="o">.</span><span class="n">transformer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">Discrete2Continuous</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="NormalizeContinuous">
+<em class="property">class </em><tt class="descname">NormalizeContinuous</tt><a class="headerlink" href="#NormalizeContinuous" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalizes continuous values by subtracting the <tt class="docutils literal"><span class="pre">average</span></tt> and
+dividing the difference by half of the <tt class="docutils literal"><span class="pre">span</span></tt>.</p>
+<dl class="attribute">
+<dt id="NormalizeContinuous.average">
+<tt class="descname">average</tt><a class="headerlink" href="#NormalizeContinuous.average" title="Permalink to this definition">¶</a></dt>
+<dd><p>The value that is subtracted from the original.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="NormalizeContinuous.span">
+<tt class="descname">span</tt><a class="headerlink" href="#NormalizeContinuous.span" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divisor</p>
+</dd></dl>
+
+<p>The following script &#8220;normalizes&#8221; all attribute in the Iris dataset by
+subtracting the average value and dividing by the half of
+deviation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">iris</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">features</span><span class="p">:</span>
+    <span class="n">attr_c</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Continuous</span><span class="p">(</span><span class="n">attr</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;_n&quot;</span><span class="p">)</span>
+    <span class="n">attr_c</span><span class="o">.</span><span class="n">getValueFrom</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">ClassifierFromVar</span><span class="p">(</span><span class="n">whichVar</span><span class="o">=</span><span class="n">attr</span><span class="p">)</span>
+    <span class="n">transformer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">NormalizeContinuous</span><span class="p">()</span>
+    <span class="n">attr_c</span><span class="o">.</span><span class="n">getValueFrom</span><span class="o">.</span><span class="n">transformer</span> <span class="o">=</span> <span class="n">transformer</span>
+    <span class="n">transformer</span><span class="o">.</span><span class="n">average</span> <span class="o">=</span> <span class="n">domstat</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span><span class="o">.</span><span class="n">avg</span>
+    <span class="n">transformer</span><span class="o">.</span><span class="n">span</span> <span class="o">=</span> <span class="n">domstat</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span><span class="o">.</span><span class="n">dev</span>
+    <span class="n">newattrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">attr_c</span><span class="p">)</span>
+
+<span class="n">newDomain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span><span class="n">newattrs</span><span class="p">,</span> <span class="n">iris</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">classVar</span><span class="p">)</span>
+<span class="n">newData</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">newDomain</span><span class="p">,</span> <span class="n">iris</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">newData</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">ex</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="class">
+<dt id="MapIntValue">
+<em class="property">class </em><tt class="descname">MapIntValue</tt><a class="headerlink" href="#MapIntValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>A discrete-to-discrete transformer that changes values according
+to the given mapping. MapIntValue is used for binarization in
+decision trees.</p>
+<dl class="attribute">
+<dt id="MapIntValue.mapping">
+<tt class="descname">mapping</tt><a class="headerlink" href="#MapIntValue.mapping" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mapping that determines the new value: <tt class="docutils literal"><span class="pre">v</span> <span class="pre">=</span> <span class="pre">mapping[v]</span></tt>.
+Undefined values remain undefined. Elements of the mapping
+are  contains integer indices of values.</p>
+</dd></dl>
+
+<p>The following script transforms the value of <cite>age</cite> in dataset lenses
+from &#8216;young&#8217; to &#8216;young&#8217;, and from &#8216;pre-presbyopic&#8217; and &#8216;presbyopic&#8217; to
+&#8216;old&#8217;.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">Orange</span>
+
+<span class="n">lenses</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="s">&quot;lenses&quot;</span><span class="p">)</span>
+<span class="n">age</span> <span class="o">=</span> <span class="n">lenses</span><span class="o">.</span><span class="n">domain</span><span class="p">[</span><span class="s">&quot;age&quot;</span><span class="p">]</span>
+
+<span class="n">age_b</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span><span class="s">&quot;age_c&quot;</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;young&#39;</span><span class="p">,</span> <span class="s">&#39;old&#39;</span><span class="p">])</span>
+<span class="n">age_b</span><span class="o">.</span><span class="n">getValueFrom</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">classification</span><span class="o">.</span><span class="n">ClassifierFromVar</span><span class="p">(</span><span class="n">whichVar</span> <span class="o">=</span> <span class="n">age</span><span class="p">)</span>
+<span class="n">age_b</span><span class="o">.</span><span class="n">getValueFrom</span><span class="o">.</span><span class="n">transformer</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">MapIntValue</span><span class="p">()</span>
+<span class="n">age_b</span><span class="o">.</span><span class="n">getValueFrom</span><span class="o">.</span><span class="n">transformer</span><span class="o">.</span><span class="n">mapping</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="n">newDomain</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Domain</span><span class="p">([</span><span class="n">age_b</span><span class="p">,</span> <span class="n">age</span><span class="p">],</span> <span class="n">lenses</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">classVar</span><span class="p">)</span>
+<span class="n">newData</span> <span class="o">=</span> <span class="n">Orange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span><span class="n">newDomain</span><span class="p">,</span> <span class="n">lenses</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The mapping tells that the 0th value of <cite>age</cite> maps to the 0th of
+<cite>age_b</cite>, and the 1st and 2nd value go to the 1st value of <cite>age_b</cite>.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div> 
+      <div class="clearer"></div>
+    </div>  
+	
+    <div class="footer">
+    </div>
+	            </div>
+        </div>
+        <div class="border1"></div>
+        <div class="border2"></div>
+    </div>
+</div>
+
+  </body>
+</html>
